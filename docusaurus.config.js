@@ -1,9 +1,8 @@
 // @ts-check
 
-import {themes as prismThemes} from 'prism-react-renderer';
+import { themes as prismThemes } from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
-
 const config = {
   title: 'Luda Log',
 
@@ -11,9 +10,9 @@ const config = {
 
   favicon: 'img/favicon.ico',
 
-  future: {
-    v4: true,
-  },
+  // future: {
+  //   v4: true,
+  // },
 
   url: 'https://poemtudy.site',
 
@@ -25,7 +24,11 @@ const config = {
 
   onBrokenLinks: 'throw',
 
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   i18n: {
     defaultLocale: 'ko',
@@ -64,63 +67,56 @@ const config = {
     ],
   ],
 
-  themeConfig:
-    ({
-      image: 'img/social-card.jpg',
+  themeConfig: ({
+    image: 'img/social-card.jpg',
 
-      colorMode: {
-        respectPrefersColorScheme: true,
+    colorMode: {
+      respectPrefersColorScheme: true,
+      defaultMode: 'dark',
+    },
 
-        defaultMode: 'dark',
-      },
+    navbar: {
+      title: 'Luda Log',
 
-      navbar: {
-        title: 'Luda Log',
+      hideOnScroll: true,
 
-        hideOnScroll: true,
+      items: [
+        {
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
+          position: 'left',
+          label: 'Projects',
+        },
 
-        items: [
-          {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Projects',
-          },
+        {
+          to: '/blog',
+          label: 'Dev Log',
+          position: 'left',
+        },
 
-          {
-            to: '/blog',
-            label: 'Dev Log',
-            position: 'left',
-          },
+        {
+          href: 'https://github.com/park-yina',
+          label: 'GitHub',
+          position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub',
+        },
 
-          {
-            href: 'https://github.com/park-yina',
-            label: 'GitHub',
-            position: 'right',
-            className: 'header-github-link',
-            'aria-label': 'GitHub',
+        {
+          href: 'https://park-yina.github.io/',
+          label: 'Blog',
+          position: 'right',
+          className: 'header-blog-link',
+          'aria-label': 'GitHub Blog',
+        },
+      ],
+    },
 
-          },
-           {
-  href: 'https://park-yina.github.io/',
-
-  label: 'Blog',
-
-  position: 'right',
-
-  className: 'header-blog-link',
-
-  'aria-label': 'GitHub Blog',
-},
-        ],
-      },
-
-
-      prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.nightOwl,
-      },
-    }),
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.nightOwl,
+    },
+  }),
 };
 
 export default config;

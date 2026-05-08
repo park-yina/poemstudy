@@ -1,0 +1,102 @@
+.wrapper {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  margin-left: 1rem;
+
+  flex-shrink: 0;
+}
+
+.input {
+  width: 220px;
+
+  min-width: 220px;
+
+  height: 38px;
+
+  padding: 0 0.9rem;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: white;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+
+  font-size: 0.92rem;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.input:focus {
+  border-color: #7c9cff;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dropdown {
+  position: absolute;
+
+  top: 115%;
+
+  right: 0;
+
+  width: 340px;
+
+  background: #1b1b1d;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  z-index: 999;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.item {
+  display: block;
+
+  padding: 1rem;
+
+  text-decoration: none;
+
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.title {
+  color: white;
+
+  font-weight: 700;
+
+  margin-bottom: 0.3rem;
+
+  font-size: 0.95rem;
+}
+
+.desc {
+  color: #9ca3af;
+
+  font-size: 0.82rem;
+
+  line-height: 1.45;
+}
