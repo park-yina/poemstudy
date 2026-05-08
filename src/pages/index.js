@@ -4,72 +4,9 @@ import Link from '@docusaurus/Link';
 import styles from './index.module.css';
 
 const disciplines = ['Development', 'Operation', 'Writing', 'Education'];
-
-const recentNotes = [
-  {
-    label: 'Development Note',
-    title: 'SSE 기반 실시간 랭킹 시스템 설계',
-    href: '/docs/realtime/sse-ranking',
-  },
-  {
-    label: 'Backend Note',
-    title: 'JWT Refresh Token Rotation 구현',
-    href: '/docs/backend/jwt-refresh',
-  },
-  {
-    label: 'Education Note',
-    title: '비전공자는 어떻게 기술을 배워야 하는가',
-    href: '/docs/education/non-cs-learning',
-  },
-];
-
-const selectedWorks = [
-  {
-    number: '01',
-    field: 'Development',
-    title: 'Real-time Ranking System',
-    summary:
-      'SSE 기반 실시간 상태 전달, 운영 환경에서의 랭킹 갱신 흐름, 장애 가능성을 고려한 백엔드 구조 설계.',
-    meta: 'Spring Boot / SSE / Redis / MySQL',
-    href: '/docs/realtime/sse-ranking',
-  },
-  {
-    number: '02',
-    field: 'Operation',
-    title: 'Integrated Admin Platform',
-    summary:
-      '매장 운영, 권한 분리, KPI, VOC 흐름을 한 화면에서 다루기 위한 관리자 시스템의 구조와 경험.',
-    meta: 'JWT / MyBatis / Docker / AWS',
-    href: '/docs/development',
-  },
-  {
-    number: '03',
-    field: 'Education',
-    title: 'Education & Writing',
-    summary:
-      '문학에서 출발한 개발자로서 비전공자 학습, 설명하는 기술, 오래 남는 기록 방식을 정리합니다.',
-    meta: 'Learning / Teaching / Essay',
-    href: '/docs/education',
-  },
-];
-
-const archiveLinks = [
-  {
-    title: 'Development Archive',
-    description: '실시간 시스템, 백엔드 구조, 인프라와 운영 중 마주친 문제 해결 기록.',
-    href: '/docs/development',
-  },
-  {
-    title: 'Essays & Philosophy',
-    description: '개발, 글쓰기, 구조, 사람과 기록에 관한 긴 호흡의 문장들.',
-    href: '/docs/essays',
-  },
-  {
-    title: 'Education Archive',
-    description: '비전공자 학습과 설명하는 기술, 교육 경험을 정리한 공간.',
-    href: '/docs/education',
-  },
-];
+const recentNotes = [];
+const selectedWorks = [];
+const archiveLinks = [];
 
 function HomepageHeader() {
   return (
