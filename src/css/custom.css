@@ -1,8 +1,103 @@
-/**
- * Global CSS - Poemtudy Theme
- * AI Builder / Docs / Archive 느낌 기반
- */
+/* ========================================
+   Navbar Icon Mode
+======================================== */
 
+/* 기본 external icon 제거 */
+.header-github-link svg,
+.header-blog-link svg,
+.header-github-link [class*='iconExternalLink'],
+.header-blog-link [class*='iconExternalLink'] {
+  display: none !important;
+}
+
+/* 텍스트 숨기기 */
+.header-github-link,
+.header-blog-link {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  color: transparent !important;
+
+  font-size: 0 !important;
+
+  border-radius: 999px;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* hover */
+.header-github-link:hover,
+.header-blog-link:hover {
+  background:
+    rgba(255,255,255,0.06);
+
+  transform:
+    translateY(-2px);
+}
+
+/* GitHub Icon */
+.header-github-link::before {
+  content: '';
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  display: flex;
+
+  width: 1.2rem;
+  height: 1.2rem;
+
+  background: var(--ifm-navbar-link-color);
+
+  transform: translate(-50%, -50%);
+
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.54 7.54 0 0 1 8 3.86c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.54 7.54 0 0 1 8 3.86c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+/* Blog Icon */
+.header-blog-link::before {
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  display: flex;
+
+  width: 1.08rem;
+  height: 1.08rem;
+
+  background: var(--poem-accent);
+
+  transform: translate(-50%, -50%);
+
+  /* Book / Archive 느낌 */
+
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath d='M96 64C60.7 64 32 92.7 32 128L32 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-256c0-35.3-28.7-64-64-64L96 64zm0 48l384 0c8.8 0 16 7.2 16 16l0 32L80 160l0-32c0-8.8 7.2-16 16-16zm-16 96l416 0 0 176c0 8.8-7.2 16-16 16L96 400c-8.8 0-16-7.2-16-16l0-176zm64 48c-13.3 0-24 10.7-24 24s10.7 24 24 24l96 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-96 0z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath d='M96 64C60.7 64 32 92.7 32 128L32 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-256c0-35.3-28.7-64-64-64L96 64zm0 48l384 0c8.8 0 16 7.2 16 16l0 32L80 160l0-32c0-8.8 7.2-16 16-16zm-16 96l416 0 0 176c0 8.8-7.2 16-16 16L96 400c-8.8 0-16-7.2-16-16l0-176zm64 48c-13.3 0-24 10.7-24 24s10.7 24 24 24l96 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-96 0z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
 :root {
   /* Primary - Soft Violet */
   --ifm-color-primary: #8b5cf6;
@@ -91,6 +186,36 @@
 }
 
 /* ===== Hero ===== */
+[data-theme='light'] .hero {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(122, 31, 61, 0.04),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(99, 102, 241, 0.04),
+      transparent 32%
+    );
+
+  background-color: #f8fafc;
+
+  border-bottom: 1px solid rgba(122, 31, 61, 0.05);
+}
+[data-theme='light'] .heroCard {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(248, 250, 252, 0.96)
+    );
+
+  border: 1px solid rgba(122, 31, 61, 0.08);
+
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.08);
+}
 .hero {
   position: relative;
   overflow: hidden;
@@ -114,7 +239,13 @@
 /* ========================================
    Hero Carousel
 ======================================== */
+[data-theme='light'] :global(.swiper-pagination-bullet) {
+  background: rgba(15, 23, 42, 0.15);
+}
 
+[data-theme='light'] :global(.swiper-pagination-bullet-active) {
+  background: var(--poem-accent);
+}
 :global(.swiper-pagination-bullet) {
   width: 10px;
   height: 10px;

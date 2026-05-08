@@ -3,6 +3,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
+
 const config = {
   title: 'Luda Log',
 
@@ -96,7 +97,21 @@ const config = {
             href: 'https://github.com/park-yina',
             label: 'GitHub',
             position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub',
+
           },
+           {
+  href: 'https://park-yina.github.io/',
+
+  label: 'Blog',
+
+  position: 'right',
+
+  className: 'header-blog-link',
+
+  'aria-label': 'GitHub Blog',
+},
         ],
       },
 
