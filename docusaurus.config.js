@@ -18,9 +18,9 @@ const config = {
 
   baseUrl: '/',
 
-  organizationName: 'luda',
+  organizationName: 'park-yina',
 
-  projectName: 'luda-log',
+  projectName: 'poemstudy',
 
   onBrokenLinks: 'throw',
 
