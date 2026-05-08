@@ -1,18 +1,16 @@
 // @ts-check
 
-import { themes as prismThemes } from 'prism-react-renderer';
+import { themes as prismThemes }
+from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+
   title: 'Luda Log',
 
   tagline: '현실 문제를 코드로 밀어붙인 기록',
 
   favicon: 'img/favicon.ico',
-
-  // future: {
-  //   v4: true,
-  // },
 
   url: 'https://poemtudy.site',
 
@@ -29,6 +27,18 @@ const config = {
       onBrokenMarkdownLinks: 'warn',
     },
   },
+
+  // 👇 여기 추가
+  stylesheets: [
+
+    {
+      href:
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+
+      type: 'text/css',
+    },
+
+  ],
 
   i18n: {
     defaultLocale: 'ko',
@@ -76,9 +86,21 @@ const config = {
     },
 
     navbar: {
-      title: 'Luda Log',
+     
+  title: 'Luda Log',
 
-      hideOnScroll: true,
+  hideOnScroll: true,
+
+  logo: {
+
+    alt: 'Luda Log',
+
+    src: 'img/logo.svg',
+
+    href: '/',
+
+    target: '_self',
+  },
 
       items: [
         {

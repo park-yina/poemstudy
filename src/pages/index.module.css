@@ -14,17 +14,29 @@
   color: var(--home-text);
 }
 .terminalWindow {
+
   position: relative;
 
-  width: min(1200px, 100%);
+  width: min(1480px, 92vw);
+
+  min-height: 760px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
 
   padding: 0;
 
-  border-radius: 22px;
+  border-radius: 28px;
 
   overflow: hidden;
 
-  border: 1px solid rgba(255,255,255,0.08);
+  border:
+    1px solid rgba(255,255,255,0.08);
 
   background:
     linear-gradient(
@@ -33,11 +45,13 @@
       rgba(255,255,255,0.01)
     );
 
-  backdrop-filter: blur(8px);
+  backdrop-filter:
+    blur(14px);
 
   box-shadow:
     0 30px 80px rgba(0,0,0,0.45);
-}.windowHeader {
+}
+.windowHeader {
   display: flex;
 
   align-items: center;
@@ -111,11 +125,14 @@
 }
 
 .heroInner {
+
   display: flex;
 
   justify-content: center;
 
-  width: min(1180px, calc(100% - 3rem));
+  align-items: center;
+
+  width: min(1680px, 96vw);
 
   min-height:
     calc(100vh - var(--ifm-navbar-height));
@@ -123,14 +140,16 @@
   margin: 0 auto;
 
   padding:
-    clamp(5rem, 10vh, 8rem)
-    0
-    clamp(3rem, 8vh, 5rem);
+    clamp(2rem, 4vh, 4rem)
+    0;
 }
 .heroCopy {
+
   width: 100%;
 
-  max-width: 860px;
+  max-width: 1680px;
+
+  margin: 0 auto;
 }
 .kicker {
   display: inline-block;

@@ -189,6 +189,9 @@
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath d='M96 64C60.7 64 32 92.7 32 128L32 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-256c0-35.3-28.7-64-64-64L96 64zm0 48l384 0c8.8 0 16 7.2 16 16l0 32L80 160l0-32c0-8.8 7.2-16 16-16zm-16 96l416 0 0 176c0 8.8-7.2 16-16 16L96 400c-8.8 0-16-7.2-16-16l0-176zm64 48c-13.3 0-24 10.7-24 24s10.7 24 24 24l96 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-96 0z'/%3E%3C/svg%3E")
     center / contain no-repeat;
 }
+[class*='skipToContent'] {
+  display: none !important;
+}
 :root {
   /* Primary - Soft Violet */
   --ifm-color-primary: #8b5cf6;
