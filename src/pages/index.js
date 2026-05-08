@@ -2,12 +2,107 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 
 import styles from './index.module.css';
-
+import { useEffect, useState } from 'react';
 const disciplines = ['Development', 'Operation', 'Writing', 'Education'];
 const recentNotes = [];
 const selectedWorks = [];
 const archiveLinks = [];
+const bootSequence = [
+  {
+    type: 'auth',
+    text: '[AUTH] writer profile detected...',
+  },
 
+  {
+    type: 'auth',
+    text: '[AUTH] 신이재 attempting login...',
+  },
+
+  {
+    type: 'ok',
+    text: '[OK] developer runtime initialized',
+  },
+
+  {
+    type: 'ok',
+    text: '[OK] operation archive restored',
+  },
+
+  {
+    type: 'system',
+    text: '[SYSTEM] luda-log ready.',
+  },
+];
+const runtimeLogs = [
+  '[00:00:00] initializing archive...',
+  '[00:00:01] loading operation logs...',
+  '[00:00:02] restoring systems...',
+  '[00:00:03] rebuilding structures...',
+  '[00:00:04] runtime stable.',
+];
+function BootSequence() {
+  const [visible, setVisible] =
+    useState([]);
+
+  useEffect(() => {
+    bootSequence.forEach((line, index) => {
+      setTimeout(() => {
+        setVisible((prev) => [
+          ...prev,
+          line,
+        ]);
+      }, index * 650);
+    });
+  }, []);
+
+  return (
+    <div className={styles.bootSequence}>
+      <div className={styles.bootCommand}>
+        $ boot luda-log
+      </div>
+
+      {visible.map((line, index) => (
+        <div
+          key={index}
+          className={`
+            ${styles.bootLine}
+            ${styles[line.type]}
+          `}
+        >
+          {line.text}
+        </div>
+      ))}
+    </div>
+  );
+}
+function RuntimeConsole() {
+  const [visibleLogs, setVisibleLogs] =
+    useState([]);
+
+  useEffect(() => {
+    runtimeLogs.forEach((log, index) => {
+      setTimeout(() => {
+        setVisibleLogs((prev) => [
+          ...prev,
+          log,
+        ]);
+      }, index * 850);
+    });
+  }, []);
+
+  return (
+    <div className={styles.consoleBox}>
+      {visibleLogs.map((log, index) => (
+        <div
+          key={index}
+          className={styles.consoleLine}
+        >
+          {log}
+        </div>
+      ))}
+    </div>
+  );
+}
 function HomepageHeader() {
   return (
     <header className={styles.hero}>
@@ -15,11 +110,69 @@ function HomepageHeader() {
 
       <div className={styles.heroInner}>
         <section className={styles.heroCopy} aria-labelledby="homepage-title">
-          <span className={styles.kicker}>Portfolio Archive / Luda Log</span>
+<div className={styles.terminalHero}>
+<div className={styles.terminalWindow}>
 
-          <h1 id="homepage-title" className={styles.heroTitle}>
-            Luda Log.
-          </h1>
+  <div className={styles.windowHeader}>
+    <span className={styles.red}></span>
+    <span className={styles.yellow}></span>
+    <span className={styles.green}></span>
+
+    <div className={styles.windowTitle}>
+      luda-commandline
+    </div>
+  </div>
+
+<div className={styles.terminalBoot}>
+
+  <BootSequence />
+
+
+  <RuntimeConsole />
+
+  <div className={styles.heroDescription}>
+    documenting systems,
+    operations and thoughts.
+  </div>
+
+  <div className={styles.heroMeta}>
+    real-time systems /
+    admin platforms /
+    developer archive
+  </div>
+
+</div>
+
+  <div className={styles.systemStats}>
+    <div>
+      <span>CPU</span>
+      <div className={styles.statBar}>
+        <div
+          className={styles.cpuFill}
+          style={{ width: '82%' }}
+        />
+      </div>
+    </div>
+
+    <div>
+      <span>MEMORY</span>
+      <div className={styles.statBar}>
+        <div
+          className={styles.memFill}
+          style={{ width: '68%' }}
+        />
+      </div>
+    </div>
+
+    <div>
+      <span>STACK</span>
+      <strong>
+        Spring Boot / Flask / AWS
+      </strong>
+    </div>
+  </div>
+</div>
+</div>
 
           <p className={styles.heroLead}>
             문학에서 출발해 개발과 운영으로 건너온 기록입니다.
@@ -36,7 +189,7 @@ function HomepageHeader() {
           </nav>
         </section>
 
-        <aside className={styles.recentPanel} aria-label="Recently worked on">
+        {/* <aside className={styles.recentPanel} aria-label="Recently worked on">
           <div className={styles.panelHeader}>
             <span>Recently worked on</span>
             <Link to="/blog">All logs</Link>
@@ -50,7 +203,7 @@ function HomepageHeader() {
               </Link>
             ))}
           </div>
-        </aside>
+        </aside> */}
       </div>
     </header>
   );

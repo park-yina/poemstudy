@@ -13,3 +13,8 @@ Restore some Infima style that broke with CSS Cascade Layers
 :global(.navbar__items--right) > :last-child {
   padding-right: 0;
 }
+:global(.navbar__items--right) {
+  gap: 1rem;
+
+  padding-right: 1.5rem;
+}
