@@ -197,23 +197,63 @@ const weatherMap = {
   'Moderate rain': '비',
 };
 
-const runtimeMessages = [
+const runtimeLinks = [
 
-  '✍ documenting runtime logs...',
+  {
 
-  '📦 fakejumping-admin synced',
+    label:
+      '📄resume.pdf',
 
-  '⚙ AWS runtime stable',
+    href:
+      'https://docs.google.com/document/d/1PK8ubFl7t42jCNr2vq5GE4fumimmwL1XyFljrEL0xYA/edit?usp=sharing',
+  },
 
-  '☕ currently writing structures...',
+  {
 
-  '🐙 github repository online',
+    label:
+      '📦 fakejumping-admin repository',
 
-  '🛠 rebuilding systems...',
+    href:
+      'https://github.com/park-yina/FakeJumping',
+  },
 
-  '📁 archive indexed',
+  {
+
+    label:
+      '✍ GitHub Blog',
+
+    href:
+      'https://park-yina.github.io/',
+  },
+
+  {
+
+    label:
+      '🐙 github runtime archive',
+
+    href:
+      'https://github.com/park-yina',
+  },
+
+  {
+
+    label:
+      '📝 신춘문예 아카이빙 사이트',
+
+    href:
+      'https://mjhdvazytc.execute-api.us-east-1.amazonaws.com/dev/shinchun',
+  },
+
+  {
+
+    label:
+      '⚙ runtime architecture notes',
+
+    href:
+      '/docs/intro',
+  },
+
 ];
-
 /* =========================
    PARSE ITEMS
 ========================= */

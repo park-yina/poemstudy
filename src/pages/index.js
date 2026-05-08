@@ -141,6 +141,51 @@ function HomepageHeader() {
   const [shutdown, setShutdown] =
     useState(false);
 
+  const [runtimeStats, setRuntimeStats] =
+    useState(null);
+        const runtimeTotal =
+
+  runtimeStats
+    ? (
+
+      (runtimeStats.Java?.code || 0) +
+
+      (runtimeStats.HTML?.code || 0) +
+
+      (runtimeStats.CSS?.code || 0) +
+
+      (runtimeStats.JavaScript?.code || 0)
+
+    )
+    : 0;
+
+  useEffect(() => {
+
+    const fetchRuntimeStats = async () => {
+
+      try {
+
+        const res = await fetch(
+          'https://luda-runtime-stats.s3.amazonaws.com/fakejumping/fakejumping-master.json'
+        );
+
+        const data = await res.json();
+
+        setRuntimeStats(data);
+
+      } catch (e) {
+
+        console.error(
+          'runtime stats load failed',
+          e,
+        );
+      }
+    };
+
+    fetchRuntimeStats();
+
+  }, []);
+
   return (
 
     <header className={styles.hero}>
@@ -170,6 +215,8 @@ function HomepageHeader() {
 
                 <div className={styles.terminalWindow}>
 
+                  {/* HEADER */}
+
                   <div className={styles.windowHeader}>
 
                     <span
@@ -189,6 +236,8 @@ function HomepageHeader() {
 
                   </div>
 
+                  {/* TERMINAL */}
+
                   <div className={styles.terminalBoot}>
 
                     <BootSequence />
@@ -196,85 +245,231 @@ function HomepageHeader() {
                     <RuntimeConsole />
 
                     <div className={styles.heroDescription}>
+
                       documenting systems,
-                      operations and thoughts.
+                      operations and runtime archives.
+
                     </div>
 
                     <div className={styles.heroMeta}>
+
                       real-time systems /
-                      admin platforms /
-                      developer archive
+                      operational platforms /
+                      runtime engineering
+
                     </div>
 
                   </div>
 
-                  <div className={styles.systemStats}>
+                  {/* RUNTIME STATS */}
 
-                    <div>
+                  <div className={styles.runtimeStats}>
 
-                      <span>CPU</span>
+                    <div className={styles.runtimeHeader}>
 
-                      <div className={styles.statBar}>
+                      <span>
+                        runtime archive synced
+                      </span>
 
-                        <div
-                          className={styles.cpuFill}
-                          style={{ width: '82%' }}
-                        />
+                      {
 
-                      </div>
+                        runtimeStats && (
 
-                    </div>
+                         <strong>
+  fakejumping-admin
+</strong>
 
-                    <div>
-
-                      <span>MEMORY</span>
-
-                      <div className={styles.statBar}>
-
-                        <div
-                          className={styles.memFill}
-                          style={{ width: '68%' }}
-                        />
-
-                      </div>
+                        )
+                      }
 
                     </div>
 
-                    <div>
+                    {
 
-                      <span>STACK</span>
+                      runtimeStats && (
 
-                      <strong>
-                        Spring Boot / Flask / AWS
-                      </strong>
+                        <>
+<div className={styles.runtimeMeta}>
 
-                    </div>
+  <span>
+    branch: master
+  </span>
+
+  <span>
+    runtime: aws-ec2
+  </span>
+
+  <span>
+    stack: spring boot
+  </span>
+
+</div>
+
+                          <div className={styles.runtimeTotal}>
+
+                            TOTAL LOC
+
+                            <strong>
+
+                              {
+runtimeTotal.toLocaleString()                              }
+
+                            </strong>
+
+                          </div>
+
+                          <div className={styles.runtimeBars}>
+
+                            {/* JAVA */}
+
+                            <div className={styles.runtimeBarItem}>
+
+                              <span>
+                                Java
+                              </span>
+
+                              <div className={styles.runtimeBar}>
+
+                                <div
+                                  className={styles.runtimeFillJava}
+
+                                  style={{
+
+                                    width: `${
+                                      (
+                                        (
+                                          runtimeStats.Java?.code || 0
+                                        ) /
+                                        runtimeStats.SUM.code
+                                      ) * 100
+                                    }%`,
+                                  }}
+                                />
+
+                              </div>
+
+                              <strong>
+
+                                {
+                                  runtimeStats.Java?.code || 0
+                                }
+
+                              </strong>
+
+                            </div>
+
+                            {/* XML */}
+
+                            <div className={styles.runtimeBarItem}>
+
+                              <span>
+                                XML
+                              </span>
+
+                              <div className={styles.runtimeBar}>
+
+                                <div
+                                  className={styles.runtimeFillXml}
+
+                                  style={{
+
+                                    width: `${
+                                      (
+                                        (
+                                          runtimeStats.XML?.code || 0
+                                        ) /
+                                        runtimeStats.SUM.code
+                                      ) * 100
+                                    }%`,
+                                  }}
+                                />
+
+                              </div>
+
+                              <strong>
+
+                                {
+                                  runtimeStats.XML?.code || 0
+                                }
+
+                              </strong>
+
+                            </div>
+
+                            {/* JAVASCRIPT */}
+
+                            <div className={styles.runtimeBarItem}>
+
+                              <span>
+                                JavaScript
+                              </span>
+
+                              <div className={styles.runtimeBar}>
+
+                                <div
+                                  className={styles.runtimeFillJs}
+
+                                  style={{
+
+                                    width: `${
+                                      (
+                                        (
+                                          runtimeStats.JavaScript?.code || 0
+                                        ) /
+                                        runtimeStats.SUM.code
+                                      ) * 100
+                                    }%`,
+                                  }}
+                                />
+
+                              </div>
+
+                              <strong>
+
+                                {
+                                  runtimeStats.JavaScript?.code || 0
+                                }
+
+                              </strong>
+
+                            </div>
+
+                          </div>
+
+                        </>
+
+                      )
+                    }
 
                   </div>
 
                 </div>
 
               )
-
             }
 
           </div>
+
+          {/* NAV */}
 
           <nav
             className={styles.disciplineNav}
             aria-label="Portfolio categories"
           >
 
-            {disciplines.map((discipline) => (
+            {
 
-              <Link
-                key={discipline}
-                to="#selected-work"
-              >
-                {discipline}
-              </Link>
+              disciplines.map((discipline) => (
 
-            ))}
+                <Link
+                  key={discipline}
+                  to="#selected-work"
+                >
+                  {discipline}
+                </Link>
+
+              ))
+            }
 
           </nav>
 
