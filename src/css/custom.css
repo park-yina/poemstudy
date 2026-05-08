@@ -1,0 +1,452 @@
+/**
+ * Global CSS - Poemtudy Theme
+ * AI Builder / Docs / Archive 느낌 기반
+ */
+
+:root {
+  /* Primary - Soft Violet */
+  --ifm-color-primary: #8b5cf6;
+  --ifm-color-primary-dark: #7c3aed;
+  --ifm-color-primary-darker: #6d28d9;
+  --ifm-color-primary-darkest: #5b21b6;
+  --ifm-color-primary-light: #a78bfa;
+  --ifm-color-primary-lighter: #c4b5fd;
+  --ifm-color-primary-lightest: #ede9fe;
+
+  /* Burgundy Accent */--ifm-font-color-base: #1e293b;
+
+--ifm-heading-color: #0f172a;
+
+--ifm-color-content: #334155;
+
+--ifm-color-content-secondary: #475569;
+  --poem-accent: #7a1f3d;
+  --poem-accent-light: #a13a5f;
+
+  /* Typography */
+  --ifm-font-family-base:
+    'Pretendard',
+    'SUIT',
+    'Noto Sans KR',
+    system-ui,
+    sans-serif;
+
+  --ifm-code-font-size: 95%;
+
+  /* Background */
+  --ifm-background-color: #fcfcfe;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.72);
+
+  /* Docs */
+  --ifm-toc-border-color: rgba(139, 92, 246, 0.15);
+  --ifm-table-border-color: rgba(139, 92, 246, 0.1);
+
+  /* Code Highlight */
+  --docusaurus-highlighted-code-line-bg: rgba(139, 92, 246, 0.08);
+
+  /* Radius */
+  --ifm-global-radius: 14px;
+
+  /* Shadow */
+  --ifm-global-shadow-lw: 0 2px 12px rgba(15, 23, 42, 0.04);
+  --ifm-global-shadow-md: 0 6px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* ===== Dark Mode ===== */
+
+[data-theme='dark'] {
+  --ifm-color-primary: #c4b5fd;
+  --ifm-color-primary-dark: #a78bfa;
+  --ifm-color-primary-darker: #8b5cf6;
+  --ifm-color-primary-darkest: #7c3aed;
+  --ifm-color-primary-light: #ddd6fe;
+  --ifm-color-primary-lighter: #ede9fe;
+  --ifm-color-primary-lightest: #f5f3ff;
+
+  --ifm-background-color: #0f1117;
+  --ifm-background-surface-color: #151922;
+
+  --ifm-navbar-background-color: rgba(15, 17, 23, 0.7);
+
+  --ifm-font-color-base: #e5e7eb;
+  --ifm-heading-color: #f8fafc;
+
+  --ifm-toc-border-color: rgba(196, 181, 253, 0.15);
+
+  --docusaurus-highlighted-code-line-bg: rgba(139, 92, 246, 0.18);
+
+  --ifm-global-shadow-lw: 0 2px 12px rgba(0, 0, 0, 0.2);
+  --ifm-global-shadow-md: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Navbar ===== */
+
+.navbar {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(139, 92, 246, 0.08);
+
+  box-shadow: none;
+}
+
+/* ===== Hero ===== */
+.hero {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(122, 31, 61, 0.06),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(99, 102, 241, 0.05),
+      transparent 32%
+    );
+
+  background-color: #050816;
+
+  border-bottom: 1px solid rgba(122, 31, 61, 0.06);
+}
+/* ========================================
+   Hero Carousel
+======================================== */
+
+:global(.swiper-pagination-bullet) {
+  width: 10px;
+  height: 10px;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  opacity: 1;
+
+  transition: all 0.25s ease;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  width: 32px;
+
+  border-radius: 999px;
+
+  background: #7a1f3d;
+}
+.heroCard {
+  max-width: 980px;
+
+  margin: 0 auto;
+
+  padding: 4rem 3rem;
+
+  border-radius: 32px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.82),
+      rgba(15, 23, 42, 0.9)
+    );
+
+  border: 1px solid rgba(122, 31, 61, 0.14);
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* 전체 캐러셀 영역 */
+.hero-carousel {
+  position: relative;
+
+  width: 100%;
+  max-width: 980px;
+
+  margin: 0 auto;
+
+  padding: 2rem 1rem;
+}
+
+/* 슬라이드 카드 */
+.hero-slide {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-height: 340px;
+
+  padding: 3rem;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(17, 24, 39, 0.92),
+      rgba(15, 23, 42, 0.88)
+    );
+
+  border: 1px solid rgba(122, 31, 61, 0.14);
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  overflow: hidden;
+}
+
+/* 은은한 배경 포인트 */
+.hero-slide::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(122, 31, 61, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(99, 102, 241, 0.12),
+      transparent 35%
+    );
+
+  pointer-events: none;
+}
+
+/* 작은 카테고리 */
+.hero-slide-category {
+  position: relative;
+
+  margin-bottom: 1rem;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #c08497;
+}
+
+/* 메인 타이틀 */
+.hero-slide-title {
+  position: relative;
+
+  margin: 0;
+
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+
+  color: #f8fafc;
+}
+
+/* 설명 */
+.hero-slide-description {
+  position: relative;
+
+  margin-top: 1.5rem;
+
+  max-width: 720px;
+
+  font-size: 1.1rem;
+  line-height: 1.8;
+
+  color: #94a3b8;
+}
+
+/* 태그 영역 */
+.hero-slide-tags {
+  position: relative;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  margin-top: 2rem;
+}
+
+/* 태그 */
+.hero-slide-tag {
+  padding: 0.5rem 0.9rem;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #e2e8f0;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  backdrop-filter: blur(8px);
+}
+
+/* 버튼 영역 */
+.hero-slide-actions {
+  position: relative;
+
+  display: flex;
+  gap: 1rem;
+
+  margin-top: 2.5rem;
+}
+
+/* 메인 버튼 */
+.hero-slide-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.9rem 1.5rem;
+
+  border-radius: 999px;
+
+  background: var(--poem-accent);
+
+  color: white;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition: all 0.2s ease;
+}
+
+.hero-slide-button:hover {
+  background: var(--poem-accent-light);
+
+  transform: translateY(-2px);
+
+  color: white;
+  text-decoration: none;
+}
+
+/* 서브 버튼 */
+.hero-slide-button.secondary {
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #e2e8f0;
+}
+
+.hero-slide-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* 하단 indicator */
+.hero-carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+
+  margin-top: 1.5rem;
+}
+
+.hero-carousel-dot {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  transition: all 0.2s ease;
+}
+
+.hero-carousel-dot.active {
+  width: 28px;
+
+  background: var(--poem-accent);
+}
+
+/* ========================================
+   Light Mode 대응
+======================================== */
+
+[data-theme='light'] .hero-slide {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(248, 250, 252, 0.95)
+    );
+
+  border: 1px solid rgba(122, 31, 61, 0.08);
+}
+
+[data-theme='light'] .hero-slide-title {
+  color: #0f172a;
+}
+
+[data-theme='light'] .hero-slide-description {
+  color: #475569;
+}
+
+[data-theme='light'] .hero-slide-tag {
+  background: rgba(15, 23, 42, 0.04);
+
+  border: 1px solid rgba(15, 23, 42, 0.06);
+
+  color: #334155;
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+  .hero-slide {
+    min-height: auto;
+
+    padding: 2rem 1.5rem;
+
+    border-radius: 22px;
+  }
+
+  .hero-slide-description {
+    font-size: 1rem;
+  }
+
+  .hero-slide-actions {
+    flex-direction: column;
+  }
+
+  .hero-slide-button {
+    width: 100%;
+  }
+}
+
+/* ===== Code Blocks ===== */
+
+pre {
+  border-radius: 16px !important;
+
+  border: 1px solid rgba(139, 92, 246, 0.08);
+}
+
+/* ===== Buttons ===== */
+
+.button {
+  border-radius: 999px;
+}
+
+/* ===== Footer ===== */
+
+.footer {
+  border-top: 1px solid rgba(139, 92, 246, 0.08);
+}

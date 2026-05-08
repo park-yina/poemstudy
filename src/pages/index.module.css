@@ -1,0 +1,170 @@
+.heroBanner {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 7rem 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(122, 31, 61, 0.10),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(99, 102, 241, 0.08),
+      transparent 32%
+    );
+
+  background-color: #050816;
+}
+
+/* Swiper */
+
+.heroSwiper {
+  padding-bottom: 4rem;
+}
+
+/* Card */
+
+.heroCard {
+  max-width: 980px;
+
+  margin: 0 auto;
+
+  padding: 4rem 3rem;
+
+  border-radius: 32px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.82),
+      rgba(15, 23, 42, 0.92)
+    );
+
+  border: 1px solid rgba(122, 31, 61, 0.14);
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Category */
+
+.heroCategory {
+  display: inline-block;
+
+  margin-bottom: 1.2rem;
+
+  color: #c08497;
+
+  font-size: 0.85rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+/* Title */
+
+.heroTitle {
+  margin: 0;
+
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+
+  font-weight: 800;
+
+  line-height: 1.05;
+
+  letter-spacing: -0.05em;
+
+  color: #f8fafc;
+}
+
+/* Description */
+
+.heroDescription {
+  max-width: 760px;
+
+  margin: 2rem auto 0;
+
+  line-height: 1.8;
+
+  color: #94a3b8;
+
+  font-size: 1.1rem;
+}
+
+/* Tags */
+
+.heroTags {
+  display: flex;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 0.7rem;
+
+  margin-top: 2.2rem;
+}
+
+.heroTag {
+  padding: 0.5rem 0.95rem;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #e2e8f0;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+}
+
+/* Pagination */
+
+:global(.swiper-pagination-bullet) {
+  width: 10px;
+  height: 10px;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  opacity: 1;
+
+  transition: all 0.25s ease;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  width: 32px;
+
+  border-radius: 999px;
+
+  background: #7a1f3d;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .heroBanner {
+    padding: 5rem 0;
+  }
+
+  .heroCard {
+    padding: 2.5rem 1.5rem;
+
+    border-radius: 24px;
+  }
+
+  .heroDescription {
+    font-size: 1rem;
+  }
+}
