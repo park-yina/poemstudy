@@ -1,0 +1,151 @@
+.wrapper {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background: #05070d;
+}
+
+.window {
+
+  width: 700px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(10,12,18,0.95);
+
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.5);
+}
+
+.titleBar {
+
+  padding:
+    0.8rem 1rem;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+  color:
+    rgba(255,255,255,0.45);
+
+  font-family: monospace;
+}
+
+.monitor {
+
+  padding:
+    3rem;
+}
+
+.screen {
+
+  position: relative;
+
+  background:
+    #07120c;
+
+  border:
+    2px solid rgba(0,255,120,0.2);
+
+  padding:
+    4rem 2rem;
+
+  text-align: center;
+
+  overflow: hidden;
+}
+
+.screen::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      rgba(255,255,255,0.03) 1px,
+      transparent 2px
+    );
+
+  pointer-events: none;
+}
+
+.face {
+
+  font-size: 2.8rem;
+
+  color:
+    #82ffb2;
+
+  margin-bottom: 1rem;
+
+  font-family: monospace;
+}
+
+.code {
+
+  font-size: 5rem;
+
+  color:
+    #82ffb2;
+
+  margin: 0;
+
+  font-family: monospace;
+}
+
+.title {
+
+  color:
+    rgba(255,255,255,0.8);
+
+  letter-spacing: 0.15em;
+
+  margin-bottom: 2rem;
+}
+
+.logs {
+
+  color:
+    rgba(255,255,255,0.45);
+
+  font-family: monospace;
+
+  margin-bottom: 2rem;
+}
+
+.button {
+
+  display: inline-block;
+
+  padding:
+    0.7rem 1.4rem;
+
+  border:
+    1px solid rgba(130,255,178,0.4);
+
+  color:
+    #82ffb2;
+
+  text-decoration: none;
+
+  font-family: monospace;
+}
+
+.button:hover {
+
+  background:
+    rgba(130,255,178,0.08);
+}

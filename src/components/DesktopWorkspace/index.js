@@ -5,7 +5,9 @@ import React, {
 } from 'react';
 
 import Link from '@docusaurus/Link';
-
+import {
+  runtimeConfig,
+} from '../../config/runtime';
 import styles from './styles.module.css';
 
 /* =========================
@@ -57,10 +59,6 @@ function getExtension(title) {
     .toLowerCase();
 }
 
-/* =========================
-   FILES
-========================= */
-
 const desktopItems = [
 
   {
@@ -68,8 +66,13 @@ const desktopItems = [
 
     title: 'resume.pdf',
 
-    download:
-      '/files/resume.pdf',
+    launch: {
+
+      type: 'secure',
+
+      file:
+        'resume.pdf',
+    },
 
     preview: `
 # Runtime Archive
@@ -92,8 +95,13 @@ Architecture
 
     title: 'career-record.pdf',
 
-    download:
-      '/files/career-record.pdf',
+    launch: {
+
+      type: 'secure',
+
+      file:
+        'career-record.pdf',
+    },
 
     preview: `
 # Career Record
@@ -113,8 +121,13 @@ Runtime / Operations
 
     title: 'fakejumping-admin',
 
-    github:
-      'https://github.com/park-yina',
+    launch: {
+
+      type: 'github',
+
+      url:
+        'https://github.com/park-yina',
+    },
 
     preview: `
 # fakejumping-admin
@@ -135,8 +148,13 @@ AWS
 
     title: 'developer-philosophy.md',
 
-    github:
-      'https://github.com/park-yina',
+    launch: {
+
+      type: 'github',
+
+      url:
+        'https://github.com/park-yina',
+    },
 
     preview: `
 # Developer Philosophy
@@ -167,6 +185,7 @@ archive synced
   },
 
 ];
+
 
 /* =========================
    WEATHER
@@ -283,6 +302,10 @@ const parsedItems =
 export default function DesktopWorkspace({
   onBoot,
 }) {
+  const [previewUrl, setPreviewUrl] =
+  useState(null);
+const [menuState, setMenuState] =
+  useState(null);
 
   const [openedTabs, setOpenedTabs] =
     useState([]);
@@ -456,7 +479,52 @@ const [runtimeLink, setRuntimeLink] =
   /* =========================
      OPEN ITEM
   ========================= */
+useEffect(() => {
 
+  const loadPreview =
+    async () => {
+
+      if (!activeItem) {
+
+        setPreviewUrl(null);
+
+        return;
+      }
+
+      if (
+        activeItem.launch?.type !==
+        'secure'
+      ) {
+
+        setPreviewUrl(null);
+
+        return;
+      }
+
+      try {
+
+        const res =
+          await fetch(
+
+            `${runtimeConfig.runtimeApi}?file=${activeItem.launch.file}`
+          );
+
+        const data =
+          await res.json();
+
+        setPreviewUrl(
+          data.url
+        );
+
+      } catch {
+
+        setPreviewUrl(null);
+      }
+    };
+
+  loadPreview();
+
+}, [activeItem]);
   const openItem = (item) => {
 
     const exists =
@@ -480,24 +548,149 @@ const [runtimeLink, setRuntimeLink] =
      DOUBLE CLICK
   ========================= */
 
-  const handleLaunch = (item) => {
+const handleLaunch =
+  async (item) => {
 
-    if (item.download) {
+    const launch =
+      item.launch;
 
-      window.open(
-        item.download,
-        '_blank',
-      );
+    if (!launch) {
+      return;
     }
 
-    if (item.github) {
+    switch (launch.type) {
 
-      window.open(
-        item.github,
-        '_blank',
-      );
+      case 'secure': {
+
+        const res =
+          await fetch(
+
+            `${runtimeConfig.runtimeApi}?file=${launch.file}`
+          );
+
+        const data =
+          await res.json();
+
+        window.open(
+          data.url,
+          '_blank'
+        );
+
+        break;
+      }
+
+      case 'github':
+
+        window.open(
+          launch.url,
+          '_blank'
+        );
+
+        break;
+
+      case 'download':
+
+        window.open(
+          launch.url,
+          '_blank'
+        );
+
+        break;
+
+      default:
+        break;
     }
   };
+const handleDownload =
+  async (item) => {
+
+    const launch =
+      item.launch;
+
+    if (!launch) {
+      return;
+    }
+
+    if (
+      launch.type !== 'secure'
+    ) {
+      return;
+    }
+
+    try {
+
+      const res =
+        await fetch(
+
+          `${runtimeConfig.runtimeApi}?file=${launch.file}`
+        );
+
+      const data =
+        await res.json();
+
+      const fileResponse =
+        await fetch(data.url);
+
+      const blob =
+        await fileResponse.blob();
+
+      const blobUrl =
+        window.URL.createObjectURL(blob);
+
+      const link =
+        document.createElement('a');
+
+      link.href =
+        blobUrl;
+
+      link.download =
+        item.title;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      link.remove();
+
+      window.URL.revokeObjectURL(
+        blobUrl
+      );
+
+    } catch (e) {
+
+      console.error(
+        'download failed',
+        e
+      );
+    }
+};
+const handleContextMenu = (
+  e,
+  item,
+) => {
+
+  e.preventDefault();
+
+  e.stopPropagation();
+
+  const rect =
+    e.currentTarget
+      .closest(`.${styles.desktopArea}`)
+      .getBoundingClientRect();
+
+  setMenuState({
+
+    x:
+      e.clientX -
+      rect.left,
+
+    y:
+      e.clientY -
+      rect.top,
+
+    item,
+  });
+};
 
   /* =========================
      CLOSE TAB
@@ -533,9 +726,20 @@ const [runtimeLink, setRuntimeLink] =
      RENDER
   ========================= */
 
-  return (
+return (
 
-    <div className={styles.workspaceWindow}>
+  <div
+    className={styles.workspaceWindow}
+
+    onClick={() =>
+      setMenuState(null)
+    }
+
+    onContextMenu={(e) =>
+      e.preventDefault()
+    }
+  >
+  
 
       {/* HEADER */}
 
@@ -596,258 +800,323 @@ const [runtimeLink, setRuntimeLink] =
 
         {/* DESKTOP */}
 
-        <div className={styles.desktopArea}>
+<div className={styles.desktopArea}>
 
-          <div className={styles.desktopGrid}>
+  <div className={styles.desktopGrid}>
 
-            {parsedItems.map((item) => (
+    {parsedItems.map((item) => (
 
-              <div
-                key={item.id}
+      <div
+        key={item.id}
 
-                className={`
-                  ${styles.desktopIcon}
+className={`
+  ${styles.desktopIcon}
 
-                  ${
-                    activeItem &&
-                    activeItem.id === item.id
-                      ? styles.active
-                      : ''
+  ${
+    activeItem &&
+    activeItem.id === item.id
+      ? styles.active
+      : ''
+  }
+
+  ${
+    item.type !== 'PDF' &&
+    item.type !== 'MD'
+      ? styles.shortcutItem
+      : ''
+  }
+`}
+
+        onClick={() =>
+          openItem(item)
+        }
+
+        onDoubleClick={() =>
+          handleLaunch(item)
+        }
+
+        onContextMenu={(e) =>
+          handleContextMenu(
+            e,
+            item
+          )
+        }
+      >
+
+        <i
+          className={`fa-solid ${item.icon}`}
+          style={{
+            color: item.color,
+          }}
+        ></i>
+        {
+
+  item.type !== 'PDF' &&
+  item.type !== 'MD' && (
+
+    <div className={styles.shortcutBadge}>
+      ↗
+    </div>
+
+  )
+}
+
+        <div className={styles.iconMeta}>
+
+          <span className={styles.iconTitle}>
+            {item.title}
+          </span>
+
+          <span className={styles.iconType}>
+            {item.type}
+          </span>
+
+        </div>
+
+      </div>
+
+    ))}
+
+  </div>
+
+  {
+
+    menuState && (
+
+      <div
+        className={styles.contextMenu}
+
+        style={{
+
+          top: menuState.y,
+
+          left: menuState.x,
+        }}
+
+        onClick={(e) =>
+          e.stopPropagation()
+        }
+      >
+
+        <button
+          className={styles.contextMenuItem}
+
+          onClick={() => {
+
+            handleLaunch(
+              menuState.item
+            );
+
+            setMenuState(null);
+          }}
+        >
+          open
+        </button>
+
+        <button
+          className={styles.contextMenuItem}
+
+          onClick={() => {
+
+            handleDownload(
+  menuState.item
+)
+
+            setMenuState(null);
+          }}
+        >
+          download
+        </button>
+        <button
+          className={styles.contextMenuItem}
+
+          onClick={() => {
+
+            handleLaunch(
+              menuState.item
+            );
+
+            setMenuState(null);
+          }}
+        >
+         properties(속성)
+        </button>
+      </div>
+
+    )
+  }
+
+</div>
+{/* PREVIEW */}
+
+{
+
+  activeItem &&
+  activeItem.type !== 'PDF' && (
+
+    <>
+
+      <div
+        className={styles.resizeHandle}
+
+        onMouseDown={() =>
+          setIsResizing(true)
+        }
+      />
+
+      <div
+        className={styles.previewPanel}
+
+        style={{
+          width: `${previewWidth}px`,
+        }}
+      >
+
+        <div className={styles.previewTabs}>
+
+          {openedTabs.map((tab) => (
+
+            <div
+              key={tab.id}
+
+              className={`
+                ${styles.previewTab}
+
+                ${
+                  activeItem.id === tab.id
+                    ? styles.activeTab
+                    : ''
+                }
+              `}
+
+              onClick={() =>
+                setActiveTab(tab)
+              }
+            >
+
+              <i
+                className={`fa-solid ${tab.icon}`}
+                style={{
+                  color: tab.color,
+                }}
+              ></i>
+
+              <span>
+                {tab.title}
+              </span>
+
+              {
+
+                openedTabs.length > 1 && (
+
+                  <button
+                    className={
+                      styles.closeTab
+                    }
+
+                    onClick={(e) =>
+                      closeTab(
+                        e,
+                        tab.id,
+                      )
+                    }
+                  >
+                    ×
+                  </button>
+
+                )
+              }
+
+            </div>
+
+          ))}
+
+        </div>
+
+        {/* TOOLBAR */}
+
+        <div className={styles.previewToolbar}>
+
+          <div className={styles.previewMeta}>
+
+            <span className={styles.previewLabel}>
+              {activeItem.type}
+            </span>
+
+            <span className={styles.previewPath}>
+              viewer://{activeItem.title}
+            </span>
+
+          </div>
+
+          <div className={styles.previewActions}>
+
+            {
+
+              activeItem.download && (
+
+                <a
+  href={activeItem.download}
+
+  download
+
+  className={
+    styles.downloadButton
+  }
+>
+  download
+</a>
+
+              )
+            }
+
+            {
+
+              activeItem.github && (
+
+                <a
+                  href={
+                    activeItem.github
                   }
-                `}
 
-                onClick={() =>
-                  openItem(item)
-                }
+                  target="_blank"
 
-                onDoubleClick={() =>
-                  handleLaunch(item)
-                }
-              >
+                  rel="noreferrer"
 
-                <i
-                  className={`fa-solid ${item.icon}`}
-                  style={{
-                    color: item.color,
-                  }}
-                ></i>
+                  className={
+                    styles.downloadButton
+                  }
+                >
+                  github
+                </a>
 
-                <div className={styles.iconMeta}>
-
-                  <span className={styles.iconTitle}>
-                    {item.title}
-                  </span>
-
-                  <span className={styles.iconType}>
-                    {item.type}
-                  </span>
-
-                </div>
-
-              </div>
-
-            ))}
+              )
+            }
 
           </div>
 
         </div>
 
-        {/* PREVIEW */}
+        {/* CONTENT */}
 
-        {
+        <div className={styles.previewContent}>
 
-          activeItem && (
+          <div className={styles.previewDocument}>
 
-            <>
+            <pre>
+              {activeItem.preview}
+            </pre>
 
-              <div
-                className={styles.resizeHandle}
+          </div>
 
-                onMouseDown={() =>
-                  setIsResizing(true)
-                }
-              />
+        </div>
 
-              <div
-                className={styles.previewPanel}
+      </div>
 
-                style={{
-                  width: `${previewWidth}px`,
-                }}
-              >
+    </>
 
-                <div className={styles.previewTabs}>
-
-                  {openedTabs.map((tab) => (
-
-                    <div
-                      key={tab.id}
-
-                      className={`
-                        ${styles.previewTab}
-
-                        ${
-                          activeItem.id === tab.id
-                            ? styles.activeTab
-                            : ''
-                        }
-                      `}
-
-                      onClick={() =>
-                        setActiveTab(tab)
-                      }
-                    >
-
-                      <i
-                        className={`fa-solid ${tab.icon}`}
-                        style={{
-                          color: tab.color,
-                        }}
-                      ></i>
-
-                      <span>
-                        {tab.title}
-                      </span>
-
-                      {
-
-                        openedTabs.length > 1 && (
-
-                          <button
-                            className={
-                              styles.closeTab
-                            }
-
-                            onClick={(e) =>
-                              closeTab(
-                                e,
-                                tab.id,
-                              )
-                            }
-                          >
-                            ×
-                          </button>
-
-                        )
-                      }
-
-                    </div>
-
-                  ))}
-
-                </div>
-
-                {/* TOOLBAR */}
-
-                <div className={styles.previewToolbar}>
-
-                  <div className={styles.previewMeta}>
-
-                    <span className={styles.previewLabel}>
-                      {activeItem.type}
-                    </span>
-
-                    <span className={styles.previewPath}>
-                      runtime archive
-                    </span>
-
-                  </div>
-
-                  <div className={styles.previewActions}>
-
-                    {
-
-                      activeItem.download && (
-
-                        <a
-                          href={
-                            activeItem.download
-                          }
-
-                          target="_blank"
-
-                          rel="noreferrer"
-
-                          className={
-                            styles.downloadButton
-                          }
-                        >
-                          download
-                        </a>
-
-                      )
-                    }
-
-                    {
-
-                      activeItem.github && (
-
-                        <a
-                          href={
-                            activeItem.github
-                          }
-
-                          target="_blank"
-
-                          rel="noreferrer"
-
-                          className={
-                            styles.downloadButton
-                          }
-                        >
-                          github
-                        </a>
-
-                      )
-                    }
-
-                  </div>
-
-                </div>
-
-                {/* CONTENT */}
-
-                <div className={styles.previewContent}>
-
-                  <div className={styles.previewDocument}>
-
-                    {
-
-                      activeItem.type === 'PDF' ? (
-
-                        <iframe
-                          src={
-                            activeItem.download
-                          }
-
-                          className={
-                            styles.pdfViewer
-                          }
-
-                          title={
-                            activeItem.title
-                          }
-                        />
-
-                      ) : (
-
-                        <pre>
-                          {activeItem.preview}
-                        </pre>
-
-                      )
-                    }
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </>
-
-          )
-        }
+  )
+}
 
       </div>
 
