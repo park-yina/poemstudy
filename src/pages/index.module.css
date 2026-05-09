@@ -13,6 +13,160 @@
   background: var(--home-bg);
   color: var(--home-text);
 }
+.runtimeGrid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 2rem;
+
+  margin-top: 4rem;
+
+  padding:
+    0 1.5rem 2rem;
+
+  font-family: monospace;
+}
+
+.runtimeCard {
+
+  position: relative;
+
+  padding:
+    1.6rem 1.4rem;
+
+  background: transparent;
+
+  border: none;
+
+  border-radius: 0;
+
+  box-shadow: none;
+
+  color: #d7f7db;
+
+  min-height: 420px;
+
+  display: flex;
+}
+/* ASCII BORDER */
+
+
+.runtimeCardInner {
+
+  position: relative;
+
+  padding:
+    1rem 0.6rem;
+
+  border-left:
+    1px dashed rgba(255,255,255,0.18);
+
+  border-right:
+    1px dashed rgba(255,255,255,0.18);
+
+  flex: 1;
+}
+
+.runtimeAsciiHeader {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-bottom: 1rem;
+
+  color: #7CFF8A;
+
+  font-size: 0.95rem;
+}
+
+.runtimeAsciiLine {
+
+  margin: 0.55rem 0;
+
+  color: rgba(255,255,255,0.72);
+
+  white-space: pre;
+}
+
+.runtimeAsciiDivider {
+
+  position: relative;
+
+  height: 18px;
+
+  margin:
+    1.2rem 0;
+}
+
+.runtimeAsciiDivider::before {
+
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  top: 50%;
+
+  border-top:
+    1px dashed rgba(255,255,255,0.08);
+}
+.runtimeAsciiDivider::after {
+
+  content: '';
+
+  position: absolute;
+
+  right: -2px;
+
+  top: 50%;
+
+  transform:
+    translateY(-58%);
+
+  color:
+    rgba(255,255,255,0.24);
+
+  font-size: 0.9rem;
+
+  background:
+    #05070d;
+
+  padding-left: 0.25rem;
+}
+
+.runtimeLangRow {
+
+  display: grid;
+
+  grid-template-columns:
+    110px
+    70px
+    1fr;
+
+  gap: 1rem;
+
+  margin-bottom: 0.55rem;
+
+  font-size: 0.95rem;
+}
+
+.runtimeBarAscii {
+
+  color: #ffffff;
+
+  letter-spacing: 0.08em;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+}
 .terminalWindow {
 
   position: relative;

@@ -299,9 +299,28 @@ export default function DesktopWorkspace({
   const [weather, setWeather] =
     useState('⚙ weather runtime loading...');
 
-  const [runtimeMessage, setRuntimeMessage] =
-    useState(runtimeMessages[0]);
+const [runtimeLink, setRuntimeLink] =
+  useState(runtimeLinks[0]);
+  useEffect(() => {
 
+  const interval = setInterval(() => {
+
+    const random =
+      runtimeLinks[
+        Math.floor(
+          Math.random() *
+          runtimeLinks.length
+        )
+      ];
+
+    setRuntimeLink(random);
+
+  }, 5000);
+
+  return () =>
+    clearInterval(interval);
+
+}, []);
   /* =========================
      RESIZE
   ========================= */
@@ -415,30 +434,6 @@ export default function DesktopWorkspace({
 
   }, []);
 
-  /* =========================
-     RUNTIME MESSAGE
-  ========================= */
-
-  useEffect(() => {
-
-    const interval = setInterval(() => {
-
-      const random =
-        runtimeMessages[
-          Math.floor(
-            Math.random() *
-            runtimeMessages.length
-          )
-        ];
-
-      setRuntimeMessage(random);
-
-    }, 5000);
-
-    return () =>
-      clearInterval(interval);
-
-  }, []);
 
   /* =========================
      ACTIVE ITEM
@@ -879,8 +874,17 @@ export default function DesktopWorkspace({
             </div>
 
             <div className={styles.runtimeTicker}>
-              {runtimeMessage}
-            </div>
+<a
+  href={runtimeLink.href}
+
+  target="_blank"
+
+  rel="noreferrer"
+
+  className={styles.runtimeTicker}
+>
+  {runtimeLink.label}
+</a>            </div>
 
           </div>
 

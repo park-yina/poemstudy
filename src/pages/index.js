@@ -143,21 +143,6 @@ function HomepageHeader() {
 
   const [runtimeStats, setRuntimeStats] =
     useState(null);
-        const runtimeTotal =
-
-  runtimeStats
-    ? (
-
-      (runtimeStats.Java?.code || 0) +
-
-      (runtimeStats.HTML?.code || 0) +
-
-      (runtimeStats.CSS?.code || 0) +
-
-      (runtimeStats.JavaScript?.code || 0)
-
-    )
-    : 0;
 
   useEffect(() => {
 
@@ -166,7 +151,7 @@ function HomepageHeader() {
       try {
 
         const res = await fetch(
-          'https://luda-runtime-stats.s3.amazonaws.com/fakejumping/fakejumping-master.json'
+          'https://luda-runtime-stats.s3.amazonaws.com/fakejumping/stage/stats.json'
         );
 
         const data = await res.json();
@@ -185,6 +170,60 @@ function HomepageHeader() {
     fetchRuntimeStats();
 
   }, []);
+
+  const runtimeTotal =
+    runtimeStats
+      ? (
+          (runtimeStats.Java?.code || 0) +
+          (runtimeStats.HTML?.code || 0) +
+          (runtimeStats.CSS?.code || 0) +
+          (runtimeStats.JavaScript?.code || 0)
+        )
+      : 0;
+
+  const createAsciiBar = (value, total) => {
+
+    const BAR_LENGTH = 14;
+
+    const ratio = value / total;
+
+    const filled =
+      Math.round(ratio * BAR_LENGTH);
+
+    const empty =
+      BAR_LENGTH - filled;
+
+    return (
+      '█'.repeat(filled) +
+      '░'.repeat(empty)
+    );
+  };
+
+const projects = [
+
+  {
+    title: 'fakejumping-admin',
+    branch: 'stage',
+    runtime: 'aws-ec2',
+    stack: 'spring boot',
+    type: 'live',
+  },
+
+  {
+    title: 'shinchun-archive',
+    branch: 'archive',
+    runtime: 'aws-lambda',
+    stack: 'flask',
+    type: 'archive',
+
+    archivedStats: {
+      total: 1084,
+      Python: 438,
+      HTML: 646,
+    },
+  },
+
+];
 
   return (
 
@@ -224,11 +263,11 @@ function HomepageHeader() {
                       onClick={() =>
                         setShutdown(true)
                       }
-                    ></span>
+                    />
 
-                    <span className={styles.yellow}></span>
+                    <span className={styles.yellow} />
 
-                    <span className={styles.green}></span>
+                    <span className={styles.green} />
 
                     <div className={styles.windowTitle}>
                       luda-commandline
@@ -261,187 +300,234 @@ function HomepageHeader() {
 
                   </div>
 
-                  {/* RUNTIME STATS */}
+                  {/* RUNTIME GRID */}
 
-                  <div className={styles.runtimeStats}>
+                  {
 
-                    <div className={styles.runtimeHeader}>
+                    runtimeStats && (
 
-                      <span>
-                        runtime archive synced
-                      </span>
+                      <div className={styles.runtimeGrid}>
 
-                      {
+                        {
 
-                        runtimeStats && (
+                          projects.map((project) => {
 
-                         <strong>
-  fakejumping-admin
-</strong>
+  const stats =
+    project.type === 'archive'
+      ? project.archivedStats
+      : runtimeStats;
 
-                        )
-                      }
+  const total =
+    project.type === 'archive'
+      ? stats.total
+      : (
+          (stats.Java?.code || 0) +
+          (stats.XML?.code || 0) +
+          (stats.JavaScript?.code || 0)
+        );
 
-                    </div>
+  return (
 
-                    {
+    <div
+      key={project.title}
+      className={styles.runtimeCard}
+    >
 
-                      runtimeStats && (
+      <div className={styles.runtimeCardInner}>
 
-                        <>
-<div className={styles.runtimeMeta}>
+        <div className={styles.runtimeAsciiHeader}>
 
-  <span>
-    branch: master
-  </span>
+          <span>
+            {project.title}
+          </span>
 
-  <span>
-    runtime: aws-ec2
-  </span>
+          <span>
+            ONLINE
+          </span>
 
-  <span>
-    stack: spring boot
-  </span>
+        </div>
 
-</div>
+        <div className={styles.runtimeAsciiDivider}>
+        </div>
 
-                          <div className={styles.runtimeTotal}>
+        <div className={styles.runtimeAsciiLine}>
+          branch   : {project.branch}
+        </div>
 
-                            TOTAL LOC
+        <div className={styles.runtimeAsciiLine}>
+          runtime  : {project.runtime}
+        </div>
 
-                            <strong>
+        <div className={styles.runtimeAsciiLine}>
+          stack    : {project.stack}
+        </div>
 
-                              {
-runtimeTotal.toLocaleString()                              }
+        <div className={styles.runtimeAsciiDivider}>
+        </div>
 
-                            </strong>
+        <div className={styles.runtimeAsciiLine}>
+          TOTAL LOC : {total.toLocaleString()}
+        </div>
 
-                          </div>
+        <div className={styles.runtimeAsciiDivider}>
+        </div>
 
-                          <div className={styles.runtimeBars}>
+        {
 
-                            {/* JAVA */}
+          project.type === 'archive' ? (
 
-                            <div className={styles.runtimeBarItem}>
+            <>
 
-                              <span>
-                                Java
-                              </span>
+              {/* PYTHON */}
 
-                              <div className={styles.runtimeBar}>
+              <div className={styles.runtimeLangRow}>
 
-                                <div
-                                  className={styles.runtimeFillJava}
+                <span>
+                  Python
+                </span>
 
-                                  style={{
+                <span>
+                  {stats.Python}
+                </span>
 
-                                    width: `${
-                                      (
-                                        (
-                                          runtimeStats.Java?.code || 0
-                                        ) /
-                                        runtimeStats.SUM.code
-                                      ) * 100
-                                    }%`,
-                                  }}
-                                />
+                <span className={styles.runtimeBarAscii}>
 
-                              </div>
+                  {
+                    createAsciiBar(
+                      stats.Python,
+                      stats.total
+                    )
+                  }
 
-                              <strong>
+                </span>
 
-                                {
-                                  runtimeStats.Java?.code || 0
-                                }
+              </div>
 
-                              </strong>
+              {/* HTML */}
 
-                            </div>
+              <div className={styles.runtimeLangRow}>
 
-                            {/* XML */}
+                <span>
+                  HTML
+                </span>
 
-                            <div className={styles.runtimeBarItem}>
+                <span>
+                  {stats.HTML}
+                </span>
 
-                              <span>
-                                XML
-                              </span>
+                <span className={styles.runtimeBarAscii}>
 
-                              <div className={styles.runtimeBar}>
+                  {
+                    createAsciiBar(
+                      stats.HTML,
+                      stats.total
+                    )
+                  }
 
-                                <div
-                                  className={styles.runtimeFillXml}
+                </span>
 
-                                  style={{
+              </div>
 
-                                    width: `${
-                                      (
-                                        (
-                                          runtimeStats.XML?.code || 0
-                                        ) /
-                                        runtimeStats.SUM.code
-                                      ) * 100
-                                    }%`,
-                                  }}
-                                />
+            </>
 
-                              </div>
+          ) : (
 
-                              <strong>
+            <>
 
-                                {
-                                  runtimeStats.XML?.code || 0
-                                }
+              {/* JAVA */}
 
-                              </strong>
+              <div className={styles.runtimeLangRow}>
 
-                            </div>
+                <span>
+                  Java
+                </span>
 
-                            {/* JAVASCRIPT */}
+                <span>
+                  {stats.Java?.code || 0}
+                </span>
 
-                            <div className={styles.runtimeBarItem}>
+                <span className={styles.runtimeBarAscii}>
 
-                              <span>
-                                JavaScript
-                              </span>
+                  {
+                    createAsciiBar(
+                      stats.Java?.code || 0,
+                      stats.SUM.code
+                    )
+                  }
 
-                              <div className={styles.runtimeBar}>
+                </span>
 
-                                <div
-                                  className={styles.runtimeFillJs}
+              </div>
 
-                                  style={{
+              {/* XML */}
 
-                                    width: `${
-                                      (
-                                        (
-                                          runtimeStats.JavaScript?.code || 0
-                                        ) /
-                                        runtimeStats.SUM.code
-                                      ) * 100
-                                    }%`,
-                                  }}
-                                />
+              <div className={styles.runtimeLangRow}>
 
-                              </div>
+                <span>
+                  XML
+                </span>
 
-                              <strong>
+                <span>
+                  {stats.XML?.code || 0}
+                </span>
 
-                                {
-                                  runtimeStats.JavaScript?.code || 0
-                                }
+                <span className={styles.runtimeBarAscii}>
 
-                              </strong>
+                  {
+                    createAsciiBar(
+                      stats.XML?.code || 0,
+                      stats.SUM.code
+                    )
+                  }
 
-                            </div>
+                </span>
 
-                          </div>
+              </div>
 
-                        </>
+              {/* JAVASCRIPT */}
 
-                      )
-                    }
+              <div className={styles.runtimeLangRow}>
 
-                  </div>
+                <span>
+                  JavaScript
+                </span>
+
+                <span>
+                  {stats.JavaScript?.code || 0}
+                </span>
+
+                <span className={styles.runtimeBarAscii}>
+
+                  {
+                    createAsciiBar(
+                      stats.JavaScript?.code || 0,
+                      stats.SUM.code
+                    )
+                  }
+
+                </span>
+
+              </div>
+
+            </>
+
+          )
+
+        }
+
+      </div>
+
+    </div>
+
+  );
+
+})
+                        }
+
+                      </div>
+
+                    )
+                  }
 
                 </div>
 
