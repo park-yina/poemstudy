@@ -222,7 +222,19 @@ const projects = [
       HTML: 646,
     },
   },
+{
+  title: 'JumpingBattle',
+  branch: 'legacy',
+  runtime: 'Flask Runtime',
+  stack: 'Python / Firebase / HTML',
+  type: 'archive',
 
+  archivedStats: {
+    total: 6026,
+    Python: 2768,
+    HTML: 3258,
+  },
+}
 ];
 
   return (
@@ -320,11 +332,7 @@ const projects = [
   const total =
     project.type === 'archive'
       ? stats.total
-      : (
-          (stats.Java?.code || 0) +
-          (stats.XML?.code || 0) +
-          (stats.JavaScript?.code || 0)
-        );
+      : (stats.SUM?.code || 0);
 
   return (
 
@@ -508,7 +516,53 @@ const projects = [
                 </span>
 
               </div>
+<div className={styles.runtimeLangRow}>
 
+  <span>
+    CSS
+  </span>
+
+  <span>
+    {stats.CSS?.code || 0}
+  </span>
+
+  <span className={styles.runtimeBarAscii}>
+
+    {
+      createAsciiBar(
+        stats.CSS?.code || 0,
+        stats.SUM.code
+      )
+    }
+
+  </span>
+
+</div>
+
+{/* HTML */}
+
+<div className={styles.runtimeLangRow}>
+
+  <span>
+    HTML
+  </span>
+
+  <span>
+    {stats.HTML?.code || 0}
+  </span>
+
+  <span className={styles.runtimeBarAscii}>
+
+    {
+      createAsciiBar(
+        stats.HTML?.code || 0,
+        stats.SUM.code
+      )
+    }
+
+  </span>
+
+</div>
             </>
 
           )

@@ -3,301 +3,24 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-
+import {
+  parsedItems,
+  runtimeLinks,
+  weatherMap,
+  getExtension
+} from './variables';
+import {PreviewPanel} from './preview';
+import  DocumentViewer from './preview';
 import Link from '@docusaurus/Link';
+import Sidebar from '../DesktopWorkspace/sidebar';
 import {
   runtimeConfig,
 } from '../../config/runtime';
 import styles from './styles.module.css';
-
 /* =========================
    FILE META
 ========================= */
 
-const extensionMap = {
-
-  pdf: {
-    icon: 'fa-file-pdf',
-    color: '#ff6b6b',
-    type: 'PDF',
-  },
-
-  md: {
-    icon: 'fa-file-code',
-    color: '#60a5fa',
-    type: 'MD',
-  },
-
-  log: {
-    icon: 'fa-terminal',
-    color: '#4ade80',
-    type: 'LOG',
-  },
-
-  folder: {
-    icon: 'fa-folder',
-    color: '#ffd166',
-    type: 'PROJECT',
-  },
-
-  default: {
-    icon: 'fa-file',
-    color: '#d1d5db',
-    type: 'FILE',
-  },
-};
-
-function getExtension(title) {
-
-  if (!title.includes('.')) {
-    return 'folder';
-  }
-
-  return title
-    .split('.')
-    .pop()
-    .toLowerCase();
-}
-
-const desktopItems = [
-
-  {
-    id: 'resume',
-
-    title: 'resume.pdf',
-
-    launch: {
-
-      type: 'secure',
-
-      file:
-        'resume.pdf',
-    },
-
-    preview: `
-# Runtime Archive
-
-Backend Developer
-
-Spring Boot
-Flask
-AWS
-MySQL
-
-Operational Systems
-Real-time Runtime
-Architecture
-    `,
-  },
-
-  {
-    id: 'career',
-
-    title: 'career-record.pdf',
-
-    launch: {
-
-      type: 'secure',
-
-      file:
-        'career-record.pdf',
-    },
-
-    preview: `
-# Career Record
-
-외주 프로젝트 3건 수행
-
-- 실시간 랭킹 시스템 운영
-- 관리자 플랫폼 구축
-- 운영 자동화 경험
-
-Runtime / Operations
-    `,
-  },
-
-  {
-    id: 'portfolio',
-
-    title: 'fakejumping-admin',
-
-    launch: {
-
-      type: 'github',
-
-      url:
-        'https://github.com/park-yina',
-    },
-
-    preview: `
-# fakejumping-admin
-
-Spring Boot
-JWT
-MyBatis
-Docker
-AWS
-
-실시간 운영 환경 기반
-관리자 플랫폼 프로젝트
-    `,
-  },
-
-  {
-    id: 'philosophy',
-
-    title: 'developer-philosophy.md',
-
-    launch: {
-
-      type: 'github',
-
-      url:
-        'https://github.com/park-yina',
-    },
-
-    preview: `
-# Developer Philosophy
-
-작은 불편을 발견하고
-구조적으로 해결하는 개발자.
-
-운영 가능한 시스템과
-설명 가능한 구조를 지향합니다.
-    `,
-  },
-
-  {
-    id: 'runtime',
-
-    title: 'runtime.log',
-
-    preview: `
-[00:00:00]
-runtime initialized
-
-[00:00:03]
-system stable
-
-[00:00:05]
-archive synced
-    `,
-  },
-
-];
-
-
-/* =========================
-   WEATHER
-========================= */
-
-const weatherMap = {
-
-  Clear: '맑음',
-
-  Sunny: '맑음',
-
-  Cloudy: '흐림',
-
-  Overcast: '흐림',
-
-  Mist: '안개',
-
-  Fog: '안개',
-
-  Rain: '비',
-
-  Snow: '눈',
-
-  'Patchy rain nearby': '비',
-
-  'Light rain': '약한 비',
-
-  'Moderate rain': '비',
-};
-
-const runtimeLinks = [
-
-  {
-
-    label:
-      '📄resume.pdf',
-
-    href:
-      'https://docs.google.com/document/d/1PK8ubFl7t42jCNr2vq5GE4fumimmwL1XyFljrEL0xYA/edit?usp=sharing',
-  },
-
-  {
-
-    label:
-      '📦 fakejumping-admin repository',
-
-    href:
-      'https://github.com/park-yina/FakeJumping',
-  },
-
-  {
-
-    label:
-      '✍ GitHub Blog',
-
-    href:
-      'https://park-yina.github.io/',
-  },
-
-  {
-
-    label:
-      '🐙 github runtime archive',
-
-    href:
-      'https://github.com/park-yina',
-  },
-
-  {
-
-    label:
-      '📝 신춘문예 아카이빙 사이트',
-
-    href:
-      'https://mjhdvazytc.execute-api.us-east-1.amazonaws.com/dev/shinchun',
-  },
-
-  {
-
-    label:
-      '⚙ runtime architecture notes',
-
-    href:
-      '/docs/intro',
-  },
-
-];
-/* =========================
-   PARSE ITEMS
-========================= */
-
-const parsedItems =
-  desktopItems.map((item) => {
-
-    const ext =
-      getExtension(item.title);
-
-    const meta =
-      extensionMap[ext] ||
-      extensionMap.default;
-
-    return {
-
-      ...item,
-
-      ...meta,
-    };
-  });
-
-/* =========================
-   COMPONENT
-========================= */
 
 export default function DesktopWorkspace({
   onBoot,
@@ -321,6 +44,8 @@ const [menuState, setMenuState] =
 
   const [weather, setWeather] =
     useState('⚙ weather runtime loading...');
+    const [currentFolder, setCurrentFolder] =
+  useState('Desktop');
 
 const [runtimeLink, setRuntimeLink] =
   useState(runtimeLinks[0]);
@@ -525,24 +250,34 @@ useEffect(() => {
   loadPreview();
 
 }, [activeItem]);
-  const openItem = (item) => {
+const openItem = (item) => {
 
-    const exists =
-      openedTabs.some(
-        (tab) =>
-          tab.id === item.id,
-      );
+  /* =========================
+     PREVIEW 불가능 타입
+  ========================= */
 
-    if (!exists) {
+  if (
+    item.type === 'PDF'
+  ) {
+    return;
+  }
 
-      setOpenedTabs([
-        ...openedTabs,
-        item,
-      ]);
-    }
+  const exists =
+    openedTabs.some(
+      (tab) =>
+        tab.id === item.id,
+    );
 
-    setActiveTab(item);
-  };
+  if (!exists) {
+
+    setOpenedTabs([
+      ...openedTabs,
+      item,
+    ]);
+  }
+
+  setActiveTab(item);
+};
 
   /* =========================
      DOUBLE CLICK
@@ -696,31 +431,28 @@ const handleContextMenu = (
      CLOSE TAB
   ========================= */
 
-  const closeTab = (
-    e,
-    tabId,
-  ) => {
+const closeTab = (
+  tabId,
+) => {
 
-    e.stopPropagation();
+  const filtered =
+    openedTabs.filter(
+      (tab) =>
+        tab.id !== tabId,
+    );
 
-    const filtered =
-      openedTabs.filter(
-        (tab) =>
-          tab.id !== tabId,
-      );
+  setOpenedTabs(filtered);
 
-    setOpenedTabs(filtered);
+  if (
+    activeTab &&
+    activeTab.id === tabId
+  ) {
 
-    if (
-      activeTab &&
-      activeTab.id === tabId
-    ) {
-
-      setActiveTab(
-        filtered[0] || null,
-      );
-    }
-  };
+    setActiveTab(
+      filtered[0] || null,
+    );
+  }
+};
 
   /* =========================
      RENDER
@@ -770,33 +502,10 @@ return (
 
         {/* SIDEBAR */}
 
-        <aside className={styles.sidebar}>
-
-          <div className={styles.sidebarTitle}>
-            EXPLORER
-          </div>
-
-          <button className={styles.sidebarItem}>
-            <i className="fa-solid fa-desktop"></i>
-            desktop
-          </button>
-
-          <button className={styles.sidebarItem}>
-            <i className="fa-solid fa-folder"></i>
-            projects
-          </button>
-
-          <button className={styles.sidebarItem}>
-            <i className="fa-solid fa-box-archive"></i>
-            archive
-          </button>
-
-          <button className={styles.sidebarItem}>
-            <i className="fa-solid fa-terminal"></i>
-            runtime
-          </button>
-
-        </aside>
+<Sidebar
+  currentFolder={currentFolder}
+  setCurrentFolder={setCurrentFolder}
+/>
 
         {/* DESKTOP */}
 
@@ -804,79 +513,142 @@ return (
 
   <div className={styles.desktopGrid}>
 
-    {parsedItems.map((item) => (
+{
+  parsedItems.filter((item) => {
 
-      <div
-        key={item.id}
+      switch (currentFolder) {
 
-className={`
-  ${styles.desktopIcon}
+        case 'Projects':
+          return item.location === 'Projects';
 
-  ${
-    activeItem &&
-    activeItem.id === item.id
-      ? styles.active
-      : ''
+        case 'Runtime':
+          return item.location === 'Runtime';
+
+        case 'Archive':
+          return item.location === 'Archive';
+
+        case 'Documents':
+          return item.location === 'Documents';
+
+        case 'Desktop':
+        default:
+          return true;
+      }
+    })
+
+    .map((item) => (
+
+<div
+  key={item.id}
+
+  className={`
+    ${styles.desktopIcon}
+
+    ${
+      activeItem &&
+      activeItem.id === item.id
+        ? styles.active
+        : ''
+    }
+
+    ${
+      item.shortcut
+        ? styles.shortcutItem
+        : ''
+    }
+  `}
+
+  /* =========================
+     SINGLE CLICK
+  ========================= */
+
+  onClick={(e) => {
+
+    e.stopPropagation();
+
+    openItem(item);
+  }}
+
+  /* =========================
+     DOUBLE CLICK
+  ========================= */
+
+  onDoubleClick={(e) => {
+
+    e.stopPropagation();
+
+    handleLaunch(item);
+  }}
+
+  /* =========================
+     CONTEXT MENU
+  ========================= */
+
+  onContextMenu={(e) =>
+    handleContextMenu(
+      e,
+      item
+    )
   }
+>
 
-  ${
-    item.type !== 'PDF' &&
-    item.type !== 'MD'
-      ? styles.shortcutItem
-      : ''
-  }
-`}
+  {/* =========================
+     ICON
+  ========================= */}
 
-        onClick={() =>
-          openItem(item)
-        }
+  <div
+    className={
+      styles.fileIconWrapper
+    }
+  >
 
-        onDoubleClick={() =>
-          handleLaunch(item)
-        }
+    {/* main icon */}
 
-        onContextMenu={(e) =>
-          handleContextMenu(
-            e,
-            item
-          )
-        }
-      >
+    {
+      item.image ? (
+
+        <img
+          src={item.image}
+          alt={item.title}
+          className={
+            styles.customFileImage
+          }
+        />
+
+      ) : (
 
         <i
-          className={`fa-solid ${item.icon}`}
+          className={`
+            fa-solid
+            ${item.icon}
+            ${styles.mainFileIcon}
+          `}
           style={{
             color: item.color,
           }}
         ></i>
-        {
 
-  item.type !== 'PDF' &&
-  item.type !== 'MD' && (
+      )
+    }
 
-    <div className={styles.shortcutBadge}>
-      ↗
-    </div>
+  </div>
 
-  )
+  {/* =========================
+     FILE NAME
+  ========================= */}
+
+  <span
+    className={
+      styles.desktopLabel
+    }
+  >
+    {item.title}
+  </span>
+
+</div>
+
+    ))
 }
-
-        <div className={styles.iconMeta}>
-
-          <span className={styles.iconTitle}>
-            {item.title}
-          </span>
-
-          <span className={styles.iconType}>
-            {item.type}
-          </span>
-
-        </div>
-
-      </div>
-
-    ))}
-
   </div>
 
   {
@@ -951,171 +723,14 @@ className={`
 
 {
 
-  activeItem &&
-  activeItem.type !== 'PDF' && (
-
-    <>
-
-      <div
-        className={styles.resizeHandle}
-
-        onMouseDown={() =>
-          setIsResizing(true)
-        }
-      />
-
-      <div
-        className={styles.previewPanel}
-
-        style={{
-          width: `${previewWidth}px`,
-        }}
-      >
-
-        <div className={styles.previewTabs}>
-
-          {openedTabs.map((tab) => (
-
-            <div
-              key={tab.id}
-
-              className={`
-                ${styles.previewTab}
-
-                ${
-                  activeItem.id === tab.id
-                    ? styles.activeTab
-                    : ''
-                }
-              `}
-
-              onClick={() =>
-                setActiveTab(tab)
-              }
-            >
-
-              <i
-                className={`fa-solid ${tab.icon}`}
-                style={{
-                  color: tab.color,
-                }}
-              ></i>
-
-              <span>
-                {tab.title}
-              </span>
-
-              {
-
-                openedTabs.length > 1 && (
-
-                  <button
-                    className={
-                      styles.closeTab
-                    }
-
-                    onClick={(e) =>
-                      closeTab(
-                        e,
-                        tab.id,
-                      )
-                    }
-                  >
-                    ×
-                  </button>
-
-                )
-              }
-
-            </div>
-
-          ))}
-
-        </div>
-
-        {/* TOOLBAR */}
-
-        <div className={styles.previewToolbar}>
-
-          <div className={styles.previewMeta}>
-
-            <span className={styles.previewLabel}>
-              {activeItem.type}
-            </span>
-
-            <span className={styles.previewPath}>
-              viewer://{activeItem.title}
-            </span>
-
-          </div>
-
-          <div className={styles.previewActions}>
-
-            {
-
-              activeItem.download && (
-
-                <a
-  href={activeItem.download}
-
-  download
-
-  className={
-    styles.downloadButton
-  }
->
-  download
-</a>
-
-              )
-            }
-
-            {
-
-              activeItem.github && (
-
-                <a
-                  href={
-                    activeItem.github
-                  }
-
-                  target="_blank"
-
-                  rel="noreferrer"
-
-                  className={
-                    styles.downloadButton
-                  }
-                >
-                  github
-                </a>
-
-              )
-            }
-
-          </div>
-
-        </div>
-
-        {/* CONTENT */}
-
-        <div className={styles.previewContent}>
-
-          <div className={styles.previewDocument}>
-
-            <pre>
-              {activeItem.preview}
-            </pre>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </>
-
-  )
+<PreviewPanel
+  activeItem={activeItem}
+  openedTabs={openedTabs}
+  setActiveTab={setActiveTab}
+  closeTab={closeTab}
+  previewWidth={previewWidth}
+  setIsResizing={setIsResizing}
+/>
 }
 
       </div>
