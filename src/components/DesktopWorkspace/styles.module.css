@@ -1,6 +1,13 @@
 /* =========================
    WINDOW
 ========================= */
+.closeButton:hover {
+
+  background:
+    rgba(255,255,255,0.08);
+
+  color: #ff7272;
+}
 .contextMenu {
 
   position: absolute;
@@ -158,6 +165,7 @@
   box-shadow:
     0 40px 120px rgba(0,0,0,0.55);
 }
+
 
 .workspaceWindow::before {
 
@@ -610,7 +618,7 @@
 
 .resizeHandle {
 
-  width: 8px;
+  width: 12px;
 
   flex-shrink: 0;
 
@@ -619,13 +627,14 @@
   position: relative;
 
   background:
-    rgba(255,255,255,0.02);
+    transparent;
 
   transition:
-    background 0.15s ease;
+    background 0.18s ease;
 }
 
-.resizeHandle::before {
+.resizeHandle::before,
+.resizeHandle::after {
 
   content: '';
 
@@ -637,27 +646,59 @@
   transform:
     translate(-50%, -50%);
 
-  width: 2px;
-  height: 120px;
-
   border-radius: 999px;
+}
+
+.resizeHandle::before {
+
+  width: 100%;
+  height: 100%;
 
   background:
-    rgba(255,255,255,0.10);
+    transparent;
+}
+
+.resizeHandle::after {
+
+  width: 1px;
+
+  height: 100%;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  box-shadow:
+    0 0 0 rgba(96,165,250,0);
+
+  transition:
+    width 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .resizeHandle:hover {
 
   background:
-    rgba(124,156,255,0.08);
+    rgba(96,165,250,0.04);
 }
 
-.resizeHandle:hover::before {
+.resizeHandle:hover::after,
+.resizeHandleActive::after {
+
+  width: 2px;
 
   background:
-    rgba(124,156,255,0.4);
+    rgba(96,165,250,0.72);
+
+  box-shadow:
+    0 0 12px rgba(96,165,250,0.22);
 }
 
+.resizeHandleActive {
+
+  background:
+    rgba(96,165,250,0.06);
+}
 /* =========================
    PREVIEW PANEL
 ========================= */
@@ -669,6 +710,10 @@
   display: flex;
 
   flex-direction: column;
+
+  min-width: 0;
+
+  overflow: hidden;
 
   border-left:
     1px solid rgba(255,255,255,0.05);
@@ -766,16 +811,26 @@
 
 .activeTab {
 
+  z-index: 5;
+
+  color:
+    #ffffff;
+
   background:
-    rgba(124,156,255,0.12);
+    linear-gradient(
+      180deg,
+      rgba(36,44,74,0.92),
+      rgba(22,26,42,0.96)
+    );
 
-  border:
-    1px solid rgba(124,156,255,0.26);
-
-  color: white;
+  border-color:
+    rgba(255,255,255,0.08);
 
   box-shadow:
-    0 0 20px rgba(124,156,255,0.12);
+    0 6px 18px rgba(0,0,0,0.22);
+
+  transform:
+    translateY(1px);
 }
 
 .closeTab {
@@ -888,15 +943,19 @@
 
   flex: 1;
 
-  padding: 2rem;
+  min-width: 0;
 
-  overflow: auto;
+  min-height: 0;
+
+  overflow: hidden;
+
+  padding: 0;
 
   display: flex;
 
-  justify-content: center;
+  background:
+    #060816;
 }
-
 .previewDocument {
 
   width: 100%;
@@ -913,6 +972,50 @@
 
   padding: 1.5rem;
 }
+.previewIframe {
+
+  width: 100%;
+
+  height: 100%;
+
+  min-width: 0;
+
+  min-height: 0;
+
+  border: none;
+
+  display: block;
+
+  background:
+    #060816;
+      overflow: auto;
+
+}
+
+.previewIframeResizing {
+
+  pointer-events: none;
+}
+.previewScaleWrapper {
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow: auto;
+
+  background:
+    #060816;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-start;
+
+  padding-top: 1rem;
+}
+
 .pdfFrame {
 
   width: 100%;
@@ -1003,15 +1106,6 @@
     display: none;
   }
 
-  .previewPanel {
-
-    width: 100% !important;
-
-    border-left: none;
-
-    border-top:
-      1px solid rgba(255,255,255,0.05);
-  }
 
   .desktopArea {
   position: relative;
@@ -1036,7 +1130,212 @@
 /* =========================
    TASKBAR
 ========================= */
+.tabs {
 
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 0;
+
+  padding-left: 1rem;
+
+  background:
+    rgba(10,12,22,0.82);
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.tab {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.65rem;
+
+  padding:
+    0.85rem 1.25rem;
+
+  min-width: 190px;
+
+  color:
+    rgba(255,255,255,0.62);
+
+  background:
+    rgba(255,255,255,0.025);
+
+  backdrop-filter:
+    blur(14px);
+
+  border:
+    1px solid rgba(255,255,255,0.04);
+
+  border-bottom:
+    none;
+
+  border-radius:
+    18px 18px 0 0;
+
+  transition:
+    all 0.18s ease;
+
+  margin-right:
+    -12px;
+}
+
+.tab:hover {
+
+  color:
+    rgba(255,255,255,0.92);
+
+  background:
+    rgba(255,255,255,0.045);
+}
+.activeTab {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(42,52,92,0.96),
+      rgba(22,28,48,0.96)
+    );
+
+  color: white;
+
+  border:
+    1px solid rgba(124,156,255,0.24);
+
+  box-shadow:
+    0 0 30px rgba(124,156,255,0.12);
+
+  z-index: 3;
+}.tab::after {
+
+  content: '';
+
+  position: absolute;
+
+  right: 0;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  width: 1px;
+
+  height: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(255,255,255,0.10),
+      transparent
+    );
+
+  opacity: 0.7;
+}
+.activeTab::after {
+
+  opacity: 0;
+}
+.tab:last-child::after {
+
+  display: none;
+}
+.activeTab::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 2px;
+
+  border-radius:
+    999px;
+}
+
+.tabIcon {
+
+  font-size: 1rem;
+
+  display: flex;
+
+  align-items: center;
+}
+
+.tabTitle {
+
+  flex: 1;
+
+  font-size: 0.92rem;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.closeButton {
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 8px;
+
+  border: none;
+
+  background: transparent;
+
+  color:
+    rgba(255,255,255,0.42);
+
+  cursor: pointer;
+
+  transition:
+    all 0.15s ease;
+
+  flex-shrink: 0;
+}
+.closeButton:hover {
+
+  opacity: 1;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  color:
+    rgba(255,255,255,0.92);
+}
+.tabTitle {
+
+  flex: 1;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+.closeButton:hover {
+
+  background:
+    rgba(255,255,255,0.08);
+
+  color: #ff7272;
+}
 .taskbar {
 
   height: 76px;

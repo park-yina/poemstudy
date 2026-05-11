@@ -37,7 +37,7 @@ const [menuState, setMenuState] =
     useState(null);
 
   const [previewWidth, setPreviewWidth] =
-    useState(620);
+    useState(1100);
 
   const [isResizing, setIsResizing] =
     useState(false);
@@ -75,9 +75,23 @@ const [runtimeLink, setRuntimeLink] =
 
   useEffect(() => {
 
+    if (isResizing) {
+      document.body.style.cursor =
+        'col-resize';
+
+      document.body.style.userSelect =
+        'none';
+    }
+
     const handleMouseMove = (e) => {
 
       if (!isResizing) {
+        return;
+      }
+
+      if (e.buttons === 0) {
+        setIsResizing(false);
+
         return;
       }
 
@@ -93,7 +107,7 @@ const [runtimeLink, setRuntimeLink] =
       setPreviewWidth(clamped);
     };
 
-    const handleMouseUp = () => {
+    const handleResizeEnd = () => {
 
       setIsResizing(false);
     };
@@ -105,10 +119,22 @@ const [runtimeLink, setRuntimeLink] =
 
     window.addEventListener(
       'mouseup',
-      handleMouseUp,
+      handleResizeEnd,
+      true,
+    );
+
+    window.addEventListener(
+      'blur',
+      handleResizeEnd,
     );
 
     return () => {
+
+      document.body.style.cursor =
+        '';
+
+      document.body.style.userSelect =
+        '';
 
       window.removeEventListener(
         'mousemove',
@@ -117,7 +143,13 @@ const [runtimeLink, setRuntimeLink] =
 
       window.removeEventListener(
         'mouseup',
-        handleMouseUp,
+        handleResizeEnd,
+        true,
+      );
+
+      window.removeEventListener(
+        'blur',
+        handleResizeEnd,
       );
     };
 
@@ -729,6 +761,7 @@ return (
   setActiveTab={setActiveTab}
   closeTab={closeTab}
   previewWidth={previewWidth}
+  isResizing={isResizing}
   setIsResizing={setIsResizing}
 />
 }

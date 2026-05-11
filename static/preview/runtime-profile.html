@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>developer-profile.html</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html,
+body {
+
+  margin: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow: hidden;
+}
+body {
+
+  margin: 0;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(59,130,246,0.12),
+      transparent 28%
+    ),
+    #060816;
+
+  color: #f3f4f6;
+
+  font-family:
+    'Inter',
+    sans-serif;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+}
+.runtimeDocument::-webkit-scrollbar {
+
+  width: 10px;
+}
+
+.runtimeDocument::-webkit-scrollbar-track {
+
+  background:
+    transparent;
+}
+
+.runtimeDocument::-webkit-scrollbar-thumb {
+
+  background:
+    rgba(96,165,250,0.18);
+
+  border-radius: 999px;
+
+  border:
+    2px solid transparent;
+
+  background-clip:
+    padding-box;
+}
+
+.runtimeDocument::-webkit-scrollbar-thumb:hover {
+
+  background:
+    rgba(96,165,250,0.34);
+
+  background-clip:
+    padding-box;
+}
+.runtimeDocument {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(96,165,250,0.22)
+    transparent;
+  width: 100%;
+
+  height: 100vh;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,22,36,0.96),
+      rgba(10,12,22,0.98)
+    );
+}
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .topbar {
+
+      height: 76px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding:
+        0 2rem;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.06);
+
+      background:
+        rgba(255,255,255,0.02);
+
+      backdrop-filter:
+        blur(16px);
+    }
+
+    .runtimeBadge {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 0.7rem;
+
+      font-size: 0.82rem;
+
+      letter-spacing: 0.14em;
+
+      color:
+        #60a5fa;
+
+      text-transform: uppercase;
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+    }
+
+    .path {
+
+      font-size: 0.92rem;
+
+      color:
+        rgba(255,255,255,0.62);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+    }
+
+    /* ========================================
+       CONTENT
+    ======================================== */
+
+.content {
+
+  width: 100%;
+
+  padding: 2rem;
+
+  overflow: hidden;
+}
+
+    .hero {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 2rem;
+
+      margin-bottom: 3rem;
+    }
+
+    .heroLeft h1 {
+
+      font-size: 3.4rem;
+
+      font-weight: 700;
+
+      margin-bottom: 1rem;
+
+      letter-spacing: -0.04em;
+    }
+
+    .heroLeft p {
+
+      font-size: 1.15rem;
+
+      color:
+        rgba(255,255,255,0.68);
+
+      line-height: 1.7;
+    }
+
+.heroRight {
+
+  display: flex;
+
+  gap: 1rem;
+
+  flex-wrap: wrap;
+}
+
+    .metricCard {
+
+      flex: 1;
+
+      height: 140px;
+
+      border-radius: 22px;
+
+      border:
+        1px solid rgba(255,255,255,0.06);
+
+      background:
+        rgba(255,255,255,0.03);
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+    }
+
+    .metricCard h2 {
+
+      font-size: 2.6rem;
+
+      color:
+        #60a5fa;
+
+      margin-bottom: 0.5rem;
+    }
+
+    .metricCard span {
+
+      font-size: 0.78rem;
+
+      letter-spacing: 0.16em;
+
+      color:
+        rgba(255,255,255,0.45);
+
+      text-transform: uppercase;
+    }
+
+    /* ========================================
+       GRID
+    ======================================== */
+.grid {
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.2fr)
+    minmax(0, 0.8fr);
+
+  gap: 1.5rem;
+}
+
+    .panel {
+
+      border-radius: 24px;
+
+      border:
+        1px solid rgba(255,255,255,0.06);
+
+      background:
+        rgba(255,255,255,0.03);
+
+      padding: 2rem;
+    }
+
+    .panelTitle {
+
+      font-size: 0.82rem;
+
+      letter-spacing: 0.16em;
+
+      color:
+        #60a5fa;
+
+      margin-bottom: 1.5rem;
+
+      text-transform: uppercase;
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+    }
+
+    /* ========================================
+       EXPERIENCE
+    ======================================== */
+
+    .experienceItem {
+
+      padding-bottom: 1.6rem;
+
+      margin-bottom: 1.6rem;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.06);
+    }
+
+    .experienceItem:last-child {
+
+      margin-bottom: 0;
+      padding-bottom: 0;
+
+      border-bottom: none;
+    }
+
+    .experienceHeader {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      margin-bottom: 1rem;
+    }
+
+    .experienceHeader h3 {
+
+      font-size: 1.1rem;
+
+      font-weight: 600;
+    }
+
+    .experienceDate {
+
+      font-size: 0.82rem;
+
+      color:
+        rgba(255,255,255,0.4);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+    }
+
+    .experienceItem ul {
+
+      padding-left: 1rem;
+
+      color:
+        rgba(255,255,255,0.72);
+
+      line-height: 1.9;
+    }
+
+    /* ========================================
+       SKILLS
+    ======================================== */
+
+    .skillWrap {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 0.7rem;
+    }
+
+    .skill {
+
+      padding:
+        0.7rem 1rem;
+
+      border-radius: 999px;
+
+      background:
+        rgba(96,165,250,0.10);
+
+      border:
+        1px solid rgba(96,165,250,0.14);
+
+      color:
+        #dbeafe;
+
+      font-size: 0.88rem;
+    }
+
+    /* ========================================
+       ARCHITECTURE
+    ======================================== */
+.architecture {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap: 1rem;
+}
+
+.node {
+
+  flex: 1;
+
+  min-width: 140px;
+
+  max-width: 220px;
+}
+
+    .node h4 {
+
+      margin-bottom: 0.4rem;
+
+      font-size: 1rem;
+    }
+
+    .node span {
+
+      font-size: 0.82rem;
+
+      color:
+        rgba(255,255,255,0.48);
+    }
+
+    .arrow {
+
+      font-size: 1.5rem;
+
+      color:
+        rgba(96,165,250,0.7);
+    }
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+
+    .footer {
+
+      margin-top: 2rem;
+
+      padding-top: 1.5rem;
+
+      border-top:
+        1px solid rgba(255,255,255,0.06);
+
+      display: flex;
+
+      justify-content: space-between;
+
+      font-size: 0.82rem;
+
+      color:
+        rgba(255,255,255,0.42);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+    }
+
+    /* ========================================
+       RESPONSIVE
+    ======================================== */
+
+    @media (max-width: 1100px) {
+
+      .hero {
+
+        flex-direction: column;
+      }
+
+      .grid {
+
+        grid-template-columns: 1fr;
+      }
+
+      .architecture {
+
+        flex-direction: column;
+      }
+
+      .arrow {
+
+        transform: rotate(90deg);
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="runtimeDocument">
+
+    <!-- =====================================
+         TOPBAR
+    ====================================== -->
+    <!-- =====================================
+         CONTENT
+    ====================================== -->
+
+    <div class="content">
+
+      <!-- HERO -->
+
+      <div class="hero">
+
+        <div class="heroLeft">
+
+          <h1>
+            경력기술서
+          </h1>
+
+          <p>
+            실시간 서비스 운영 경험을 기반으로<br />
+            운영 가능한 백엔드 시스템과
+            확장 가능한 구조 설계를 지향합니다.
+          </p>
+
+        </div>
+
+        <div class="heroRight">
+
+          <div class="metricCard">
+
+            <h2>30+</h2>
+
+            <span>Stores</span>
+
+          </div>
+
+          <div class="metricCard">
+
+            <h2>10+</h2>
+
+            <span>Projects</span>
+
+          </div>
+
+          <div class="metricCard">
+
+            <h2>3+</h2>
+
+            <span>Years</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- GRID -->
+
+      <div class="grid">
+
+        <!-- LEFT -->
+
+        <div class="panel">
+
+          <div class="panelTitle">
+            Experience Highlights
+          </div>
+
+          <div class="experienceItem">
+
+            <div class="experienceHeader">
+
+              <h3>
+                SSE 기반 실시간 랭킹 시스템
+              </h3>
+
+              <div class="experienceDate">
+                2025
+              </div>
+
+            </div>
+
+            <ul>
+              <li>
+                Polling 구조를 SSE 기반으로 변경하여
+                EC2 트래픽 비용 감소
+              </li>
+
+              <li>
+                Version 기반 Partial Refresh 구조 설계
+              </li>
+
+              <li>
+                전국 30개 이상 매장 랭킹 실시간 운영
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="experienceItem">
+
+            <div class="experienceHeader">
+
+              <h3>
+                관리자 시스템 구축
+              </h3>
+
+              <div class="experienceDate">
+                Spring Boot
+              </div>
+
+            </div>
+
+            <ul>
+              <li>
+                JWT 기반 인증 구조 설계
+              </li>
+
+              <li>
+                KPI 대시보드 및 매장 운영 시스템 개발
+              </li>
+
+              <li>
+                Device 관리 및 Runtime 상태 관리 구현
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="experienceItem">
+
+            <div class="experienceHeader">
+
+              <h3>
+                AWS WebRTC 제어 시스템
+              </h3>
+
+              <div class="experienceDate">
+                External
+              </div>
+
+            </div>
+
+            <ul>
+              <li>
+                Raspberry Pi 기반 원격 제어 MVP 개발
+              </li>
+
+              <li>
+                실시간 장비 제어 및 연결 구조 구현
+              </li>
+
+              <li>
+                외부 환경 제약을 고려한 네트워크 대응
+              </li>
+            </ul>
+
+          </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div>
+
+          <div class="panel" style="margin-bottom:1.5rem;">
+
+            <div class="panelTitle">
+              Core Skills
+            </div>
+
+            <div class="skillWrap">
+
+              <div class="skill">Java</div>
+              <div class="skill">Spring Boot</div>
+              <div class="skill">MyBatis</div>
+              <div class="skill">AWS</div>
+              <div class="skill">Redis</div>
+              <div class="skill">SSE</div>
+              <div class="skill">JWT</div>
+              <div class="skill">Docker</div>
+              <div class="skill">Firebase</div>
+              <div class="skill">WebRTC</div>
+
+            </div>
+
+          </div>
+
+          <div class="panel">
+
+            <div class="panelTitle">
+              Architecture Overview
+            </div>
+
+            <div class="architecture">
+
+              <div class="node">
+
+                <h4>Client</h4>
+
+                <span>
+                  Streaming / Ranking
+                </span>
+
+              </div>
+
+              <div class="arrow">→</div>
+
+              <div class="node">
+
+                <h4>API Server</h4>
+
+                <span>
+                  Spring Boot
+                </span>
+
+              </div>
+
+              <div class="arrow">→</div>
+
+              <div class="node">
+
+                <h4>Redis</h4>
+
+                <span>
+                  Ranking Cache
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+
+
+    </div>
+
+  </div>
+
+</body>
+</html>

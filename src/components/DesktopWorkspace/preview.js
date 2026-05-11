@@ -104,6 +104,8 @@ export  function PreviewPanel({
 
   previewWidth,
 
+  isResizing,
+
   setIsResizing,
 }) {
 
@@ -125,9 +127,6 @@ if (
   const isPdf =
     activeItem.type === 'PDF';
 
-  const isExternalHtml =
-    activeItem.type === 'HTML_FILE';
-
   const isDocument =
     activeItem.type === 'DOCUMENT';
 
@@ -140,13 +139,26 @@ if (
 
       {/* =========================================
          RESIZE HANDLE
-      ========================================= *
+      ========================================= */}
 
       <div
-        className={styles.resizeHandle}
+        className={`${styles.resizeHandle} ${
+          isResizing
+            ? styles.resizeHandleActive
+            : ''
+        }`}
 
-        onMouseDown={() =>
+        onMouseDown={(e) => {
+          if (e.button !== 0) {
+            return;
+          }
+
+          e.preventDefault();
           setIsResizing(true)
+        }}
+
+        onDoubleClick={() =>
+          setIsResizing(false)
         }
       />
 
@@ -156,10 +168,11 @@ if (
 
       <div
         className={styles.previewPanel}
-
         style={{
-          width: `${previewWidth}px`,
-        }}
+            width: `${previewWidth}px`,
+
+        }}  
+    
       >
 
         {/* =========================================
@@ -171,58 +184,37 @@ if (
           {
             openedTabs.map((tab) => (
 
-              <div
-                key={tab.id}
+<div
+  key={tab.id}
+  className={`${styles.tab} ${
+    activeItem.id === tab.id
+      ? styles.activeTab
+      : ''
+  }`}
+  onClick={() => setActiveTab(tab)}
+>
 
-                className={`${styles.tab} ${
-                  activeItem.id === tab.id
-                    ? styles.activeTab
-                    : ''
-                }`}
-              >
+  {tab.icon && (
+    <span className={styles.tabIcon}>
+      {tab.icon}
+    </span>
+  )}
 
-                {/* tab button */}
+  <span className={styles.tabTitle}>
+    {tab.title}
+  </span>
 
-                <button
-                  className={styles.tabButton}
+  <button
+    className={styles.closeButton}
+    onClick={(e) => {
+      e.stopPropagation();
+      closeTab(tab.id);
+    }}
+  >
+    ×
+  </button>
 
-                  onClick={() =>
-  setActiveTab(tab)
-}
-                >
-
-                  {
-                    tab.icon && (
-
-                      <span
-                        className={styles.tabIcon}
-                      >
-                        {tab.icon}
-                      </span>
-
-                    )
-                  }
-
-                  {tab.title}
-
-                </button>
-
-                {/* close */}
-
-                <button
-                  className={styles.closeButton}
-
-                  onClick={(e) => {
-
-                    e.stopPropagation();
-
-                    closeTab(tab.id);
-                  }}
-                >
-                  ×
-                </button>
-
-              </div>
+</div>
 
             ))
           }
@@ -233,93 +225,107 @@ if (
            TOOLBAR
         ========================================= */}
 
-        <div className={styles.toolbar}>
+<div className={styles.toolbar}>
 
-          <div className={styles.toolbarLeft}>
+  <div className={styles.toolbarLeft}>
 
-            <span>
-              Runtime Preview
-            </span>
+    <span className={styles.previewPath}>
 
-          </div>
+      C:\identity\{activeItem.title}
 
-          <div className={styles.toolbarRight}>
+    </span>
 
-            <span>
-              {activeItem.type}
-            </span>
+  </div>
 
-          </div>
+  <div className={styles.toolbarRight}>
 
-        </div>
+    <span className={styles.previewRuntime}>
+      renderer : chromium
+    </span>
+
+    <span className={styles.previewRuntime}>
+      branch : master
+    </span>
+
+  </div>
+
+</div>
 
         {/* =========================================
            CONTENT
         ========================================= */}
+<div className={styles.previewContent}>
 
-        <div className={styles.previewContent}>
+  {/* =========================================
+     INTERNAL DOCUMENT
+  ========================================= */}
 
-          {/* =========================================
-             INTERNAL DOCUMENT
-          ========================================= */}
+  {
+    isDocument &&
+    currentDocument && (
 
-          {
-            isDocument && currentDocument && (
+      <DocumentViewer
+        doc={currentDocument}
+      />
 
-              <DocumentViewer
-                doc={currentDocument}
-              />
+    )
+  }
 
-            )
-          }
+  {/* =========================================
+     PDF VIEWER
+  ========================================= */}
 
-          {/* =========================================
-             PDF VIEWER
-          ========================================= */}
+  {
+    isPdf && (
 
-          {
-            isPdf && (
+      <iframe
+        title={activeItem.title}
 
-              <iframe
+        src={activeItem.url}
 
-                title={activeItem.title}
+        className={`${styles.previewIframe} ${
+          isResizing
+            ? styles.previewIframeResizing
+            : ''
+        }`}
+      />
 
-                src={activeItem.url}
+    )
+  }
 
-                className={styles.previewIframe}
-              />
+  {/* =========================================
+     HTML FILE VIEWER
+  ========================================= */}
+{
+  activeItem.type === 'html' &&
+  activeItem.url && (
 
-            )
-          }
+    <iframe
 
-          {/* =========================================
-             HTML FILE VIEWER
-          ========================================= */}
+      title={activeItem.title}
 
-          {
-            isExternalHtml && (
+      src={activeItem.url}
 
-              <iframe
+      className={`${styles.previewIframe} ${
+        isResizing
+          ? styles.previewIframeResizing
+          : ''
+      }`}
 
-                title={activeItem.title}
+      sandbox="
+        allow-same-origin
+        allow-scripts
+      "
+    />
 
-                src={activeItem.url}
+  )
+}
 
-                className={styles.previewIframe}
-
-                sandbox="
-                  allow-same-origin
-                  allow-scripts
-                "
-              />
-
-            )
-          }
-
-        </div>
+</div>
 
       </div>
 
     </>
+
   );
 }

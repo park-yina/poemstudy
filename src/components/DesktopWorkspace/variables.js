@@ -70,12 +70,13 @@ export const desktopItems = [
   type: 'html',
 
   location: 'Documents',
-
+url: '/preview/runtime-profile.html',
   launch: {
 
   type: 'secure',
 
   file: 'InventorySkills.html',
+  
 },
 },
 
