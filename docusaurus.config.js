@@ -80,6 +80,12 @@ const config = {
   themeConfig: ({
     image: 'img/social-card.jpg',
 
+  gtag: {
+
+    trackingID: 'G-E45R1NNLW7',
+
+    anonymizeIP: true,
+  },
     colorMode: {
       respectPrefersColorScheme: true,
       defaultMode: 'dark',

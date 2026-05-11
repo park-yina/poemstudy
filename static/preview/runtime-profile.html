@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -24,6 +25,12 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
+
+  <link
+    href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+    rel="stylesheet"
+  />
+  
 
   <style>
 
@@ -413,22 +420,29 @@ body {
 
     .skillWrap {
 
-      display: flex;
+      display: grid;
 
-      flex-wrap: wrap;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
-      gap: 0.7rem;
+      gap: 0.8rem;
     }
 
     .skill {
 
-      padding:
-        0.7rem 1rem;
+      display: flex;
 
-      border-radius: 999px;
+      align-items: center;
+
+      gap: 0.72rem;
+
+      padding:
+        0.85rem 0.95rem;
+
+      border-radius: 16px;
 
       background:
-        rgba(96,165,250,0.10);
+        rgba(96,165,250,0.08);
 
       border:
         1px solid rgba(96,165,250,0.14);
@@ -437,6 +451,93 @@ body {
         #dbeafe;
 
       font-size: 0.88rem;
+
+      font-weight: 600;
+    }
+
+    .skill i {
+
+      width: 34px;
+      height: 34px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,0.10);
+
+      color:
+        #ffffff;
+
+      font-size: 1.35rem;
+    }
+
+    .skillCore {
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(96,165,250,0.18),
+          rgba(20,184,166,0.10)
+        );
+
+      border-color:
+        rgba(147,197,253,0.28);
+    }
+
+    .skillMore {
+
+      display: none;
+    }
+
+    .skillWrap.isExpanded .skillMore {
+
+      display: flex;
+    }
+
+    .moreSkillsButton {
+
+      width: 100%;
+
+      margin-top: 0.9rem;
+
+      border:
+        1px solid rgba(147,197,253,0.26);
+
+      border-radius: 14px;
+
+      background:
+        rgba(147,197,253,0.10);
+
+      color:
+        #dbeafe;
+
+      padding:
+        0.82rem 1rem;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        background 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .moreSkillsButton:hover {
+
+      background:
+        rgba(147,197,253,0.16);
+
+      border-color:
+        rgba(147,197,253,0.42);
     }
 
     /* ========================================
@@ -718,24 +819,83 @@ body {
               Core Skills
             </div>
 
-            <div class="skillWrap">
+            <div
+              class="skillWrap"
+              id="runtimeSkillWrap"
+            >
 
-              <div class="skill">Java</div>
-              <div class="skill">Spring Boot</div>
-              <div class="skill">MyBatis</div>
-              <div class="skill">AWS</div>
-              <div class="skill">Redis</div>
-              <div class="skill">SSE</div>
-              <div class="skill">JWT</div>
-              <div class="skill">Docker</div>
-              <div class="skill">Firebase</div>
-              <div class="skill">WebRTC</div>
+              <div class="skill skillCore">
+                <i class="devicon-spring-original"></i>
+                <span>Spring</span>
+              </div>
+
+              <div class="skill skillCore">
+                <i class="devicon-flutter-plain"></i>
+                <span>Flutter</span>
+              </div>
+
+              <div class="skill skillCore">
+                <i class="devicon-firebase-plain"></i>
+                <span>Firebase</span>
+              </div>
+
+              <div class="skill skillCore">
+                <i class="devicon-amazonwebservices-plain-wordmark"></i>
+                <span>AWS</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-java-plain"></i>
+                <span>Java</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-mysql-plain"></i>
+                <span>MyBatis</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-html5-plain"></i>
+                <span>SSE</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-json-plain"></i>
+                <span>JWT</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-docker-plain"></i>
+                <span>Docker</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-webrtc-original"></i>
+                <span>WebRTC</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-github-original"></i>
+                <span>GitHub</span>
+              </div>
+
+              <div class="skill skillMore">
+                <i class="devicon-githubactions-plain"></i>
+                <span>GitHub Actions</span>
+              </div>
 
             </div>
 
-          </div>
-/
+            <button
+              class="moreSkillsButton"
+              type="button"
+              aria-expanded="false"
+              aria-controls="runtimeSkillWrap"
+            >
+              더보기...
+            </button>
 
+          </div>
         </div>
 
       </div>
@@ -746,6 +906,35 @@ body {
     </div>
 
   </div>
+  <script>
+    document.querySelectorAll('.moreSkillsButton').forEach(
+      (button) => {
+        const targetId =
+          button.getAttribute('aria-controls');
+
+        const stack =
+          document.getElementById(targetId);
+
+        button.addEventListener(
+          'click',
+          () => {
+            const isExpanded =
+              stack.classList.toggle('isExpanded');
+
+            button.setAttribute(
+              'aria-expanded',
+              String(isExpanded),
+            );
+
+            button.textContent =
+              isExpanded
+                ? '접기'
+                : '더보기...';
+          },
+        );
+      },
+    );
+  </script>
 
 </body>
 </html>

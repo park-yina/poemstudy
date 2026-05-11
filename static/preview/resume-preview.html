@@ -6,6 +6,11 @@
 
   <title>resume-preview.html</title>
 
+  <link
+    href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+    rel="stylesheet"
+  />
+
   <style>
     * {
       box-sizing: border-box;
@@ -164,18 +169,73 @@
     }
 
     .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.65rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
     }
 
     .tag {
-      padding: 0.58rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(96,165,250,0.11);
+      display: flex;
+      align-items: center;
+      gap: 0.72rem;
+      padding: 0.85rem 0.95rem;
+      border-radius: 16px;
+      background: rgba(96,165,250,0.08);
       border: 1px solid rgba(96,165,250,0.16);
       color: #dbeafe;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .tag i {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.10);
+      color: #ffffff;
+      font-size: 1.35rem;
+    }
+
+    .tagCore {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(96,165,250,0.18),
+          rgba(20,184,166,0.10)
+        );
+      border-color: rgba(147,197,253,0.28);
+    }
+
+    .tagMore {
+      display: none;
+    }
+
+    .tags.isExpanded .tagMore {
+      display: flex;
+    }
+
+    .moreStackButton {
+      width: 100%;
+      margin-top: 0.9rem;
+      border: 1px solid rgba(147,197,253,0.26);
+      border-radius: 14px;
+      background: rgba(147,197,253,0.10);
+      color: #dbeafe;
+      padding: 0.82rem 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        background 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .moreStackButton:hover {
+      background: rgba(147,197,253,0.16);
+      border-color: rgba(147,197,253,0.42);
     }
 
     .metricRow {
@@ -464,23 +524,89 @@
         <div class="panel">
           <div class="panelTitle">Core Stack</div>
 
-          <div class="tags">
-            <span class="tag">Java</span>
-            <span class="tag">Spring Boot</span>
-            <span class="tag">MyBatis</span>
-            <span class="tag">MySQL</span>
-            <span class="tag">Python</span>
-            <span class="tag">Flask</span>
-            <span class="tag">AWS EC2</span>
-            <span class="tag">AWS Lambda</span>
-            <span class="tag">Firebase</span>
-            <span class="tag">SSE</span>
-            <span class="tag">WebRTC</span>
-            <span class="tag">Docker</span>
-            <span class="tag">GitHub Actions</span>
-            <span class="tag">Flutter</span>
-            <span class="tag">JavaScript</span>
+          <div
+            class="tags"
+            id="resumeStack"
+          >
+            <span class="tag tagCore">
+              <i class="devicon-spring-original"></i>
+              <span>Spring</span>
+            </span>
+
+            <span class="tag tagCore">
+              <i class="devicon-flutter-plain"></i>
+              <span>Flutter</span>
+            </span>
+
+            <span class="tag tagCore">
+              <i class="devicon-firebase-plain"></i>
+              <span>Firebase</span>
+            </span>
+
+            <span class="tag tagCore">
+              <i class="devicon-amazonwebservices-plain-wordmark"></i>
+              <span>AWS</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-java-plain"></i>
+              <span>Java</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-mysql-plain"></i>
+              <span>MyBatis</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-mysql-plain"></i>
+              <span>MySQL</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-python-plain"></i>
+              <span>Python</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-flask-original"></i>
+              <span>Flask</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-html5-plain"></i>
+              <span>SSE</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-webrtc-original"></i>
+              <span>WebRTC</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-docker-plain"></i>
+              <span>Docker</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-githubactions-plain"></i>
+              <span>GitHub Actions</span>
+            </span>
+
+            <span class="tag tagMore">
+              <i class="devicon-javascript-plain"></i>
+              <span>JavaScript</span>
+            </span>
           </div>
+
+          <button
+            class="moreStackButton"
+            type="button"
+            aria-expanded="false"
+            aria-controls="resumeStack"
+          >
+            더보기...
+          </button>
         </div>
 
         <div class="panel">
@@ -526,5 +652,37 @@
 
     </div>
   </main>
+  <!-- Google tag (gtag.js) -->
+
+  <script>
+    document.querySelectorAll('.moreStackButton').forEach(
+      (button) => {
+        const targetId =
+          button.getAttribute('aria-controls');
+
+        const stack =
+          document.getElementById(targetId);
+
+        button.addEventListener(
+          'click',
+          () => {
+            const isExpanded =
+              stack.classList.toggle('isExpanded');
+
+            button.setAttribute(
+              'aria-expanded',
+              String(isExpanded),
+            );
+
+            button.textContent =
+              isExpanded
+                ? '접기'
+                : '더보기...';
+          },
+        );
+      },
+    );
+  </script>
+
 </body>
 </html>

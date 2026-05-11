@@ -139,6 +139,10 @@
 
   width: min(1680px, 96vw);
 
+  display: flex;
+
+  flex-direction: column;
+
   min-height: 74vh;
 
   max-height: 88vh;
@@ -283,7 +287,9 @@
 
   display: flex;
 
-  min-height: 780px;
+  flex: 1;
+
+  min-height: 0;
 }
 
 /* =========================
