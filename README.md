@@ -1,41 +1,63 @@
-# Website
+# Luda Log
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+개발과 운영, 그리고 기록을 함께 남기는 개발자 포트폴리오 아카이브입니다.
 
-## Installation
+단순한 프로젝트 나열보다,  
+“왜 이런 구조를 선택했는가”와  
+“운영 환경에서 어떤 문제를 해결했는가”를 중심으로 구성하였습니다.
 
-```bash
-yarn
-```
+---
 
-## Local Development
+## Overview
 
-```bash
-yarn start
-```
+Luda Log는 Docusaurus 기반으로 제작된 개인 포트폴리오 사이트입니다.
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+실제 운영 경험이 있는 프로젝트들을 기반으로:
 
-## Build
+- 실시간 시스템
+- 다운로드/스트리밍 구조
+- 관리자 시스템
+- CI/CD
+- Runtime 통계 시각화
+- 운영 아카이빙
 
-```bash
-yarn build
-```
+등을 하나의 “developer workspace” 컨셉으로 정리했습니다.
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+---
 
-## Deployment
+## Main Features
 
-Using SSH:
+### Runtime Workspace UI
 
-```bash
-USE_SSH=true yarn deploy
-```
+실제 IDE 및 운영 콘솔을 모티브로 제작한 인터랙티브 포트폴리오 UI입니다.
 
-Not using SSH:
+- draggable / resizable workspace
+- explorer sidebar
+- runtime preview tabs
+- html/pdf preview system
+- terminal boot sequence
+- runtime logs animation
 
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
+---
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+### Runtime Statistics
+
+GitHub Actions + cloc 기반 코드 통계 시스템입니다.
+
+프로젝트별:
+
+- TOTAL LOC
+- language ratio
+- runtime environment
+- branch state
+
+등을 실시간 JSON으로 생성하여 시각화합니다.
+
+예시:
+
+```txt
+branch   : stage
+runtime  : aws-ec2
+stack    : spring boot
+
+TOTAL LOC : 10,875
