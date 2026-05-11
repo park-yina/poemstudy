@@ -113,10 +113,7 @@ export  function PreviewPanel({
      EMPTY
   ========================================= */
 
-if (
-  !activeItem ||
-  activeItem.type === 'PDF'
-) {
+if (!activeItem) {
   return null;
 }
 
@@ -229,23 +226,9 @@ if (
 
   <div className={styles.toolbarLeft}>
 
-    <span className={styles.previewPath}>
-
-      C:\identity\{activeItem.title}
-
-    </span>
-
   </div>
 
   <div className={styles.toolbarRight}>
-
-    <span className={styles.previewRuntime}>
-      renderer : chromium
-    </span>
-
-    <span className={styles.previewRuntime}>
-      branch : master
-    </span>
 
   </div>
 

@@ -43,6 +43,23 @@ body {
 
   overflow: hidden;
 }
+.sensitive {
+
+  filter: blur(5px);
+
+  opacity: 0.72;
+
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.sensitive:hover {
+
+  filter: blur(0);
+
+  opacity: 1;
+}
 body {
 
   margin: 0;
@@ -73,13 +90,16 @@ body {
 .runtimeDocument::-webkit-scrollbar-track {
 
   background:
-    transparent;
+    rgba(255,255,255,0.06);
+
+  border-radius:
+    999px;
 }
 
 .runtimeDocument::-webkit-scrollbar-thumb {
 
   background:
-    rgba(96,165,250,0.18);
+    rgba(147,197,253,0.44);
 
   border-radius: 999px;
 
@@ -93,7 +113,7 @@ body {
 .runtimeDocument::-webkit-scrollbar-thumb:hover {
 
   background:
-    rgba(96,165,250,0.34);
+    rgba(147,197,253,0.62);
 
   background-clip:
     padding-box;
@@ -102,8 +122,8 @@ body {
   scrollbar-width: thin;
 
   scrollbar-color:
-    rgba(96,165,250,0.22)
-    transparent;
+    rgba(147,197,253,0.48)
+    rgba(255,255,255,0.06);
   width: 100%;
 
   height: 100vh;
@@ -111,6 +131,9 @@ body {
   overflow-y: auto;
 
   overflow-x: hidden;
+
+  padding-bottom:
+    0.75rem;
 
   background:
     linear-gradient(
@@ -570,7 +593,7 @@ body {
 
           <div class="metricCard">
 
-            <h2>3+</h2>
+            <h2>1+</h2>
 
             <span>Years</span>
 
@@ -711,52 +734,7 @@ body {
             </div>
 
           </div>
-
-          <div class="panel">
-
-            <div class="panelTitle">
-              Architecture Overview
-            </div>
-
-            <div class="architecture">
-
-              <div class="node">
-
-                <h4>Client</h4>
-
-                <span>
-                  Streaming / Ranking
-                </span>
-
-              </div>
-
-              <div class="arrow">→</div>
-
-              <div class="node">
-
-                <h4>API Server</h4>
-
-                <span>
-                  Spring Boot
-                </span>
-
-              </div>
-
-              <div class="arrow">→</div>
-
-              <div class="node">
-
-                <h4>Redis</h4>
-
-                <span>
-                  Ranking Cache
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
+/
 
         </div>
 

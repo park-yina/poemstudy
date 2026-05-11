@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>resume-preview.html</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #070a14;
+      color: #f3f4f6;
+      font-family: Inter, Pretendard, system-ui, sans-serif;
+    }
+
+    .resumeDocument {
+      width: 95%;
+      height: 100vh;
+      margin: 0 auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 2rem 3.2rem 5.5rem;
+      background:
+        radial-gradient(circle at top right, rgba(96,165,250,0.10), transparent 30%),
+        linear-gradient(180deg, rgba(18,22,36,0.98), rgba(8,10,18,0.98));
+      scrollbar-width: thin;
+      scrollbar-color: rgba(147,197,253,0.48) rgba(255,255,255,0.06);
+    }
+
+    .resumeDocument::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .resumeDocument::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+    }
+
+    .resumeDocument::-webkit-scrollbar-thumb {
+      background: rgba(147,197,253,0.44);
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .resumeDocument::-webkit-scrollbar-thumb:hover {
+      background: rgba(147,197,253,0.62);
+      background-clip: padding-box;
+    }
+
+    .resumeHeader {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .eyebrow {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      color: #60a5fa;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.2rem;
+    }
+
+    .summary {
+      max-width: 760px;
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .contactBox {
+      min-width: 280px;
+      align-self: flex-start;
+      padding: 1.4rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .contactBox div {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.68);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 1.4rem;
+    }
+
+    .panel {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.035);
+      padding: 1.8rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .panelTitle {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      color: #60a5fa;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .item {
+      padding-bottom: 1.4rem;
+      margin-bottom: 1.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .itemHeader {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .item h3 {
+      font-size: 1.05rem;
+      color: #ffffff;
+    }
+
+    .date {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.42);
+      white-space: nowrap;
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.85;
+      font-size: 0.95rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .tag {
+      padding: 0.58rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(96,165,250,0.11);
+      border: 1px solid rgba(96,165,250,0.16);
+      color: #dbeafe;
+      font-size: 0.85rem;
+    }
+
+    .metricRow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .metric {
+      padding: 1.2rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.035);
+      text-align: center;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 2rem;
+      color: #60a5fa;
+      margin-bottom: 0.3rem;
+    }
+
+    .metric span {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.48);
+    }
+
+    .note {
+      color: rgba(255,255,255,0.58);
+      font-size: 0.9rem;
+      line-height: 1.75;
+    }
+
+    @media (max-width: 1100px) {
+      .resumeHeader,
+      .grid {
+        grid-template-columns: 1fr;
+        display: block;
+      }
+
+      .contactBox {
+        margin-top: 1.5rem;
+      }
+
+      .metricRow {
+        grid-template-columns: 1fr;
+      }
+    }
+.sensitive {
+
+  filter: blur(5px);
+
+  opacity: 0.72;
+
+  user-select: none;
+
+  cursor: pointer;
+
+  transition:
+    filter 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.sensitive.revealed {
+
+  filter: blur(0);
+
+  opacity: 1;
+}
+.sensitiveCompany {
+
+  filter: blur(1.8px);
+
+  opacity: 0.62;
+
+  transition:
+    filter 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.sensitiveCompany:hover {
+
+  filter: blur(0);
+
+  opacity: 1;
+}
+.company {
+
+  margin-top: 0.45rem;
+
+  font-size: 0.82rem;
+
+  color:
+    rgba(255,255,255,0.46);
+
+  font-family:
+    'JetBrains Mono',
+    monospace;
+
+  letter-spacing: 0.04em;
+}
+
+  </style>
+</head>
+
+<body>
+  <main class="resumeDocument">
+
+    <section class="resumeHeader">
+      <div>
+        <div class="eyebrow">RESUME PREVIEW</div>
+
+        <h1>
+          코드 이면의 고객을 보고자 하는<br />
+          개발자 박이나입니다.
+        </h1>
+
+<p class="summary">
+  외주 개발 경험을 통해 개발자에게 가장 큰 자산은
+  고객 경험이라는 것을 느꼈습니다.<br>
+
+  단순히 기능을 구현하는 것보다,
+  실제 사용 환경에서 어떤 문제가 발생하는지,
+  왜 이러한 구조가 필요한지를 함께 고민하며
+  운영 가능한 시스템을 만드는 개발자를 지향합니다.
+</p>
+      </div>
+
+      <aside class="contactBox">
+<div>
+  phone ·
+<span
+  class="sensitive clickable"
+  onclick="this.classList.toggle('revealed')"
+>
+  (+82)010-2436-6350
+</span>
+</div>
+
+<div>
+  email ·
+<span
+  class="sensitive clickable"
+  onclick="this.classList.toggle('revealed')"
+>
+ kln99988@gmail.com
+</span>
+</div>
+
+<div>
+  github pages ·
+  <span class="partialSensitive">
+    park-yina.github.io
+  </span>
+</div>
+      </aside>
+    </section>
+
+    <section class="metricRow">
+      <div class="metric">
+        <strong>30+</strong>
+        <span>OPERATING STORES</span>
+      </div>
+
+      <div class="metric">
+        <strong>3</strong>
+        <span>EXTERNAL PROJECTS</span>
+      </div>
+
+      <div class="metric">
+        <strong>10+</strong>
+        <span>PROJECT EXPERIENCES</span>
+      </div>
+    </section>
+
+    <div class="grid">
+
+      <section>
+        <div class="panel">
+          <div class="panelTitle">Career Highlights</div>
+
+          <article class="item">
+ <div class="itemHeader">
+
+  <div>
+
+    <h3>
+      영상 다운로드 스트리밍 서비스 개발
+    </h3>
+
+<div class="company sensitiveCompany">
+  (주)점핑배틀 외주 제작
+</div>
+
+  </div>
+
+  <span class="date">
+    2025 · 3 months
+  </span>
+
+</div>
+
+            <ul>
+              <li>Flask, AWS Lambda, EC2, Firebase Storage 기반 서비스 구현</li>
+              <li>Signed URL 기반 접근 제어 및 다운로드 횟수 제한 구조 구현</li>
+              <li>SSE 기반 실시간 랭킹 조회/검색/대시보드 구조 설계</li>
+              <li>전국 30개 이상 매장에서 사용 중인 운영 서비스 경험</li>
+            </ul>
+          </article>
+
+          <article class="item">
+            <div class="itemHeader">
+              <h3>AWS WebRTC 원격 제어 시스템</h3>
+              <span class="date">1 week</span>
+            </div>
+
+            <ul>
+              <li>AWS KVS WebRTC 기반 실시간 영상 스트리밍 구조 구축</li>
+              <li>조이스틱 제어, 센서 상태 수신, 원격 녹화 제어 기능 구현</li>
+              <li>MCU 전용 WebSocket 서버를 분리하여 제어 신호와 상태 데이터를 실시간 송수신</li>
+            </ul>
+          </article>
+
+          <article class="item">
+            <div class="itemHeader">
+              <h3>Spring 기반 운영 관리자 시스템 재구축</h3>
+              <span class="date">ongoing</span>
+            </div>
+
+            <ul>
+              <li>NoSQL 기반 서비스 구조를 Spring Boot, MyBatis, MySQL 기반으로 재설계</li>
+              <li>JWT 인증/인가, Refresh Token, HttpOnly Cookie 기반 인증 흐름 구현</li>
+              <li>Docker, GitHub Actions, AWS EC2 기반 CI/CD 구축</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="panel">
+          <div class="panelTitle">Project Experiences</div>
+
+          <article class="item">
+            <div class="itemHeader">
+              <h3>Cat-holic Diary</h3>
+              <span class="date">Flutter · Firebase</span>
+            </div>
+
+            <ul>
+              <li>가톨릭 신자를 위한 개인 신앙 다이어리 앱 제작</li>
+              <li>GPS 기반 인근 성당 출석체크 및 통계 대시보드 구현</li>
+              <li>Firebase Firestore 기반 사용자 데이터 구조 설계</li>
+            </ul>
+          </article>
+
+          <article class="item">
+            <div class="itemHeader">
+              <h3>ISC Controller</h3>
+              <span class="date">collaboration</span>
+            </div>
+
+            <ul>
+              <li>MQTT 기반 IoT 장치 상태 모니터링 UI 설계</li>
+              <li>시리얼 번호 기반 장치 식별 및 업데이트 주기 설정 기능 구현</li>
+              <li>실시간 센서 데이터 UI 동기화 및 통신 실패 처리 로직 설계</li>
+            </ul>
+          </article>
+
+          <article class="item">
+            <div class="itemHeader">
+              <h3>시터디</h3>
+              <span class="date">personal</span>
+            </div>
+
+            <ul>
+              <li>신춘문예 당선작 아카이빙 서비스 기획</li>
+              <li>문예창작 전공 경험을 바탕으로 콘텐츠 분류와 탐색 구조 설계</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <aside>
+        <div class="panel">
+          <div class="panelTitle">Core Stack</div>
+
+          <div class="tags">
+            <span class="tag">Java</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">MyBatis</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">Python</span>
+            <span class="tag">Flask</span>
+            <span class="tag">AWS EC2</span>
+            <span class="tag">AWS Lambda</span>
+            <span class="tag">Firebase</span>
+            <span class="tag">SSE</span>
+            <span class="tag">WebRTC</span>
+            <span class="tag">Docker</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Flutter</span>
+            <span class="tag">JavaScript</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panelTitle">Education</div>
+
+          <article class="item">
+            <h3>서울예술대학교</h3>
+            <p class="note">
+              문예창작 전공. 피지컬 컴퓨팅, p5.js, UI/UX 수업을 통해
+              문학적 기획과 프로그래밍 기반 제작 경험을 연결했습니다.
+            </p>
+          </article>
+
+          <article class="item">
+            <h3>크래프톤 정글 5기</h3>
+            <p class="note">
+              CS 기반 학습과 팀 프로젝트를 경험했으며,
+              React, jQuery, Spring 게시판 프로젝트를 응용한 서비스 제작을 수행했습니다.
+            </p>
+          </article>
+        </div>
+
+        <div class="panel">
+          <div class="panelTitle">Identity</div>
+
+          <p class="note">
+            문예창작 전공자로 출발했지만, 개발을 “사람의 문제를 구조로 바꾸는 작업”으로 이해합니다.
+            고객 경험, 운영 맥락, 기술 선택의 이유를 함께 보는 개발자가 되고자 합니다.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="panelTitle">Etc</div>
+
+          <ul>
+            <li>JUnit 기반 TDD 스터디 참여</li>
+            <li>운영체제 및 CS 기본 스터디 참여</li>
+            <li>중국어 일상 회화 및 기본 고객 응대 가능(중학교 재학시절 이중언어 말하기 대회 본선 진출)</li>
+            <li>전국 단위 백일장 다수 수상 및 문학 활동 경험</li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+</body>
+</html>

@@ -52,6 +52,8 @@ export const desktopItems = [
   type: 'PDF',
 
   location: 'Documents',
+  url: '/preview/resume-preview.html',
+
 
   icon: 'fa-file-pdf',
 

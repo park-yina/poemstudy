@@ -139,11 +139,13 @@
 
   width: min(1680px, 96vw);
 
-  min-height: 82vh;
+  min-height: 74vh;
 
-  margin-top: 3rem;
+  max-height: 88vh;
 
-  border-radius: 30px;
+  margin-top: 2.2rem;
+
+  border-radius: 24px;
 
   overflow: hidden;
 
@@ -165,7 +167,6 @@
   box-shadow:
     0 40px 120px rgba(0,0,0,0.55);
 }
-
 
 .workspaceWindow::before {
 
@@ -862,9 +863,14 @@
 
   padding:
     0 1.5rem;
+  background:
+    rgba(10,12,22,0.72);
+
+  backdrop-filter:
+    blur(16px);
 
   border-bottom:
-    1px solid rgba(255,255,255,0.05);
+    1px solid rgba(255,255,255,0.04);
 }
 
 .previewMeta {
@@ -949,9 +955,13 @@
 
   overflow: hidden;
 
-  padding: 0;
+  padding: 1rem;
 
   display: flex;
+
+  align-items: flex-start;
+
+  justify-content: center;
 
   background:
     #060816;
@@ -988,7 +998,10 @@
 
   background:
     #060816;
-      overflow: auto;
+
+  border-radius: 10px;
+
+  overflow: auto;
 
 }
 
@@ -1138,7 +1151,7 @@
 
   gap: 0;
 
-  padding-left: 1rem;
+  padding-left: 0.8rem;
 
   background:
     rgba(10,12,22,0.82);
@@ -1158,9 +1171,9 @@
   gap: 0.65rem;
 
   padding:
-    0.85rem 1.25rem;
+    0.76rem 1.12rem;
 
-  min-width: 190px;
+  min-width: 178px;
 
   color:
     rgba(255,255,255,0.62);
@@ -1178,7 +1191,7 @@
     none;
 
   border-radius:
-    18px 18px 0 0;
+    15px 15px 0 0;
 
   transition:
     all 0.18s ease;
@@ -1266,7 +1279,7 @@
 
 .tabIcon {
 
-  font-size: 1rem;
+  font-size: 0.95rem;
 
   display: flex;
 
@@ -1277,7 +1290,7 @@
 
   flex: 1;
 
-  font-size: 0.92rem;
+  font-size: 0.88rem;
 
   white-space: nowrap;
 
@@ -1288,8 +1301,8 @@
 
 .closeButton {
 
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
 
   border-radius: 8px;
 

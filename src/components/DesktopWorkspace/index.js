@@ -284,16 +284,6 @@ useEffect(() => {
 }, [activeItem]);
 const openItem = (item) => {
 
-  /* =========================
-     PREVIEW 불가능 타입
-  ========================= */
-
-  if (
-    item.type === 'PDF'
-  ) {
-    return;
-  }
-
   const exists =
     openedTabs.some(
       (tab) =>
