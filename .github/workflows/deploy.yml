@@ -26,6 +26,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install cloc
+        run: sudo apt-get install -y cloc
+
+      - name: Generate runtime stats
+        run: |
+          mkdir -p static/runtime
+
+          cloc \
+            src/components \
+            src/pages \
+            src/theme \
+            static/preview \
+            --json \
+            > static/runtime/ludalog.json
+
       - name: Build website
         run: npm run build
 

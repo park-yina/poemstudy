@@ -191,11 +191,30 @@ if (!activeItem) {
   onClick={() => setActiveTab(tab)}
 >
 
-  {tab.icon && (
-    <span className={styles.tabIcon}>
-      {tab.icon}
-    </span>
-  )}
+  {
+    tab.image ? (
+
+      <img
+        src={tab.image}
+        alt=""
+        className={styles.tabImageIcon}
+      />
+
+    ) : (
+
+      tab.icon && (
+
+        <i
+          className={`fa-solid ${tab.icon} ${styles.tabIcon}`}
+          style={{
+            color: tab.color,
+          }}
+          aria-hidden="true"
+        />
+
+      )
+    )
+  }
 
   <span className={styles.tabTitle}>
     {tab.title}

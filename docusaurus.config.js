@@ -123,6 +123,12 @@ const config = {
         },
 
         {
+          to: '/archive',
+          label: 'Archive',
+          position: 'left',
+        },
+
+        {
           href: 'https://github.com/park-yina',
           label: 'GitHub',
           position: 'right',

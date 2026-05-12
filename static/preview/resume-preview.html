@@ -57,7 +57,79 @@
       border: 2px solid transparent;
       background-clip: padding-box;
     }
+    .runtimeLinks {
 
+  display: flex;
+
+  gap: 0.72rem;
+
+  margin-top: 1.15rem;
+
+  flex-wrap: wrap;
+}
+.runtimeLink {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.45rem;
+
+  padding:
+    0.48rem 0.78rem;
+
+  border-radius: 999px;
+
+  border:
+    1px solid rgba(147,197,253,0.16);
+
+  background:
+    rgba(96,165,250,0.06);
+
+  color:
+    #bfdbfe;
+
+  font-size: 0.74rem;
+
+  letter-spacing: 0.08em;
+
+  text-decoration: none;
+
+  font-family:
+    'JetBrains Mono',
+    monospace;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+.runtimeLink:hover {
+
+  background:
+    rgba(96,165,250,0.12);
+
+  border-color:
+    rgba(147,197,253,0.34);
+
+  transform:
+    translateY(-1px);
+}
+.profileLink {
+
+  color:
+    #7dd3fc;
+
+  text-decoration: none;
+
+  position: relative;
+
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease;
+
+  opacity: 0.92;
+}
     .resumeDocument::-webkit-scrollbar-thumb:hover {
       background: rgba(147,197,253,0.62);
       background-clip: padding-box;
@@ -238,34 +310,59 @@
       border-color: rgba(147,197,253,0.42);
     }
 
-    .metricRow {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.9rem;
-      margin-bottom: 1.4rem;
-    }
+.metricRow {
 
-    .metric {
-      padding: 1.2rem;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.035);
-      text-align: center;
-    }
+  display: flex;
 
-    .metric strong {
-      display: block;
-      font-size: 2rem;
-      color: #60a5fa;
-      margin-bottom: 0.3rem;
-    }
+  align-items: center;
 
-    .metric span {
-      font-family: "JetBrains Mono", monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      color: rgba(255,255,255,0.48);
-    }
+  justify-content: space-between;
+
+  gap: 1.2rem;
+
+  padding:
+    1.4rem 0;
+
+  border-top:
+    1px solid rgba(255,255,255,0.05);
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.05);
+}
+
+.metric {
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.35rem;
+}
+
+.metric strong {
+
+  font-size: 3rem;
+
+  font-weight: 800;
+
+  color:
+    #60a5fa;
+
+  line-height: 1;
+}
+.metric span {
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.28em;
+
+  color:
+    rgba(255,255,255,0.48);
+}
 
     .note {
       color: rgba(255,255,255,0.58);
@@ -390,10 +487,15 @@
 </div>
 
 <div>
-  github pages ·
-  <span class="partialSensitive">
-    park-yina.github.io
-  </span>
+  기술블로그 ·
+<a
+  href="https://park-yina.github.io"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="profileLink"
+>
+  park-yina.github.io
+</a>
 </div>
       </aside>
     </section>
@@ -445,22 +547,59 @@
             <ul>
               <li>Flask, AWS Lambda, EC2, Firebase Storage 기반 서비스 구현</li>
               <li>Signed URL 기반 접근 제어 및 다운로드 횟수 제한 구조 구현</li>
-              <li>SSE 기반 실시간 랭킹 조회/검색/대시보드 구조 설계</li>
               <li>전국 30개 이상 매장에서 사용 중인 운영 서비스 경험</li>
-            </ul>
+<li id="vocStatus">
+  운영 배포 이후 서버 장애 기반 VOC 발생 0건 유지
+</li>            </ul>
           </article>
 
           <article class="item">
-            <div class="itemHeader">
-              <h3>AWS WebRTC 원격 제어 시스템</h3>
-              <span class="date">1 week</span>
-            </div>
+<div class="itemHeader">
+
+  <div>
+
+    <h3>
+      AWS WebRTC 원격 제어 시스템
+    </h3>
+
+    <div class="company sensitiveCompany">
+      외주 제작 · 개인 의뢰
+    </div>
+
+  </div>
+
+  <span class="date">
+    1 week
+  </span>
+
+</div>
 
             <ul>
               <li>AWS KVS WebRTC 기반 실시간 영상 스트리밍 구조 구축</li>
               <li>조이스틱 제어, 센서 상태 수신, 원격 녹화 제어 기능 구현</li>
-              <li>MCU 전용 WebSocket 서버를 분리하여 제어 신호와 상태 데이터를 실시간 송수신</li>
-            </ul>
+<li>
+  동시 접속 환경에서 장비 제어 충돌 방지를 위한
+  사용자 식별 및 제어 흐름 설계
+</li>            </ul>
+<div class="runtimeLinks">
+
+  <a
+    href="https://github.com/park-yina/kvs-webrtc"
+    target="_blank"
+    class="runtimeLink"
+  >
+    README
+  </a>
+
+  <a
+    href="https://blog.naver.com/kln99988/224062373154"
+    target="_blank"
+    class="runtimeLink"
+  >
+    DEMO VIDEO
+  </a>
+
+</div>
           </article>
 
           <article class="item">
@@ -655,6 +794,21 @@
   <!-- Google tag (gtag.js) -->
 
   <script>
+      const vocElement =
+    document.getElementById('vocStatus');
+
+  const now = new Date();
+
+  const year = now.getFullYear();
+
+  const month =
+    String(now.getMonth() + 1)
+      .padStart(2, '0');
+
+  vocElement.innerHTML = `
+    운영 배포 이후 서버 장애 기반 VOC 발생 0건 유지
+    (${year}.${month} 기준)
+  `;
     document.querySelectorAll('.moreStackButton').forEach(
       (button) => {
         const targetId =
