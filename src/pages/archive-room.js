@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styles from '../components/ArchiveRoom/archive-room.module.css';
 
@@ -6,18 +6,35 @@ import ArchiveTopbar from '../components/ArchiveRoom/ArchiveTopbar';
 
 import ArchiveSidebar from '../components/ArchiveRoom/ArchiveSidebar';
 
-import ArchiveContent from '../components/ArchiveRoom/ArchiveContent';
+import FullstackSection from '../components/ArchiveRoom/FullstackSection';
 
 export default function ArchiveRoom() {
 
+  const [overlayActive, setOverlayActive] =
+    useState(false);
+
   return (
-    <main className={styles.archiveRoom}>
+
+    <main
+      className={`
+        ${styles.archiveRoom}
+
+        ${
+          overlayActive
+            ? styles.overlayActive
+            : ''
+        }
+      `}
+    >
 
       <ArchiveTopbar />
 
       <ArchiveSidebar />
 
-      <ArchiveContent />
+      <FullstackSection
+        overlayActive={overlayActive}
+        setOverlayActive={setOverlayActive}
+      />
 
     </main>
   );
