@@ -1,3 +1,5 @@
+import { fakeJumpingWorkspace }
+from './fakejumping';
 export const extensionMap = {
 
   pdf: {
@@ -82,37 +84,16 @@ url: '/preview/runtime-profile.html',
 },
 },
 
-  {
-    id: 'portfolio',
+{
+  id: 'fakejumping',
+location: 'Projects',
+  title: 'fakejumping-admin',
 
-    title: 'fakejumping-admin',
+  type: 'FOLDER',
 
-    location: 'Projects',
-
-    shortcut: true,
-
-    launch: {
-
-      type: 'github',
-
-      url:
-        'https://github.com/park-yina',
-    },
-
-    preview: `
-# fakejumping-admin
-
-Spring Boot
-JWT
-MyBatis
-Docker
-AWS
-
-실시간 운영 환경 기반
-관리자 플랫폼 프로젝트
-    `,
-  },
-
+  workspace:
+    fakeJumpingWorkspace,
+},
   {
     id: 'philosophy',
 

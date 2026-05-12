@@ -229,7 +229,7 @@ const projects = [
 
   {
     title: 'portfolio',
-    branch: 'stage',
+    branch: 'main',
     runtime: 'githubPages',
     stack: 'docusaurus',
     type: 'custom',

@@ -17,6 +17,366 @@ import {
   runtimeConfig,
 } from '../../config/runtime';
 import styles from './styles.module.css';
+
+function getWorkspaceInitialFiles(
+  folders,
+) {
+
+  const firstFolder =
+    folders[0];
+
+  const files =
+    firstFolder?.children || [];
+
+  const initialFile =
+    files[1] || files[0] || null;
+
+  return {
+    files,
+    initialFile,
+  };
+}
+
+function WorkspaceOverlayView({
+  item,
+  onClose,
+}) {
+
+  const folders =
+    item.workspace?.folders || [];
+
+  const {
+    files,
+    initialFile,
+  } = getWorkspaceInitialFiles(folders);
+
+  const [openedFiles, setOpenedFiles] =
+    useState(
+      initialFile
+        ? [initialFile]
+        : []
+    );
+
+  const [activeFile, setActiveFile] =
+    useState(initialFile);
+
+  useEffect(() => {
+
+    setOpenedFiles(
+      initialFile
+        ? [initialFile]
+        : []
+    );
+
+    setActiveFile(initialFile);
+
+  }, [item, initialFile]);
+
+  const openFile = (file) => {
+
+    setOpenedFiles((prev) => {
+
+      const exists =
+        prev.some(
+          (openedFile) =>
+            openedFile.id === file.id
+        );
+
+      if (exists) {
+        return prev;
+      }
+
+      return [
+        ...prev,
+        file,
+      ];
+    });
+
+    setActiveFile(file);
+  };
+
+  const closeFile = (fileId) => {
+
+    setOpenedFiles((prev) => {
+
+      const closingIndex =
+        prev.findIndex(
+          (file) =>
+            file.id === fileId
+        );
+
+      const nextFiles =
+        prev.filter(
+          (file) =>
+            file.id !== fileId
+        );
+
+      if (activeFile?.id === fileId) {
+
+        const nextActive =
+          nextFiles[
+            Math.max(
+              0,
+              closingIndex - 1
+            )
+          ] || nextFiles[0] || null;
+
+        setActiveFile(nextActive);
+      }
+
+      return nextFiles;
+    });
+  };
+
+  const relatedDocs =
+    files.filter((file) =>
+      file.type === 'MARKDOWN'
+    );
+
+  const relatedCode =
+    files.filter((file) =>
+      file.type === 'CODE' &&
+      file.id !== activeFile?.id
+    );
+
+  return (
+
+    <div
+      className={styles.workspaceOverlay}
+      onClick={onClose}
+    >
+
+      <div
+        className={styles.workspaceExplorer}
+        onClick={(e) =>
+          e.stopPropagation()
+        }
+      >
+
+        <div className={styles.workspaceWindowBar}>
+          <button
+            type="button"
+            className={`${styles.workspaceWindowDot} ${styles.workspaceWindowClose}`}
+            onClick={onClose}
+            aria-label="Close workspace"
+          />
+
+          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowMinimize}`} />
+          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowExpand}`} />
+        </div>
+
+        <div className={styles.workspaceContent}>
+          <aside className={styles.workspaceGuide}>
+            <div className={styles.workspaceBadge}>
+              Curated Workspace
+            </div>
+
+            <h2>
+              {item.title}
+            </h2>
+
+            <p>
+              Core files and notes are grouped into a compact project workspace.
+            </p>
+
+            <div className={styles.workspaceChips}>
+              <span>security</span>
+              <span>code + docs</span>
+              <span>runtime note</span>
+            </div>
+          </aside>
+
+          <section className={styles.workspaceMain}>
+            <div className={styles.workspaceTree}>
+              <div className={styles.treeTitle}>
+                WORKSPACE
+              </div>
+
+              <div className={styles.treeRoot}>
+                {item.title}
+              </div>
+
+              {
+                folders.map((folder) => (
+
+                  <div
+                    key={folder.id}
+                    className={styles.treeFolder}
+                  >
+                    <div className={styles.treeFolderName}>
+                      <i className="fa-solid fa-lock" />
+                      {folder.title}
+                    </div>
+
+                    {
+                      folder.children?.map((file) => (
+
+                        <button
+                          key={file.id}
+                          type="button"
+                          className={`${styles.treeFile} ${
+                            activeFile?.id === file.id
+                              ? styles.treeFileActive
+                              : ''
+                          }`}
+                          onClick={() =>
+                            openFile(file)
+                          }
+                        >
+                          <i
+                            className={`fa-solid ${
+                              file.type === 'MARKDOWN'
+                                ? 'fa-file-lines'
+                                : 'fa-file-code'
+                            }`}
+                          />
+                          {file.title}
+                        </button>
+
+                      ))
+                    }
+                  </div>
+
+                ))
+              }
+            </div>
+
+            <article className={styles.workspaceEditor}>
+              <div className={styles.editorTabs}>
+                {
+                  openedFiles.map((file) => (
+
+                    <div
+                      key={file.id}
+                      className={`${styles.editorTab} ${
+                        activeFile?.id === file.id
+                          ? styles.editorTabActive
+                          : ''
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        className={styles.editorTabButton}
+                        onClick={() =>
+                          setActiveFile(file)
+                        }
+                      >
+                        {file.title}
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.editorTabClose}
+                        onClick={() =>
+                          closeFile(file.id)
+                        }
+                        aria-label={`Close ${file.title}`}
+                      >
+                        x
+                      </button>
+                    </div>
+
+                  ))
+                }
+              </div>
+
+              {
+                activeFile ? (
+
+                  <>
+                    <div className={styles.editorHeader}>
+                      <h3>
+                        {activeFile.title}
+                      </h3>
+
+                      <p>
+                        {activeFile.description}
+                      </p>
+                    </div>
+
+                    <pre className={styles.editorCode}>
+                      <code>
+                        {activeFile.preview?.trim()}
+                      </code>
+                    </pre>
+
+                    <div className={styles.editorPath}>
+                      Path: src/main/java/com/parkyina/fakejumping/security/{activeFile.title}
+                    </div>
+                  </>
+
+                ) : (
+
+                  <div className={styles.editorEmpty}>
+                    Select a file from the tree to open it.
+                  </div>
+
+                )
+              }
+            </article>
+
+            <aside className={styles.workspaceRelated}>
+              <h3>
+                Related Docs
+              </h3>
+
+              {
+                relatedDocs.map((file) => (
+
+                  <button
+                    key={file.id}
+                    type="button"
+                    className={styles.relatedItem}
+                    onClick={() =>
+                      openFile(file)
+                    }
+                  >
+                    <strong>
+                      {file.title}
+                    </strong>
+                    <span>
+                      {file.description}
+                    </span>
+                  </button>
+
+                ))
+              }
+
+              <h3>
+                Related Code
+              </h3>
+
+              {
+                relatedCode.map((file) => (
+
+                  <button
+                    key={file.id}
+                    type="button"
+                    className={styles.relatedItem}
+                    onClick={() =>
+                      openFile(file)
+                    }
+                  >
+                    <strong>
+                      {file.title}
+                    </strong>
+                    <span>
+                      {file.description}
+                    </span>
+                  </button>
+
+                ))
+              }
+            </aside>
+          </section>
+        </div>
+
+      </div>
+
+    </div>
+
+  );
+}
 /* =========================
    FILE META
 ========================= */
@@ -49,6 +409,9 @@ const [menuState, setMenuState] =
 
 const [runtimeLink, setRuntimeLink] =
   useState(runtimeLinks[0]);
+
+const [workspaceItem, setWorkspaceItem] =
+  useState(null);
   useEffect(() => {
 
   const interval = setInterval(() => {
@@ -284,6 +647,13 @@ useEffect(() => {
 }, [activeItem]);
 const openItem = (item) => {
 
+  if (
+    item.workspace ||
+    item.type === 'FOLDER'
+  ) {
+    return;
+  }
+
   const exists =
     openedTabs.some(
       (tab) =>
@@ -307,6 +677,15 @@ const openItem = (item) => {
 
 const handleLaunch =
   async (item) => {
+
+   if (
+  item.workspace
+) {
+
+      setWorkspaceItem(item);
+
+      return;
+    }
 
     const launch =
       item.launch;
@@ -449,6 +828,325 @@ const handleContextMenu = (
   });
 };
 
+const ProjectWorkspaceOverlay = ({
+  item,
+  onClose,
+}) => {
+const folders =
+  item.workspace?.folders || [];
+
+  const firstFolder =
+    folders[0];
+
+  const files =
+    firstFolder?.children || [];
+
+  const [openedFiles, setOpenedFiles] =
+    useState(
+      files[1]
+        ? [files[1]]
+        : files[0]
+          ? [files[0]]
+          : []
+    );
+
+  const [activeFile, setActiveFile] =
+    useState(files[1] || files[0] || null);
+
+  const openFile = (file) => {
+
+    setOpenedFiles((prev) => {
+
+      const exists =
+        prev.some(
+          (openedFile) =>
+            openedFile.id === file.id
+        );
+
+      if (exists) {
+        return prev;
+      }
+
+      return [
+        ...prev,
+        file,
+      ];
+    });
+
+    setActiveFile(file);
+  };
+
+  const closeFile = (fileId) => {
+
+    setOpenedFiles((prev) => {
+
+      const nextFiles =
+        prev.filter(
+          (file) =>
+            file.id !== fileId
+        );
+
+      if (activeFile?.id === fileId) {
+        setActiveFile(
+          nextFiles[nextFiles.length - 1] ||
+          null
+        );
+      }
+
+      return nextFiles;
+    });
+  };
+
+  const relatedDocs =
+    files.filter((file) =>
+      file.type === 'MARKDOWN'
+    );
+
+  const relatedCode =
+    files.filter((file) =>
+      file.type === 'CODE' &&
+      file.id !== activeFile?.id
+    );
+
+  return (
+
+    <div
+      className={styles.workspaceOverlay}
+      onClick={onClose}
+    >
+
+      <div
+        className={styles.workspaceExplorer}
+        onClick={(e) =>
+          e.stopPropagation()
+        }
+      >
+
+        <div className={styles.workspaceWindowBar}>
+          <button
+            type="button"
+            className={`${styles.workspaceWindowDot} ${styles.workspaceWindowClose}`}
+            onClick={onClose}
+            aria-label="Close workspace"
+          />
+
+          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowMinimize}`} />
+
+          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowExpand}`} />
+        </div>
+
+        <aside className={styles.workspaceGuide}>
+          <div className={styles.workspaceBadge}>
+            Curated Workspace
+          </div>
+
+          <h2>
+            {item.title}
+          </h2>
+
+          <p>
+            핵심 기능과 아키텍처 단위로 정리한 프로젝트 워크스페이스입니다.
+          </p>
+
+          <div className={styles.workspaceChips}>
+            <span>security</span>
+            <span>code + docs</span>
+            <span>runtime note</span>
+          </div>
+        </aside>
+
+        <section className={styles.workspaceMain}>
+
+          <div className={styles.workspaceTree}>
+            <div className={styles.treeTitle}>
+              WORKSPACE
+            </div>
+
+            <div className={styles.treeRoot}>
+              {item.title}
+            </div>
+
+            {
+              folders.map((folder) => (
+
+                <div
+                  key={folder.id}
+                  className={styles.treeFolder}
+                >
+                  <div className={styles.treeFolderName}>
+                    <i className="fa-solid fa-lock" />
+                    {folder.title}
+                  </div>
+
+                  {
+                    folder.children?.map((file) => (
+
+                      <button
+                        key={file.id}
+                        type="button"
+                        className={`${styles.treeFile} ${
+                          activeFile?.id === file.id
+                            ? styles.treeFileActive
+                            : ''
+                        }`}
+                        onClick={() =>
+                          openFile(file)
+                        }
+                      >
+                        <i
+                          className={`fa-solid ${
+                            file.type === 'MARKDOWN'
+                              ? 'fa-file-lines'
+                              : 'fa-file-code'
+                          }`}
+                        />
+                        {file.title}
+                      </button>
+
+                    ))
+                  }
+                </div>
+
+              ))
+            }
+          </div>
+
+          <article className={styles.workspaceEditor}>
+            <div className={styles.editorTabs}>
+              <span className={styles.editorGuideTab}>
+                README.md
+              </span>
+
+              {
+                openedFiles.map((file) => (
+
+                  <div
+                    key={file.id}
+                    className={`${styles.editorTab} ${
+                      activeFile?.id === file.id
+                        ? styles.editorTabActive
+                        : ''
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      className={styles.editorTabButton}
+                      onClick={() =>
+                        setActiveFile(file)
+                      }
+                    >
+                      {file.title}
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.editorTabClose}
+                      onClick={() =>
+                        closeFile(file.id)
+                      }
+                      aria-label={`Close ${file.title}`}
+                    >
+                      x
+                    </button>
+                  </div>
+
+                ))
+              }
+            </div>
+
+            <div className={styles.editorHeader}>
+              <h3>
+                {activeFile?.title}
+              </h3>
+
+              <p>
+                {activeFile?.description}
+              </p>
+            </div>
+
+            <pre className={styles.editorCode}>
+              <code>
+                {activeFile?.preview?.trim()}
+              </code>
+            </pre>
+
+            <div className={styles.editorPath}>
+              위치: src/main/java/com/parkyina/fakejumping/security/{activeFile?.title}
+            </div>
+          </article>
+
+          <aside className={styles.workspaceRelated}>
+            <button
+              type="button"
+              className={styles.workspaceClose}
+              onClick={onClose}
+              aria-label="Close workspace"
+            >
+              ×
+            </button>
+
+            <h3>
+              관련 문서
+            </h3>
+
+            {
+              relatedDocs.map((file) => (
+
+                <button
+                  key={file.id}
+                  type="button"
+                  className={styles.relatedItem}
+                  onClick={() =>
+                    openFile(file)
+                  }
+                >
+                  <strong>
+                    {file.title}
+                  </strong>
+                  <span>
+                    {file.description}
+                  </span>
+                </button>
+
+              ))
+            }
+
+            <h3>
+              관련 코드
+            </h3>
+
+            {
+              relatedCode.map((file) => (
+
+                <button
+                  key={file.id}
+                  type="button"
+                  className={styles.relatedItem}
+                  onClick={() =>
+                    openFile(file)
+                  }
+                >
+                  <strong>
+                    {file.title}
+                  </strong>
+                  <span>
+                    {file.description}
+                  </span>
+                </button>
+
+              ))
+            }
+          </aside>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  );
+};
+
   /* =========================
      CLOSE TAB
   ========================= */
@@ -554,7 +1252,13 @@ return (
 
         case 'Desktop':
         default:
-          return true;
+          return !(
+            item.location === 'Projects' &&
+            (
+              item.workspace ||
+              item.type === 'FOLDER'
+            )
+          );
       }
     })
 
@@ -742,6 +1446,19 @@ return (
 
 </div>
 {/* PREVIEW */}
+
+{
+  workspaceItem && (
+
+    <WorkspaceOverlayView
+      item={workspaceItem}
+      onClose={() =>
+        setWorkspaceItem(null)
+      }
+    />
+
+  )
+}
 
 {
 

@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
 import styles from './styles.module.css';
+
 import { documents }
 from '../../data/documents';
 
@@ -8,7 +12,7 @@ from '../../data/documents';
    DOCUMENT VIEWER
 ========================================= */
 
-export  function DocumentViewer({
+export function DocumentViewer({
   doc,
 }) {
 
@@ -87,12 +91,12 @@ export  function DocumentViewer({
 
   );
 }
+
 /* =========================================
    PREVIEW PANEL
 ========================================= */
 
-
-export  function PreviewPanel({
+export function PreviewPanel({
 
   activeItem,
 
@@ -113,9 +117,9 @@ export  function PreviewPanel({
      EMPTY
   ========================================= */
 
-if (!activeItem) {
-  return null;
-}
+  if (!activeItem) {
+    return null;
+  }
 
   /* =========================================
      TYPES
@@ -127,8 +131,52 @@ if (!activeItem) {
   const isDocument =
     activeItem.type === 'DOCUMENT';
 
+  const isCode =
+    activeItem.type === 'CODE';
+
   const currentDocument =
     documents[activeItem.id];
+
+  /* =========================================
+     CODE CONTENT
+  ========================================= */
+
+  const [codeContent, setCodeContent] =
+    useState('');
+
+useEffect(() => {
+
+  if (
+    activeItem?.type === 'CODE' &&
+    activeItem.previewUrl
+  ) {
+
+    fetch(activeItem.previewUrl)
+
+      .then((res) => res.text())
+
+      .then((text) => {
+
+        setCodeContent(text);
+
+      })
+
+      .catch((err) => {
+
+        console.error(
+          'code preview load failed',
+          err,
+        );
+
+        setCodeContent(
+          '// failed to load code'
+        );
+
+      });
+
+  }
+
+}, [activeItem]);
 
   return (
 
@@ -146,12 +194,15 @@ if (!activeItem) {
         }`}
 
         onMouseDown={(e) => {
+
           if (e.button !== 0) {
             return;
           }
 
           e.preventDefault();
-          setIsResizing(true)
+
+          setIsResizing(true);
+
         }}
 
         onDoubleClick={() =>
@@ -165,11 +216,10 @@ if (!activeItem) {
 
       <div
         className={styles.previewPanel}
-        style={{
-            width: `${previewWidth}px`,
 
-        }}  
-    
+        style={{
+          width: `${previewWidth}px`,
+        }}
       >
 
         {/* =========================================
@@ -181,56 +231,64 @@ if (!activeItem) {
           {
             openedTabs.map((tab) => (
 
-<div
-  key={tab.id}
-  className={`${styles.tab} ${
-    activeItem.id === tab.id
-      ? styles.activeTab
-      : ''
-  }`}
-  onClick={() => setActiveTab(tab)}
->
+              <div
+                key={tab.id}
 
-  {
-    tab.image ? (
+                className={`${styles.tab} ${
+                  activeItem.id === tab.id
+                    ? styles.activeTab
+                    : ''
+                }`}
 
-      <img
-        src={tab.image}
-        alt=""
-        className={styles.tabImageIcon}
-      />
+                onClick={() =>
+                  setActiveTab(tab)
+                }
+              >
 
-    ) : (
+                {
+                  tab.image ? (
 
-      tab.icon && (
+                    <img
+                      src={tab.image}
+                      alt=""
+                      className={styles.tabImageIcon}
+                    />
 
-        <i
-          className={`fa-solid ${tab.icon} ${styles.tabIcon}`}
-          style={{
-            color: tab.color,
-          }}
-          aria-hidden="true"
-        />
+                  ) : (
 
-      )
-    )
-  }
+                    tab.icon && (
 
-  <span className={styles.tabTitle}>
-    {tab.title}
-  </span>
+                      <i
+                        className={`fa-solid ${tab.icon} ${styles.tabIcon}`}
+                        style={{
+                          color: tab.color,
+                        }}
+                        aria-hidden="true"
+                      />
 
-  <button
-    className={styles.closeButton}
-    onClick={(e) => {
-      e.stopPropagation();
-      closeTab(tab.id);
-    }}
-  >
-    ×
-  </button>
+                    )
+                  )
+                }
 
-</div>
+                <span className={styles.tabTitle}>
+                  {tab.title}
+                </span>
+
+                <button
+                  className={styles.closeButton}
+
+                  onClick={(e) => {
+
+                    e.stopPropagation();
+
+                    closeTab(tab.id);
+
+                  }}
+                >
+                  ×
+                </button>
+
+              </div>
 
             ))
           }
@@ -241,89 +299,107 @@ if (!activeItem) {
            TOOLBAR
         ========================================= */}
 
-<div className={styles.toolbar}>
+        <div className={styles.toolbar}>
 
-  <div className={styles.toolbarLeft}>
+          <div className={styles.toolbarLeft}>
+          </div>
 
-  </div>
+          <div className={styles.toolbarRight}>
+          </div>
 
-  <div className={styles.toolbarRight}>
-
-  </div>
-
-</div>
+        </div>
 
         {/* =========================================
            CONTENT
         ========================================= */}
-<div className={styles.previewContent}>
 
-  {/* =========================================
-     INTERNAL DOCUMENT
-  ========================================= */}
+        <div className={styles.previewContent}>
 
-  {
-    isDocument &&
-    currentDocument && (
+          {/* =========================================
+             INTERNAL DOCUMENT
+          ========================================= */}
 
-      <DocumentViewer
-        doc={currentDocument}
-      />
+          {
+            isDocument &&
+            currentDocument && (
 
-    )
-  }
+              <DocumentViewer
+                doc={currentDocument}
+              />
 
-  {/* =========================================
-     PDF VIEWER
-  ========================================= */}
+            )
+          }
 
-  {
-    isPdf && (
+          {/* =========================================
+             CODE VIEWER
+          ========================================= */}
 
-      <iframe
-        title={activeItem.title}
+          {
+            isCode && (
 
-        src={activeItem.url}
+              <pre className={styles.previewCode}>
 
-        className={`${styles.previewIframe} ${
-          isResizing
-            ? styles.previewIframeResizing
-            : ''
-        }`}
-      />
+                <code>
+                  {codeContent}
+                </code>
 
-    )
-  }
+              </pre>
 
-  {/* =========================================
-     HTML FILE VIEWER
-  ========================================= */}
-{
-  activeItem.type === 'html' &&
-  activeItem.url && (
+            )
+          }
 
-    <iframe
+          {/* =========================================
+             PDF VIEWER
+          ========================================= */}
 
-      title={activeItem.title}
+          {
+            isPdf && (
 
-      src={activeItem.url}
+              <iframe
+                title={activeItem.title}
 
-      className={`${styles.previewIframe} ${
-        isResizing
-          ? styles.previewIframeResizing
-          : ''
-      }`}
+                src={activeItem.url}
 
-      sandbox="
-        allow-same-origin
-        allow-scripts
-      "
-    />
+                className={`${styles.previewIframe} ${
+                  isResizing
+                    ? styles.previewIframeResizing
+                    : ''
+                }`}
+              />
 
-  )
-}
+            )
+          }
 
-</div>
+          {/* =========================================
+             HTML FILE VIEWER
+          ========================================= */}
+
+          {
+            activeItem.type === 'html' &&
+            activeItem.url && (
+
+              <iframe
+
+                title={activeItem.title}
+
+                src={activeItem.url}
+
+                className={`${styles.previewIframe} ${
+                  isResizing
+                    ? styles.previewIframeResizing
+                    : ''
+                }`}
+
+                sandbox="
+                  allow-same-origin
+                  allow-scripts
+                "
+              />
+
+            )
+          }
+
+        </div>
 
       </div>
 
