@@ -142,6 +142,9 @@ function HomepageHeader() {
   const [runtimeStats, setRuntimeStats] =
     useState(null);
 
+  const [ludaLogStats, setLudaLogStats] =
+    useState(null);
+
   useEffect(() => {
 
     const fetchRuntimeStats = async () => {
@@ -152,20 +155,44 @@ function HomepageHeader() {
           'https://luda-runtime-stats.s3.amazonaws.com/fakejumping/stage/stats.json'
         );
 
-        const data = await res.json();
+        const data =
+          await res.json();
 
         setRuntimeStats(data);
 
       } catch (e) {
 
         console.error(
-          'runtime stats load failed',
+          'fakejumping stats load failed',
+          e,
+        );
+      }
+    };
+
+    const fetchLudaLogStats = async () => {
+
+      try {
+
+        const res = await fetch(
+          '/runtime/ludalog.json'
+        );
+
+        const data =
+          await res.json();
+
+        setLudaLogStats(data);
+
+      } catch (e) {
+
+        console.error(
+          'ludalog stats load failed',
           e,
         );
       }
     };
 
     fetchRuntimeStats();
+    fetchLudaLogStats();
 
   }, []);
 
@@ -201,17 +228,11 @@ const projects = [
   },
 
   {
-    title: 'shinchun-archive',
-    branch: 'archive',
-    runtime: 'aws-lambda',
-    stack: 'flask',
-    type: 'archive',
-
-    archivedStats: {
-      total: 1084,
-      Python: 438,
-      HTML: 646,
-    },
+    title: 'portfolio',
+    branch: 'stage',
+    runtime: 'githubPages',
+    stack: 'docusaurus',
+    type: 'custom',
   },
 {
   title: 'JumpingBattle',
@@ -307,7 +328,7 @@ const projects = [
 
                   {
 
-                    runtimeStats && (
+                    (runtimeStats || ludaLogStats) && (
 
                       <div className={styles.runtimeGrid}>
 
@@ -315,15 +336,21 @@ const projects = [
 
                           projects.map((project) => {
 
-  const stats =
-    project.type === 'archive'
-      ? project.archivedStats
+const stats =
+  project.type === 'archive'
+    ? project.archivedStats
+    : project.type === 'custom'
+      ? ludaLogStats
       : runtimeStats;
 
-  const total =
-    project.type === 'archive'
-      ? stats.total
-      : (stats.SUM?.code || 0);
+if (!stats) {
+  return null;
+}
+
+const total =
+  project.type === 'archive'
+    ? stats.total
+    : stats.SUM?.code || 0;
 
   return (
 
@@ -450,7 +477,7 @@ const projects = [
                   {
                     createAsciiBar(
                       stats.Java?.code || 0,
-                      stats.SUM.code
+                      total
                     )
                   }
 
@@ -475,7 +502,7 @@ const projects = [
                   {
                     createAsciiBar(
                       stats.XML?.code || 0,
-                      stats.SUM.code
+                      total
                     )
                   }
 
@@ -500,7 +527,7 @@ const projects = [
                   {
                     createAsciiBar(
                       stats.JavaScript?.code || 0,
-                      stats.SUM.code
+                      total
                     )
                   }
 
@@ -522,7 +549,7 @@ const projects = [
     {
       createAsciiBar(
         stats.CSS?.code || 0,
-        stats.SUM.code
+        total
       )
     }
 
@@ -547,7 +574,7 @@ const projects = [
     {
       createAsciiBar(
         stats.HTML?.code || 0,
-        stats.SUM.code
+        total
       )
     }
 
