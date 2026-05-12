@@ -1,0 +1,863 @@
+
+.openedOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(108, 76, 42, 0.18),
+      rgba(6, 7, 12, 0.72) 48%,
+      rgba(0, 0, 0, 0.86) 100%
+    );
+  backdrop-filter:
+    blur(14px)
+    brightness(0.42)
+    saturate(0.72);
+  -webkit-backdrop-filter:
+    blur(14px)
+    brightness(0.42)
+    saturate(0.72);
+  animation:
+    dimensionEnter 0.46s ease forwards,
+    dimensionRecover 1.25s ease 1.45s forwards;
+}
+
+.openedOverlay::before {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 42%,
+      rgba(0, 0, 0, 0.48) 74%,
+      rgba(0, 0, 0, 0.76) 100%
+    );
+  animation:
+    vignetteBreath 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.openedOverlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.08;
+  background-image:
+    repeating-radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 255, 255, 0.32) 0 1px,
+      transparent 1px 4px
+    );
+  mix-blend-mode: screen;
+  animation:
+    dimensionGrain 1.8s steps(2, end) infinite;
+  pointer-events: none;
+}
+
+.dimensionFog {
+  position: absolute;
+  inset: -18%;
+  z-index: 2;
+  background:
+    radial-gradient(
+      ellipse at 35% 54%,
+      rgba(255, 205, 126, 0.08),
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 68% 40%,
+      rgba(129, 164, 196, 0.07),
+      transparent 36%
+    );
+  filter: blur(28px);
+  opacity: 0.82;
+  animation:
+    fogDrift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.recordStage {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  perspective: 2400px;
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.recordStage::before,
+.recordStage::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 65;
+  height: clamp(68px, 12vh, 120px);
+  pointer-events: none;
+}
+
+.recordStage::before {
+  top: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.58),
+      transparent
+    );
+}
+
+.recordStage::after {
+  bottom: 0;
+  background:
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.62),
+      transparent
+    );
+}
+
+.recordScroll {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  perspective: 2400px;
+  transform-style: preserve-3d;
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(255, 220, 160, 0.28)
+    rgba(255, 255, 255, 0.04);
+}
+
+.recordScroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.recordScroll::-webkit-scrollbar-track {
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+.recordScroll::-webkit-scrollbar-thumb {
+  border: 3px solid rgba(0, 0, 0, 0.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 226, 174, 0.34),
+      rgba(146, 103, 58, 0.22)
+    );
+}
+
+.bookArtifact {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  z-index: 10;
+  width: min(940px, 82vw);
+  height: min(560px, 58vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  opacity: 1;
+  transform:
+    translate(-50%, -50%)
+    translateZ(0)
+    scale(1);
+  filter:
+    blur(0)
+    brightness(1);
+  animation:
+    bookArtifactSink 0.9s cubic-bezier(0.18, 0.72, 0.2, 1) 1.36s forwards;
+}
+
+.openedBook {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 2400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: none;
+  transform-style: preserve-3d;
+  animation:
+    bookStageIn 0.58s cubic-bezier(0.18, 0.86, 0.22, 1.08);
+}
+
+.bookInnerPages {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  isolation: isolate;
+  background: #e7d9bc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.72);
+  transform:
+    rotateX(4deg)
+    translateZ(0);
+  animation:
+    pagesAppear 0.72s ease,
+    bookSettle 1.15s cubic-bezier(0.19, 0.82, 0.24, 1) forwards;
+}
+
+.bookInnerPages::before {
+  content: '';
+  position: absolute;
+  inset: 3% 49.3% 3% auto;
+  z-index: 4;
+  width: 1.4%;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(95, 54, 25, 0.1),
+      rgba(50, 28, 16, 0.34),
+      rgba(255, 247, 223, 0.2)
+    );
+  filter: blur(0.2px);
+  pointer-events: none;
+}
+
+.leftPage,
+.rightPage {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      #f4ead4,
+      #dbc8a8
+    );
+}
+
+.leftPage {
+  border-radius: 10px 0 0 10px;
+}
+
+.rightPage {
+  border-radius: 0 10px 10px 0;
+}
+
+.leftPage::before,
+.rightPage::after {
+  content: '';
+  position: absolute;
+  inset: 10px 14px;
+  border-top: 1px solid rgba(105, 70, 36, 0.12);
+  border-bottom: 1px solid rgba(105, 70, 36, 0.1);
+  pointer-events: none;
+}
+
+.leftPage::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 26px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 0, 0, 0.14)
+    );
+}
+
+.rightPage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 26px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.16),
+      transparent
+    );
+}
+
+.pageInner {
+  padding:
+    4rem 3rem;
+}
+
+.pageFlurry {
+  position: absolute;
+  inset: 0;
+  z-index: 16;
+  pointer-events: none;
+  perspective: 2400px;
+  transform-style: preserve-3d;
+}
+
+.flippingPage {
+  position: absolute;
+  top: 2.3%;
+  left: 50%;
+  width: 49%;
+  height: 95.4%;
+  border-radius: 0 10px 10px 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(130, 86, 42, 0.28),
+      rgba(246, 237, 211, 0.98) 10%,
+      rgba(255, 251, 234, 0.96) 58%,
+      rgba(217, 196, 157, 0.92)
+    );
+  box-shadow:
+    inset 18px 0 24px rgba(92, 55, 25, 0.18),
+    inset -5px 0 12px rgba(255, 255, 255, 0.36),
+    -22px 0 34px rgba(45, 26, 12, 0.18);
+  opacity: 0;
+  transform:
+    rotateY(0deg)
+    translateZ(18px);
+  transform-origin: left center;
+  animation:
+    pageWhip 0.88s cubic-bezier(0.17, 0.76, 0.24, 1) forwards;
+}
+
+.flippingPage::before {
+  content: '';
+  position: absolute;
+  inset: 6% 8% 6% 14%;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(95, 67, 37, 0.12) 0,
+      rgba(95, 67, 37, 0.12) 1px,
+      transparent 1px,
+      transparent 16px
+    );
+  opacity: 0.55;
+}
+
+.flippingPage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 18% 50%,
+      rgba(70, 38, 17, 0.22),
+      transparent 42%
+    );
+  opacity: 0.7;
+}
+
+.flippingPage:nth-child(1) {
+  animation-delay: 0.18s;
+}
+
+.flippingPage:nth-child(2) {
+  top: 3%;
+  height: 94%;
+  animation-delay: 0.25s;
+}
+
+.flippingPage:nth-child(3) {
+  transform: rotateY(0deg) translateZ(24px);
+  animation-delay: 0.31s;
+}
+
+.flippingPage:nth-child(4) {
+  top: 3.5%;
+  height: 93%;
+  animation-delay: 0.37s;
+}
+
+.flippingPage:nth-child(5) {
+  transform: rotateY(0deg) translateZ(30px);
+  animation-delay: 0.43s;
+}
+
+.flippingPage:nth-child(6) {
+  top: 2.6%;
+  height: 94.8%;
+  animation-delay: 0.49s;
+}
+
+.flippingPage:nth-child(7) {
+  transform: rotateY(0deg) translateZ(34px);
+  animation-delay: 0.55s;
+}
+
+.flippingPage:nth-child(8) {
+  top: 3.2%;
+  height: 93.5%;
+  animation-delay: 0.61s;
+}
+
+.flippingPage:nth-child(9) {
+  transform: rotateY(0deg) translateZ(38px);
+  animation-delay: 0.68s;
+}
+
+.bookCover {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  animation:
+    openCover 1.05s cubic-bezier(0.18, 0.82, 0.18, 1) forwards;
+}
+
+.coverFront {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  padding:
+    4rem 3rem;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      #5d392b,
+      #241814
+    );
+  color: rgba(255, 245, 225, 0.94);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    24px 0 40px rgba(0, 0, 0, 0.42);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform:
+    translateZ(34px)
+    rotateX(0.01deg);
+}
+
+.coverFront::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      105deg,
+      transparent,
+      rgba(255, 237, 187, 0.16) 42%,
+      transparent 58%
+    );
+  transform: translateX(-120%);
+  animation:
+    coverGleam 0.86s ease 0.18s forwards;
+  pointer-events: none;
+}
+
+.openedSpine {
+  position: absolute;
+  top: 2.5%;
+  bottom: 2.5%;
+  left: calc(50% - 7px);
+  z-index: 18;
+  width: 14px;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(52, 24, 13, 0.56),
+      rgba(120, 75, 34, 0.28),
+      rgba(255, 235, 180, 0.24),
+      rgba(43, 22, 13, 0.48)
+    );
+  box-shadow:
+    0 0 16px rgba(55, 31, 16, 0.34),
+    inset 0 0 8px rgba(255, 238, 190, 0.18);
+  opacity: 0;
+  animation:
+    spineReveal 0.45s ease 0.38s forwards;
+  pointer-events: none;
+}
+
+.closeButton {
+  position: fixed;
+  bottom: 42px;
+  right: 42px;
+  top: auto;
+  z-index: 80;
+}
+
+.closingOverlay {
+  animation:
+    dimensionClose 0.78s ease forwards;
+}
+
+.closingOverlay .dimensionFog {
+  animation:
+    fogClose 0.72s ease forwards;
+}
+
+.closingOverlay .bookArtifact {
+  animation:
+    bookSilhouetteReturn 0.72s cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+}
+
+.closingOverlay .closeButton {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes openCover {
+  0% {
+    opacity: 1;
+    transform:
+      rotateY(0deg);
+  }
+
+  40% {
+    transform:
+      rotateY(-24deg);
+  }
+
+  100% {
+    opacity: 0.98;
+    transform:
+      rotateY(-148deg);
+  }
+}
+
+@keyframes pageWhip {
+  0% {
+    opacity: 0;
+    transform:
+      rotateY(0deg)
+      translateZ(20px)
+      skewY(0deg);
+  }
+
+  12% {
+    opacity: 0.98;
+  }
+
+  46% {
+    opacity: 1;
+    transform:
+      rotateY(-82deg)
+      translateZ(42px)
+      translateX(-6px)
+      skewY(-1.5deg);
+  }
+
+  78% {
+    opacity: 0.82;
+    transform:
+      rotateY(-154deg)
+      translateZ(26px)
+      translateX(-16px)
+      skewY(1.2deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      rotateY(-178deg)
+      translateZ(8px)
+      translateX(-22px)
+      skewY(0deg);
+  }
+}
+
+@keyframes bookStageIn {
+  0% {
+    opacity: 0;
+    transform:
+      translateY(34px)
+      scale(0.88)
+      rotateX(12deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1)
+      rotateX(0deg);
+  }
+}
+
+@keyframes pagesAppear {
+  0% {
+    opacity: 0;
+    transform:
+      scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      scale(1);
+  }
+}
+
+@keyframes bookSettle {
+  0% {
+    transform:
+      rotateX(8deg)
+      scaleX(0.82)
+      scaleY(0.92);
+  }
+
+  58% {
+    transform:
+      rotateX(4deg)
+      scaleX(1.025)
+      scaleY(1.01);
+  }
+
+  100% {
+    transform:
+      rotateX(4deg)
+      scaleX(1)
+      scaleY(1);
+  }
+}
+
+@keyframes coverGleam {
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes spineReveal {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes bookArtifactSink {
+  0% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(1);
+    filter:
+      blur(0)
+      brightness(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, calc(-50% + 60px))
+      translateZ(-180px)
+      scale(0.86);
+    filter:
+      blur(2px)
+      brightness(0.52);
+  }
+}
+
+@keyframes bookSilhouetteReturn {
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, calc(-50% + 60px))
+      translateZ(-180px)
+      scale(0.86);
+    filter:
+      blur(2px)
+      brightness(0.44);
+  }
+
+  45% {
+    opacity: 0.22;
+    transform:
+      translate(-50%, calc(-50% + 34px))
+      translateZ(-120px)
+      scale(0.9);
+    filter:
+      blur(2px)
+      brightness(0.62);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, calc(-50% + 78px))
+      translateZ(-260px)
+      scale(0.8);
+    filter:
+      blur(4px)
+      brightness(0.3);
+  }
+}
+
+@keyframes dimensionEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dimensionRecover {
+  to {
+    backdrop-filter:
+      blur(14px)
+      brightness(0.58)
+      saturate(0.8);
+    -webkit-backdrop-filter:
+      blur(14px)
+      brightness(0.58)
+      saturate(0.8);
+  }
+}
+
+@keyframes dimensionClose {
+  0% {
+    opacity: 1;
+    backdrop-filter:
+      blur(14px)
+      brightness(0.58)
+      saturate(0.8);
+    -webkit-backdrop-filter:
+      blur(14px)
+      brightness(0.58)
+      saturate(0.8);
+  }
+
+  100% {
+    opacity: 0;
+    backdrop-filter:
+      blur(4px)
+      brightness(1)
+      saturate(1);
+    -webkit-backdrop-filter:
+      blur(4px)
+      brightness(1)
+      saturate(1);
+  }
+}
+
+@keyframes vignetteBreath {
+  0%,
+  100% {
+    opacity: 0.84;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes dimensionGrain {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-1.5%, 1%, 0);
+  }
+}
+
+@keyframes fogDrift {
+  0% {
+    transform:
+      translate3d(-1.5%, 1%, 0)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate3d(1.8%, -1.2%, 0)
+      scale(1.04);
+  }
+}
+
+@keyframes fogClose {
+  to {
+    opacity: 0;
+    transform:
+      translate3d(0, 4%, 0)
+      scale(0.98);
+  }
+}
+
+@media (max-width: 760px) {
+  .bookArtifact {
+    top: 58%;
+    width: 86vw;
+    height: min(440px, 52vh);
+  }
+
+  .pageInner {
+    padding:
+      3rem 1.35rem 2rem;
+  }
+}
+.escapeHint {
+
+  position: fixed;
+
+  right: 24px;
+
+  bottom: 20px;
+
+  z-index: 70;
+
+  font-size: 0.62rem;
+
+  letter-spacing: 0.28em;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(255,235,205,0.34);
+
+  opacity: 0;
+
+  animation:
+    escapeReveal 1s ease 2.2s forwards;
+}
+@keyframes escapeReveal {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(6px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}

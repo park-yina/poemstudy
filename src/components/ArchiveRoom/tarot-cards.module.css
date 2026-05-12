@@ -1,0 +1,915 @@
+.cardSpread {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  z-index: 40;
+  width: min(1040px, 88vw);
+  height: min(600px, 74vh);
+  pointer-events: none;
+  perspective: 1800px;
+  transform:
+    translate(-50%, -50%)
+    translateZ(220px);
+  transform-style: preserve-3d;
+}
+
+.tarotCard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(124px, 15vw, 178px);
+  height: auto;
+  aspect-ratio: 0.64;
+  opacity: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  filter:
+    drop-shadow(0 28px 28px rgba(0, 0, 0, 0.48));
+  animation:
+    tarotBurst 1.08s cubic-bezier(0.16, 0.88, 0.18, 1.04) forwards,
+    tarotFloat 3.8s ease-in-out 1.2s infinite;
+}
+.arcanaFrame {
+
+  position: absolute;
+
+  inset: 10px;
+
+  border:
+    1px solid rgba(255,220,160,0.24);
+
+  border-radius: 14px;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,240,190,0.08);
+
+  overflow: hidden;
+}
+
+.arcanaFrame::before {
+content: '';
+  position: absolute;
+  inset: 0;
+  background:
+
+    radial-gradient(
+      circle at top left,
+      rgba(255,220,160,0.32) 0 2px,
+      transparent 3px
+    ),
+
+    radial-gradient(
+      circle at top right,
+      rgba(255,220,160,0.32) 0 2px,
+      transparent 3px
+    );
+
+  background-size:
+    18px 18px;
+
+  background-repeat:
+    no-repeat;
+    background: 
+    radial-gradient(circle at 10% 10%, #fff9e3 1px, transparent 2px),
+    radial-gradient(circle at 90% 10%, #fff9e3 1px, transparent 2px),
+    radial-gradient(circle at 10% 90%, #fff9e3 1px, transparent 2px),
+    radial-gradient(circle at 90% 90%, #fff9e3 1px, transparent 2px);
+  filter: drop-shadow(0 0 2px rgba(255, 220, 160, 0.8));
+  opacity: 0.6;
+}
+.arcanaFrame::after {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+
+    radial-gradient(
+      circle at top left,
+      rgba(255,220,160,0.24) 0 2px,
+      transparent 3px
+    ),
+
+    radial-gradient(
+      circle at top right,
+      rgba(255,220,160,0.24) 0 2px,
+      transparent 3px
+    ),
+
+    radial-gradient(
+      circle at bottom left,
+      rgba(255,220,160,0.24) 0 2px,
+      transparent 3px
+    ),
+
+    radial-gradient(
+      circle at bottom right,
+      rgba(255,220,160,0.24) 0 2px,
+      transparent 3px
+    );
+
+  background-size:
+    32px 32px;
+
+  background-repeat: no-repeat;
+
+  pointer-events: none;
+
+  opacity: 0.7;
+}
+.arcanaGrid {
+  position: absolute;
+  inset: 0;
+  /* 여러 개의 그래디언트를 쉼표로 연결하여 층층이 쌓습니다 */
+  background:
+    /* 1. 대각선 (오른쪽 아래 방향) */
+    linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+    /* 2. 대각선 (왼쪽 아래 방향) */
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+    /* 3. 대각선 반대쪽 채우기 */
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+    /* 4. 기존 가로 격자 */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.01) 0 1px,
+      transparent 1px 16px
+    ),
+    /* 5. 기존 세로 격자 */
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.01) 0 1px,
+      transparent 1px 22px
+    );
+
+  /* 대각선 패턴의 크기를 조절하여 다이아몬드 격자를 만듭니다 */
+  background-size: 32px 32px, 32px 32px, 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+  
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+.arcanaRing {
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 82%;
+
+  aspect-ratio: 1;
+
+  border:
+    1px solid rgba(255,220,160,0.06);
+
+  border-radius: 999px;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(45deg);
+
+  opacity: 0.8;
+}
+
+.arcanaRing::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 10%;
+
+  border:
+    1px solid rgba(255,220,160,0.04);
+
+  border-radius: 999px;
+}
+.arcanaNoise {
+  /* 기존 radial-gradient보다 더 입자감이 느껴지는 노이즈 */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3 Operative %3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  filter: contrast(120%) brightness(100%);
+  opacity: 0.15; /* 적절히 조절 */
+  mix-blend-mode: overlay;
+}
+/* .card0 {
+  --card-x: -365px;
+  --card-y: -52px;
+  --card-rotate: -24deg;
+  --card-z: 28px;
+  animation-delay: 0.78s, 1.92s;
+}
+
+.card1 {
+  --card-x: -188px;
+  --card-y: -104px;
+  --card-rotate: -12deg;
+  --card-z: 64px;
+  animation-delay: 0.88s, 2.02s;
+}
+
+.card2 {
+  --card-x: 0px;
+  --card-y: -128px;
+  --card-rotate: 0deg;
+  --card-z: 96px;
+  animation-delay: 0.98s, 2.12s;
+}
+
+.card3 {
+  --card-x: 188px;
+  --card-y: -104px;
+  --card-rotate: 12deg;
+  --card-z: 64px;
+  animation-delay: 1.08s, 2.22s;
+}
+
+.card4 {
+  --card-x: 365px;
+  --card-y: -52px;
+  --card-rotate: 24deg;
+  --card-z: 28px;
+  animation-delay: 1.18s, 2.32s;
+} */
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  backface-visibility: hidden;
+}
+
+.cardBack {
+
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(255,220,140,0.14),
+      transparent 28%
+    ),
+
+    linear-gradient(
+      180deg,
+      #15161d 0%,
+      #090b12 52%,
+      #06070d 100%
+    );
+
+  border:
+    1px solid rgba(255,220,160,0.34);
+
+  /* box-shadow:
+    inset 0 0 0 1px rgba(255,240,200,0.08),
+    inset 0 0 42px rgba(255,210,120,0.04),
+    0 18px 50px rgba(0,0,0,0.54); */
+
+
+  isolation: isolate;
+  box-shadow:
+    inset 0 0 50px rgba(0, 0, 0, 0.9), /* 카드의 가장자리를 어둡게 하여 중앙 강조 */
+    inset 0 0 20px rgba(255, 220, 160, 0.1),
+    0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.cardFront {
+
+  padding: 0.7rem;
+
+  opacity: 0;
+
+  transform:
+    scale(0.96);
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(255, 218, 142, 0.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #1e2236,
+      #0d101a 58%,
+      #17111a
+    );
+
+  border:
+    1px solid rgba(255, 220, 160, 0.34);
+
+  box-shadow:
+    inset 0 0 0 6px rgba(255, 236, 180, 0.045),
+    inset 0 0 0 1px rgba(255, 236, 180, 0.18),
+    0 24px 60px rgba(0, 0, 0, 0.42);
+
+  color:
+    rgba(255, 245, 225, 0.92);
+
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s ease;
+}
+
+.cardFrame {
+  height: 100%;
+  padding:
+    1rem 0.85rem;
+  border:
+    1px solid rgba(255, 222, 156, 0.28);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border: 1px solid transparent;
+  background: 
+    linear-gradient(#0d101a, #0d101a) padding-box, /* 안쪽 배경 */
+    linear-gradient(135deg, #cfb53b, #fff9e3, #8a6d3b, #fff9e3, #cfb53b) border-box; /* 금박 테두리 */
+  box-shadow: 
+    inset 0 0 15px rgba(207, 181, 59, 0.2), 
+    0 0 10px rgba(0, 0, 0, 0.5);
+}
+.tarotCard:hover .cardFrame {
+  background: 
+    linear-gradient(#0d101a, #0d101a) padding-box,
+    linear-gradient(135deg, #fff9e3, #cfb53b, #8a6d3b, #cfb53b, #fff9e3) border-box;
+  transition: 0.5s ease;
+}
+
+.cardLabel {
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:
+    rgba(255, 225, 166, 0.68);
+}
+
+.cardFrame h3 {
+  margin: 0;
+  font-size:
+    clamp(0.82rem, 1.4vw, 1.08rem);
+  line-height: 1.28;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:
+    rgba(255, 248, 225, 0.94);
+}
+
+.cardFrame p {
+  margin: 0;
+  font-size: 0.64rem;
+  line-height: 1.4;
+  color:
+    rgba(255, 236, 196, 0.52);
+}
+
+.arcanaGlyph {
+
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.92rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.42em;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(255,225,170,0.18);
+
+  text-shadow:
+    0 0 18px rgba(255,210,120,0.08);
+
+  z-index: 4;
+}
+.arcanaGlyph::before {
+
+  content: '✧';
+
+  position: absolute;
+
+  font-size: 5rem;
+
+  opacity: 0.08;
+
+  transform:
+    translateY(-8px);
+}
+.cardTheme {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color:
+    rgba(255, 225, 170, 0.08);
+  transition:
+    color 0.35s ease,
+    transform 0.35s ease;
+}
+
+.activeCard .cardFront {
+
+  opacity: 1;
+
+  pointer-events: auto;
+}
+.tarotCard:hover .cardTheme {
+
+  opacity: 1;
+}
+
+.closingSpread .tarotCard {
+  animation:
+    tarotDissolve 0.58s ease forwards;
+}
+.tarotCard.active .cardFront {
+
+  opacity: 1;
+
+  pointer-events: auto;
+}
+
+@keyframes tarotBurst {
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      translate3d(0, 92px, -120px)
+      rotateX(78deg)
+      rotateY(180deg)
+      rotateZ(0deg)
+      scale(0.34);
+  }
+
+  34% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      translate3d(calc(var(--card-x) * 0.25), -18px, 120px)
+      rotateX(18deg)
+      rotateY(110deg)
+      rotateZ(calc(var(--card-rotate) * 0.28))
+      scale(0.76);
+  }
+
+  64% {
+    transform:
+      translate(-50%, -50%)
+      translate3d(calc(var(--card-x) * 0.82), calc(var(--card-y) - 28px), calc(var(--card-z) + 48px))
+      rotateX(-6deg)
+      rotateY(18deg)
+      rotateZ(calc(var(--card-rotate) * 1.12))
+      scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      translate3d(var(--card-x), var(--card-y), var(--card-z))
+      rotateX(0deg)
+      rotateY(0deg)
+      rotateZ(var(--card-rotate))
+      scale(1);
+  }
+}
+
+@keyframes tarotFloat {
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      translate3d(var(--card-x), var(--card-y), var(--card-z))
+      rotateZ(var(--card-rotate));
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      translate3d(var(--card-x), calc(var(--card-y) - 10px), calc(var(--card-z) + 12px))
+      rotateZ(calc(var(--card-rotate) + 1.4deg));
+  }
+}
+
+@keyframes tarotDissolve {
+  0% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 28px 28px rgba(0, 0, 0, 0.48))
+      brightness(1);
+  }
+
+  100% {
+    opacity: 0;
+    filter:
+      drop-shadow(0 0 8px rgba(255, 204, 128, 0.1))
+      brightness(0.58);
+    transform:
+      translate(-50%, -50%)
+      translate3d(var(--card-x), calc(var(--card-y) + 18px), calc(var(--card-z) - 80px))
+      rotateZ(var(--card-rotate))
+      scale(0.92);
+  }
+}
+
+@media (max-width: 760px) {
+  .cardSpread {
+    top: 60%;
+    width: 92vw;
+    height: 62vh;
+    transform:
+      translate(-50%, -50%)
+      translateZ(120px)
+      scale(0.72);
+  }
+
+  .card0 {
+    --card-x: -230px;
+    --card-y: -34px;
+  }
+
+  .card1 {
+    --card-x: -116px;
+    --card-y: -78px;
+  }
+
+  .card2 {
+    --card-x: 0px;
+    --card-y: -100px;
+  }
+
+  .card3 {
+    --card-x: 116px;
+    --card-y: -78px;
+  }
+
+  .card4 {
+    --card-x: 230px;
+    --card-y: -34px;
+  }
+}
+.syslog .cardBack {
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(120,180,255,0.12),
+      transparent 54%
+    ),
+
+    repeating-linear-gradient(
+      90deg,
+      rgba(140,180,255,0.06) 0 1px,
+      transparent 1px 12px
+    ),
+
+    linear-gradient(
+      180deg,
+      #101726,
+      #060912
+    );
+}
+.arcanaSeal {
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 58%;
+
+  aspect-ratio: 1;
+
+  border:
+    1px solid rgba(255,220,160,0.18);
+
+  border-radius: 999px;
+
+  transform:
+    translate(-50%, -50%);
+
+  box-shadow:
+    0 0 18px rgba(255,210,120,0.06);
+}
+.arcanaSeal {
+
+  overflow: visible;
+}
+
+.arcanaSeal .verticalAxis {
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 1px;
+
+  height: 72%;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(255,220,160,0.12),
+      transparent
+    );
+
+  transform:
+    translate(-50%, -50%);
+}
+.arcanaSeal::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 14%;
+
+  border:
+    1px dashed rgba(255,220,160,0.18);
+
+  border-radius: 999px;
+}
+
+.arcanaSeal::after {
+
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 72%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,220,160,0.12),
+      transparent
+    );
+
+  transform:
+    translate(-50%, -50%);
+}
+.syslog .cardBack {
+
+  background:
+
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(110,170,255,0.12),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      180deg,
+      #121b2d,
+      #060912
+    );
+}
+
+.syslog .arcanaGlyph::before {
+
+  content:
+    '✦';
+
+  position: absolute;
+
+  font-size: 4rem;
+
+  opacity: 0.08;
+}
+.protocol .cardBack {
+
+  background:
+
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(255,210,120,0.12),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      180deg,
+      #241b14,
+      #0d0c10
+    );
+}
+
+.protocol .arcanaGlyph::before {
+
+  content:
+    '⌘';
+
+  position: absolute;
+
+  font-size: 4rem;
+
+  opacity: 0.1;
+}
+.chronicle .cardBack {
+
+  background:
+
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(255,160,120,0.12),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      180deg,
+      #2a1c18,
+      #120d12
+    );
+}
+
+.chronicle .arcanaGlyph::before {
+
+  content:
+    '✧';
+
+  position: absolute;
+
+  font-size: 4.6rem;
+
+  opacity: 0.08;
+}
+.grid .tarotCard {
+  position: relative;
+
+  left: auto;
+  top: auto;
+
+  transform: none !important;
+
+  opacity: 1;
+
+  animation:
+    gridCardReveal 0.8s ease forwards;
+}
+.grid {
+  position: relative;
+
+  left: auto;
+  top: auto;
+
+  transform: none;
+
+  width: min(1400px, 100%);
+
+  height: auto;
+
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+
+  gap:
+    clamp(28px, 4vw, 42px);
+
+  padding:
+    clamp(150px, 18vh, 220px)
+    clamp(24px, 5vw, 60px)
+    clamp(104px, 14vh, 150px);
+
+  justify-items: center;
+
+  perspective: none;
+}
+@keyframes gridCardReveal {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(40px)
+      scale(0.92);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+/* .lineup .card0 {
+
+  --card-x: -355px;
+  --card-y: -46px;
+  --card-rotate: -16deg;
+}
+
+.lineup .card1 {
+
+  --card-x: -165px;
+  --card-y: -82px;
+  --card-rotate: -7deg;
+}
+
+.lineup .card2 {
+
+  --card-x: 0px;
+  --card-y: -96px;
+  --card-rotate: 0deg;
+}
+
+.lineup .card3 {
+
+  --card-x: 165px;
+  --card-y: -82px;
+  --card-rotate: 7deg;
+}
+
+.lineup .card4 {
+
+  --card-x: 355px;
+  --card-y: -46px;
+  --card-rotate: 16deg;
+} */
+.gridSpread {
+
+  position: relative;
+
+  z-index: 40;
+
+  width: min(1400px, 100%);
+  max-width: 100%;
+
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+
+  gap:
+    clamp(28px, 4vw, 42px);
+
+  padding:
+    clamp(170px, 20vh, 240px)
+    clamp(24px, 5vw, 80px)
+    clamp(120px, 16vh, 180px);
+
+  justify-items: center;
+}
+.gridCard {
+
+  position: relative;
+
+  width: clamp(176px, 18vw, 240px);
+  max-width: 100%;
+
+  aspect-ratio: 0.68;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.42s ease;
+}
+
+.gridCard:hover {
+
+  transform:
+    translateY(-12px)
+    scale(1.02);
+}
