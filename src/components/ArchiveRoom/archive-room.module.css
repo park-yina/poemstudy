@@ -859,35 +859,6 @@ background:
   background: #dca36a;
 }
 
-.overlayActive .sidebar,
-.overlayActive .topbar {
-  opacity: 0;
-  visibility: hidden;
-
-  transform:
-    translateY(-18px)
-    scale(0.98);
-
-  filter:
-    blur(12px);
-
-  pointer-events: none;
-}
-
-.overlayActive .bookShelf,
-.overlayActive .fullstackIntro {
-  opacity: 0.06;
-
-  filter:
-    blur(12px)
-    brightness(0.42);
-
-  transform:
-    scale(0.98);
-
-  pointer-events: none;
-}
-
 .recordList {
 
   display: flex;
@@ -2422,12 +2393,11 @@ background:
 
 .tarotCard:hover .cardFront {
 
-  opacity: 0.14;
+  opacity: 1;
 
   transform:
-    scale(1);
+    scale(1.02);
 }
-
 .cardFrame {
 
   height: 100%;
@@ -2672,10 +2642,10 @@ background:
   animation-delay: 1.18s, 2.32s;
 }
 
-.recordStage .cardFront {
+/* .recordStage .cardFront {
   opacity: 0.96;
   transform: scale(1);
-}
+} */
 
 .recordStage .tarotCard:hover {
   transform:
@@ -2694,6 +2664,7 @@ background:
   animation:
     tarotDissolve 0.58s ease forwards;
 }
+
 
 @keyframes tarotFloat {
   0%,
