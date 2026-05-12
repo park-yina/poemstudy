@@ -1,6 +1,7 @@
 import React, {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import {
@@ -16,7 +17,13 @@ import Sidebar from '../DesktopWorkspace/sidebar';
 import {
   runtimeConfig,
 } from '../../config/runtime';
-import styles from './styles.module.css';
+import baseStyles from './styles.module.css';
+import workspaceOverlayStyles from './workspaceOverlay.module.css';
+
+const styles = {
+  ...baseStyles,
+  ...workspaceOverlayStyles,
+};
 
 function getWorkspaceInitialFiles(
   folders,
@@ -35,6 +42,31 @@ function getWorkspaceInitialFiles(
     files,
     initialFile,
   };
+}
+
+function getCodeRows(content) {
+
+  const normalized =
+    content || '';
+
+  return normalized
+    .replace(/\r\n/g, '\n')
+    .split('\n');
+}
+
+function clampPaneWidth(
+  value,
+  min,
+  max,
+) {
+
+  return Math.max(
+    min,
+    Math.min(
+      max,
+      value,
+    ),
+  );
 }
 
 function WorkspaceOverlayView({
@@ -60,6 +92,21 @@ function WorkspaceOverlayView({
   const [activeFile, setActiveFile] =
     useState(initialFile);
 
+  const [fileContentMap, setFileContentMap] =
+    useState({});
+
+  const [treePaneWidth, setTreePaneWidth] =
+    useState(220);
+
+  const [relatedPaneWidth, setRelatedPaneWidth] =
+    useState(280);
+
+  const [resizingPane, setResizingPane] =
+    useState(null);
+
+  const workspaceMainRef =
+    useRef(null);
+
   useEffect(() => {
 
     setOpenedFiles(
@@ -70,7 +117,176 @@ function WorkspaceOverlayView({
 
     setActiveFile(initialFile);
 
+    setFileContentMap({});
+
   }, [item, initialFile]);
+
+  useEffect(() => {
+
+    if (!activeFile) {
+      return;
+    }
+
+    if (activeFile.preview) {
+
+      setFileContentMap((prev) => ({
+        ...prev,
+        [activeFile.id]: activeFile.preview,
+      }));
+
+      return;
+    }
+
+    if (!activeFile.previewUrl) {
+      return;
+    }
+
+    let cancelled =
+      false;
+
+    setFileContentMap((prev) => ({
+      ...prev,
+      [activeFile.id]:
+        prev[activeFile.id] ||
+        '// loading source from static/code...',
+    }));
+
+    fetch(activeFile.previewUrl)
+      .then((res) => {
+
+        if (!res.ok) {
+          throw new Error(
+            `Failed to load ${activeFile.previewUrl}`
+          );
+        }
+
+        return res.text();
+      })
+      .then((text) => {
+
+        if (cancelled) {
+          return;
+        }
+
+        setFileContentMap((prev) => ({
+          ...prev,
+          [activeFile.id]: text,
+        }));
+      })
+      .catch(() => {
+
+        if (cancelled) {
+          return;
+        }
+
+        setFileContentMap((prev) => ({
+          ...prev,
+          [activeFile.id]:
+            '// failed to load source file',
+        }));
+      });
+
+    return () => {
+
+      cancelled =
+        true;
+    };
+
+  }, [activeFile]);
+
+  useEffect(() => {
+
+    if (!resizingPane) {
+      return undefined;
+    }
+
+    document.body.style.cursor =
+      'col-resize';
+
+    document.body.style.userSelect =
+      'none';
+
+    const handleMouseMove = (e) => {
+
+      const workspaceMain =
+        workspaceMainRef.current;
+
+      if (!workspaceMain) {
+        return;
+      }
+
+      const rect =
+        workspaceMain.getBoundingClientRect();
+
+      if (resizingPane === 'tree') {
+
+        setTreePaneWidth(
+          clampPaneWidth(
+            e.clientX - rect.left,
+            160,
+            360,
+          )
+        );
+
+        return;
+      }
+
+      setRelatedPaneWidth(
+        clampPaneWidth(
+          rect.right - e.clientX,
+          210,
+          420,
+        )
+      );
+    };
+
+    const stopResize = () => {
+
+      setResizingPane(null);
+    };
+
+    window.addEventListener(
+      'mousemove',
+      handleMouseMove,
+    );
+
+    window.addEventListener(
+      'mouseup',
+      stopResize,
+      true,
+    );
+
+    window.addEventListener(
+      'blur',
+      stopResize,
+    );
+
+    return () => {
+
+      document.body.style.cursor =
+        '';
+
+      document.body.style.userSelect =
+        '';
+
+      window.removeEventListener(
+        'mousemove',
+        handleMouseMove,
+      );
+
+      window.removeEventListener(
+        'mouseup',
+        stopResize,
+        true,
+      );
+
+      window.removeEventListener(
+        'blur',
+        stopResize,
+      );
+    };
+
+  }, [resizingPane]);
 
   const openFile = (file) => {
 
@@ -139,6 +355,16 @@ function WorkspaceOverlayView({
       file.id !== activeFile?.id
     );
 
+  const activeContent =
+    activeFile
+      ? fileContentMap[activeFile.id] ||
+        activeFile.preview ||
+        ''
+      : '';
+
+  const activeRows =
+    getCodeRows(activeContent);
+
   return (
 
     <div
@@ -186,7 +412,20 @@ function WorkspaceOverlayView({
             </div>
           </aside>
 
-          <section className={styles.workspaceMain}>
+          <section
+            ref={workspaceMainRef}
+            className={`${styles.workspaceMain} ${
+              resizingPane
+                ? styles.workspaceMainResizing
+                : ''
+            }`}
+            style={{
+              '--tree-pane-width':
+                `${treePaneWidth}px`,
+              '--related-pane-width':
+                `${relatedPaneWidth}px`,
+            }}
+          >
             <div className={styles.workspaceTree}>
               <div className={styles.treeTitle}>
                 WORKSPACE
@@ -241,6 +480,23 @@ function WorkspaceOverlayView({
               }
             </div>
 
+            <div
+              role="separator"
+              aria-label="Resize file explorer"
+              aria-orientation="vertical"
+              className={`${styles.workspacePaneHandle} ${
+                resizingPane === 'tree'
+                  ? styles.workspacePaneHandleActive
+                  : ''
+              }`}
+              onMouseDown={(e) => {
+
+                e.preventDefault();
+
+                setResizingPane('tree');
+              }}
+            />
+
             <article className={styles.workspaceEditor}>
               <div className={styles.editorTabs}>
                 {
@@ -294,14 +550,43 @@ function WorkspaceOverlayView({
                       </p>
                     </div>
 
-                    <pre className={styles.editorCode}>
-                      <code>
-                        {activeFile.preview?.trim()}
-                      </code>
-                    </pre>
+                    <div className={styles.editorCodeFrame}>
+                      <div className={styles.editorCodeToolbar}>
+                        <span>
+                          {activeFile.language || 'text'}
+                        </span>
+
+                        <span>
+                          UTF-8
+                        </span>
+                      </div>
+
+                      <pre className={styles.editorCode}>
+                        <code>
+                          {
+                            activeRows.map((line, index) => (
+
+                              <span
+                                key={`${activeFile.id}-${index}`}
+                                className={styles.editorCodeLine}
+                              >
+                                <span className={styles.editorLineNumber}>
+                                  {index + 1}
+                                </span>
+
+                                <span className={styles.editorLineText}>
+                                  {line || ' '}
+                                </span>
+                              </span>
+
+                            ))
+                          }
+                        </code>
+                      </pre>
+                    </div>
 
                     <div className={styles.editorPath}>
-                      Path: src/main/java/com/parkyina/fakejumping/security/{activeFile.title}
+                      Path: {activeFile.path || `src/main/java/com/parkyina/fakejumping/security/${activeFile.title}`}
                     </div>
                   </>
 
@@ -314,6 +599,23 @@ function WorkspaceOverlayView({
                 )
               }
             </article>
+
+            <div
+              role="separator"
+              aria-label="Resize related panel"
+              aria-orientation="vertical"
+              className={`${styles.workspacePaneHandle} ${
+                resizingPane === 'related'
+                  ? styles.workspacePaneHandleActive
+                  : ''
+              }`}
+              onMouseDown={(e) => {
+
+                e.preventDefault();
+
+                setResizingPane('related');
+              }}
+            />
 
             <aside className={styles.workspaceRelated}>
               <h3>

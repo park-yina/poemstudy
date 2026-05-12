@@ -1,0 +1,1060 @@
+/* =========================
+   PROJECT WORKSPACE OVERLAY
+========================= */
+
+.workspaceOverlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 10000;
+
+  display: block;
+
+  overflow: hidden;
+
+  background:
+    #050812;
+}
+
+.workspaceExplorer {
+
+  position: relative;
+
+  width: 100vw;
+
+  height: 100vh;
+  height: 100dvh;
+
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border: none;
+
+  border-radius: 0;
+
+  background:
+    #070b16;
+
+  box-shadow: none;
+}
+
+.workspaceWindowBar {
+
+  position: relative;
+
+  top: auto;
+  left: auto;
+
+  z-index: 3;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  height: 44px;
+
+  padding:
+    0 1rem;
+
+  flex-shrink: 0;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(10,15,28,0.96);
+}
+
+.workspaceWindowBar::after {
+
+  content: 'Workspace App';
+
+  position: absolute;
+
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  color:
+    rgba(231,238,255,0.76);
+
+  font-size: 0.78rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.02em;
+}
+
+.workspaceContent {
+
+  display: grid;
+
+  grid-template-columns:
+    260px minmax(0, 1fr);
+
+  flex: 1;
+
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+.workspaceWindowDot {
+
+  width: 12px;
+  height: 12px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  padding: 0;
+}
+
+.workspaceWindowClose {
+
+  background: #ff5f57;
+
+  cursor: pointer;
+}
+
+.workspaceWindowMinimize {
+
+  background: #febc2e;
+}
+
+.workspaceWindowExpand {
+
+  background: #28c840;
+}
+
+.workspaceGuide {
+
+  padding:
+    1.25rem;
+
+  min-width: 0;
+
+  overflow: auto;
+
+  border-right:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(255,255,255,0.025);
+}
+
+.workspaceBadge {
+
+  width: fit-content;
+
+  padding:
+    0.55rem 0.8rem;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(135deg, #7c5cff, #4d8dff);
+
+  color: white;
+
+  font-weight: 700;
+}
+
+.workspaceGuide h2 {
+
+  margin:
+    1.4rem 0 0.7rem;
+
+  color: #ffffff;
+
+  font-size: 1.35rem;
+}
+
+.workspaceGuide p {
+
+  margin: 0;
+
+  color:
+    rgba(255,255,255,0.68);
+
+  line-height: 1.75;
+}
+
+.workspaceChips {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.55rem;
+
+  margin-top: 1.4rem;
+}
+
+.workspaceChips span {
+
+  padding:
+    0.45rem 0.6rem;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  color:
+    rgba(255,255,255,0.74);
+
+  font-size: 0.76rem;
+}
+
+.workspaceMain {
+
+  display: grid;
+
+  grid-template-columns:
+    var(--tree-pane-width, 220px)
+    10px
+    minmax(320px, 1fr)
+    10px
+    var(--related-pane-width, 280px);
+
+  min-width: 0;
+
+  min-height: 0;
+
+  height: 100%;
+
+  overflow: hidden;
+
+  background:
+    rgba(5,9,17,0.78);
+}
+
+.workspaceMainResizing,
+.workspaceMainResizing * {
+
+  cursor: col-resize;
+
+  user-select: none;
+}
+
+.workspacePaneHandle {
+
+  position: relative;
+
+  width: 10px;
+
+  min-width: 10px;
+
+  height: 100%;
+
+  cursor: col-resize;
+
+  background:
+    rgba(255,255,255,0.015);
+}
+
+.workspacePaneHandle::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 50%;
+
+  width: 1px;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    rgba(255,255,255,0.08);
+
+  transition:
+    width 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.workspacePaneHandle:hover::before,
+.workspacePaneHandleActive::before {
+
+  width: 2px;
+
+  background:
+    rgba(96,165,250,0.78);
+
+  box-shadow:
+    0 0 14px rgba(96,165,250,0.24);
+}
+
+.workspaceTree,
+.workspaceRelated {
+
+  padding: 1rem;
+
+  min-width: 0;
+
+  min-height: 0;
+
+  overflow: auto;
+
+  border-right:
+    1px solid rgba(255,255,255,0.07);
+}
+
+.treeTitle {
+
+  margin-bottom: 0.8rem;
+
+  color:
+    rgba(255,255,255,0.78);
+
+  font-size: 0.72rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+}
+
+.treeRoot {
+
+  margin-bottom: 0.7rem;
+
+  color: #ffffff;
+
+  font-size: 0.82rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.treeFolder {
+
+  display: grid;
+
+  gap: 0.25rem;
+}
+
+.treeFolderName,
+.treeFile {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.45rem;
+}
+
+.treeFolderName {
+
+  color:
+    rgba(255,255,255,0.82);
+
+  font-size: 0.82rem;
+
+  font-weight: 650;
+}
+
+.treeFile {
+
+  width: 100%;
+
+  min-height: 30px;
+
+  padding:
+    0.35rem 0.5rem 0.35rem 1.15rem;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: transparent;
+
+  color:
+    rgba(255,255,255,0.64);
+
+  cursor: pointer;
+
+  font-size: 0.78rem;
+
+  text-align: left;
+}
+
+.treeFile:hover,
+.treeFileActive {
+
+  background:
+    rgba(96,165,250,0.18);
+
+  color:
+    #dcecff;
+}
+
+.workspaceEditor {
+
+  min-width: 0;
+
+  min-height: 0;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  border-right:
+    1px solid rgba(255,255,255,0.07);
+}
+
+.editorTabs {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.2rem;
+
+  height: 42px;
+
+  padding: 0 0.5rem;
+
+  overflow-x: auto;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.07);
+}
+
+.editorTabs span {
+
+  display: flex;
+
+  align-items: center;
+
+  padding:
+    0 0.9rem;
+
+  color:
+    rgba(255,255,255,0.48);
+
+  font-size: 0.78rem;
+
+  white-space: nowrap;
+}
+
+.editorGuideTab {
+
+  flex-shrink: 0;
+}
+
+.editorTab {
+
+  display: flex;
+
+  align-items: center;
+
+  min-width: 0;
+
+  height: 32px;
+
+  padding-left: 0.7rem;
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+  border-radius: 8px 8px 0 0;
+
+  background:
+    rgba(255,255,255,0.03);
+
+  flex-shrink: 0;
+}
+
+.editorTabActive {
+
+  background:
+    rgba(96,165,250,0.10);
+
+  color:
+    #78b7ff !important;
+
+  border-color:
+    rgba(124,156,255,0.22);
+}
+
+.editorTabButton {
+
+  min-width: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: inherit;
+
+  cursor: pointer;
+
+  font-size: 0.78rem;
+
+  white-space: nowrap;
+}
+
+.editorTabClose {
+
+  width: 24px;
+  height: 24px;
+
+  margin-left: 0.3rem;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: transparent;
+
+  color:
+    rgba(255,255,255,0.52);
+
+  cursor: pointer;
+}
+
+.editorTabClose:hover,
+.workspaceClose:hover,
+.workspaceWindowClose:hover {
+
+  background:
+    rgba(255,255,255,0.08);
+}
+
+.editorHeader {
+
+  padding:
+    1.2rem 1.3rem 0.8rem;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.editorHeader h3 {
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 1.45rem;
+}
+
+.editorHeader p {
+
+  margin:
+    0.4rem 0 0;
+
+  color:
+    rgba(255,255,255,0.58);
+}
+
+.editorCodeFrame {
+
+  flex: 1;
+
+  min-height: 0;
+
+  margin: 0.85rem;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 8px;
+
+  background:
+    rgba(3,7,13,0.72);
+}
+
+.editorCodeToolbar {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  min-height: 34px;
+
+  padding:
+    0 0.9rem;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.07);
+
+  background:
+    rgba(255,255,255,0.035);
+
+  color:
+    rgba(214,226,255,0.55);
+
+  font-family:
+    'JetBrains Mono',
+    'SFMono-Regular',
+    Consolas,
+    monospace;
+
+  font-size: 0.72rem;
+}
+
+.editorCode {
+
+  flex: 1;
+
+  min-width: 0;
+
+  margin: 0;
+
+  padding:
+    0.75rem 0;
+
+  position: relative;
+
+  color:
+    rgba(231,238,255,0.88);
+
+  font-family:
+    'JetBrains Mono',
+    'SFMono-Regular',
+    Consolas,
+    monospace;
+
+  font-size: 0.86rem;
+
+  line-height: 1.55;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  white-space: pre;
+
+  scrollbar-gutter: stable;
+
+  tab-size: 4;
+
+}
+.editorCode code {
+  display: inline-block;
+  min-width: 900px;
+}
+.editorCode::after {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 80px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      to left,
+      rgba(255,255,255,0.03),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+.editorCodeLine {
+
+  display: grid;
+
+  grid-template-columns:
+    52px minmax(0, 1fr);
+
+  min-height: 1.55em;
+}
+
+.editorCodeLine:hover {
+
+  background:
+    rgba(96,165,250,0.07);
+}
+
+.editorLineNumber {
+
+  padding-right: 1rem;
+
+  color:
+    rgba(148,163,184,0.54);
+
+  text-align: right;
+
+  user-select: none;
+}
+
+.editorLineText {
+
+  min-width: 0;
+
+  padding-right: 1.5rem;
+
+  white-space: pre;
+}
+
+.editorEmpty {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex: 1;
+
+  color:
+    rgba(255,255,255,0.54);
+
+  font-size: 0.9rem;
+}
+
+.editorPath {
+
+  padding:
+    0 1.3rem 1rem;
+
+  color:
+    rgba(255,255,255,0.44);
+
+  font-size: 0.76rem;
+}
+
+.workspaceRelated {
+
+  position: relative;
+
+  border-right: none;
+
+  min-width: 0;
+}
+
+.workspaceClose {
+
+  position: absolute;
+
+  top: 0.8rem;
+  right: 0.8rem;
+
+  width: 30px;
+  height: 30px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  color:
+    rgba(255,255,255,0.66);
+
+  cursor: pointer;
+}
+
+.workspaceRelated h3 {
+
+  margin:
+    1.8rem 0 0.7rem;
+
+  color: #ffffff;
+
+  font-size: 0.92rem;
+}
+
+.relatedItem {
+
+  width: 100%;
+
+  display: grid;
+
+  gap: 0.35rem;
+
+  padding: 0.85rem;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 8px;
+
+  background:
+    rgba(255,255,255,0.025);
+
+  color:
+    rgba(255,255,255,0.72);
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+.relatedItem + .relatedItem {
+
+  margin-top: 0.55rem;
+}
+
+.relatedItem strong {
+
+  color:
+    rgba(255,255,255,0.9);
+
+  font-size: 0.8rem;
+}
+
+.relatedItem span {
+
+  color:
+    rgba(255,255,255,0.52);
+
+  font-size: 0.76rem;
+}
+
+:global([data-theme='light']) .workspaceOverlay {
+
+  background:
+    #eef3fa;
+}
+
+:global([data-theme='light']) .workspaceExplorer {
+
+  border-color:
+    rgba(35,64,112,0.18);
+
+  background:
+    #f7f9fc;
+
+  box-shadow: none;
+}
+
+:global([data-theme='light']) .workspaceWindowBar {
+
+  border-color:
+    rgba(31,45,71,0.12);
+
+  background:
+    rgba(255,255,255,0.92);
+}
+
+:global([data-theme='light']) .workspaceWindowBar::after {
+
+  color:
+    rgba(22,32,51,0.72);
+}
+
+:global([data-theme='light']) .workspaceWindowClose:hover,
+:global([data-theme='light']) .workspaceClose:hover,
+:global([data-theme='light']) .editorTabClose:hover {
+
+  background:
+    rgba(22,32,51,0.08);
+}
+
+:global([data-theme='light']) .workspaceGuide,
+:global([data-theme='light']) .workspaceMain {
+
+  background:
+    rgba(248,250,253,0.82);
+}
+
+:global([data-theme='light']) .workspaceGuide,
+:global([data-theme='light']) .workspaceTree,
+:global([data-theme='light']) .workspaceEditor {
+
+  border-color:
+    rgba(31,45,71,0.12);
+}
+
+:global([data-theme='light']) .workspacePaneHandle::before {
+
+  background:
+    rgba(31,45,71,0.14);
+}
+
+:global([data-theme='light']) .workspacePaneHandle {
+
+  background:
+    rgba(31,45,71,0.025);
+}
+
+:global([data-theme='light']) .workspaceGuide h2,
+:global([data-theme='light']) .treeRoot,
+:global([data-theme='light']) .editorHeader h3,
+:global([data-theme='light']) .workspaceRelated h3,
+:global([data-theme='light']) .relatedItem strong {
+
+  color:
+    #162033;
+}
+
+:global([data-theme='light']) .workspaceGuide p,
+:global([data-theme='light']) .editorHeader p,
+:global([data-theme='light']) .editorPath,
+:global([data-theme='light']) .relatedItem span {
+
+  color:
+    rgba(22,32,51,0.62);
+}
+
+:global([data-theme='light']) .workspaceChips span,
+:global([data-theme='light']) .relatedItem,
+:global([data-theme='light']) .workspaceClose {
+
+  border-color:
+    rgba(31,45,71,0.12);
+
+  background:
+    rgba(255,255,255,0.72);
+
+  color:
+    rgba(22,32,51,0.78);
+}
+
+:global([data-theme='light']) .treeTitle,
+:global([data-theme='light']) .treeFolderName,
+:global([data-theme='light']) .editorTabs span {
+
+  color:
+    rgba(22,32,51,0.66);
+}
+
+:global([data-theme='light']) .treeFile {
+
+  color:
+    rgba(22,32,51,0.68);
+}
+
+:global([data-theme='light']) .treeFile:hover,
+:global([data-theme='light']) .treeFileActive {
+
+  background:
+    rgba(37,99,235,0.12);
+
+  color:
+    #174ea6;
+}
+
+:global([data-theme='light']) .editorTabs,
+:global([data-theme='light']) .editorHeader {
+
+  border-color:
+    rgba(31,45,71,0.12);
+}
+
+:global([data-theme='light']) .editorTab {
+
+  border-color:
+    rgba(31,45,71,0.10);
+
+  background:
+    rgba(255,255,255,0.72);
+}
+
+:global([data-theme='light']) .editorTabActive {
+
+  background:
+    rgba(37,99,235,0.10);
+
+  color:
+    #174ea6 !important;
+}
+
+:global([data-theme='light']) .editorEmpty {
+
+  color:
+    rgba(22,32,51,0.56);
+}
+
+:global([data-theme='light']) .editorCodeFrame {
+
+  border-color:
+    rgba(31,45,71,0.12);
+
+  background:
+    #f7f9fc;
+}
+
+:global([data-theme='light']) .editorCodeToolbar {
+
+  border-color:
+    rgba(31,45,71,0.12);
+
+  background:
+    rgba(31,45,71,0.035);
+
+  color:
+    rgba(22,32,51,0.54);
+}
+
+:global([data-theme='light']) .editorCode {
+
+  color:
+    #1c2433;
+}
+
+:global([data-theme='light']) .editorTabButton,
+:global([data-theme='light']) .editorTabClose {
+
+  color:
+    rgba(22,32,51,0.72);
+}
+
+@media (max-width: 996px) {
+
+  .workspaceExplorer {
+
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .workspaceContent,
+  .workspaceMain {
+
+    grid-template-columns: 1fr;
+  }
+
+  .workspaceTree,
+  .workspaceEditor,
+  .workspaceRelated {
+
+    border-right: none;
+
+    border-top:
+      1px solid rgba(255,255,255,0.07);
+  }
+
+  .workspacePaneHandle {
+
+    display: none;
+  }
+}

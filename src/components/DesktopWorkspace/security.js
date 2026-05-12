@@ -18,10 +18,13 @@ export const securityFolder = {
       language: 'java',
 
       previewUrl:
-        '/code/AuthService.java',
+        '/code/security/AuthService.java',
 
       description:
-        '인증 서비스 핵심 로직',
+        'Spring Security login flow with access and refresh token rotation.',
+
+      path:
+        'src/main/java/com/parkyina/fakejumping/security/AuthService.java',
     },
 
   ],
