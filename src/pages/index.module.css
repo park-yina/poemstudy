@@ -493,8 +493,12 @@
   border-top: 1px solid var(--home-line);
 }
 
-.disciplineNav a {
+.disciplineNav button {
+  padding: 0;
+  border: none;
+  background: transparent;
   color: var(--home-muted);
+  cursor: pointer;
   font-size: 0.88rem;
   font-weight: 650;
   letter-spacing: 0.08em;
@@ -503,7 +507,7 @@
   transition: color 0.18s ease;
 }
 
-.disciplineNav a:hover {
+.disciplineNav button:hover {
   color: var(--home-text);
   text-decoration: none;
 }

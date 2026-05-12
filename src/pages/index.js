@@ -41,11 +41,11 @@ const runtimeLogs = [
 ];
 function SelectedWorkSection() {
   return (
-    <section className={styles.selectedSection}>
+    <section id="selected-work" className={styles.selectedSection}>
       <div className="container">
         <div className={styles.sectionIntro}>
           <span className={styles.kicker}>Selected Work</span>
-          <h2 id="selected-work">문제를 구조로 바꾼 기록</h2>
+          <h2>문제를 구조로 바꾼 기록</h2>
           <p>
             프로젝트를 썸네일로 포장하기보다, 어떤 문제를 오래 붙잡았고 어떤 방식으로 정리했는지
             보여주는 색인입니다.
@@ -592,12 +592,19 @@ const projects = [
 
               disciplines.map((discipline) => (
 
-                <Link
+                <button
                   key={discipline}
-                  to="#selected-work"
+                  type="button"
+                  onClick={() => {
+                    document
+                      .getElementById('selected-work')
+                      ?.scrollIntoView({
+                        behavior: 'smooth',
+                      });
+                  }}
                 >
                   {discipline}
-                </Link>
+                </button>
 
               ))
             }
@@ -616,8 +623,7 @@ export default function Home() {
   return (
     <Layout
       title="Luda Log"
-      description="개발과 운영, 글쓰기와 교육 경험을 정리한 포트폴리오 아카이브"
-    >
+      description="개발과 운영, 글쓰기와 교육 경험을 정리한 포트폴리오 아카이브">
       <div className={styles.page}>
         <HomepageHeader />
 
