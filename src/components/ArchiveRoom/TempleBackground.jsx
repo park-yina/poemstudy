@@ -44,6 +44,7 @@ export default function TempleBackground() {
     const buildSketch = (p) => {
       const hallParticles = [];
       const portalParticles = [];
+      const dustParticles = [];
       const fogBands = [];
       const hoverState = GATES.map(() => 0);
       const mouse = {
@@ -75,6 +76,16 @@ export default function TempleBackground() {
         phase: p.random(p.TWO_PI),
       });
 
+      const makeDustParticle = () => ({
+        x: p.random(-0.08, 1.08),
+        y: p.random(0.16, 0.96),
+        z: p.random(0.15, 1),
+        drift: p.random(0.08, 0.26),
+        size: p.random(0.8, 2.8),
+        lag: p.random(0.018, 0.065),
+        phase: p.random(p.TWO_PI),
+      });
+
       const getGateBounds = (gate) => {
         const cameraPull = getCameraPull();
         const gateHeight = height * p.lerp(0.3, 0.36, cameraPull);
@@ -101,12 +112,19 @@ export default function TempleBackground() {
 
         hallParticles.length = 0;
         portalParticles.length = 0;
+        dustParticles.length = 0;
         fogBands.length = 0;
 
         const hallCount = Math.min(92, Math.max(34, Math.floor(width / 22)));
 
         for (let i = 0; i < hallCount; i += 1) {
           hallParticles.push(makeHallParticle());
+        }
+
+        const dustCount = Math.min(120, Math.max(44, Math.floor(width / 18)));
+
+        for (let i = 0; i < dustCount; i += 1) {
+          dustParticles.push(makeDustParticle());
         }
 
         GATES.forEach((_, gateIndex) => {
@@ -422,6 +440,50 @@ export default function TempleBackground() {
         });
       };
 
+      const drawMouseDust = (time) => {
+        p.noStroke();
+
+        const cursorPullX = mouse.x - width * 0.5;
+        const cursorPullY = mouse.y - height * 0.5;
+
+        dustParticles.forEach((particle) => {
+          particle.x +=
+            Math.sin(time * 0.24 + particle.phase) * 0.00008 * particle.drift +
+            cursorPullX * 0.00000042 * particle.z;
+
+          particle.y +=
+            Math.cos(time * 0.18 + particle.phase) * 0.00006 * particle.drift +
+            cursorPullY * 0.00000034 * particle.z -
+            0.000035 * particle.drift;
+
+          if (particle.x < -0.1 || particle.x > 1.1 || particle.y < 0.08) {
+            Object.assign(particle, makeDustParticle(), {
+              y: p.random(0.72, 1.04),
+            });
+          }
+
+          const px =
+            particle.x * width +
+            cursorPullX * particle.lag * particle.z;
+
+          const py =
+            particle.y * height +
+            cursorPullY * particle.lag * 0.62 * particle.z;
+
+          const distance = p.dist(mouse.x, mouse.y, px, py);
+          const wake = p.constrain(1 - distance / Math.max(180, width * 0.18), 0, 1);
+          const shimmer = 0.74 + Math.sin(time * 1.6 + particle.phase) * 0.22;
+          const alpha = (10 + particle.z * 28 + wake * 32) * shimmer;
+
+          p.fill(235, 218, 176, alpha);
+          p.circle(
+            px,
+            py,
+            particle.size * p.lerp(0.7, 1.8, particle.z) * (1 + wake * 0.9)
+          );
+        });
+      };
+
       p.setup = () => {
         const canvas = p.createCanvas(1, 1);
         canvas.parent(hostRef.current);
@@ -453,6 +515,7 @@ export default function TempleBackground() {
         drawPortalParticles(time);
         drawFog(time);
         drawHallParticles(time);
+        drawMouseDust(time);
       };
 
       p.windowResized = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import styles from '../components/ArchiveRoom/archive-room.module.css';
-
+import { jumpingBattleBook } from '../components/ArchiveRoom/FullstackSection';
 import ArchiveTopbar from '../components/ArchiveRoom/ArchiveTopbar';
 
 import ArchiveSidebar from '../components/ArchiveRoom/ArchiveSidebar';
@@ -27,8 +27,11 @@ export default function ArchiveRoom() {
         }
       `}
     >
+<div className={styles.archiveBackgroundImage} />
 
-      <TempleBackground />
+      <TempleBackground
+  gates={jumpingBattleBook.gates}
+/>
 
       <ArchiveTopbar />
 {

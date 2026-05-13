@@ -98,17 +98,6 @@ const config = {
 
   hideOnScroll: true,
 
-  logo: {
-
-    alt: 'Luda Log',
-
-    src: 'img/logo.svg',
-
-    href: '/',
-
-    target: '_self',
-  },
-
       items: [
         {
           type: 'docSidebar',

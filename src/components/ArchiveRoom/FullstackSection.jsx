@@ -4,7 +4,7 @@ import styles from './archive-room.module.css';
 import bookStyles from './book-transition.module.css';
 import tarotStyles from './tarot-cards.module.css';
 
-const jumpingBattleBook = {
+export const jumpingBattleBook = {
 
   id: 'jumping-battle',
 
@@ -516,10 +516,16 @@ function GateSelection({
   previewGate,
   setPreviewGate,
   setSelectedGate,
+  visitedGateIds,
+  setVisitedGateIds,
 }) {
   const openGate = (gate) => {
     setPreviewGate(gate);
     setSelectedGate(gate);
+    setVisitedGateIds((visitedIds) => ({
+      ...visitedIds,
+      [gate.id]: true,
+    }));
   };
 
   return (
@@ -569,10 +575,22 @@ function GateSelection({
                 ? styles.previewGate
                 : ''
             }
+
+            ${
+              visitedGateIds[gate.id]
+                ? styles.visitedGate
+                : ''
+            }
           `}
           aria-label={`${gate.gate} room. Click to open.`}
         >
           <div className={styles.gateDoor}>
+            <div className={styles.gateSanctuaryAura} aria-hidden="true">
+              <span className={styles.gateRune} />
+              <span className={styles.gateRune} />
+              <span className={styles.gateRune} />
+            </div>
+
             <div className={styles.gateDoorPanel}>
               <span className={styles.gateIcon}>
                 {gate.icon}
@@ -590,6 +608,13 @@ function GateSelection({
             <div className={styles.gateDoorThreshold}>
               <span className={styles.gateDoorKnob} />
             </div>
+
+            <div className={styles.gateCandles} aria-hidden="true">
+              <span className={styles.gateCandle} />
+              <span className={styles.gateCandle} />
+              <span className={styles.gateCandle} />
+              <span className={styles.gateCandle} />
+            </div>
           </div>
         </button>
 
@@ -604,6 +629,7 @@ function TarotSpread({
 
   isClosing,
   setDecodingMode,
+  decodingExitRequest,
 }){
 
   const [activeCard, setActiveCard] =
@@ -624,6 +650,32 @@ useEffect(() => {
   );
 
 }, [decodingCard, setDecodingMode]);
+  useEffect(() => {
+    if (!decodingCard) {
+      return undefined;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      setDecodingCard(null);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [decodingCard]);
+  useEffect(() => {
+    if (decodingExitRequest > 0) {
+      setDecodingCard(null);
+    }
+  }, [decodingExitRequest]);
   useEffect(() => {
 
     const timer = setTimeout(() => {
@@ -782,7 +834,10 @@ if (layoutMode === 'grid') {
 
       {decodingCard && (
 
-        <div className={tarotStyles.decodingOverlay}>
+        <div
+          className={tarotStyles.decodingOverlay}
+          data-decoding-overlay="true"
+        >
 
           <button
             className={tarotStyles.decodingClose}
@@ -999,7 +1054,10 @@ return (
 
     {decodingCard && (
 
-      <div className={tarotStyles.decodingOverlay}>
+      <div
+        className={tarotStyles.decodingOverlay}
+        data-decoding-overlay="true"
+      >
 
         <button
           className={tarotStyles.decodingClose}
@@ -1091,6 +1149,10 @@ function OpenedBook({
   onClose,
   decodingMode,
   setDecodingMode,
+  decodingExitRequest,
+  requestDecodingExit,
+  visitedGateIds,
+  setVisitedGateIds,
 }){
   if (!book) {
     return null;
@@ -1185,6 +1247,8 @@ function OpenedBook({
             previewGate={previewGate}
             setPreviewGate={setPreviewGate}
             setSelectedGate={setSelectedGate}
+            visitedGateIds={visitedGateIds}
+            setVisitedGateIds={setVisitedGateIds}
           />
 
           {selectedGate && (
@@ -1193,6 +1257,7 @@ function OpenedBook({
               selectedGate={selectedGate}
               isClosing={isClosing}
               setDecodingMode={setDecodingMode}
+              decodingExitRequest={decodingExitRequest}
             />
           )}
         </div>
@@ -1212,6 +1277,7 @@ function OpenedBook({
               className={`${styles.closeButton} ${bookStyles.closeButton}`}
               onClick={(event) => {
                 event.stopPropagation();
+                requestDecodingExit();
               }}
               aria-label="Back to records"
             >
@@ -1252,6 +1318,10 @@ export default function FullstackSection({
     useState(null);
   const [decodingMode, setDecodingMode] =
   useState(false);
+  const [decodingExitRequest, setDecodingExitRequest] =
+    useState(0);
+  const [visitedGateIds, setVisitedGateIds] =
+    useState({});
   const [isClosing, setIsClosing] = useState(false);
   const closeTimerRef = useRef(null);
 
@@ -1264,9 +1334,24 @@ export default function FullstackSection({
     document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        closeBook();
+      if (event.key !== 'Escape') {
+        return;
       }
+
+      if (
+        decodingMode ||
+        document.querySelector('[data-decoding-overlay="true"]')
+      ) {
+        return;
+      }
+
+      if (selectedGate) {
+        setSelectedGate(null);
+        setDecodingMode(false);
+        return;
+      }
+
+      closeBook();
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -1275,7 +1360,7 @@ export default function FullstackSection({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedBook, isClosing]);
+  }, [selectedBook, selectedGate, isClosing, decodingMode]);
 
   useEffect(() => (
     () => {
@@ -1298,6 +1383,7 @@ const openBook = (book) => {
   setSelectedBook(book);
   setSelectedGate(null);
   setPreviewGate(null);
+  setDecodingMode(false);
 };
 
   const closeBook = () => {
@@ -1312,6 +1398,7 @@ closeTimerRef.current = setTimeout(() => {
   setSelectedBook(null);
 setSelectedGate(null);
   setPreviewGate(null);
+  setDecodingMode(false);
   setOverlayActive(false);
 
   setIsClosing(false);
@@ -1371,6 +1458,12 @@ setSelectedGate={setSelectedGate}
   onClose={closeBook}
   decodingMode={decodingMode}
   setDecodingMode={setDecodingMode}
+  decodingExitRequest={decodingExitRequest}
+  requestDecodingExit={() =>
+    setDecodingExitRequest((request) => request + 1)
+  }
+  visitedGateIds={visitedGateIds}
+  setVisitedGateIds={setVisitedGateIds}
 />
     </section>
   );

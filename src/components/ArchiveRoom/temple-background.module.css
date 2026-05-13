@@ -33,15 +33,15 @@
     center center / cover
     no-repeat;
 
-  opacity: 0.32;
+  opacity: 0.46;
 
   filter:
-    brightness(0.42)
-    saturate(0.72)
-    blur(1px);
+    brightness(0.58)
+    contrast(1.12)
+    saturate(0.9);
 
   transform:
-    scale(1.02);
+    scale(1.01);
 }
 
 /* 하단 공기층 */
@@ -67,7 +67,7 @@
 
   filter: blur(32px);
 
-  opacity: 0.5;
+  opacity: 0.42;
 }
 
 .templeBackground canvas {
@@ -80,7 +80,7 @@
 
   pointer-events: none;
 
-  opacity: 0.35;
+  opacity: 0.52;
 
   mix-blend-mode: screen;
 }
