@@ -190,7 +190,7 @@ content: '';
 }
 .arcanaNoise {
   /* 기존 radial-gradient보다 더 입자감이 느껴지는 노이즈 */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3 Operative %3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   filter: contrast(120%) brightness(100%);
   opacity: 0.15; /* 적절히 조절 */
   mix-blend-mode: overlay;
@@ -912,4 +912,423 @@ content: '';
   transform:
     translateY(-12px)
     scale(1.02);
+}
+.decodingOverlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 300;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 4vh 4vw;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(14,18,28,0.74),
+      rgba(4,6,12,0.94)
+    );
+
+  backdrop-filter:
+    blur(22px)
+    brightness(0.48)
+    saturate(0.72);
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    brightness(0.48)
+    saturate(0.72);
+}
+
+.decodingLayout {
+
+  width: min(1400px, 92vw);
+
+  display: grid;
+
+  grid-template-columns:
+    320px
+    minmax(0, 1fr);
+
+  gap: 4vw;
+
+  align-items: center;
+}
+
+.decodingCardPreview {
+
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 0.64;
+
+  transform:
+    rotate(-6deg);
+
+  filter:
+    drop-shadow(0 40px 48px rgba(0,0,0,0.58));
+}
+
+.decodingPanel {
+
+  position: relative;
+
+  min-height: 520px;
+
+  padding:
+    2.4rem;
+
+  border:
+    1px solid rgba(255,220,160,0.12);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16,20,30,0.74),
+      rgba(6,8,14,0.92)
+    );
+
+  overflow: hidden;
+}
+
+.decodingPanel::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 10px;
+
+  border:
+    1px solid rgba(255,220,160,0.08);
+
+  pointer-events: none;
+}
+
+.decodingEyebrow {
+
+  display: inline-block;
+
+  margin-bottom: 1rem;
+
+  font-size: 0.62rem;
+
+  letter-spacing: 0.28em;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(255,220,160,0.46);
+}
+
+.decodingPanel h2 {
+
+  margin: 0;
+
+  font-size:
+    clamp(2rem, 4vw, 3.8rem);
+
+  line-height: 1.04;
+
+  color:
+    rgba(255,248,225,0.94);
+}
+
+.decodingSubtitle {
+
+  margin-top: 1rem;
+
+  font-size: 0.92rem;
+
+  letter-spacing: 0.16em;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(255,220,160,0.54);
+}
+
+.decodingKeywords {
+
+  display: flex;
+
+  gap: 0.8rem;
+
+  margin:
+    2rem 0;
+}
+
+.decodingKeywords span {
+
+  padding:
+    0.48rem 0.72rem;
+
+  border:
+    1px solid rgba(255,220,160,0.14);
+
+  font-size: 0.58rem;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(255,232,190,0.72);
+}
+
+.decodingBody {
+
+  line-height: 1.9;
+
+  color:
+    rgba(255,245,225,0.72);
+}
+
+.decodingClose {
+
+  position: fixed;
+
+  right: 42px;
+  top: 42px;
+
+  z-index: 400;
+
+  border: none;
+
+  background: none;
+
+  cursor: pointer;
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.24em;
+
+  color:
+    rgba(255,220,160,0.68);
+}
+.cardArtwork {
+
+  position: absolute;
+
+  inset: 10%;
+
+  width: 80%;
+  height: 80%;
+
+  object-fit: contain;
+
+  opacity: 0.9;
+
+  mix-blend-mode: screen;
+
+  filter:
+    drop-shadow(0 0 18px rgba(255,220,120,0.18));
+}
+
+.cardArtwork img {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter:
+    contrast(1.02)
+    saturate(0.88)
+    brightness(0.84);
+
+  transform:
+    scale(1.04);
+}
+.gateSelection {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 120;
+
+  pointer-events: none;
+}
+
+.gatePortal {
+
+  position: relative;
+
+  width: 240px;
+  height: 240px;
+
+  border: none;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(20,28,44,0.92),
+      rgba(5,8,16,0.98)
+    );
+
+  border:
+    1px solid rgba(255,220,160,0.14);
+
+  box-shadow:
+    inset 0 0 42px rgba(255,220,160,0.04),
+    0 0 42px rgba(0,0,0,0.42);
+
+  transition:
+    transform 0.42s ease,
+    border-color 0.42s ease,
+    box-shadow 0.42s ease;
+}
+
+.gatePortal::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 14px;
+
+  border-radius: 999px;
+
+  border:
+    1px dashed rgba(255,220,160,0.12);
+
+  animation:
+    gateRotate 18s linear infinite;
+}
+
+.gatePortal::after {
+
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 74%;
+  height: 74%;
+
+  border-radius: 999px;
+
+  border:
+    1px solid rgba(255,220,160,0.08);
+
+  transform:
+    translate(-50%, -50%);
+}
+
+.gatePortal:hover {
+
+  transform:
+    translateY(-10px)
+    scale(1.04);
+
+  border-color:
+    rgba(255,220,160,0.34);
+
+  box-shadow:
+    inset 0 0 54px rgba(255,220,160,0.08),
+    0 0 82px rgba(255,220,160,0.12);
+}
+
+.activeGate {
+
+  border-color:
+    rgba(255,220,160,0.46);
+
+  box-shadow:
+    inset 0 0 64px rgba(255,220,160,0.12),
+    0 0 120px rgba(255,220,160,0.18);
+}
+
+.gateIcon {
+
+  position: absolute;
+
+  left: 50%;
+  top: 34%;
+
+  transform:
+    translate(-50%, -50%);
+
+  font-size: 2.8rem;
+
+  color:
+    rgba(255,220,160,0.72);
+
+  text-shadow:
+    0 0 24px rgba(255,220,160,0.24);
+}
+
+.gateTitle {
+
+  position: absolute;
+
+  left: 50%;
+  top: 56%;
+
+  transform:
+    translateX(-50%);
+
+  font-size: 0.92rem;
+
+  letter-spacing: 0.34em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  color:
+    rgba(255,245,225,0.92);
+}
+
+.gateDescription {
+
+  position: absolute;
+
+  left: 50%;
+  top: 68%;
+
+  width: 72%;
+
+  transform:
+    translateX(-50%);
+
+  text-align: center;
+
+  font-size: 0.64rem;
+
+  line-height: 1.6;
+
+  color:
+    rgba(255,230,190,0.46);
+}
+
+@keyframes gateRotate {
+
+  from {
+
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+
+    transform:
+      rotate(360deg);
+  }
 }

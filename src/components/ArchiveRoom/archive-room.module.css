@@ -6,14 +6,8 @@
 
   overflow: hidden;
 
-  background-image:
-    url('/img/archive-room.png');
-
-  background-size: cover;
-
-  background-position: center;
-
-  background-repeat: no-repeat;
+  background:
+    #02040a;
 
   display: flex;
 
@@ -32,7 +26,12 @@
   inset: 0;
 
   background:
-    rgba(4, 6, 12, 0.62);
+    linear-gradient(
+      180deg,
+      rgba(3, 4, 8, 0.18),
+      rgba(3, 4, 8, 0.36) 52%,
+      rgba(0, 0, 0, 0.72)
+    );
 
   z-index: 1;
 }
@@ -93,6 +92,11 @@
 
   -webkit-backdrop-filter:
     blur(18px);
+}
+
+.archiveRoom.overlayActive .topbar {
+
+  display: none;
 }
 
 /* BRAND */
@@ -872,24 +876,555 @@ background:
 
 .recordCard {
 
+  flex: 1 1 220px;
+
   padding:
     0.9rem 1rem;
+
+  min-width: 220px;
 
   border:
     1px solid rgba(255,220,160,0.10);
 
   background:
-    rgba(255,255,255,0.03);
+    rgba(255,255,255,0.06);
 
   font-size: 0.82rem;
 
   letter-spacing: 0.04em;
 
   color:
-    rgba(255,245,225,0.74);
+    rgba(255,245,225,0.84);
 
   backdrop-filter:
     blur(8px);
+
+  border-radius: 0.65rem;
+}
+
+.recordCardLabel {
+
+  display: inline-flex;
+
+  margin-bottom: 0.75rem;
+
+  padding:
+    0.3rem 0.7rem;
+
+  font-size: 0.62rem;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(30, 30, 30, 0.88);
+
+  background:
+    rgba(255, 221, 130, 0.94);
+
+  border-radius: 999px;
+}
+
+.recordCardPlaceholder {
+
+  flex: 1 1 100%;
+
+  padding:
+    1.2rem 1rem;
+
+  border:
+    1px dashed rgba(255,220,160,0.20);
+
+  color:
+    rgba(255,245,225,0.6);
+
+  background:
+    rgba(255,255,255,0.02);
+
+  border-radius: 0.75rem;
+}
+
+.gateSelection {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(240px, 1fr));
+
+  gap: 1.5rem;
+
+  width: min(100%, 1080px);
+
+  margin: 1.5rem auto 0;
+
+  padding: 0 1rem;
+
+  position: relative;
+
+  z-index: 12;
+
+  max-height: 340px;
+}
+
+.gateSelectionClosing {
+  pointer-events: none;
+
+  animation:
+    gateSelectionCollapse 0.92s ease forwards;
+}
+
+.gatePortal {
+
+  position: relative;
+
+  width: 100%;
+  max-width: 260px;
+  height: 320px;
+
+  margin: 0 auto;
+
+  border: none;
+
+  background: transparent;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+/* =========================
+   TEMPLE PORTAL
+========================= */
+
+.gateDoor {
+
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  border-radius: 160px 160px 24px 24px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(36,30,24,0.96),
+      rgba(10,12,18,0.98)
+    );
+
+  border:
+    1px solid rgba(255,220,160,0.14);
+
+  box-shadow:
+    inset 0 0 42px rgba(255,240,190,0.04),
+    inset 0 0 2px rgba(255,255,255,0.08),
+    0 30px 80px rgba(0,0,0,0.55);
+
+  backdrop-filter:
+    blur(4px);
+
+  transform-origin: center bottom;
+
+  transition:
+    transform 0.5s ease,
+    opacity 0.45s ease,
+    filter 0.45s ease;
+}
+
+/* 내부 포탈 */
+
+/* 바깥 glow */
+.gateDoor::before {
+  content: '';
+
+  position: absolute;
+  inset: 12px;
+
+  border-radius: 140px 140px 18px 18px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(120,180,255,0.18),
+      rgba(18,22,36,0.92) 70%
+    );
+
+  animation:
+    portalBreath 5s ease-in-out infinite;
+}
+.gateDoor::after {
+
+  content: '';
+
+  position: absolute;
+
+  inset: -40px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255,220,160,0.16),
+      transparent 70%
+    );
+
+  filter: blur(22px);
+
+  opacity: 0.8;
+
+  z-index: -1;
+}
+
+/* 기둥 */
+
+.gateColumnLeft,
+.gateColumnRight {
+
+  position: absolute;
+
+  top: 8%;
+
+  bottom: 0;
+
+  width: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #e7dcc6,
+      #a78f68
+    );
+
+  box-shadow:
+    inset 0 0 8px rgba(255,255,255,0.22),
+    0 0 14px rgba(0,0,0,0.22);
+}
+
+.gateColumnLeft {
+  left: -22px;
+}
+
+.gateColumnRight {
+  right: -22px;
+}
+
+/* hover */
+
+.gatePortal:hover {
+
+  transform:
+    translateY(-12px)
+    scale(1.04);
+
+  filter:
+    brightness(1.08);
+}
+
+/* 텍스트 */
+
+.gateTitle {
+
+  position: absolute;
+
+  bottom: -44px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.34em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  color:
+    rgba(255,245,225,0.82);
+}
+
+.gateDescription {
+
+  position: absolute;
+
+  bottom: -74px;
+
+  left: 50%;
+
+  width: 220px;
+
+  transform: translateX(-50%);
+
+  text-align: center;
+
+  font-size: 0.62rem;
+
+  line-height: 1.6;
+
+  color:
+    rgba(255,230,190,0.42);
+}
+
+/* breathing */
+
+@keyframes portalBreath {
+
+  0%,
+  100% {
+
+    transform: scale(1);
+
+    opacity: 0.88;
+  }
+
+  50% {
+
+    transform: scale(1.04);
+
+    opacity: 1;
+  }
+}
+.activeGate .gateDoor {
+
+  border-color:
+    rgba(255,215,140,0.28);
+
+  background:
+    linear-gradient(180deg, rgba(28,42,64,0.98), rgba(12,16,24,0.98));
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,215,140,0.08),
+    0 22px 52px rgba(0, 0, 0, 0.28);
+
+}
+
+.activeGate {
+
+  border-color:
+    rgba(255,215,140,0.34);
+
+  background:
+    rgba(255,220,160,0.12);
+}
+
+.gateIcon {
+
+  display: inline-block;
+
+  margin-bottom: 0.55rem;
+
+  font-size: 1.1rem;
+}
+
+.gateTitle {
+
+  display: block;
+
+  font-size: 0.9rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+
+  margin-bottom: 0.35rem;
+
+  color:
+    rgba(255,245,225,0.95);
+}
+
+.gateDescription {
+
+  font-size: 0.72rem;
+
+  line-height: 1.45;
+
+  color:
+    rgba(255,245,225,0.6);
+}
+
+.gateSelectionClosing .gatePortal:not(.activeGate) {
+  opacity: 0;
+  transform:
+    translateY(24px)
+    scale(0.82);
+
+  filter:
+    blur(6px)
+    brightness(0.7);
+}
+
+.gateSelectionClosing .activeGate {
+  animation:
+    selectedGatePassage 0.82s ease forwards;
+}
+
+.gateSelectionClosing .activeGate .gateDoor {
+  transform:
+    scaleX(0.22)
+    scaleY(1.04);
+
+  opacity: 0;
+
+  filter:
+    brightness(1.35)
+    blur(2px);
+}
+
+.gateSelectionClosing .activeGate .gateDoorPanel {
+  opacity: 1;
+}
+
+.gateDoorPanel {
+  position: absolute;
+  inset: 18px;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2.5rem 1.3rem 2rem;
+
+  border-radius: 132px 132px 18px 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 12, 22, 0.08),
+      rgba(8, 12, 22, 0.64)
+    );
+
+  opacity: 0;
+  transform: translateY(12px);
+
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    background 0.28s ease;
+}
+
+.gatePortal:hover .gateDoorPanel,
+.gatePortal:focus-visible .gateDoorPanel,
+.previewGate .gateDoorPanel,
+.activeGate .gateDoorPanel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.previewGate .gateDoor {
+  border-color:
+    rgba(255,215,140,0.22);
+
+  box-shadow:
+    inset 0 0 42px rgba(255,240,190,0.12),
+    0 0 92px rgba(255,204,128,0.15),
+    0 0 80px rgba(0,0,0,0.42);
+}
+
+.gateDoorPanel .gateIcon {
+  font-size: 1.4rem;
+}
+
+.gateDoorPanel .gateTitle {
+  position: static;
+  transform: none;
+
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.gateDoorPanel .gateDescription {
+  position: static;
+  width: auto;
+  max-width: 190px;
+  transform: none;
+  margin: 0;
+
+  text-align: center;
+}
+
+.gateDoorThreshold {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 26px;
+  z-index: 3;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,220,160,0.42),
+      transparent
+    );
+}
+
+.gateDoorKnob {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,230,170,0.82);
+
+  box-shadow:
+    0 0 16px rgba(255,210,120,0.58);
+}
+
+@keyframes selectedGatePassage {
+  0% {
+    transform:
+      translateY(-12px)
+      scale(1.04);
+  }
+
+  52% {
+    transform:
+      translateY(-22px)
+      scale(1.08);
+  }
+
+  100% {
+    transform:
+      translateY(-80px)
+      scale(0.78);
+  }
+}
+
+@keyframes gateSelectionCollapse {
+  0% {
+    max-height: 340px;
+    margin-top: 1.5rem;
+    opacity: 1;
+  }
+
+  68% {
+    max-height: 340px;
+    margin-top: 1.5rem;
+    opacity: 0.86;
+  }
+
+  100% {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+  }
 }
 
 .archiveBook.smallBook {

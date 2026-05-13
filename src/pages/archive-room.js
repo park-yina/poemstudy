@@ -7,6 +7,7 @@ import ArchiveTopbar from '../components/ArchiveRoom/ArchiveTopbar';
 import ArchiveSidebar from '../components/ArchiveRoom/ArchiveSidebar';
 
 import FullstackSection from '../components/ArchiveRoom/FullstackSection';
+import TempleBackground from '../components/ArchiveRoom/TempleBackground';
 
 export default function ArchiveRoom() {
 
@@ -27,9 +28,14 @@ export default function ArchiveRoom() {
       `}
     >
 
-      <ArchiveTopbar />
+      <TempleBackground />
 
-      <ArchiveSidebar />
+      <ArchiveTopbar />
+{
+  !overlayActive && (
+    <ArchiveSidebar />
+  )
+}
 
       <FullstackSection
         overlayActive={overlayActive}
