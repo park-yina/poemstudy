@@ -15,7 +15,95 @@
 
   justify-content: center;
 }
+.archiveBackgroundImage {
 
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  background-image:
+    url('/static/img/gateBack.png');
+
+  background-size:
+    cover;
+
+  background-position:
+    center;
+
+  background-repeat:
+    no-repeat;
+
+  opacity: 0.34;
+
+  filter:
+    brightness(0.38)
+    saturate(0.74)
+    blur(0.8px);
+
+  transform:
+    scale(1.02);
+}
+
+.archiveBackgroundImage::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(120,140,180,0.08),
+      transparent 38%
+    ),
+
+    radial-gradient(
+      circle at 50% 78%,
+      rgba(255,180,120,0.06),
+      transparent 52%
+    );
+
+  mix-blend-mode:
+    screen;
+}
+
+.archiveBackgroundImage::after {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,0.82) 0%,
+      rgba(0,0,0,0.54) 28%,
+      rgba(0,0,0,0.38) 52%,
+      rgba(0,0,0,0.72) 100%
+    ),
+
+    radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      rgba(0,0,0,0.58) 100%
+    );
+}
 /* DARK OVERLAY */
 .archiveRoom::before {
 
@@ -34,6 +122,11 @@
     );
 
   z-index: 1;
+
+  opacity: 1;
+
+  animation:
+    archiveRoomDarkness 1.35s cubic-bezier(0.18, 0.78, 0.22, 1) forwards;
 }
 
 /* VIGNETTE */
@@ -55,6 +148,140 @@
   z-index: 2;
 
   pointer-events: none;
+
+  opacity: 0;
+
+  animation:
+    archiveRoomVignette 1.45s cubic-bezier(0.18, 0.78, 0.22, 1) forwards;
+}
+
+@keyframes archiveRoomEntrance {
+  0% {
+    opacity: 0;
+  }
+
+  58% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes archiveRoomDarkness {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.72;
+  }
+}
+
+@keyframes archiveRoomVignette {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes archiveUiReveal {
+  0% {
+    opacity: 0;
+    transform:
+      translate3d(var(--archive-reveal-x, 0), var(--archive-reveal-y, -8px), 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translate3d(0, 0, 0);
+  }
+}
+
+@keyframes archiveContentReveal {
+  0% {
+    opacity: 0;
+    transform:
+      translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
+
+@keyframes portalSelectionReveal {
+  0% {
+    opacity: 0;
+    transform:
+      translateY(34px)
+      scale(0.992);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateY(18px)
+      scale(1);
+  }
+}
+
+@keyframes portalWake {
+  0% {
+    opacity: 0;
+    transform:
+      translateY(16px)
+      scale(0.986);
+    filter:
+      brightness(0.72);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+    filter:
+      brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archiveRoom,
+  .archiveRoom::before,
+  .archiveRoom::after,
+  .topbar,
+  .sidebar,
+  .fullstackSection,
+  .gateSelection,
+  .gatePortal {
+    animation: none;
+  }
+
+  .archiveRoom,
+  .topbar,
+  .sidebar,
+  .fullstackSection,
+  .gateSelection,
+  .gatePortal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .archiveRoom::before {
+    opacity: 0.72;
+  }
+
+  .archiveRoom::after {
+    opacity: 1;
+  }
 }
 
 /* TOPBAR */
@@ -92,6 +319,14 @@
 
   -webkit-backdrop-filter:
     blur(18px);
+
+  opacity: 0;
+
+  transform:
+    translateY(-8px);
+
+  animation:
+    archiveUiReveal 0.7s ease 0.56s forwards;
 }
 
 .archiveRoom.overlayActive .topbar {
@@ -362,6 +597,17 @@
 
   box-shadow:
     0 0 34px rgba(0,0,0,0.28);
+
+  opacity: 0;
+
+  transform:
+    translateX(-10px);
+
+  animation:
+    archiveUiReveal 0.74s ease 0.66s forwards;
+
+  --archive-reveal-x: -10px;
+  --archive-reveal-y: 0;
 }
 
 /* LABEL */
@@ -475,6 +721,14 @@
 
   margin-left: 260px;
   padding: 8.5rem 2rem 4rem;
+
+  opacity: 0;
+
+  transform:
+    translateY(10px);
+
+  animation:
+    archiveContentReveal 0.82s cubic-bezier(0.18, 0.78, 0.22, 1) 0.62s forwards;
 }
 
 .fullstackIntro {
@@ -952,7 +1206,7 @@ background:
   grid-template-columns:
     repeat(auto-fit, minmax(240px, 1fr));
 
-  gap: 2rem;
+  gap: 1.5rem;
 
   width: min(100%, 1080px);
 
@@ -964,9 +1218,16 @@ background:
 
   z-index: 12;
 
-  max-height: 390px;
+  max-height: 340px;
 
-  transform: translateY(18px);
+  opacity: 0;
+
+  transform:
+    translateY(34px)
+    scale(0.992);
+
+  animation:
+    portalSelectionReveal 0.72s cubic-bezier(0.18, 0.78, 0.22, 1) 0.72s forwards;
 }
 
 .gateSelectionClosing {
@@ -981,8 +1242,8 @@ background:
   position: relative;
 
   width: 100%;
-  max-width: 300px;
-  height: 366px;
+  max-width: 260px;
+  height: 320px;
 
   margin: 0 auto;
 
@@ -994,93 +1255,26 @@ background:
 
   cursor: pointer;
 
-  padding:
-    22px 24px 66px;
-
   transition:
     transform 0.35s ease,
     filter 0.35s ease;
+
+  opacity: 0;
+
+  animation:
+    portalWake 0.76s cubic-bezier(0.18, 0.78, 0.22, 1) 0.88s forwards;
 }
 
-.gatePortal::before {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  right: auto;
-  bottom: 0;
-  z-index: 0;
-
-  width: 116%;
-  height: 74px;
-
-  transform:
-    translateX(-50%)
-    perspective(520px)
-    rotateX(64deg);
-  transform-origin: center bottom;
-
-  border-radius: 16px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(234, 216, 174, 0.16),
-      rgba(82, 68, 52, 0.18) 46%,
-      rgba(12, 11, 12, 0.58)
-    ),
-    radial-gradient(
-      ellipse at 50% 22%,
-      rgba(110, 168, 255, 0.16),
-      transparent 54%
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 230, 172, 0.09) 0,
-      rgba(255, 230, 172, 0.09) 1px,
-      transparent 1px,
-      transparent 34px
-    );
-
-  border:
-    1px solid rgba(255, 224, 166, 0.18);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 244, 206, 0.18),
-    inset 0 -12px 22px rgba(0, 0, 0, 0.38),
-    0 28px 42px rgba(0, 0, 0, 0.56);
+.gatePortal:nth-child(2) {
+  animation-delay: 0.96s;
 }
 
-.gatePortal::after {
-  content: '';
+.gatePortal:nth-child(3) {
+  animation-delay: 1.04s;
+}
 
-  position: absolute;
-  left: 1%;
-  right: 1%;
-  bottom: 36px;
-  z-index: 1;
-
-  height: 46px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      ellipse at 50% 70%,
-      rgba(210, 220, 230, 0.18),
-      rgba(120, 150, 190, 0.08) 38%,
-      transparent 72%
-    ),
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 226, 166, 0.18),
-      transparent
-    );
-
-  filter: blur(8px);
-
-  opacity: 0.76;
+.gatePortal:nth-child(4) {
+  animation-delay: 1.12s;
 }
 
 /* =========================
@@ -1091,174 +1285,64 @@ background:
 
   position: relative;
 
-  z-index: 2;
-
   width: 100%;
   height: 100%;
 
   overflow: hidden;
 
-  border-radius: 8px 8px 14px 14px;
-
-  clip-path:
-    polygon(
-      12% 8%,
-      88% 8%,
-      88% 100%,
-      12% 100%
-    );
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(126, 102, 68, 0.72) 0%,
-      rgba(62, 50, 37, 0.86) 7%,
-      transparent 7.5%,
-      transparent 92.5%,
-      rgba(62, 50, 37, 0.86) 93%,
-      rgba(126, 102, 68, 0.72) 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(160, 136, 88, 0.58) 0%,
-      rgba(78, 62, 44, 0.38) 12%,
-      transparent 12.5%,
-      transparent 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(28, 24, 21, 0.76),
-      rgba(10, 11, 16, 0.82)
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 230, 170, 0.055) 0,
-      rgba(255, 230, 170, 0.055) 1px,
-      transparent 1px,
-      transparent 24px
-    );
-
-  border:
-    1px solid rgba(255,220,160,0.2);
-
-  box-shadow:
-    inset 10px 0 0 rgba(255, 230, 170, 0.06),
-    inset -10px 0 0 rgba(255, 230, 170, 0.06),
-    inset 0 16px 0 rgba(255, 230, 170, 0.04),
-    inset 0 0 32px rgba(255,240,190,0.035),
-    inset 0 0 2px rgba(255,255,255,0.08),
-    0 26px 70px rgba(0,0,0,0.5);
+  border-radius:
+    180px 180px 26px 26px;
 
   backdrop-filter:
     blur(4px);
 
-  transform-origin: center bottom;
-
   transition:
-    transform 0.5s ease,
-    opacity 0.45s ease,
-    filter 0.45s ease;
+    transform 0.45s ease,
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+
+  isolation: isolate;
 }
 
-.visitedGate .gateDoor {
+/* ========================================
+   COMMON PORTAL DEPTH
+======================================== */
+.gatePedestal {
+
+  position: absolute;
+
+  bottom: -26px;
+
+  width: 120%;
+
+  height: 26px;
+
   background:
     linear-gradient(
-      90deg,
-      rgba(226, 202, 154, 0.26) 0%,
-      rgba(128, 96, 62, 0.72) 7%,
-      transparent 7.5%,
-      transparent 92.5%,
-      rgba(128, 96, 62, 0.72) 93%,
-      rgba(226, 202, 154, 0.26) 100%
-    ),
-    linear-gradient(
       180deg,
-      rgba(255, 230, 178, 0.3) 0%,
-      rgba(128, 88, 52, 0.16) 12%,
-      transparent 12.5%,
-      transparent 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(78, 55, 36, 0.74),
-      rgba(24, 18, 16, 0.84)
+      rgba(255,220,140,0.12),
+      rgba(0,0,0,0.42)
     );
 
-  box-shadow:
-    inset 10px 0 0 rgba(255, 235, 190, 0.1),
-    inset -10px 0 0 rgba(255, 235, 190, 0.1),
-    inset 0 16px 0 rgba(255, 235, 190, 0.08),
-    inset 0 0 46px rgba(255, 184, 84, 0.11),
-    inset 0 0 2px rgba(255,255,255,0.08),
-    0 26px 70px rgba(0,0,0,0.5),
-    0 0 54px rgba(255, 174, 74, 0.16),
-    0 -12px 42px rgba(255, 190, 90, 0.1);
+  filter:
+    blur(6px);
 }
-
-/* 내부 포탈 */
-
-/* 바깥 glow */
 .gateDoor::before {
+
   content: '';
 
   position: absolute;
-  inset: 42px 46px 54px;
 
-  border-radius: 6px 6px 12px 12px;
-
-  clip-path:
-    polygon(
-      16% 0,
-      84% 0,
-      84% 100%,
-      16% 100%
-    );
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(2, 5, 14, 0.94),
-      rgba(7, 13, 30, 0.58) 24%,
-      rgba(39, 66, 128, 0.2) 50%,
-      rgba(7, 13, 30, 0.58) 76%,
-      rgba(2, 5, 14, 0.94)
-    ),
-    linear-gradient(
-      180deg,
-      rgba(104, 148, 255, 0.22),
-      rgba(4, 8, 18, 0.48) 42%,
-      rgba(2, 4, 10, 0.9)
-    ),
-    radial-gradient(
-      ellipse at 50% 46%,
-      rgba(152, 190, 255, 0.2),
-      transparent 54%
-    ),
-    radial-gradient(
-      ellipse at 50% 88%,
-      rgba(230, 218, 176, 0.18),
-      transparent 42%
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 26px,
-      rgba(255, 230, 170, 0.055) 26px,
-      rgba(255, 230, 170, 0.055) 27px,
-      transparent 28px,
-      transparent 54px
-    );
+  inset: -18px;
 
   border:
-    1px solid rgba(255, 225, 166, 0.16);
+    2px solid rgba(255,220,140,0.12);
+
+  border-radius:
+    180px 180px 24px 24px;
 
   box-shadow:
-    inset 0 0 38px rgba(90, 150, 255, 0.18),
-    inset 0 0 90px rgba(0, 0, 0, 0.34),
-    0 0 42px rgba(120, 180, 255, 0.14);
-
-  animation:
-    portalBreath 5s ease-in-out infinite;
+    0 0 40px rgba(255,180,80,0.08);
 }
 .gateDoor::after {
 
@@ -1266,303 +1350,196 @@ background:
 
   position: absolute;
 
-  inset: 16px 20px 38px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 224, 156, 0.09) 7%,
-      transparent 8%,
-      transparent 90%,
-      rgba(255, 224, 156, 0.09) 93%,
-      transparent 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(255, 224, 156, 0.08),
-      transparent 14%,
-      transparent 100%
-    );
-
-  filter: blur(5px);
-
-  opacity: 0.9;
-
-  z-index: 1;
-
-  pointer-events: none;
-}
-
-.gateSanctuaryAura {
-  position: absolute;
-  inset: 38px 36px 64px;
-  z-index: 3;
-
-  pointer-events: none;
-}
-
-.gateSanctuaryAura::before {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-
-  width: 76%;
-  height: 44px;
-
-  transform: translateX(-50%);
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      ellipse at 50% 50%,
-      rgba(180, 210, 255, 0.22),
-      rgba(120, 150, 220, 0.08) 42%,
-      transparent 72%
-    );
-
-  filter: blur(10px);
-}
-
-.gateRune {
-  position: absolute;
-
-  width: 4px;
-  height: 4px;
-
-  border-radius: 50%;
-
-  background:
-    rgba(255, 226, 166, 0.72);
-
-  box-shadow:
-    0 0 10px rgba(255, 210, 120, 0.5),
-    0 0 20px rgba(120, 170, 255, 0.2);
-
-  animation:
-    sanctuaryRuneDrift 4.8s ease-in-out infinite;
-}
-
-.gateRune:nth-child(1) {
-  left: 28%;
-  top: 28%;
-}
-
-.gateRune:nth-child(2) {
-  right: 26%;
-  top: 42%;
-  animation-delay: 1.3s;
-}
-
-.gateRune:nth-child(3) {
-  left: 52%;
-  bottom: 28%;
-  animation-delay: 2.1s;
-}
-
-.gateCandles {
-  position: absolute;
-  left: 6%;
-  right: 6%;
-  bottom: 50px;
-  z-index: 5;
-
-  display: flex;
-  justify-content: space-between;
-
-  pointer-events: none;
-}
-
-.gateCandle {
-  position: relative;
-
-  width: 5px;
-  height: 15px;
-
-  border-radius: 2px 2px 1px 1px;
+  inset: 0;
 
   background:
     linear-gradient(
       180deg,
-      rgba(242, 225, 184, 0.9),
-      rgba(132, 110, 84, 0.84)
+      rgba(255,255,255,0.04),
+      transparent 24%,
+      transparent 72%,
+      rgba(0,0,0,0.22)
     );
-
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.42);
-}
-
-.gateCandle::before {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  top: -8px;
-
-  width: 7px;
-  height: 10px;
-
-  transform:
-    translateX(-50%)
-    rotate(4deg);
-
-  border-radius:
-    60% 60% 55% 55%;
-
-  background:
-    radial-gradient(
-      circle at 50% 64%,
-      rgba(255, 245, 194, 0.95),
-      rgba(255, 183, 88, 0.58) 44%,
-      transparent 72%
-    );
-
-  filter: blur(0.2px);
-
-  animation:
-    candleFlicker 2.4s ease-in-out infinite;
-}
-
-.gateCandle::after {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  top: -15px;
-
-  width: 28px;
-  height: 28px;
-
-  transform: translateX(-50%);
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255, 190, 96, 0.16),
-      transparent 66%
-    );
-}
-
-.visitedGate .gateDoor::before {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(26, 12, 7, 0.72),
-      rgba(88, 48, 24, 0.34) 24%,
-      rgba(255, 190, 88, 0.18) 50%,
-      rgba(88, 48, 24, 0.34) 76%,
-      rgba(26, 12, 7, 0.72)
-    ),
-    radial-gradient(
-      ellipse at 50% 0,
-      rgba(255, 226, 154, 0.42),
-      rgba(255, 176, 76, 0.16) 30%,
-      transparent 62%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(255, 192, 96, 0.2),
-      rgba(34, 18, 12, 0.62) 48%,
-      rgba(5, 4, 6, 0.92)
-    );
-
-  box-shadow:
-    inset 0 0 38px rgba(255, 188, 86, 0.18),
-    inset 0 0 90px rgba(0, 0, 0, 0.34),
-    0 0 46px rgba(255, 182, 80, 0.18),
-    0 -18px 34px rgba(255, 180, 78, 0.18);
-}
-
-.visitedGate .gateSanctuaryAura::after {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  top: -28px;
-
-  width: 28px;
-  height: 42px;
-
-  transform:
-    translateX(-50%)
-    rotate(-1deg);
-
-  border-radius:
-    68% 68% 54% 54%;
-
-  background:
-    radial-gradient(
-      circle at 50% 68%,
-      rgba(255, 248, 210, 0.98),
-      rgba(255, 176, 76, 0.72) 42%,
-      rgba(255, 120, 42, 0.16) 62%,
-      transparent 76%
-    ),
-    radial-gradient(
-      ellipse at 50% 100%,
-      rgba(255, 204, 112, 0.42),
-      transparent 58%
-    );
-
-  filter: blur(0.25px);
-
-  box-shadow:
-    0 0 18px rgba(255, 212, 128, 0.7),
-    0 0 48px rgba(255, 170, 70, 0.34),
-    0 0 84px rgba(255, 140, 54, 0.12);
-
-  animation:
-    candleFlicker 2.2s ease-in-out infinite;
-}
-
-.visitedGate .gateSanctuaryAura::before {
-  background:
-    radial-gradient(
-      ellipse at 50% 72%,
-      rgba(255, 188, 88, 0.26),
-      rgba(255, 188, 88, 0.12) 34%,
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse at 50% 50%,
-      rgba(180, 210, 255, 0.18),
-      rgba(120, 150, 220, 0.07) 42%,
-      transparent 72%
-    );
-}
-
-.visitedGate .gateDoor::after {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  top: -34px;
-  z-index: 6;
-
-  width: 112px;
-  height: 112px;
-
-  transform:
-    translateX(-50%);
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255, 184, 84, 0.26),
-      rgba(255, 184, 84, 0.12) 34%,
-      transparent 68%
-    );
-
-  filter: blur(7px);
 
   pointer-events: none;
+}
+
+/* ========================================
+   REALTIME
+======================================== */
+
+.realtimeGate {
+
+  background:
+
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(120,180,255,0.16),
+      transparent 52%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(18,38,62,0.96),
+      rgba(6,10,18,0.98)
+    );
+
+  border:
+    1px solid rgba(120,180,255,0.18);
+
+  box-shadow:
+    inset 0 0 28px rgba(120,180,255,0.05),
+    0 0 60px rgba(80,140,255,0.08);
+}
+
+.realtimeGate:hover {
+
+  border-color:
+    rgba(160,210,255,0.28);
+
+  box-shadow:
+    inset 0 0 42px rgba(120,180,255,0.08),
+    0 0 90px rgba(80,140,255,0.14);
+
+  transform:
+    translateY(-4px)
+    scale(1.01);
+}
+
+/* ========================================
+   INFRA
+======================================== */
+
+.infraGate {
+
+  background:
+
+    radial-gradient(
+      circle at 50% 70%,
+      rgba(255,120,40,0.14),
+      transparent 56%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(42,20,10,0.96),
+      rgba(14,7,4,0.98)
+    );
+
+  border:
+    1px solid rgba(255,140,60,0.18);
+
+  box-shadow:
+    inset 0 0 32px rgba(255,120,40,0.05),
+    0 0 80px rgba(255,90,20,0.08);
+}
+
+.infraGate:hover {
+
+  border-color:
+    rgba(255,170,90,0.28);
+
+  box-shadow:
+    inset 0 0 42px rgba(255,120,40,0.08),
+    0 0 120px rgba(255,90,20,0.16);
+
+  transform:
+    translateY(-4px)
+    scale(1.012);
+}
+
+/* ========================================
+   SECURITY
+======================================== */
+
+.securityGate {
+
+  background:
+
+    radial-gradient(
+      circle at center,
+      rgba(255,220,120,0.04),
+      transparent 48%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(14,14,14,0.98),
+      rgba(3,3,3,1)
+    );
+
+  border:
+    1px solid rgba(255,220,140,0.12);
+
+  box-shadow:
+    inset 0 0 18px rgba(255,220,120,0.03),
+    0 0 30px rgba(255,220,120,0.04);
+}
+
+.securityGate:hover {
+
+  border-color:
+    rgba(255,220,140,0.18);
+
+  box-shadow:
+    inset 0 0 24px rgba(255,220,120,0.04),
+    0 0 42px rgba(255,220,120,0.06);
+
+  transform:
+    translateY(-2px);
+}
+
+/* ========================================
+   DEVICE
+======================================== */
+
+.deviceGate {
+
+  background:
+
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(120,255,180,0.08),
+      transparent 56%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(8,18,14,0.98),
+      rgba(3,6,5,1)
+    );
+
+  border:
+    1px solid rgba(120,255,180,0.14);
+
+  box-shadow:
+    inset 0 0 20px rgba(120,255,180,0.04),
+    0 0 60px rgba(120,255,180,0.05);
+}
+
+.deviceGate:hover {
+
+  border-color:
+    rgba(140,255,200,0.24);
+
+  box-shadow:
+    inset 0 0 28px rgba(120,255,180,0.06),
+    0 0 90px rgba(120,255,180,0.08);
+
+  transform:
+    translateY(-4px)
+    scale(1.008);
+}
+
+/* ========================================
+   ACTIVE DIMENSION
+======================================== */
+
+.activeGate {
+
+  transform:
+    translateY(-6px)
+    scale(1.018);
 }
 
 /* 기둥 */
@@ -1603,8 +1580,8 @@ background:
 .gatePortal:hover {
 
   transform:
-    translateY(-8px)
-    scale(1.025);
+    translateY(-12px)
+    scale(1.04);
 
   filter:
     brightness(1.08);
@@ -1616,7 +1593,7 @@ background:
 
   position: absolute;
 
-  bottom: -28px;
+  bottom: -44px;
 
   left: 50%;
 
@@ -1638,7 +1615,7 @@ background:
 
   position: absolute;
 
-  bottom: -58px;
+  bottom: -74px;
 
   left: 50%;
 
@@ -1675,78 +1652,101 @@ background:
     opacity: 1;
   }
 }
-
-@keyframes candleFlicker {
-  0%,
-  100% {
-    opacity: 0.82;
-    transform:
-      translateX(-50%)
-      rotate(2deg)
-      scaleY(0.92);
-  }
-
-  48% {
-    opacity: 1;
-    transform:
-      translateX(-50%)
-      rotate(-4deg)
-      scaleY(1.08);
-  }
-}
-
-@keyframes sanctuaryRuneDrift {
-  0%,
-  100% {
-    opacity: 0.38;
-    transform:
-      translate3d(0, 4px, 0)
-      scale(0.82);
-  }
-
-  50% {
-    opacity: 0.9;
-    transform:
-      translate3d(0, -6px, 0)
-      scale(1);
-  }
-}
-
 .activeGate .gateDoor {
 
   border-color:
     rgba(255,215,140,0.28);
 
   background:
-    linear-gradient(
-      90deg,
-      rgba(130, 112, 78, 0.82) 0%,
-      rgba(62, 54, 42, 0.92) 8%,
-      transparent 8.5%,
-      transparent 91.5%,
-      rgba(62, 54, 42, 0.92) 92%,
-      rgba(130, 112, 78, 0.82) 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(154, 138, 96, 0.7) 0%,
-      rgba(72, 62, 48, 0.42) 17%,
-      transparent 17.5%,
-      transparent 100%
-    );
+    linear-gradient(180deg, rgba(28,42,64,0.98), rgba(12,16,24,0.98));
 
   box-shadow:
-    inset 10px 0 0 rgba(255,215,140,0.08),
-    inset -10px 0 0 rgba(255,215,140,0.08),
-    0 22px 52px rgba(0, 0, 0, 0.28),
-    0 0 72px rgba(120, 180, 255, 0.14);
+    inset 0 0 0 1px rgba(255,215,140,0.08),
+    0 22px 52px rgba(0, 0, 0, 0.28);
 
 }
+.realtimeGate {
 
+  background:
+
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(120,180,255,0.14),
+      transparent 52%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(18,38,62,0.96),
+      rgba(6,10,18,0.98)
+    );
+
+  border:
+    1px solid rgba(120,180,255,0.18);
+
+  box-shadow:
+    inset 0 0 24px rgba(120,180,255,0.06),
+    0 0 60px rgba(80,140,255,0.08);
+
+  backdrop-filter:
+    blur(4px);
+}
+.infraGate {
+
+  background:
+
+    radial-gradient(
+      circle at 50% 70%,
+      rgba(255,120,40,0.12),
+      transparent 56%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(42,20,10,0.96),
+      rgba(14,7,4,0.98)
+    );
+
+  border:
+    1px solid rgba(255,140,60,0.18);
+
+  box-shadow:
+    inset 0 0 32px rgba(255,120,40,0.05),
+    0 0 80px rgba(255,90,20,0.08);
+}
 .activeGate {
 
-  filter:
-    brightness(1.1);
+  border-color:
+    rgba(255,220,160,0.24);
+
+  box-shadow:
+    0 0 120px rgba(255,220,160,0.08);
+
+  transform:
+    translateY(-4px);
+}
+.securityGate {
+
+  background:
+
+    radial-gradient(
+      circle at center,
+      rgba(255,220,120,0.04),
+      transparent 48%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(14,14,14,0.98),
+      rgba(3,3,3,1)
+    );
+
+  border:
+    1px solid rgba(255,220,140,0.12);
+
+  box-shadow:
+    inset 0 0 18px rgba(255,220,120,0.03),
+    0 0 30px rgba(255,220,120,0.04);
 }
 
 .gateIcon {
@@ -1818,7 +1818,7 @@ background:
 
 .gateDoorPanel {
   position: absolute;
-  inset: 64px 50px 84px;
+  inset: 18px;
   z-index: 2;
 
   display: flex;
@@ -1828,22 +1828,13 @@ background:
 
   padding: 2.5rem 1.3rem 2rem;
 
-  border-radius: 3px 3px 8px 8px;
-
-  clip-path:
-    polygon(
-      50% 0,
-      84% 15%,
-      84% 100%,
-      16% 100%,
-      16% 15%
-    );
+  border-radius: 132px 132px 18px 18px;
 
   background:
     linear-gradient(
       180deg,
-      rgba(8, 12, 22, 0.03),
-      rgba(8, 12, 22, 0.46)
+      rgba(8, 12, 22, 0.08),
+      rgba(8, 12, 22, 0.64)
     );
 
   opacity: 0;
@@ -1869,9 +1860,6 @@ background:
 
   box-shadow:
     inset 0 0 42px rgba(255,240,190,0.12),
-    inset 10px 0 0 rgba(255, 230, 170, 0.08),
-    inset -10px 0 0 rgba(255, 230, 170, 0.08),
-    inset 0 16px 0 rgba(255, 230, 170, 0.05),
     0 0 92px rgba(255,204,128,0.15),
     0 0 80px rgba(0,0,0,0.42);
 }
@@ -1901,53 +1889,37 @@ background:
 
 .gateDoorThreshold {
   position: absolute;
-  left: 18%;
-  right: 18%;
-  bottom: 54px;
+  left: 22%;
+  right: 22%;
+  bottom: 26px;
   z-index: 3;
 
-  height: 22px;
+  height: 1px;
 
   background:
-    radial-gradient(
-      ellipse at 50% 0,
-      rgba(255, 224, 156, 0.28),
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse at 50% 90%,
-      rgba(100, 150, 255, 0.18),
-      transparent 58%
-    ),
     linear-gradient(
       90deg,
       transparent,
-      rgba(255,220,160,0.34),
+      rgba(255,220,160,0.42),
       transparent
     );
-
-  border-radius: 50%;
-
-  filter:
-    blur(0.2px);
 }
 
 .gateDoorKnob {
   position: absolute;
   left: 50%;
-  bottom: 18px;
+  bottom: 14px;
 
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 
   border-radius: 50%;
 
   background:
-    rgba(255,230,170,0.72);
+    rgba(255,230,170,0.82);
 
   box-shadow:
-    0 0 16px rgba(255,210,120,0.58),
-    0 0 34px rgba(120,180,255,0.2);
+    0 0 16px rgba(255,210,120,0.58);
 }
 
 @keyframes selectedGatePassage {
@@ -2009,29 +1981,27 @@ background:
 }
 
 .bookTitle {
-  font-size: 0.74rem;
 
-  line-height: 1.5;
+  font-size: 1.5rem;
+
+  line-height: 1.1;
 
   letter-spacing: 0.08em;
 
-  text-transform: uppercase;
-
-  color:
-    rgba(255,248,230,0.92);
-
-  word-break: break-word;
-
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.48);
+  max-width: 180px;
 }
 
 .bookSubtitle {
-  font-size: 0.58rem;
-  line-height: 1.5;
-  letter-spacing: 0.08em;
 
-  color: rgba(255, 245, 225, 0.42);
+  margin-top: 1rem;
+
+  font-size: 0.92rem;
+
+  line-height: 1.6;
+
+  opacity: 0.62;
+    color: rgba(255, 245, 225, 0.42);
+
 }
 
 .shelfBase {

@@ -5,7 +5,6 @@ import bookStyles from './book-transition.module.css';
 import tarotStyles from './tarot-cards.module.css';
 
 export const jumpingBattleBook = {
-
   id: 'jumping-battle',
 
   title: 'JUMPING BATTLE',
@@ -25,11 +24,6 @@ export const jumpingBattleBook = {
     '30개 이상의 매장에서 운영된 스트리밍 및 실시간 랭킹 시스템 기록',
 
   gates: [
-
-    /* ========================================
-       REALTIME
-    ======================================== */
-
     {
       id: 'realtime',
 
@@ -40,8 +34,18 @@ export const jumpingBattleBook = {
       description:
         '실시간 랭킹과 이벤트 스트림 구조',
 
-      cards: [
+      theme: {
+        type: 'cosmos',
+        gateClass: 'realtimeGate',
+        silhouette: 'cathedral',
+        fog: 'blue-nebula',
+        particle: 'stream',
+        motion: 'flow',
+        glow: 'soft',
+        ambience: 'temple-of-time',
+      },
 
+      cards: [
         {
           title:
             'Polling 구조의 트래픽 증가 문제',
@@ -82,89 +86,8 @@ export const jumpingBattleBook = {
             ],
           },
         },
-
-        {
-          title:
-            'SSE 기반 부분 갱신 구조 설계',
-
-          subtitle:
-            'Realtime Stream',
-
-          label:
-            'PATCH',
-
-          keyword:
-            'SSE',
-
-          artwork:
-            '/img/cards/PATCH.png',
-
-          decoding: {
-
-            summary:
-              'SSE를 활용한 부분 갱신 구조',
-
-            problem: [
-              '전체 데이터 재요청 문제',
-              '실시간성 대비 과도한 polling',
-            ],
-
-            solution: [
-              'delta patch 설계',
-              '부분 payload 업데이트',
-              'Version snapshot 비교',
-            ],
-
-            result: [
-              '데이터 흐름 최적화',
-              '실시간 UX 개선',
             ],
           },
-        },
-
-        {
-          title:
-            'Version 기반 캐시 동기화',
-
-          subtitle:
-            'Consistency Layer',
-
-          label:
-            'CACHE',
-
-          keyword:
-            'VERSION',
-
-          artwork:
-            '/img/cards/CACHE.png',
-
-          decoding: {
-
-            summary:
-              'Version snapshot 기반 캐시 갱신 구조',
-
-            problem: [
-              '불필요한 전체 갱신',
-              'stale cache 발생',
-            ],
-
-            solution: [
-              '버전 비교 기반 sync',
-              '부분 refresh 전략',
-            ],
-
-            result: [
-              '데이터 정합성 향상',
-              '대역폭 절감',
-            ],
-          },
-        },
-      ],
-    },
-
-    /* ========================================
-       INFRA
-    ======================================== */
 
     {
       id: 'infra',
@@ -175,6 +98,17 @@ export const jumpingBattleBook = {
 
       description:
         '운영 환경과 서버 인프라 기록',
+
+      theme: {
+        type: 'forge',
+        gateClass: 'infraGate',
+        silhouette: 'forge',
+        fog: 'ash',
+        particle: 'ember',
+        motion: 'eruption',
+        glow: 'heat',
+        ambience: 'industrial-temple',
+      },
 
       cards: [
 
@@ -212,156 +146,6 @@ export const jumpingBattleBook = {
             result: [
               '운영 비용 감소',
               '네트워크 안정성 증가',
-            ],
-          },
-        },
-
-        {
-          title:
-            'AWS Lambda 분리 운영',
-
-          subtitle:
-            'Serverless Split',
-
-          label:
-            'LAMBDA',
-
-          keyword:
-            'AWS',
-
-          artwork:
-            '/img/cards/LAMBDA.png',
-
-          decoding: {
-
-            summary:
-              '기능 단위 Lambda 분리 구조',
-
-            problem: [
-              '기능 집중도 증가',
-              '배포 단위 관리 필요',
-            ],
-
-            solution: [
-              'Lambda 단위 역할 분리',
-              'Flask 기반 lightweight API',
-            ],
-
-            result: [
-              '배포 유연성 증가',
-              '운영 구조 단순화',
-            ],
-          },
-        },
-      ],
-    },
-
-    /* ========================================
-       SECURITY
-    ======================================== */
-
-    {
-      id: 'security',
-
-      gate: 'SECURITY',
-
-      icon: '✦',
-
-      description:
-        '다운로드 보안 및 접근 제어',
-
-      cards: [
-
-        {
-          title:
-            'Signed URL 기반 접근 정책',
-
-          subtitle:
-            'Access Control',
-
-          label:
-            'SIGNED',
-
-          keyword:
-            'URL',
-
-          artwork:
-            '/img/cards/SIGNED.png',
-
-          decoding: {
-
-            summary:
-              'Signed URL 기반 다운로드 보안',
-
-            problem: [
-              '무제한 공유 가능성',
-              '외부 접근 문제',
-            ],
-
-            solution: [
-              '만료 시간 기반 URL',
-              '사용 횟수 제한',
-            ],
-
-            result: [
-              '접근 제어 강화',
-              '다운로드 보안 확보',
-            ],
-          },
-        },
-      ],
-    },
-
-    /* ========================================
-       DEVICE
-    ======================================== */
-
-    {
-      id: 'device',
-
-      gate: 'DEVICE',
-
-      icon: '⌬',
-
-      description:
-        '장비 생태계 및 제어 구조',
-
-      cards: [
-
-        {
-          title:
-            'WebRTC 기반 원격 장비 제어',
-
-          subtitle:
-            'Realtime Control',
-
-          label:
-            'CONTROL',
-
-          keyword:
-            'WEBRTC',
-
-          artwork:
-            '/img/cards/DEVICE.png',
-
-          decoding: {
-
-            summary:
-              'WebRTC 기반 원격 장비 제어 구조',
-
-            problem: [
-              '실시간 제어 지연',
-              '장비 식별 문제',
-            ],
-
-            solution: [
-              'device uuid 구조',
-              'WebRTC signaling',
-            ],
-
-            result: [
-              '실시간 반응성 확보',
-              '운영 안정성 증가',
             ],
           },
         },
@@ -516,16 +300,10 @@ function GateSelection({
   previewGate,
   setPreviewGate,
   setSelectedGate,
-  visitedGateIds,
-  setVisitedGateIds,
 }) {
   const openGate = (gate) => {
     setPreviewGate(gate);
     setSelectedGate(gate);
-    setVisitedGateIds((visitedIds) => ({
-      ...visitedIds,
-      [gate.id]: true,
-    }));
   };
 
   return (
@@ -575,22 +353,20 @@ function GateSelection({
                 ? styles.previewGate
                 : ''
             }
-
-            ${
-              visitedGateIds[gate.id]
-                ? styles.visitedGate
-                : ''
-            }
           `}
           aria-label={`${gate.gate} room. Click to open.`}
         >
-          <div className={styles.gateDoor}>
-            <div className={styles.gateSanctuaryAura} aria-hidden="true">
-              <span className={styles.gateRune} />
-              <span className={styles.gateRune} />
-              <span className={styles.gateRune} />
-            </div>
-
+<div
+  className={`
+    ${styles.gateDoor}
+    ${styles[gate.theme.gateClass]}
+    ${
+      selectedGate?.id === gate.id
+        ? styles.activeGate
+        : ''
+    }
+  `}
+>
             <div className={styles.gateDoorPanel}>
               <span className={styles.gateIcon}>
                 {gate.icon}
@@ -608,13 +384,6 @@ function GateSelection({
             <div className={styles.gateDoorThreshold}>
               <span className={styles.gateDoorKnob} />
             </div>
-
-            <div className={styles.gateCandles} aria-hidden="true">
-              <span className={styles.gateCandle} />
-              <span className={styles.gateCandle} />
-              <span className={styles.gateCandle} />
-              <span className={styles.gateCandle} />
-            </div>
           </div>
         </button>
 
@@ -629,7 +398,6 @@ function TarotSpread({
 
   isClosing,
   setDecodingMode,
-  decodingExitRequest,
 }){
 
   const [activeCard, setActiveCard] =
@@ -650,32 +418,6 @@ useEffect(() => {
   );
 
 }, [decodingCard, setDecodingMode]);
-  useEffect(() => {
-    if (!decodingCard) {
-      return undefined;
-    }
-
-    const handleKeyDown = (event) => {
-      if (event.key !== 'Escape') {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-      setDecodingCard(null);
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [decodingCard]);
-  useEffect(() => {
-    if (decodingExitRequest > 0) {
-      setDecodingCard(null);
-    }
-  }, [decodingExitRequest]);
   useEffect(() => {
 
     const timer = setTimeout(() => {
@@ -834,10 +576,7 @@ if (layoutMode === 'grid') {
 
       {decodingCard && (
 
-        <div
-          className={tarotStyles.decodingOverlay}
-          data-decoding-overlay="true"
-        >
+        <div className={tarotStyles.decodingOverlay}>
 
           <button
             className={tarotStyles.decodingClose}
@@ -1054,10 +793,7 @@ return (
 
     {decodingCard && (
 
-      <div
-        className={tarotStyles.decodingOverlay}
-        data-decoding-overlay="true"
-      >
+      <div className={tarotStyles.decodingOverlay}>
 
         <button
           className={tarotStyles.decodingClose}
@@ -1149,10 +885,6 @@ function OpenedBook({
   onClose,
   decodingMode,
   setDecodingMode,
-  decodingExitRequest,
-  requestDecodingExit,
-  visitedGateIds,
-  setVisitedGateIds,
 }){
   if (!book) {
     return null;
@@ -1247,8 +979,6 @@ function OpenedBook({
             previewGate={previewGate}
             setPreviewGate={setPreviewGate}
             setSelectedGate={setSelectedGate}
-            visitedGateIds={visitedGateIds}
-            setVisitedGateIds={setVisitedGateIds}
           />
 
           {selectedGate && (
@@ -1257,7 +987,6 @@ function OpenedBook({
               selectedGate={selectedGate}
               isClosing={isClosing}
               setDecodingMode={setDecodingMode}
-              decodingExitRequest={decodingExitRequest}
             />
           )}
         </div>
@@ -1277,7 +1006,6 @@ function OpenedBook({
               className={`${styles.closeButton} ${bookStyles.closeButton}`}
               onClick={(event) => {
                 event.stopPropagation();
-                requestDecodingExit();
               }}
               aria-label="Back to records"
             >
@@ -1318,10 +1046,6 @@ export default function FullstackSection({
     useState(null);
   const [decodingMode, setDecodingMode] =
   useState(false);
-  const [decodingExitRequest, setDecodingExitRequest] =
-    useState(0);
-  const [visitedGateIds, setVisitedGateIds] =
-    useState({});
   const [isClosing, setIsClosing] = useState(false);
   const closeTimerRef = useRef(null);
 
@@ -1334,24 +1058,9 @@ export default function FullstackSection({
     document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (event) => {
-      if (event.key !== 'Escape') {
-        return;
+      if (event.key === 'Escape') {
+        closeBook();
       }
-
-      if (
-        decodingMode ||
-        document.querySelector('[data-decoding-overlay="true"]')
-      ) {
-        return;
-      }
-
-      if (selectedGate) {
-        setSelectedGate(null);
-        setDecodingMode(false);
-        return;
-      }
-
-      closeBook();
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -1360,7 +1069,7 @@ export default function FullstackSection({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedBook, selectedGate, isClosing, decodingMode]);
+  }, [selectedBook, isClosing]);
 
   useEffect(() => (
     () => {
@@ -1383,7 +1092,6 @@ const openBook = (book) => {
   setSelectedBook(book);
   setSelectedGate(null);
   setPreviewGate(null);
-  setDecodingMode(false);
 };
 
   const closeBook = () => {
@@ -1398,7 +1106,6 @@ closeTimerRef.current = setTimeout(() => {
   setSelectedBook(null);
 setSelectedGate(null);
   setPreviewGate(null);
-  setDecodingMode(false);
   setOverlayActive(false);
 
   setIsClosing(false);
@@ -1458,12 +1165,6 @@ setSelectedGate={setSelectedGate}
   onClose={closeBook}
   decodingMode={decodingMode}
   setDecodingMode={setDecodingMode}
-  decodingExitRequest={decodingExitRequest}
-  requestDecodingExit={() =>
-    setDecodingExitRequest((request) => request + 1)
-  }
-  visitedGateIds={visitedGateIds}
-  setVisitedGateIds={setVisitedGateIds}
 />
     </section>
   );
