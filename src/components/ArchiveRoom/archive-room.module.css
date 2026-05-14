@@ -273,65 +273,6 @@
     rgba(255,190,90,0.05);
 }
 
-/* CONTENT */
-.content {
-
-  position: relative;
-
-  z-index: 5;
-
-  text-align: center;
-
-  padding:
-    2rem;
-}
-
-.label {
-
-  margin-bottom: 1rem;
-
-  font-size: 0.72rem;
-
-  letter-spacing: 0.42em;
-
-  text-transform: uppercase;
-
-  color:
-    rgba(255,245,225,0.34);
-}
-
-.title {
-
-  font-size:
-    clamp(3rem, 8vw, 6rem);
-
-  font-weight: 300;
-
-  letter-spacing: -0.05em;
-
-  color:
-    rgba(255,255,255,0.96);
-
-  margin-bottom: 1.2rem;
-
-  text-shadow:
-    0 0 30px rgba(0,0,0,0.42);
-}
-
-.subtitle {
-
-  max-width: 720px;
-
-  margin: 0 auto;
-
-  line-height: 1.9;
-
-  font-size:
-    clamp(0.95rem, 2vw, 1.1rem);
-
-  color:
-    rgba(255,255,255,0.62);
-}
 /* SIDEBAR */
 .sidebar {
 
@@ -570,7 +511,7 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  gap: 0.85rem;
+  gap: 1.15rem;
 
   padding:
     1rem 0 0.65rem;
@@ -581,10 +522,10 @@
 .archiveBook {
   position: relative;
 
-width: 128px;
-height: 250px;
+  width: 186px;
+  height: 286px;
 
-  padding: 1.05rem 0.78rem 0.95rem 0.9rem;
+  padding: 1.3rem 1.15rem 1.25rem 1.35rem;
 
   display: flex;
   flex-direction: column;
@@ -626,10 +567,10 @@ height: 250px;
   transform-style: preserve-3d;
 
   box-shadow:
-    inset 8px 0 14px rgba(0, 0, 0, 0.32),
-    inset -5px 0 0 rgba(255, 238, 196, 0.12),
+    inset 14px 0 20px rgba(0, 0, 0, 0.34),
+    inset -8px 0 0 rgba(255, 238, 196, 0.13),
     inset 0 1px 0 rgba(255, 246, 220, 0.12),
-    8px 18px 24px rgba(0, 0, 0, 0.44),
+    12px 22px 30px rgba(0, 0, 0, 0.46),
     1px 0 0 rgba(255, 230, 175, 0.1);
 
   transition:
@@ -647,11 +588,11 @@ height: 250px;
   border-color: rgba(255, 220, 160, 0.36);
 
   box-shadow:
-    inset 9px 0 16px rgba(0, 0, 0, 0.36),
-    inset -5px 0 0 rgba(255, 238, 196, 0.18),
+    inset 15px 0 22px rgba(0, 0, 0, 0.38),
+    inset -8px 0 0 rgba(255, 238, 196, 0.2),
     inset 0 1px 0 rgba(255, 246, 220, 0.18),
     0 0 36px rgba(255, 185, 90, 0.18),
-    14px 28px 38px rgba(0, 0, 0, 0.5);
+    18px 30px 44px rgba(0, 0, 0, 0.52);
 }
 
 .archiveBook::before {
@@ -660,9 +601,9 @@ height: 250px;
   position: absolute;
   top: 5px;
   bottom: 4px;
-  left: -9px;
+  left: -14px;
 
-  width: 18px;
+  width: 26px;
 
   border-radius: 0.18rem 0 0 0.18rem;
 
@@ -691,10 +632,10 @@ height: 250px;
 
   position: absolute;
   top: 7px;
-  right: -7px;
+  right: -11px;
   bottom: 6px;
 
-  width: 14px;
+  width: 20px;
 
   border-radius: 0 0.42rem 0.42rem 0;
 
@@ -720,7 +661,7 @@ background:
 }
 
 .archiveBook:nth-child(2n) {
-  height: 226px;
+  height: 268px;
 
   background:
     linear-gradient(
@@ -745,7 +686,7 @@ background:
 }
 
 .archiveBook:nth-child(3n) {
-  height: 250px;
+  height: 286px;
   transform:
     rotateZ(0.65deg)
     rotateY(-2deg);
@@ -773,7 +714,7 @@ background:
 }
 
 .archiveBook:nth-child(4n) {
-  height: 232px;
+  height: 274px;
   transform:
     rotateZ(-1deg)
     rotateY(-4deg);
@@ -818,12 +759,12 @@ background:
 
   top: 14px;
 
-  right: -10px;
+  right: -8px;
 
   z-index: 6;
 
   padding:
-    0.34rem 0.55rem;
+    0.3rem 0.5rem;
 
   font-size: 0.52rem;
 
@@ -836,6 +777,8 @@ background:
 
   transform:
     rotate(6deg);
+
+  opacity: 0.72;
 
   box-shadow:
     0 6px 12px rgba(0,0,0,0.24);
@@ -1195,9 +1138,9 @@ background:
     0 -12px 42px rgba(255, 190, 90, 0.1);
 }
 
-/* 내부 포탈 */
+/* ?대? ?ы깉 */
 
-/* 바깥 glow */
+/* 諛붽묑 glow */
 .gateDoor::before {
   content: '';
 
@@ -1565,39 +1508,6 @@ background:
   pointer-events: none;
 }
 
-/* 기둥 */
-
-.gateColumnLeft,
-.gateColumnRight {
-
-  position: absolute;
-
-  top: 8%;
-
-  bottom: 0;
-
-  width: 18px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #e7dcc6,
-      #a78f68
-    );
-
-  box-shadow:
-    inset 0 0 8px rgba(255,255,255,0.22),
-    0 0 14px rgba(0,0,0,0.22);
-}
-
-.gateColumnLeft {
-  left: -22px;
-}
-
-.gateColumnRight {
-  right: -22px;
-}
-
 /* hover */
 
 .gatePortal:hover {
@@ -1610,7 +1520,7 @@ background:
     brightness(1.08);
 }
 
-/* 텍스트 */
+/* ?띿뒪??*/
 
 .gateTitle {
 
@@ -1991,47 +1901,50 @@ background:
 }
 
 .archiveBook.smallBook {
-  width: 98px;
-  height: 188px;
+  width: 150px;
+  height: 224px;
 
   opacity: 0.9;
 }
 
-.bookType {
-  font-size: 0.56rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+.bookInner {
+  position: relative;
+  z-index: 2;
+  min-height: 100%;
 
-  color: rgba(255, 220, 160, 0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  text-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.4);
+  padding: 1.4rem 0.4rem;
 }
 
 .bookTitle {
-  font-size: 0.74rem;
+  font-size:
+    clamp(1.06rem, 1.75vw, 1.48rem);
 
-  line-height: 1.5;
+  line-height: 1.24;
 
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
 
   text-transform: uppercase;
+  text-align: center;
 
   color:
-    rgba(255,248,230,0.92);
+    rgba(255, 248, 230, 0.96);
 
   word-break: break-word;
 
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.48);
+    0 1px 2px rgba(0, 0, 0, 0.58),
+    0 0 18px rgba(255, 208, 126, 0.16);
 }
 
-.bookSubtitle {
-  font-size: 0.58rem;
-  line-height: 1.5;
-  letter-spacing: 0.08em;
+.smallBook .bookTitle {
+  font-size:
+    clamp(0.82rem, 1.25vw, 1.08rem);
 
-  color: rgba(255, 245, 225, 0.42);
+  letter-spacing: 0.1em;
 }
 
 .shelfBase {
@@ -2091,56 +2004,6 @@ background:
 }
 
 
-.openedBook {
-
-  position: relative;
-
-  width: min(980px, 92vw);
-
-  min-height: 520px;
-
-  border:
-    1px solid rgba(255,210,140,0.16);
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(14,10,8,0.98),
-      rgba(28,18,12,0.96)
-    );
-
-  display: grid;
-
-  grid-template-columns:
-    320px 1fr;
-
-  overflow: hidden;
-
-  box-shadow:
-    0 40px 120px rgba(0,0,0,0.7);
-}
-
-.openedLeft {
-
-  padding: 3rem;
-
-  border-right:
-    1px solid rgba(255,255,255,0.06);
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-}
-
-.openedRight {
-
-  padding: 3rem;
-
-  position: relative;
-}
-
 .openedType {
 
   font-size: 0.72rem;
@@ -2157,7 +2020,7 @@ background:
 
   font-size: 2.4rem;
 
-  line-height: 1.1;
+  line-height: 1.16;
 
   margin-bottom: 1rem;
 }
@@ -2212,876 +2075,11 @@ background:
   cursor: pointer;
 
   letter-spacing: 0.12em;
-}
 
-.openedGlow {
-
-  position: absolute;
-
-  inset: 0;
-
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(255,180,100,0.08),
-      transparent 45%
-    );
-
-  pointer-events: none;
-}
-.openedOverlay {
-
-  position: fixed;
-
-  inset: 0;
-
-  overflow: hidden;
-
-  padding-top: 72px;
-
-  background:
-    rgba(0,0,0,0.76);
-
-  backdrop-filter:
-    blur(10px);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  z-index: 999;
-}
-@keyframes overlayFade {
-
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-/* Record dimension overlay */
-.openedOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  width: 100vw;
-  height: 100vh;
-  padding: 0;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(
-      circle at 50% 42%,
-      rgba(108, 76, 42, 0.18),
-      rgba(6, 7, 12, 0.72) 48%,
-      rgba(0, 0, 0, 0.86) 100%
-    );
-  backdrop-filter:
-    blur(14px)
-    brightness(0.42)
-    saturate(0.72);
-  -webkit-backdrop-filter:
-    blur(14px)
-    brightness(0.42)
-    saturate(0.72);
-  animation:
-    dimensionEnter 0.46s ease forwards,
-    dimensionRecover 1.25s ease 1.45s forwards;
-}
-
-.openedOverlay::before {
-  content: '';
-  position: absolute;
-  inset: -12%;
-  z-index: 0;
-  background:
-    radial-gradient(
-      ellipse at center,
-      transparent 0%,
-      transparent 42%,
-      rgba(0, 0, 0, 0.48) 74%,
-      rgba(0, 0, 0, 0.76) 100%
-    );
-  animation:
-    vignetteBreath 6.5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.openedOverlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  opacity: 0.08;
-  background-image:
-    repeating-radial-gradient(
-      circle at 12% 18%,
-      rgba(255, 255, 255, 0.32) 0 1px,
-      transparent 1px 4px
-    );
-  mix-blend-mode: screen;
-  animation:
-    dimensionGrain 1.8s steps(2, end) infinite;
-  pointer-events: none;
-}
-
-.dimensionFog {
-  position: absolute;
-  inset: -18%;
-  z-index: 2;
-  background:
-    radial-gradient(
-      ellipse at 35% 54%,
-      rgba(255, 205, 126, 0.08),
-      transparent 34%
-    ),
-    radial-gradient(
-      ellipse at 68% 40%,
-      rgba(129, 164, 196, 0.07),
-      transparent 36%
-    );
-  filter: blur(28px);
-  opacity: 0.82;
-  animation:
-    fogDrift 12s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-.recordStage {
-  position: relative;
-  z-index: 3;
-  width: min(1120px, 90vw);
-  height: min(760px, 90vh);
-  overflow: visible;
-  isolation: isolate;
-  perspective: 2400px;
-  transform-style: preserve-3d;
-  user-select: none;
-}
-
-.bookArtifact {
-  position: absolute;
-  left: 50%;
-  top: 56%;
-  z-index: 10;
-  width: min(940px, 82vw);
-  height: min(560px, 58vh);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  user-select: none;
-  transform:
-    translate(-50%, -50%)
-    translateZ(0)
-    scale(1);
-  filter:
-    blur(0)
-    brightness(1);
-  opacity: 1;
-  animation:
-    bookArtifactSink 0.9s cubic-bezier(0.18, 0.72, 0.2, 1) 1.36s forwards;
-}
-
-.bookArtifact .openedBook {
-  width: 100%;
-  height: 100%;
-  max-height: none;
-}
-
-.recordStage .cardSpread {
-  left: 50%;
-  top: 56%;
-  z-index: 40;
-  width: min(1040px, 88vw);
-  height: min(600px, 74vh);
-  transform:
-    translate(-50%, -50%)
-    translateZ(220px);
-  pointer-events: none;
-}
-
-.recordStage .tarotCard {
-  pointer-events: auto;
-}
-
-.recordStage .closeButton {
-  top: 0;
-  right: 0;
-  z-index: 60;
-  background:
-    rgba(8, 9, 14, 0.3);
-}
-
-.closingOverlay {
-  animation:
-    dimensionClose 0.78s ease forwards;
-}
-
-.closingOverlay .dimensionFog {
-  animation:
-    fogClose 0.72s ease forwards;
-}
-
-.closingOverlay .bookArtifact {
-  animation:
-    bookSilhouetteReturn 0.72s cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
-}
-
-.closingOverlay .tarotCard {
-  animation:
-    tarotDissolve 0.58s ease forwards;
-}
-
-.closingOverlay .closeButton {
-  opacity: 0;
-  pointer-events: none;
-}
-
-@keyframes bookArtifactSink {
-  0% {
-    opacity: 1;
-    transform:
-      translate(-50%, -50%)
-      translateZ(0)
-      scale(1);
-    filter:
-      blur(0)
-      brightness(1);
-  }
-
-  100% {
-    opacity: 0;
-    transform:
-      translate(-50%, calc(-50% + 60px))
-      translateZ(-180px)
-      scale(0.86);
-    filter:
-      blur(2px)
-      brightness(0.52);
-  }
-}
-
-@keyframes bookSilhouetteReturn {
-  0% {
-    opacity: 0;
-    transform:
-      translate(-50%, calc(-50% + 60px))
-      translateZ(-180px)
-      scale(0.86);
-    filter:
-      blur(2px)
-      brightness(0.44);
-  }
-
-  45% {
-    opacity: 0.22;
-    transform:
-      translate(-50%, calc(-50% + 34px))
-      translateZ(-120px)
-      scale(0.9);
-    filter:
-      blur(2px)
-      brightness(0.62);
-  }
-
-  100% {
-    opacity: 0;
-    transform:
-      translate(-50%, calc(-50% + 78px))
-      translateZ(-260px)
-      scale(0.8);
-    filter:
-      blur(4px)
-      brightness(0.3);
-  }
-}
-
-@keyframes tarotDissolve {
-  0% {
-    opacity: 1;
-    filter:
-      drop-shadow(0 28px 28px rgba(0, 0, 0, 0.48))
-      brightness(1);
-  }
-
-  100% {
-    opacity: 0;
-    filter:
-      drop-shadow(0 0 8px rgba(255, 204, 128, 0.1))
-      brightness(0.58);
-    transform:
-      translate(-50%, -50%)
-      translate3d(var(--card-x), calc(var(--card-y) + 18px), calc(var(--card-z) - 80px))
-      rotateZ(var(--card-rotate))
-      scale(0.92);
-  }
-}
-
-@keyframes dimensionEnter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes dimensionRecover {
-  to {
-    backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
-    -webkit-backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
-  }
-}
-
-@keyframes dimensionClose {
-  0% {
-    opacity: 1;
-    backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
-    -webkit-backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
-  }
-
-  100% {
-    opacity: 0;
-    backdrop-filter:
-      blur(4px)
-      brightness(1)
-      saturate(1);
-    -webkit-backdrop-filter:
-      blur(4px)
-      brightness(1)
-      saturate(1);
-  }
-}
-
-@keyframes vignetteBreath {
-  0%,
-  100% {
-    opacity: 0.84;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.035);
-  }
-}
-
-@keyframes dimensionGrain {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(-1.5%, 1%, 0);
-  }
-}
-
-@keyframes fogDrift {
-  0% {
-    transform:
-      translate3d(-1.5%, 1%, 0)
-      scale(1);
-  }
-
-  100% {
-    transform:
-      translate3d(1.8%, -1.2%, 0)
-      scale(1.04);
-  }
-}
-
-@keyframes fogClose {
-  to {
-    opacity: 0;
-    transform:
-      translate3d(0, 4%, 0)
-      scale(0.98);
-  }
-}
-
-@media (max-width: 760px) {
-  .recordStage {
-    width: 92vw;
-    height: 86vh;
-  }
-
-  .bookArtifact {
-    width: 86vw;
-    height: min(440px, 52vh);
-  }
-
-  .recordStage .cardSpread {
-    top: 54%;
-    width: 92vw;
-    height: 62vh;
-  }
-}
-
-.openedBook {
-
-  position: relative;
-
-  width: min(1100px, 94vw);
-
-  height: 680px;
-
-  perspective: 2400px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-}
-
-/* 내부 */
-
-.bookInnerPages {
-
-  position: relative;
-
-  width: 100%;
-
-  height: 100%;
-
-  display: grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  background:
-    #e7d9bc;
-
-  border-radius: 10px;
-
-  overflow: hidden;
-
-  box-shadow:
-    0 40px 120px rgba(0,0,0,0.72);
-
-  animation:
-    pagesAppear 0.8s ease;
-}
-
-/* 표지 */
-
-.bookCover {
-
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 20;
-
-  transform-origin:
-    left center;
-
-  animation:
-    openCover 1s
-    cubic-bezier(0.2,0.8,0.2,1)
-    forwards;
-
-  pointer-events: none;
-}
-
-/* 표지 앞면 */
-
-.coverFront {
-
-  width: 50%;
-
-  height: 100%;
-
-  padding:
-    4rem 3rem;
-
-  background:
-    linear-gradient(
-      180deg,
-      #5d392b,
-      #241814
-    );
-
-  color:
-    rgba(255,245,225,0.94);
-
-  border-right:
-    1px solid rgba(255,255,255,0.08);
-
-  box-shadow:
-    24px 0 40px rgba(0,0,0,0.42);
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-}
-
-/* 페이지 */
-
-.leftPage,
-.rightPage {
-
-  position: relative;
-
-  background:
-    linear-gradient(
-      180deg,
-      #f4ead4,
-      #dbc8a8
-    );
-}
-
-.pageInner {
-
-  padding:
-    4rem 3rem;
-}
-
-/* 중앙 접힘 */
-
-.leftPage::after {
-
-  content: '';
-
-  position: absolute;
-
-  top: 0;
-
-  right: 0;
-
-  width: 26px;
-
-  bottom: 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(0,0,0,0.14)
-    );
-}
-
-.rightPage::before {
-
-  content: '';
-
-  position: absolute;
-
-  top: 0;
-
-  left: 0;
-
-  width: 26px;
-
-  bottom: 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0,0,0,0.16),
-      transparent
-    );
-}
-
-/* 표지 열림 */
-
-@keyframes openCover {
-
-  0% {
-
-    transform:
-      rotateY(0deg);
-
-    opacity: 1;
-  }
-
-  40% {
-
-    transform:
-      rotateY(-24deg);
-  }
-
-  100% {
-
-    transform:
-      rotateY(-148deg);
-
-    opacity: 0.98;
-  }
-}
-
-/* 내부 등장 */
-
-@keyframes pagesAppear {
-
-  0% {
-
-    opacity: 0;
-
-    transform:
-      scale(0.96);
-  }
-
-  100% {
-
-    opacity: 1;
-
-    transform:
-      scale(1);
-  }
-}
-
-.openedBook {
-  max-height: min(680px, calc(100vh - 64px));
-  transform-style: preserve-3d;
-  animation:
-    bookStageIn 0.58s cubic-bezier(0.18, 0.86, 0.22, 1.08);
-}
-
-.bookInnerPages {
-  isolation: isolate;
-  transform:
-    rotateX(4deg)
-    translateZ(0);
-  animation:
-    pagesAppear 0.72s ease,
-    bookSettle 1.15s cubic-bezier(0.19, 0.82, 0.24, 1) forwards;
-}
-
-.bookInnerPages::before {
-  content: '';
-  position: absolute;
-  inset: 3% 49.3% 3% auto;
-  width: 1.4%;
-  z-index: 4;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(95, 54, 25, 0.1),
-      rgba(50, 28, 16, 0.34),
-      rgba(255, 247, 223, 0.2)
-    );
-  filter: blur(0.2px);
-  pointer-events: none;
-}
-
-.leftPage,
-.rightPage {
-  overflow: hidden;
-}
-
-.leftPage {
-  border-radius: 10px 0 0 10px;
-}
-
-.rightPage {
-  border-radius: 0 10px 10px 0;
-}
-
-.leftPage::before,
-.rightPage::after {
-  content: '';
-  position: absolute;
-  inset: 10px 14px;
-  border-top: 1px solid rgba(105, 70, 36, 0.12);
-  border-bottom: 1px solid rgba(105, 70, 36, 0.1);
-  pointer-events: none;
-}
-
-.pageFlurry {
-  position: absolute;
-  inset: 0;
-  z-index: 16;
-  pointer-events: none;
-  perspective: 2400px;
-  transform-style: preserve-3d;
-}
-
-.flippingPage {
-  position: absolute;
-  top: 2.3%;
-  left: 50%;
-  width: 49%;
-  height: 95.4%;
-  border-radius: 0 10px 10px 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(130, 86, 42, 0.28),
-      rgba(246, 237, 211, 0.98) 10%,
-      rgba(255, 251, 234, 0.96) 58%,
-      rgba(217, 196, 157, 0.92)
-    );
-  box-shadow:
-    inset 18px 0 24px rgba(92, 55, 25, 0.18),
-    inset -5px 0 12px rgba(255, 255, 255, 0.36),
-    -22px 0 34px rgba(45, 26, 12, 0.18);
-  opacity: 0;
-  transform:
-    rotateY(0deg)
-    translateZ(18px);
-  transform-origin: left center;
-  animation:
-    pageWhip 0.88s cubic-bezier(0.17, 0.76, 0.24, 1) forwards;
-}
-
-.flippingPage::before {
-  content: '';
-  position: absolute;
-  inset: 6% 8% 6% 14%;
-  background:
-    repeating-linear-gradient(
-      180deg,
-      rgba(95, 67, 37, 0.12) 0,
-      rgba(95, 67, 37, 0.12) 1px,
-      transparent 1px,
-      transparent 16px
-    );
-  opacity: 0.55;
-}
-
-.flippingPage::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      circle at 18% 50%,
-      rgba(70, 38, 17, 0.22),
-      transparent 42%
-    );
-  opacity: 0.7;
-}
-
-.flippingPage:nth-child(1) {
-  animation-delay: 0.18s;
-}
-
-.flippingPage:nth-child(2) {
-  animation-delay: 0.25s;
-  height: 94%;
-  top: 3%;
-}
-
-.flippingPage:nth-child(3) {
-  animation-delay: 0.31s;
-  transform: rotateY(0deg) translateZ(24px);
-}
-
-.flippingPage:nth-child(4) {
-  animation-delay: 0.37s;
-  height: 93%;
-  top: 3.5%;
-}
-
-.flippingPage:nth-child(5) {
-  animation-delay: 0.43s;
-  transform: rotateY(0deg) translateZ(30px);
-}
-
-.flippingPage:nth-child(6) {
-  animation-delay: 0.49s;
-  height: 94.8%;
-  top: 2.6%;
-}
-
-.flippingPage:nth-child(7) {
-  animation-delay: 0.55s;
-  transform: rotateY(0deg) translateZ(34px);
-}
-
-.flippingPage:nth-child(8) {
-  animation-delay: 0.61s;
-  height: 93.5%;
-  top: 3.2%;
-}
-
-.flippingPage:nth-child(9) {
-  animation-delay: 0.68s;
-  transform: rotateY(0deg) translateZ(38px);
-}
-
-.bookCover {
-  transform-style: preserve-3d;
-  animation:
-    openCover 1.05s cubic-bezier(0.18, 0.82, 0.18, 1) forwards;
-}
-
-.coverFront {
-  position: relative;
-  overflow: hidden;
-  transform:
-    translateZ(34px)
-    rotateX(0.01deg);
-}
-
-.coverFront::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      105deg,
-      transparent,
-      rgba(255, 237, 187, 0.16) 42%,
-      transparent 58%
-    );
-  transform: translateX(-120%);
-  animation:
-    coverGleam 0.86s ease 0.18s forwards;
-  pointer-events: none;
-}
-
-.openedSpine {
-  position: absolute;
-  top: 2.5%;
-  bottom: 2.5%;
-  left: calc(50% - 7px);
-  z-index: 18;
-  width: 14px;
-  border-radius: 999px;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(52, 24, 13, 0.56),
-      rgba(120, 75, 34, 0.28),
-      rgba(255, 235, 180, 0.24),
-      rgba(43, 22, 13, 0.48)
-    );
-  box-shadow:
-    0 0 16px rgba(55, 31, 16, 0.34),
-    inset 0 0 8px rgba(255, 238, 190, 0.18);
-  opacity: 0;
-  animation:
-    spineReveal 0.45s ease 0.38s forwards;
-  pointer-events: none;
-}
-
-.closeButton {
   z-index: 24;
+
   backdrop-filter: blur(10px);
+
   transition:
     color 0.2s ease,
     border-color 0.2s ease,
@@ -3092,718 +2090,4 @@ background:
   color: rgba(255, 238, 206, 0.95);
   border-color: rgba(255, 226, 170, 0.36);
   background: rgba(44, 25, 13, 0.28);
-}
-
-@keyframes bookStageIn {
-  0% {
-    opacity: 0;
-    transform:
-      translateY(34px)
-      scale(0.88)
-      rotateX(12deg);
-  }
-
-  100% {
-    opacity: 1;
-    transform:
-      translateY(0)
-      scale(1)
-      rotateX(0deg);
-  }
-}
-
-@keyframes bookSettle {
-  0% {
-    transform:
-      rotateX(8deg)
-      scaleX(0.82)
-      scaleY(0.92);
-  }
-
-  58% {
-    transform:
-      rotateX(4deg)
-      scaleX(1.025)
-      scaleY(1.01);
-  }
-
-  100% {
-    transform:
-      rotateX(4deg)
-      scaleX(1)
-      scaleY(1);
-  }
-}
-
-@keyframes pageWhip {
-  0% {
-    opacity: 0;
-    transform:
-      rotateY(0deg)
-      translateZ(20px)
-      skewY(0deg);
-  }
-
-  12% {
-    opacity: 0.98;
-  }
-
-  46% {
-    opacity: 1;
-    transform:
-      rotateY(-82deg)
-      translateZ(42px)
-      translateX(-6px)
-      skewY(-1.5deg);
-  }
-
-  78% {
-    opacity: 0.82;
-    transform:
-      rotateY(-154deg)
-      translateZ(26px)
-      translateX(-16px)
-      skewY(1.2deg);
-  }
-
-  100% {
-    opacity: 0;
-    transform:
-      rotateY(-178deg)
-      translateZ(8px)
-      translateX(-22px)
-      skewY(0deg);
-  }
-}
-
-@keyframes coverGleam {
-  100% {
-    transform: translateX(120%);
-  }
-}
-
-@keyframes spineReveal {
-  100% {
-    opacity: 1;
-  }
-}
-/* ========================================
-   TAROT CARD SYSTEM
-======================================== */
-
-.cardSpread {
-
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  z-index: 35;
-
-  width: min(1040px, 92vw);
-  height: min(520px, 66vh);
-
-  pointer-events: none;
-
-  perspective: 1800px;
-
-  transform:
-    translate(-50%, -54%)
-    translateZ(180px);
-
-  transform-style: preserve-3d;
-}
-
-/* CARD */
-
-.tarotCard {
-
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  width:
-    clamp(124px, 15vw, 178px);
-
-  aspect-ratio: 0.64;
-
-  opacity: 0;
-
-  cursor: pointer;
-
-  pointer-events: auto;
-
-  transform-style: preserve-3d;
-
-  filter:
-    drop-shadow(
-      0 28px 28px rgba(0,0,0,0.48)
-    );
-
-  animation:
-    tarotBurst 1.08s cubic-bezier(0.16,0.88,0.18,1.04)
-    forwards;
-
-  transition:
-    transform 0.7s cubic-bezier(0.19,0.82,0.24,1),
-    filter 0.45s ease;
-}
-
-/* POSITION */
-
-.card0 {
-
-  --card-x: -365px;
-  --card-y: -112px;
-  --card-rotate: -24deg;
-  --card-z: 28px;
-
-  animation-delay: 0.78s;
-}
-
-.card1 {
-
-  --card-x: -188px;
-  --card-y: -170px;
-  --card-rotate: -12deg;
-  --card-z: 64px;
-
-  animation-delay: 0.88s;
-}
-
-.card2 {
-
-  --card-x: 0px;
-  --card-y: -196px;
-  --card-rotate: 0deg;
-  --card-z: 96px;
-
-  animation-delay: 0.98s;
-}
-
-.card3 {
-
-  --card-x: 188px;
-  --card-y: -170px;
-  --card-rotate: 12deg;
-  --card-z: 64px;
-
-  animation-delay: 1.08s;
-}
-
-.card4 {
-
-  --card-x: 365px;
-  --card-y: -112px;
-  --card-rotate: 24deg;
-  --card-z: 28px;
-
-  animation-delay: 1.18s;
-}
-
-/* HOVER */
-
-.tarotCard:hover {
-
-  filter:
-    brightness(1.08)
-    drop-shadow(
-      0 34px 42px rgba(0,0,0,0.58)
-    );
-
-  z-index: 80;
-}
-
-/* SIDES */
-
-.cardFront,
-.cardBack {
-
-  position: absolute;
-
-  inset: 0;
-
-  border-radius: 14px;
-
-  overflow: hidden;
-}
-
-/* ========================================
-   CARD BACK
-======================================== */
-
-.cardBack {
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  background:
-    radial-gradient(
-      circle at center,
-      rgba(255,215,140,0.16),
-      transparent 52%
-    ),
-
-    repeating-linear-gradient(
-      45deg,
-      rgba(255,255,255,0.03) 0 2px,
-      transparent 2px 12px
-    ),
-
-    linear-gradient(
-      180deg,
-      #171b2d,
-      #090c14
-    );
-
-  border:
-    1px solid rgba(255,220,160,0.30);
-
-  box-shadow:
-    inset 0 0 0 1px rgba(255,240,190,0.08),
-    inset 0 0 40px rgba(255,215,140,0.04);
-}
-
-/* SYMBOL */
-
-.tarotCore {
-
-  position: absolute;
-
-  inset: 18%;
-
-  border:
-    1px solid rgba(255,220,160,0.32);
-
-  border-radius: 999px;
-
-  transform:
-    rotate(45deg);
-}
-
-.tarotCore::before {
-
-  content: '';
-
-  position: absolute;
-
-  inset: 22%;
-
-  border:
-    1px solid rgba(255,220,160,0.22);
-
-  border-radius: 999px;
-}
-
-.tarotCore::after {
-
-  content: '✦';
-
-  position: absolute;
-
-  inset: 0;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 4.6rem;
-
-  color:
-    rgba(255,220,160,0.14);
-
-  text-shadow:
-    0 0 24px rgba(255,190,90,0.14);
-}
-
-/* THEME TEXT */
-
-.cardTheme {
-
-  position: absolute;
-
-  inset: 0;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 1rem;
-
-  font-weight: 600;
-
-  letter-spacing: 0.34em;
-
-  text-transform: uppercase;
-
-  color:
-    rgba(255,225,170,0.08);
-
-  transition:
-    color 0.35s ease,
-    transform 0.35s ease;
-}
-
-.tarotCard:hover .cardTheme {
-
-  color:
-    rgba(255,225,170,0.20);
-
-  transform:
-    scale(1.04);
-}
-
-/* ========================================
-   CARD FRONT
-======================================== */
-
-.cardFront {
-
-  opacity: 0;
-
-  transform:
-    scale(0.96);
-
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
-
-  background:
-    linear-gradient(
-      180deg,
-      #1e2236,
-      #0d101a 58%,
-      #17111a
-    );
-
-  border:
-    1px solid rgba(255,220,160,0.34);
-
-  box-shadow:
-    inset 0 0 0 6px rgba(255,236,180,0.045),
-    inset 0 0 0 1px rgba(255,236,180,0.18);
-}
-
-.tarotCard:hover .cardFront {
-
-  opacity: 1;
-
-  transform:
-    scale(1.02);
-}
-.cardFrame {
-
-  height: 100%;
-
-  padding:
-    1rem 0.85rem;
-
-  border:
-    1px solid rgba(255,222,156,0.22);
-
-  display: flex;
-
-  flex-direction: column;
-  justify-content: space-between;
-
-  text-align: center;
-}
-
-.cardLabel {
-
-  font-size: 0.56rem;
-
-  letter-spacing: 0.2em;
-
-  text-transform: uppercase;
-
-  color:
-    rgba(255,225,166,0.68);
-}
-
-.cardFrame h3 {
-
-  margin: 0;
-
-  font-size:
-    clamp(0.82rem, 1.4vw, 1.08rem);
-
-  line-height: 1.28;
-
-  letter-spacing: 0.08em;
-
-  text-transform: uppercase;
-
-  color:
-    rgba(255,248,225,0.94);
-}
-
-.cardFrame p {
-
-  margin: 0;
-
-  font-size: 0.64rem;
-
-  line-height: 1.4;
-
-  color:
-    rgba(255,236,196,0.52);
-}
-
-/* ========================================
-   ANIMATION
-======================================== */
-
-@keyframes tarotBurst {
-
-  0% {
-
-    opacity: 0;
-
-    transform:
-      translate(-50%, -50%)
-      translate3d(0, 92px, -120px)
-      rotateX(78deg)
-      rotateY(180deg)
-      rotateZ(0deg)
-      scale(0.34);
-  }
-
-  34% {
-
-    opacity: 1;
-
-    transform:
-      translate(-50%, -50%)
-      translate3d(
-        calc(var(--card-x) * 0.25),
-        -48px,
-        120px
-      )
-      rotateX(18deg)
-      rotateY(110deg)
-      rotateZ(
-        calc(var(--card-rotate) * 0.28)
-      )
-      scale(0.76);
-  }
-
-  64% {
-
-    transform:
-      translate(-50%, -50%)
-      translate3d(
-        calc(var(--card-x) * 0.82),
-        calc(var(--card-y) - 32px),
-        calc(var(--card-z) + 48px)
-      )
-      rotateX(-6deg)
-      rotateY(18deg)
-      rotateZ(
-        calc(var(--card-rotate) * 1.12)
-      )
-      scale(1.08);
-  }
-
-  100% {
-
-    opacity: 1;
-
-    transform:
-      translate(-50%, -50%)
-      translate3d(
-        var(--card-x),
-        var(--card-y),
-        var(--card-z)
-      )
-      rotateX(0deg)
-      rotateY(0deg)
-      rotateZ(var(--card-rotate))
-      scale(1);
-  }
-}
-
-/* MOBILE */
-
-@media (max-width: 760px) {
-
-  .cardSpread {
-
-    width: 96vw;
-    height: 50vh;
-
-    transform:
-      translate(-50%, -54%)
-      translateZ(120px)
-      scale(0.72);
-  }
-
-  .card0 {
-    --card-x: -230px;
-    --card-y: -80px;
-  }
-
-  .card1 {
-    --card-x: -116px;
-    --card-y: -132px;
-  }
-
-  .card2 {
-    --card-x: 0px;
-    --card-y: -154px;
-  }
-
-  .card3 {
-    --card-x: 116px;
-    --card-y: -132px;
-  }
-
-  .card4 {
-    --card-x: 230px;
-    --card-y: -80px;
-  }
-}
-
-/* Final layer ordering for the archive dimension stage */
-.recordStage .cardSpread {
-  position: absolute;
-  left: 50%;
-  top: 56%;
-  z-index: 40;
-  width: min(1040px, 88vw);
-  height: min(600px, 74vh);
-  transform:
-    translate(-50%, -50%)
-    translateZ(220px);
-  pointer-events: none;
-}
-
-.recordStage .tarotCard {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: clamp(124px, 15vw, 178px);
-  height: auto;
-  aspect-ratio: 0.64;
-  opacity: 0;
-  pointer-events: auto;
-  transform-style: preserve-3d;
-  animation:
-    tarotBurst 1.08s cubic-bezier(0.16, 0.88, 0.18, 1.04) forwards,
-    tarotFloat 3.8s ease-in-out 1.2s infinite;
-  filter:
-    drop-shadow(0 28px 28px rgba(0, 0, 0, 0.48));
-}
-
-.recordStage .card0 {
-  --card-x: -365px;
-  --card-y: -112px;
-  --card-rotate: -24deg;
-  --card-z: 28px;
-  animation-delay: 0.78s, 1.92s;
-}
-
-.recordStage .card1 {
-  --card-x: -188px;
-  --card-y: -170px;
-  --card-rotate: -12deg;
-  --card-z: 64px;
-  animation-delay: 0.88s, 2.02s;
-}
-
-.recordStage .card2 {
-  --card-x: 0px;
-  --card-y: -196px;
-  --card-rotate: 0deg;
-  --card-z: 96px;
-  animation-delay: 0.98s, 2.12s;
-}
-
-.recordStage .card3 {
-  --card-x: 188px;
-  --card-y: -170px;
-  --card-rotate: 12deg;
-  --card-z: 64px;
-  animation-delay: 1.08s, 2.22s;
-}
-
-.recordStage .card4 {
-  --card-x: 365px;
-  --card-y: -112px;
-  --card-rotate: 24deg;
-  --card-z: 28px;
-  animation-delay: 1.18s, 2.32s;
-}
-
-/* .recordStage .cardFront {
-  opacity: 0.96;
-  transform: scale(1);
-} */
-
-.recordStage .tarotCard:hover {
-  transform:
-    translate(-50%, -50%)
-    translate3d(var(--card-x), calc(var(--card-y) - 24px), calc(var(--card-z) + 18px))
-    rotateZ(var(--card-rotate))
-    scale(1.045) !important;
-  z-index: 99;
-}
-
-.recordStage .tarotCard:hover .cardFront {
-  opacity: 1;
-}
-
-.closingOverlay .recordStage .tarotCard {
-  animation:
-    tarotDissolve 0.58s ease forwards;
-}
-
-
-@keyframes tarotFloat {
-  0%,
-  100% {
-    transform:
-      translate(-50%, -50%)
-      translate3d(var(--card-x), var(--card-y), var(--card-z))
-      rotateZ(var(--card-rotate));
-  }
-
-  50% {
-    transform:
-      translate(-50%, -50%)
-      translate3d(var(--card-x), calc(var(--card-y) - 10px), calc(var(--card-z) + 12px))
-      rotateZ(calc(var(--card-rotate) + 1.4deg));
-  }
-}
-
-@media (max-width: 760px) {
-  .recordStage .card0 {
-    --card-x: -230px;
-    --card-y: -80px;
-  }
-
-  .recordStage .card1 {
-    --card-x: -116px;
-    --card-y: -132px;
-  }
-
-  .recordStage .card2 {
-    --card-x: 0px;
-    --card-y: -154px;
-  }
-
-  .recordStage .card3 {
-    --card-x: 116px;
-    --card-y: -132px;
-  }
-
-  .recordStage .card4 {
-    --card-x: 230px;
-    --card-y: -80px;
-  }
 }
