@@ -33,9 +33,51 @@ const normalizeColor = (color, fallback) => (
     : fallback
 );
 
+const GATES = [
+  {
+    name: 'REALTIME',
+    x: 0.2,
+    mode: 'nebula',
+    ...defaultGateThemes.cosmos,
+  },
+  {
+    name: 'INFRA',
+    x: 0.4,
+    mode: 'ember',
+    ...defaultGateThemes.forge,
+  },
+  {
+    name: 'SECURITY',
+    x: 0.6,
+    mode: 'dust',
+    ...defaultGateThemes.seal,
+  },
+  {
+    name: 'DEVICE',
+    x: 0.8,
+    mode: 'signal',
+    ...defaultGateThemes.machine,
+  },
+].map((gate) => {
+  const fallback =
+    defaultGateThemes[gate.type] ?? fallbackTheme;
 
-export default function TempleBackground() {
+  return {
+    ...gate,
+    tone: normalizeColor(gate.tone, fallback.tone),
+    core: normalizeColor(gate.core, fallback.core),
+  };
+});
+
+export default function TempleBackground({
+  ritualIntensity = 0,
+}) {
   const hostRef = useRef(null);
+  const intensityRef = useRef(ritualIntensity);
+
+  useEffect(() => {
+    intensityRef.current = ritualIntensity;
+  }, [ritualIntensity]);
 
   useEffect(() => {
     let sketchInstance;
@@ -91,7 +133,14 @@ export default function TempleBackground() {
         };
       };
 
-      const getCameraPull = () => Math.max(...hoverState) * 0.75;
+      const getRitualIntensity = () => intensityRef.current;
+
+      const getAwakening = () => Math.max(
+        getRitualIntensity(),
+        Math.max(...hoverState) * 0.64
+      );
+
+      const getCameraPull = () => getAwakening() * 0.75;
 
       const resetScene = () => {
         width = hostRef.current?.clientWidth || window.innerWidth;
@@ -165,7 +214,7 @@ export default function TempleBackground() {
             Math.sin(time * 0.12 + i) * width * 0.01 +
             (mouse.x - width * 0.5) * 0.018;
           const spread = width * (0.08 + i * 0.012 + cameraPull * 0.02);
-          const alpha = 5 + cameraPull * 8;
+          const alpha = (1.2 + cameraPull * 10) * (0.32 + getAwakening());
 
           p.fill(218, 204, 172, alpha);
           p.quad(
@@ -188,10 +237,10 @@ export default function TempleBackground() {
         const center = width * 0.5 + (mouse.x - width * 0.5) * 0.01;
 
         p.noStroke();
-        p.fill(3, 4, 8, 176);
+        p.fill(3, 4, 8, p.lerp(218, 158, cameraPull));
         p.rect(0, horizon, width, height - horizon);
 
-        p.stroke(184, 152, 98, 18);
+        p.stroke(184, 152, 98, 4 + getAwakening() * 20);
         p.strokeWeight(1);
 
         for (let i = 0; i < 12; i += 1) {
@@ -202,7 +251,12 @@ export default function TempleBackground() {
 
         for (let i = 0; i < 9; i += 1) {
           const y = p.lerp(floorTop, height * 0.98, i / 8);
-          p.stroke(198, 171, 116, p.map(i, 0, 8, 18, 4));
+          p.stroke(
+            198,
+            171,
+            116,
+            p.map(i, 0, 8, 4 + getAwakening() * 18, 1 + getAwakening() * 6)
+          );
           p.line(width * 0.05, y, width * 0.95, y);
         }
 
@@ -227,7 +281,9 @@ export default function TempleBackground() {
               parallax * (1 - depth);
             const pillarWidth = p.lerp(width * 0.086, width * 0.034, depth) * (1 + cameraPull * 0.08);
             const top = p.lerp(height * -0.08, horizon, depth);
-            const alpha = p.lerp(118, 34, depth);
+            const alpha =
+              p.lerp(58, 18, depth) +
+              getAwakening() * p.lerp(48, 18, depth);
 
             p.noStroke();
             p.fill(8, 8, 12, alpha);
@@ -241,22 +297,31 @@ export default function TempleBackground() {
       };
 
       const drawDistantArchive = (time) => {
+        const awakening = getAwakening();
+
         p.noStroke();
 
         for (let i = 0; i < 7; i += 1) {
           const x = width * (0.18 + i * 0.105) + (mouse.x - width * 0.5) * 0.006;
           const h = height * (0.08 + (i % 3) * 0.025);
 
-          p.fill(18, 18, 24, 70);
+          p.fill(18, 18, 24, 10 + awakening * 48);
           p.rect(x, height * 0.32 - h, width * 0.024, h);
 
-          p.fill(198, 162, 92, 6 + Math.sin(time * 0.4 + i) * 4);
+          p.fill(
+            198,
+            162,
+            92,
+            (1.5 + awakening * 8) +
+              Math.sin(time * 0.4 + i) * (1 + awakening * 3)
+          );
           p.rect(x + width * 0.006, height * 0.32 - h * 0.72, width * 0.003, h * 0.45);
         }
       };
 
       const drawPortalInterior = (gate, index, time, bounds) => {
         const hover = hoverState[index];
+        const awakening = getAwakening();
         const [r, g, b] = gate.tone;
         const [cr, cg, cb] = gate.core;
         const distortionX = (mouse.x - bounds.x) * 0.025 * hover;
@@ -272,7 +337,8 @@ export default function TempleBackground() {
           const pulse = Math.sin(time * 1.3 + index + i * 0.55) * 0.08;
           const w = bounds.w * (0.36 + ratio * 0.72 + pulse + hover * 0.1);
           const h = bounds.h * (0.32 + ratio * 0.58 + pulse + hover * 0.08);
-          const alpha = (7 + hover * 18) * (1 - ratio * 0.1);
+          const alpha =
+            (1.4 + awakening * 5 + hover * 18) * (1 - ratio * 0.1);
 
           p.fill(
             p.lerp(cr, r, ratio),
@@ -289,7 +355,7 @@ export default function TempleBackground() {
           const radius = bounds.w * (0.12 + i * 0.045);
           const x = Math.cos(angle) * radius;
           const y = Math.sin(angle) * radius * 0.75 - bounds.h * 0.12;
-          const alpha = 9 + hover * 18;
+          const alpha = 2 + awakening * 8 + hover * 18;
 
           if (gate.mode === 'nebula') {
             p.fill(96, 166, 255, alpha);
@@ -334,7 +400,9 @@ export default function TempleBackground() {
             bounds.h * 0.12 +
             Math.sin(particle.angle) * bounds.h * particle.radius * 0.72 +
             (mouse.y - bounds.y) * 0.008 * hover * particle.depth;
-          const alpha = p.lerp(20, 76, particle.depth) * (0.7 + hover * 0.8);
+          const alpha =
+            p.lerp(4, 18, particle.depth) *
+            (0.45 + getAwakening() * 1.8 + hover * 2.2);
 
           p.noStroke();
           p.fill(r, g, b, alpha);
@@ -347,7 +415,8 @@ export default function TempleBackground() {
         const hover = hoverState[index];
         const [r, g, b] = gate.tone;
         const breathe = 0.5 + Math.sin(time * 0.9 + index) * 0.5;
-        const glow = 16 + breathe * 14 + hover * 48;
+        const awakening = getAwakening();
+        const glow = 3 + awakening * (10 + breathe * 12) + hover * 48;
 
         drawPortalInterior(gate, index, time, bounds);
 
@@ -358,7 +427,7 @@ export default function TempleBackground() {
         p.line(bounds.x - bounds.w / 2, bounds.y, bounds.x - bounds.w / 2, bounds.y + bounds.h * 0.42);
         p.line(bounds.x + bounds.w / 2, bounds.y, bounds.x + bounds.w / 2, bounds.y + bounds.h * 0.42);
 
-        p.stroke(226, 207, 166, 10 + hover * 22);
+        p.stroke(226, 207, 166, 2 + awakening * 9 + hover * 22);
         p.strokeWeight(1);
         for (let i = 0; i < 4; i += 1) {
           const y = bounds.y + bounds.h * (0.1 + i * 0.11);
@@ -367,7 +436,7 @@ export default function TempleBackground() {
         }
 
         p.noStroke();
-        p.fill(222, 210, 180, 22 + hover * 54);
+        p.fill(222, 210, 180, 2 + awakening * 18 + hover * 54);
         p.textAlign(p.CENTER, p.CENTER);
         p.textSize(Math.max(8, width * 0.0065));
         p.text(gate.name, bounds.x, bounds.y + bounds.h * 0.5);
@@ -383,7 +452,7 @@ export default function TempleBackground() {
           const drift = ((time * fog.speed + fog.offset) % 1) * width;
           const mouseOffsetX = (mouse.x - width * 0.5) * 0.012 * fog.depth;
           const mouseOffsetY = (mouse.y - height * 0.5) * 0.008 * fog.depth;
-          const alpha = fog.alpha + cameraPull * 16;
+          const alpha = (fog.alpha * 0.22) + cameraPull * 18;
 
           p.fill(178, 184, 180, alpha);
 
@@ -415,8 +484,12 @@ export default function TempleBackground() {
           const py = particle.y * height + (mouse.y - height * 0.5) * 0.006 * particle.z;
           const size = particle.size * p.lerp(0.5, 1.4, particle.z);
           const alpha =
-            p.lerp(8, 32, particle.z) *
-            (0.72 + Math.sin(time + particle.phase) * 0.14);
+            p.lerp(2, 12, particle.z) *
+            (
+              0.34 +
+              getAwakening() * 1.35 +
+              Math.sin(time + particle.phase) * 0.14
+            );
 
           p.fill(229, 211, 166, alpha);
           p.circle(px, py, size);
@@ -476,5 +549,13 @@ export default function TempleBackground() {
     };
   }, []);
 
-  return <div ref={hostRef} className={styles.templeBackground} />;
+  return (
+    <div
+      ref={hostRef}
+      className={styles.templeBackground}
+      style={{
+        '--archive-awakening': ritualIntensity,
+      }}
+    />
+  );
 }

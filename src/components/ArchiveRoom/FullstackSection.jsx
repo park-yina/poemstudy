@@ -37,11 +37,6 @@ export const jumpingBattleBook = {
     '30개 이상의 매장에서 운영된 스트리밍 및 실시간 랭킹 시스템 기록',
 
   gates: [
-
-    /* ========================================
-       REALTIME
-    ======================================== */
-
     {
       id: 'realtime',
 
@@ -99,7 +94,7 @@ result: [
             'SSE 기반 부분 갱신 구조 설계',
 
           subtitle:
-            'Realtime Stream',
+            '이유없는 지연은 없다',
 
           label:
             'PATCH',
@@ -117,20 +112,93 @@ result: [
 
             problem: [
               '전체 데이터 재요청 문제',
-              '실시간성 대비 과도한 polling',
+              '상위랭커 캐싱 전략의 실패',
+              '스냅샷의 과도한 읽기 비용으로 인한 UI교체 지연',
             ],
 
             solution: [
-              'delta patch 설계',
-              '부분 payload 업데이트',
-              'Version snapshot 비교',
+              '랭킹 변동시 필요한 데이터의 단위를 재정의',
+              '고유 키 기반으로 최소 단위의 랭킹 변경만 전달하도록 구조 분리',
+              '랭킹 데이터와 메타 데이터의 분리',
             ],
 
-            result: [
-              '데이터 흐름 최적화',
-              '실시간 UX 개선',
-            ],
+result: [
+  '읽기 비용 감소',
+  '부분 갱신 중심의 실시간 흐름 확보',
+],
           },
+
+          subcards: [
+            {
+              title:
+                '상위 랭킹 캐싱 전력의 실패',
+
+              description:
+                '상위권 교체율이 캐시 전략을 무너뜨린 이유',
+
+              keyword:
+                'FAILURE',
+
+              artwork:
+                '/img/cards/FAIL.png',
+
+              decoding: {
+                summary:
+                  '예상과 다르게 점수 기반 랭킹 시스템의 특성상 상위권의 잦은 교체 발생',
+
+                anomaly: [
+                    '상위 랭킹 교체 빈도가 예상보다 높아 cache invalidation이 반복적으로 발생',
+                  '클라이언트가 어떤 필드가 바뀌었는지 매번 전체 비교',
+                    '상위 랭킹 중심 캐시 전략이 안정적으로 유지되지 못했다',
+
+                ],
+
+                patch: [
+  '불안정한 Top Rank 대신 고정 가능한 cache boundary를 재탐색',
+  'storeId 단위의 지점 캐시 구조로 데이터 흐름 재구성',
+                ],
+
+                result: [
+                  '상위랭킹 캐시 시스템의 폐지',
+                ],
+              },
+            },
+
+            {
+              title:
+                'Version Snapshot Guard',
+
+              description:
+                '이벤트 누락과 순서 역전을 감지하는 버전 보호 장치 목업',
+
+              keyword:
+                'VERSION',
+
+              artwork:
+                '/img/cards/CACHE.png',
+
+              decoding: {
+                summary:
+                  'SSE 이벤트의 순서와 누락을 version snapshot으로 검증하는 기록',
+
+                anomaly: [
+                  '네트워크 재연결 후 일부 이벤트가 건너뛰어질 수 있었다',
+                  '오래된 이벤트가 최신 UI 상태를 덮어쓸 위험이 있었다',
+                ],
+
+                patch: [
+                  '이벤트마다 monotonically increasing version 부여',
+                  '클라이언트의 마지막 적용 버전과 서버 버전 비교',
+                  'version gap 감지 시 snapshot fallback 실행',
+                ],
+
+                result: [
+                  'stale update 차단',
+                  '재연결 이후 상태 복구 안정화',
+                ],
+              },
+            },
+          ],
         },
 
         {
@@ -432,6 +500,8 @@ function TarotSpread({
     useState(null);
   const [decodingCardFlipped, setDecodingCardFlipped] =
     useState(false);
+  const [selectedRecord, setSelectedRecord] =
+    useState(null);
 useEffect(() => {
 
   if (!setDecodingMode) {
@@ -445,6 +515,7 @@ useEffect(() => {
 }, [decodingCard, setDecodingMode]);
   useEffect(() => {
     setDecodingCardFlipped(false);
+    setSelectedRecord(null);
   }, [decodingCard]);
   useEffect(() => {
     if (!decodingCard) {
@@ -459,6 +530,7 @@ useEffect(() => {
       event.preventDefault();
       event.stopPropagation();
       setDecodingCard(null);
+      setSelectedRecord(null);
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -470,6 +542,7 @@ useEffect(() => {
   useEffect(() => {
     if (decodingExitRequest > 0) {
       setDecodingCard(null);
+      setSelectedRecord(null);
     }
   }, [decodingExitRequest]);
   useEffect(() => {
@@ -486,6 +559,11 @@ useEffect(() => {
 
 const cards =
   selectedGate?.cards ?? [];
+
+  const cardWithRelatedRecords =
+    decodingCard
+      ? decodingCard
+      : null;
 
   const toggleDecodingCard = () => {
     setDecodingCardFlipped((flipped) => !flipped);
@@ -654,9 +732,10 @@ if (layoutMode === 'grid') {
           <button
             className={tarotStyles.decodingClose}
 
-            onClick={() =>
-              setDecodingCard(null)
-            }
+            onClick={() => {
+              setDecodingCard(null);
+              setSelectedRecord(null);
+            }}
           >
             CLOSE
           </button>
@@ -727,8 +806,12 @@ if (layoutMode === 'grid') {
             </div>
 
             <DecodingPanel
-              book={book}
-              card={decodingCard}
+              card={cardWithRelatedRecords}
+              selectedRecord={selectedRecord}
+              onSelectRecord={setSelectedRecord}
+              onBackToArchiveCard={() =>
+                setSelectedRecord(null)
+              }
             />
 
           </div>
@@ -904,9 +987,10 @@ return (
         <button
           className={tarotStyles.decodingClose}
 
-          onClick={() =>
-            setDecodingCard(null)
-          }
+          onClick={() => {
+            setDecodingCard(null);
+            setSelectedRecord(null);
+          }}
         >
           CLOSE
         </button>
@@ -977,8 +1061,12 @@ return (
           </div>
 
           <DecodingPanel
-            book={book}
-            card={decodingCard}
+            card={cardWithRelatedRecords}
+            selectedRecord={selectedRecord}
+            onSelectRecord={setSelectedRecord}
+            onBackToArchiveCard={() =>
+              setSelectedRecord(null)
+            }
           />
 
 
@@ -1162,6 +1250,7 @@ function OpenedBook({
 export default function FullstackSection({
   overlayActive,
   setOverlayActive,
+  setRitualIntensity,
 }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedGate, setSelectedGate] =
@@ -1222,6 +1311,30 @@ export default function FullstackSection({
     }
   ), []);
 
+  useEffect(() => {
+    if (!selectedBook) {
+      setRitualIntensity?.(0);
+      return;
+    }
+
+    const visitedCount = Object.keys(visitedGateIds).length;
+    const visitedResonance = Math.min(0.18, visitedCount * 0.045);
+    const nextIntensity =
+      selectedGate
+        ? 1
+        : previewGate
+          ? 0.72
+          : visitedResonance;
+
+    setRitualIntensity?.(nextIntensity);
+  }, [
+    previewGate,
+    selectedBook,
+    selectedGate,
+    setRitualIntensity,
+    visitedGateIds,
+  ]);
+
 const openBook = (book) => {
 
   if (closeTimerRef.current) {
@@ -1252,6 +1365,7 @@ setSelectedGate(null);
   setPreviewGate(null);
   setDecodingMode(false);
   setOverlayActive(false);
+  setRitualIntensity?.(0);
 
   setIsClosing(false);
 

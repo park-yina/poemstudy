@@ -12,7 +12,9 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "generate-search": "node scripts/generate-search-index.mjs"
+    "generate-search": "node scripts/generate-search-index.mjs",
+    "prestart": "npm run generate-search",
+    "prebuild": "npm run generate-search"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.1",
@@ -27,6 +29,7 @@
     "clsx": "^2.0.0",
     "glob": "^13.0.6",
     "gray-matter": "^4.0.3",
+    "minisearch": "^7.2.0",
     "p5": "^2.2.3",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",

@@ -1,61 +1,50 @@
-import React, { useMemo, useState } from 'react';
-
-import Link from '@docusaurus/Link';
-
-import docs from '../../generated/search-docs.json';
-
+import React, { useState } from 'react';
+import { useHistory, useLocation } from '@docusaurus/router';
 import styles from './styles.module.css';
 
 export default function NavbarSearch() {
-  const [query, setQuery] = useState('');
+  const history = useHistory();
+  const location = useLocation();
+  const [query, setQuery] = useState(
+    new URLSearchParams(location.search).get('q') || ''
+  );
 
-  const results = useMemo(() => {
-    if (!query.trim()) return [];
+  const submitQuery = () => {
+    const trimmed = query.trim();
 
-    return docs.filter((doc) => {
-      const target = `
-        ${doc.title}
-        ${doc.description}
-        ${(doc.tags || []).join(' ')}
-      `.toLowerCase();
+    if (!trimmed) return;
 
-      return target.includes(
-        query.toLowerCase()
-      );
-    });
-  }, [query]);
+    history.push(`/search?q=${encodeURIComponent(trimmed)}`);
+  };
 
   return (
     <div className={styles.wrapper}>
-      <input
-        type="text"
-        className={styles.input}
-        placeholder="Search..."
-        value={query}
-        onChange={(e) =>
-          setQuery(e.target.value)
-        }
-      />
+      <label className={styles.label} htmlFor="archive-query">
+        archive query
+      </label>
 
-      {results.length > 0 && (
-        <div className={styles.dropdown}>
-          {results.map((doc) => (
-            <Link
-              key={doc.path}
-              to={doc.path}
-              className={styles.item}
-            >
-              <div className={styles.title}>
-                {doc.title}
-              </div>
+      <div className={styles.inputFrame}>
+        <span className={styles.prompt} aria-hidden="true">
+          &gt;
+        </span>
 
-              <div className={styles.desc}>
-                {doc.description}
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+        <input
+          id="archive-query"
+          type="search"
+          className={styles.input}
+          placeholder="query archive"
+          value={query}
+          autoComplete="off"
+          spellCheck="false"
+          onChange={(event) => setQuery(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              submitQuery();
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }

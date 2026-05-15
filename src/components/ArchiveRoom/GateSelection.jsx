@@ -24,8 +24,13 @@ export default function GateSelection({
     <div
       className={`
         ${styles.gateSelection}
-        ${selectedGate ? styles.gateSelectionClosing : ''}
+        ${selectedGate ? styles.shrineEntering : ''}
       `}
+      onMouseLeave={() => {
+        if (!selectedGate) {
+          setPreviewGate(null);
+        }
+      }}
     >
       {gates.map((gate) => (
         <button
@@ -43,6 +48,11 @@ export default function GateSelection({
           onFocus={() =>
             setPreviewGate(gate)
           }
+          onBlur={() => {
+            if (!selectedGate) {
+              setPreviewGate(null);
+            }
+          }}
           className={`
             ${styles.gatePortal}
             ${
@@ -61,16 +71,17 @@ export default function GateSelection({
                 : ''
             }
           `}
-          aria-label={`${gate.gate} room. Click to open.`}
+          aria-label={`${gate.gate} archive candle`}
         >
-          <div className={styles.gateDoor}>
-            <div className={styles.gateSanctuaryAura} aria-hidden="true">
-              <span className={styles.gateRune} />
-              <span className={styles.gateRune} />
-              <span className={styles.gateRune} />
+          <div className={styles.candleCase}>
+            <div className={styles.candleGlass} aria-hidden="true">
+              <span className={styles.candleGlow} />
+              <span className={styles.candleFlame} />
+              <span className={styles.candleWick} />
+              <span className={styles.candleWax} />
             </div>
 
-            <div className={styles.gateDoorPanel}>
+            <div className={styles.candleMeta}>
               <span className={styles.gateIcon}>
                 {gate.icon}
               </span>
@@ -82,17 +93,6 @@ export default function GateSelection({
               <span className={styles.gateDescription}>
                 {gate.description}
               </span>
-            </div>
-
-            <div className={styles.gateDoorThreshold}>
-              <span className={styles.gateDoorKnob} />
-            </div>
-
-            <div className={styles.gateCandles} aria-hidden="true">
-              <span className={styles.gateCandle} />
-              <span className={styles.gateCandle} />
-              <span className={styles.gateCandle} />
-              <span className={styles.gateCandle} />
             </div>
           </div>
         </button>

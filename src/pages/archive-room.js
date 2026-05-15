@@ -13,6 +13,8 @@ export default function ArchiveRoom() {
 
   const [overlayActive, setOverlayActive] =
     useState(false);
+  const [ritualIntensity, setRitualIntensity] =
+    useState(0);
 
   return (
 
@@ -30,8 +32,9 @@ export default function ArchiveRoom() {
 <div className={styles.archiveBackgroundImage} />
 
       <TempleBackground
-  gates={jumpingBattleBook.gates}
-/>
+        gates={jumpingBattleBook.gates}
+        ritualIntensity={ritualIntensity}
+      />
 
       <ArchiveTopbar />
 {
@@ -43,6 +46,7 @@ export default function ArchiveRoom() {
       <FullstackSection
         overlayActive={overlayActive}
         setOverlayActive={setOverlayActive}
+        setRitualIntensity={setRitualIntensity}
       />
 
     </main>

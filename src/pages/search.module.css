@@ -1,0 +1,519 @@
+.page {
+  --search-bg: #07080c;
+  --search-grid: rgba(238, 232, 224, 0.025);
+  --search-surface: rgba(255, 255, 255, 0.028);
+  --search-surface-strong: rgba(255, 255, 255, 0.052);
+  --search-line: rgba(238, 232, 224, 0.11);
+  --search-line-strong: rgba(238, 232, 224, 0.2);
+  --search-text: #f2ece4;
+  --search-muted: rgba(242, 236, 228, 0.68);
+  --search-dim: rgba(242, 236, 228, 0.42);
+  --search-accent: #7dd3fc;
+  --search-warm: #d85f7f;
+  --search-green: #7cff8a;
+
+  min-height: calc(100vh - var(--ifm-navbar-height));
+
+  background:
+    linear-gradient(180deg, rgba(7, 8, 12, 0.92), var(--search-bg) 72%),
+    linear-gradient(var(--search-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--search-grid) 1px, transparent 1px),
+    var(--search-bg);
+
+  background-size:
+    auto,
+    72px 72px,
+    72px 72px,
+    auto;
+      font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+
+  color: var(--search-text);
+}
+
+.shell {
+  width: min(1180px, calc(100% - 3rem));
+  margin: 0 auto;
+
+  padding:
+    4.2rem
+    0
+    5rem;
+}
+
+.header {
+  max-width: 860px;
+
+  padding-bottom: 1.8rem;
+
+  border-bottom:
+    1px solid var(--search-line-strong);
+}
+
+.kicker,
+.consoleBar,
+.queryLabel,
+.filters button,
+.groupTitle,
+.category,
+.path,
+.empty {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+}
+
+.kicker {
+  color: var(--search-warm);
+
+  font-size: 0.74rem;
+  font-weight: 700;
+
+  letter-spacing: 0.28em;
+
+  text-transform: uppercase;
+}
+
+.header h1 {
+  max-width: 720px;
+
+  margin:
+    1rem
+    0
+    0;
+
+  color: var(--search-text);
+
+  font-size:
+    clamp(2.6rem, 5vw, 4.4rem);
+
+  font-weight: 560;
+
+  letter-spacing: -0.045em;
+
+  line-height: 0.98;
+}
+
+.header p {
+  max-width: 760px;
+
+  margin:
+    1.2rem
+    0
+    0;
+
+  color: var(--search-muted);
+
+  font-size: 0.98rem;
+
+  line-height: 1.85;
+
+  word-break: keep-all;
+}
+
+.console {
+  margin-top: 2rem;
+
+  padding:
+    1.05rem;
+
+  border:
+    1px solid var(--search-line);
+
+  border-radius: 2px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--search-surface-strong),
+      var(--search-surface)
+    ),
+    rgba(0, 0, 0, 0.24);
+
+  box-shadow:
+    inset 0 0 36px rgba(125, 211, 252, 0.035);
+}
+
+.consoleBar {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  padding-bottom: 0.9rem;
+
+  border-bottom:
+    1px dashed var(--search-line);
+
+  color: var(--search-dim);
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.16em;
+}
+
+.queryLabel {
+  display: block;
+
+  margin-top: 1rem;
+
+  color: rgba(124, 255, 138, 0.58);
+
+  font-size: 0.74rem;
+
+  letter-spacing: 0.14em;
+}
+
+.queryRow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.72rem;
+
+  margin-top: 0.55rem;
+
+  padding:
+    0.95rem
+    1rem;
+
+  border:
+    1px dashed rgba(125, 211, 252, 0.2);
+
+  border-radius: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.22),
+      rgba(0, 0, 0, 0.1)
+    );
+}
+
+.queryRow:focus-within {
+  border-color:
+    rgba(125, 211, 252, 0.42);
+
+  box-shadow:
+    inset 0 0 18px rgba(125, 211, 252, 0.045);
+}
+
+.queryRow span {
+  color: var(--search-accent);
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+  font-size: 1rem;
+}
+
+.queryRow input {
+  width: 100%;
+
+  min-width: 0;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  color: var(--search-text);
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+  font-size: 1rem;
+
+  letter-spacing: 0.04em;
+}
+
+.queryRow input::placeholder {
+  color:
+    rgba(242, 236, 228, 0.32);
+}
+
+.filters {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.55rem;
+
+  margin-top: 1rem;
+}
+
+.filters button {
+  padding:
+    0.42rem
+    0.68rem;
+
+  border:
+    1px solid var(--search-line);
+
+  border-radius: 0;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  color: var(--search-muted);
+
+  cursor: pointer;
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.1em;
+
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.filters button:hover,
+.filters .activeFilter {
+  border-color:
+    rgba(125, 211, 252, 0.44);
+
+  background:
+    rgba(125, 211, 252, 0.055);
+
+  color: var(--search-accent);
+}
+
+.results {
+  display: grid;
+
+  gap: 2.6rem;
+
+  margin-top: 3rem;
+}
+
+.empty {
+  padding:
+    2rem
+    0;
+
+  border-top:
+    1px solid var(--search-line);
+
+  border-bottom:
+    1px solid var(--search-line);
+
+  color: var(--search-muted);
+
+  font-size: 0.9rem;
+
+  letter-spacing: 0.04em;
+}
+
+.groupTitle {
+  display: flex;
+
+  justify-content: space-between;
+
+  padding-bottom: 0.85rem;
+
+  border-bottom:
+    1px solid var(--search-line-strong);
+
+  color: var(--search-accent);
+
+  font-size: 0.82rem;
+
+  letter-spacing: 0.16em;
+}
+
+.groupList {
+  border-bottom:
+    1px solid var(--search-line);
+}
+
+.result {
+  display: grid;
+
+  grid-template-columns:
+    128px
+    minmax(0, 1fr);
+
+  gap:
+    0.45rem
+    1.5rem;
+
+  padding:
+    1.45rem
+    0;
+
+  border-top:
+    1px solid var(--search-line);
+
+  color: inherit;
+
+  text-decoration: none;
+}
+
+.result:hover {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(125, 211, 252, 0.04),
+      transparent
+    );
+
+  color: inherit;
+
+  text-decoration: none;
+}
+
+.category {
+  grid-row: span 3;
+
+  color: var(--search-dim);
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.14em;
+}
+
+.result h2 {
+  margin: 0;
+
+  color: var(--search-text);
+
+  font-size:
+    clamp(1.22rem, 2vw, 1.68rem);
+  font-weight: 620;
+  letter-spacing: -0.03em;
+
+
+  letter-spacing: -0.02em;
+
+  line-height: 1.22;
+}
+
+.result p {
+  margin:
+    0.4rem
+    0
+    0;
+
+  color: var(--search-muted);
+
+  line-height: 1.75;
+
+  word-break: keep-all;
+}
+
+.path {
+  margin-top: 0.3rem;
+
+  color: var(--search-dim);
+
+  font-size: 0.76rem;
+}
+
+/* ========================= */
+/* LIGHT THEME */
+/* ========================= */
+
+:global(html[data-theme='light']) .page {
+  --search-bg: #f4efe7;
+  --search-grid: rgba(65, 47, 36, 0.035);
+  --search-surface: rgba(255, 255, 255, 0.54);
+  --search-surface-strong: rgba(255, 255, 255, 0.76);
+  --search-line: rgba(63, 43, 30, 0.13);
+  --search-line-strong: rgba(63, 43, 30, 0.22);
+  --search-text: #1f1a16;
+  --search-muted: rgba(31, 26, 22, 0.68);
+  --search-dim: rgba(31, 26, 22, 0.42);
+  --search-accent: #2563eb;
+  --search-warm: #9a3655;
+  --search-green: #2f7a45;
+
+  background:
+    linear-gradient(180deg, rgba(244, 239, 231, 0.82), var(--search-bg) 76%),
+    linear-gradient(var(--search-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--search-grid) 1px, transparent 1px),
+    var(--search-bg);
+
+  background-size:
+    auto,
+    72px 72px,
+    72px 72px,
+    auto;
+}
+
+:global(html[data-theme='light']) .console {
+  background:
+    linear-gradient(
+      180deg,
+      var(--search-surface-strong),
+      var(--search-surface)
+    ),
+    rgba(255, 255, 255, 0.52);
+
+  box-shadow:
+    0 18px 46px rgba(63, 43, 30, 0.055),
+    inset 0 0 28px rgba(37, 99, 235, 0.035);
+}
+
+:global(html[data-theme='light']) .queryLabel {
+  color:
+    rgba(47, 122, 69, 0.78);
+}
+
+:global(html[data-theme='light']) .queryRow {
+  border:
+    1px dashed rgba(37, 99, 235, 0.2);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.58),
+      rgba(250, 246, 239, 0.46)
+    );
+}
+
+:global(html[data-theme='light']) .queryRow:focus-within {
+  border-color:
+    rgba(37, 99, 235, 0.38);
+
+  box-shadow:
+    inset 0 0 16px rgba(37, 99, 235, 0.055);
+}
+
+:global(html[data-theme='light']) .queryRow input::placeholder {
+  color:
+    rgba(31, 26, 22, 0.34);
+}
+
+:global(html[data-theme='light']) .filters button {
+  background:
+    rgba(255, 255, 255, 0.34);
+}
+
+:global(html[data-theme='light']) .filters button:hover,
+:global(html[data-theme='light']) .filters .activeFilter {
+  background:
+    rgba(37, 99, 235, 0.06);
+}

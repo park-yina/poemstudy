@@ -85,6 +85,12 @@ export default function NavbarContent() {
   const [leftItems, rightItems] =
     splitNavbarItems(items);
 
+  const openArchiveProtocol = () => {
+    window.dispatchEvent(
+      new CustomEvent('archive-protocol:open')
+    );
+  };
+
   return (
     <NavbarContentLayout
       left={
@@ -101,6 +107,14 @@ export default function NavbarContent() {
       right={
         <>
           <NavbarItems items={rightItems} />
+
+          <button
+            type="button"
+            className={styles.protocolEntry}
+            onClick={openArchiveProtocol}
+          >
+            기록 안내서
+          </button>
 
           <NavbarSearch />
 

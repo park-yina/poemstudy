@@ -16,6 +16,8 @@
       rgba(2,3,8,0.92),
       rgba(5,6,12,0.94)
     );
+
+  --archive-awakening: 0;
 }
 
 /* 실제 공간 이미지 */
@@ -33,12 +35,13 @@
     center center / cover
     no-repeat;
 
-  opacity: 0.46;
+  opacity:
+    calc(0.035 + (var(--archive-awakening) * 0.16));
 
   filter:
-    brightness(0.58)
-    contrast(1.12)
-    saturate(0.9);
+    brightness(calc(0.18 + (var(--archive-awakening) * 0.36)))
+    contrast(1.18)
+    saturate(calc(0.56 + (var(--archive-awakening) * 0.28)));
 
   transform:
     scale(1.01);
@@ -67,7 +70,8 @@
 
   filter: blur(32px);
 
-  opacity: 0.42;
+  opacity:
+    calc(0.12 + (var(--archive-awakening) * 0.28));
 }
 
 .templeBackground canvas {
@@ -80,7 +84,8 @@
 
   pointer-events: none;
 
-  opacity: 0.52;
+  opacity:
+    calc(0.2 + (var(--archive-awakening) * 0.34));
 
   mix-blend-mode: screen;
 }
