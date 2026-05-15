@@ -422,6 +422,19 @@
   pointer-events: none;
 }
 
+.runtimeCmdBackdrop {
+  position:
+    absolute;
+  inset:
+    0;
+  z-index:
+    70;
+  background:
+    transparent;
+  cursor:
+    default;
+}
+
 .desktopGrid {
 
   display: flex;
@@ -508,6 +521,286 @@
   transition:
     color 0.16s ease;
 }
+
+.runtimeCmdWindow {
+  position:
+    absolute;
+  left:
+    0;
+  top:
+    0;
+  z-index:
+    80;
+  width:
+    min(940px, calc(100% - 3rem));
+  height:
+    min(560px, calc(100% - 7rem));
+  min-height:
+    390px;
+  display:
+    flex;
+  flex-direction:
+    column;
+  overflow:
+    hidden;
+  border:
+    1px solid rgba(255,255,255,0.16);
+  border-radius:
+    12px;
+  background:
+    #030303;
+  box-shadow:
+    0 34px 90px rgba(0,0,0,0.56),
+    0 0 0 1px rgba(0,0,0,0.4);
+}
+
+.runtimeCmdTitlebar {
+  height:
+    42px;
+  flex-shrink:
+    0;
+  display:
+    flex;
+  align-items:
+    center;
+  justify-content:
+    center;
+  position:
+    relative;
+  cursor:
+    grab;
+  user-select:
+    none;
+  border-bottom:
+    1px solid rgba(255,255,255,0.1);
+  background:
+    linear-gradient(
+      180deg,
+      #2d2d2d,
+      #1b1b1b
+    );
+}
+
+.runtimeCmdTitlebar:active {
+  cursor:
+    grabbing;
+}
+
+.runtimeCmdControls {
+  position:
+    absolute;
+  left:
+    8px;
+  display:
+    flex;
+  align-items:
+    center;
+  gap:
+    0.15rem;
+}
+
+.runtimeCmdControl {
+  width:
+    26px;
+  height:
+    26px;
+  padding:
+    0;
+  border:
+    none;
+  border-radius:
+    50%;
+  cursor:
+    pointer;
+  position:
+    relative;
+  background:
+    transparent;
+}
+
+.runtimeCmdControl::before {
+  content:
+    '';
+  position:
+    absolute;
+  left:
+    50%;
+  top:
+    50%;
+  width:
+    14px;
+  height:
+    14px;
+  border-radius:
+    50%;
+  transform:
+    translate(-50%, -50%);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.24);
+}
+
+.runtimeCmdControl:hover {
+  filter:
+    brightness(1.08);
+}
+
+.runtimeCmdClose::before {
+  background:
+    #ff5f57;
+}
+
+.runtimeCmdMinimize::before {
+  background:
+    #febc2e;
+}
+
+.runtimeCmdExpand::before {
+  background:
+    #28c840;
+}
+
+.runtimeCmdTitle {
+  color:
+    rgba(255,255,255,0.72);
+  font-family:
+    'IBM Plex Mono',
+    'Fira Code',
+    Consolas,
+    monospace;
+  font-size:
+    0.76rem;
+  letter-spacing:
+    0.02em;
+}
+
+.runtimeCmdStream {
+  flex:
+    1;
+  min-height:
+    0;
+  overflow-y:
+    auto;
+  overflow-x:
+    hidden;
+  padding:
+    clamp(1rem, 1.7vw, 1.55rem);
+  background:
+    #030303;
+  color:
+    rgba(235,235,235,0.88);
+  font-family:
+    'IBM Plex Mono',
+    'Fira Code',
+    Consolas,
+    'Courier New',
+    monospace;
+  font-size:
+    clamp(0.82rem, 0.92vw, 0.96rem);
+  line-height:
+    1.75;
+  scrollbar-width:
+    thin;
+  scrollbar-color:
+    rgba(255,255,255,0.16)
+    transparent;
+}
+
+.runtimeCmdStream::-webkit-scrollbar {
+  width:
+    8px;
+}
+
+.runtimeCmdStream::-webkit-scrollbar-thumb {
+  background:
+    rgba(255,255,255,0.14);
+  border-radius:
+    999px;
+}
+
+.runtimeCmdCommand,
+.runtimeCmdTermination,
+.runtimeCmdLine {
+  margin:
+    0;
+  white-space:
+    pre-wrap;
+}
+
+.runtimeCmdCommand {
+  margin-bottom:
+    0.75rem;
+  color:
+    rgba(235,235,235,0.76);
+}
+
+.runtimeCmdCommand span {
+  color:
+    rgba(126,231,135,0.92);
+  margin-right:
+    0.65rem;
+}
+
+.runtimeCmdLine {
+  display:
+    grid;
+  grid-template-columns:
+    minmax(136px, 0.24fr) 1fr;
+  gap:
+    clamp(0.8rem, 1.5vw, 1.2rem);
+  padding:
+    0.18rem 0;
+  color:
+    rgba(236,236,236,0.84);
+  animation:
+    runtimeCmdLineIn 480ms steps(3, end) forwards;
+}
+
+.runtimeCmdLine span {
+  color:
+    rgba(126,231,135,0.78);
+}
+
+.runtimeCmdLine[data-age='settled'] {
+  color:
+    rgba(236,236,236,0.56);
+}
+
+.runtimeCmdLine[data-age='old'] {
+  color:
+    rgba(236,236,236,0.34);
+}
+
+.runtimeCmdLine[data-age='settled'] span {
+  color:
+    rgba(126,231,135,0.52);
+}
+
+.runtimeCmdLine[data-age='old'] span {
+  color:
+    rgba(126,231,135,0.32);
+}
+
+.runtimeCmdTermination {
+  color:
+    rgba(235,235,235,0.58);
+}
+
+@keyframes runtimeCmdLineIn {
+  from {
+    opacity:
+      0;
+    transform:
+      translateY(7px);
+  }
+
+  to {
+    opacity:
+      1;
+    transform:
+      translateY(0);
+  }
+}
+
 .desktopIcon i {
 
   font-size: 3rem;
@@ -972,6 +1265,7 @@
   background:
     #060816;
 }
+
 .previewDocument {
 
   width: 100%;

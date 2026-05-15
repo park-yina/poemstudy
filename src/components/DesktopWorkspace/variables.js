@@ -15,8 +15,8 @@ export const extensionMap = {
   },
 
   log: {
-    icon: 'fa-terminal',
-    color: '#4ade80',
+    icon: 'fa-file-lines',
+    color: '#b8aea4',
     type: 'LOG',
   },
 
@@ -123,24 +123,49 @@ location: 'Projects',
   },
 
   {
-    id: 'runtime',
+    id: 'project-log',
 
-    title: 'runtime.log',
+    title: 'project.log',
 
     location: 'Runtime',
 
     shortcut: false,
 
-    preview: `
-[00:00:00]
-runtime initialized
+    logLabel: 'PROJECT LOG',
 
-[00:00:03]
-system stable
+    logMeta: 'operational record',
 
-[00:00:05]
-archive synced
-    `,
+    logEntries: [
+      'firebase ranking structure stabilized',
+      'aws lambda cold start mitigated',
+      'sse runtime stabilization completed',
+      'cache structure reorganized',
+      'runtime deployment synced',
+      'admin route boundary archived',
+    ],
+  },
+
+  {
+    id: 'dev-edu-log',
+
+    title: 'dev-edu.log',
+
+    location: 'Runtime',
+
+    shortcut: false,
+
+    logLabel: 'DEV-EDU LOG',
+
+    logMeta: 'learning archive',
+
+    logEntries: [
+      'revisited process scheduling structure',
+      'jwt refresh lifecycle reconstructed',
+      'cache invalidation notes archived',
+      'pintos memory flow reviewed',
+      'spring security filter chain traced',
+      'operating system notes indexed',
+    ],
   },
 
 ];

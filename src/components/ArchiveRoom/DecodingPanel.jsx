@@ -84,7 +84,6 @@ export default function DecodingPanel({
       `ACCESS REQUEST / ${activeRecord.keyword ?? 'RELATED'} RECORD`,
       `SOURCE ARCHIVE / ${card.keyword ?? card.label ?? 'CARD'}`,
       `RECONSTRUCT / ${activeRecord.title}`,
-      `CHECKSUM / ${activeRecord.title.length}-${card.title.length}`,
     ];
 
     return (
@@ -103,11 +102,6 @@ export default function DecodingPanel({
           </span>
         </div>
 
-        <div className={tarotStyles.recordAccessTrace} aria-hidden="true">
-          <span>INDEX LOCK RELEASED</span>
-          <span>MANUSCRIPT UNSEALED</span>
-          <span>DECODING CHANNEL OPEN</span>
-        </div>
 
         <div className={tarotStyles.recordDecodeGrid}>
           <div className={tarotStyles.recordArtifact}>
@@ -122,10 +116,6 @@ export default function DecodingPanel({
           </div>
 
           <div className={tarotStyles.recordTerminal}>
-            <span className={tarotStyles.decodingEyebrow}>
-              RELATED RECORD DECODING
-            </span>
-
             <h2>
               {activeRecord.title}
             </h2>

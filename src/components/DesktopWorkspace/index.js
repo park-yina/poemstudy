@@ -69,6 +69,225 @@ function clampPaneWidth(
   );
 }
 
+function RuntimeCmdWindow({
+  item,
+  onClose,
+}) {
+
+  const entries =
+    item.logEntries || [];
+
+  const [visibleCount, setVisibleCount] =
+    useState(0);
+
+  const [position, setPosition] =
+    useState({
+      x: 210,
+      y: 116,
+    });
+
+  const streamRef =
+    useRef(null);
+
+  const dragRef =
+    useRef(null);
+
+  useEffect(() => {
+
+    setVisibleCount(0);
+    setPosition({
+      x: 210,
+      y: 116,
+    });
+
+    const timers =
+      entries.map((entry, index) =>
+        setTimeout(() => {
+          setVisibleCount((count) =>
+            Math.min(
+              count + 1,
+              entries.length,
+            )
+          );
+        }, 900 + index * 1450)
+      );
+
+    return () => {
+      timers.forEach((timer) =>
+        clearTimeout(timer)
+      );
+    };
+
+  }, [item.id, entries]);
+
+  useEffect(() => {
+
+    const stream =
+      streamRef.current;
+
+    if (!stream) {
+      return;
+    }
+
+    stream.scrollTo({
+      top: stream.scrollHeight,
+      behavior: 'smooth',
+    });
+
+  }, [visibleCount]);
+
+  useEffect(() => {
+
+    const handleMove = (event) => {
+
+      if (!dragRef.current) {
+        return;
+      }
+
+      const nextX =
+        event.clientX - dragRef.current.offsetX;
+
+      const nextY =
+        event.clientY - dragRef.current.offsetY;
+
+      setPosition({
+        x: Math.max(24, nextX),
+        y: Math.max(78, nextY),
+      });
+    };
+
+    const handleUp = () => {
+      dragRef.current = null;
+    };
+
+    window.addEventListener(
+      'mousemove',
+      handleMove,
+    );
+
+    window.addEventListener(
+      'mouseup',
+      handleUp,
+    );
+
+    return () => {
+      window.removeEventListener(
+        'mousemove',
+        handleMove,
+      );
+
+      window.removeEventListener(
+        'mouseup',
+        handleUp,
+      );
+    };
+
+  }, []);
+
+  const visibleEntries =
+    entries.slice(0, visibleCount);
+
+  return (
+
+    <section
+      className={styles.runtimeCmdWindow}
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`,
+      }}
+      aria-label={`${item.logLabel} runtime session`}
+    >
+
+      <div
+        className={styles.runtimeCmdTitlebar}
+        onMouseDown={(event) => {
+          dragRef.current = {
+            offsetX: event.clientX - position.x,
+            offsetY: event.clientY - position.y,
+          };
+        }}
+      >
+
+        <div className={styles.runtimeCmdControls}>
+          <button
+            type="button"
+            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdClose}`}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              onClose();
+            }}
+            aria-label="Terminate runtime session"
+          />
+
+          <button
+            type="button"
+            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdMinimize}`}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+            }}
+            aria-label="Minimize runtime session"
+          />
+
+          <button
+            type="button"
+            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdExpand}`}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+            }}
+            aria-label="Expand runtime session"
+          />
+        </div>
+
+        <span className={styles.runtimeCmdTitle}>
+          {item.title} - runtime session
+        </span>
+
+      </div>
+
+      <div
+        ref={streamRef}
+        className={styles.runtimeCmdStream}
+      >
+        <p className={styles.runtimeCmdCommand}>
+          <span>{'C:\\runtime>'}</span>
+          stream --source {item.logLabel} --mode live
+        </p>
+
+        {
+          visibleEntries.map((entry, index) => {
+
+            const age =
+              visibleEntries.length - index;
+
+            return (
+
+              <p
+                key={entry}
+                className={styles.runtimeCmdLine}
+                data-age={
+                  age > 4
+                    ? 'old'
+                    : age > 2
+                      ? 'settled'
+                      : 'new'
+                }
+              >
+                <span>
+                  [{item.logLabel}]
+                </span>
+
+                {entry}
+              </p>
+
+            );
+          })
+        }
+      </div>
+
+    </section>
+
+  );
+}
+
 function WorkspaceOverlayView({
   item,
   onClose,
@@ -714,6 +933,10 @@ const [runtimeLink, setRuntimeLink] =
 
 const [workspaceItem, setWorkspaceItem] =
   useState(null);
+
+const [runtimeCmdItem, setRuntimeCmdItem] =
+  useState(null);
+
   useEffect(() => {
 
   const interval = setInterval(() => {
@@ -951,7 +1174,8 @@ const openItem = (item) => {
 
   if (
     item.workspace ||
-    item.type === 'FOLDER'
+    item.type === 'FOLDER' ||
+    item.type === 'LOG'
   ) {
     return;
   }
@@ -979,6 +1203,15 @@ const openItem = (item) => {
 
 const handleLaunch =
   async (item) => {
+
+   if (
+     item.type === 'LOG'
+   ) {
+
+      setRuntimeCmdItem(item);
+
+      return;
+    }
 
    if (
   item.workspace
@@ -1533,6 +1766,15 @@ return (
 
 <div className={styles.desktopArea}>
 
+{
+  runtimeCmdItem && (
+    <div
+      className={styles.runtimeCmdBackdrop}
+      aria-hidden="true"
+    />
+  )
+}
+
   <div className={styles.desktopGrid}>
 
 {
@@ -1575,6 +1817,9 @@ return (
     ${
       activeItem &&
       activeItem.id === item.id
+        ? styles.active
+        : runtimeCmdItem &&
+          runtimeCmdItem.id === item.id
         ? styles.active
         : ''
     }
@@ -1773,6 +2018,19 @@ return (
   isResizing={isResizing}
   setIsResizing={setIsResizing}
 />
+}
+
+{
+  runtimeCmdItem && (
+
+    <RuntimeCmdWindow
+      item={runtimeCmdItem}
+      onClose={() =>
+        setRuntimeCmdItem(null)
+      }
+    />
+
+  )
 }
 
       </div>

@@ -4,101 +4,33 @@ import DesktopWorkspace from '../components/DesktopWorkspace/index';
 
 import styles from './index.module.css';
 import { useEffect, useState } from 'react';
-const disciplines = ['Development', 'Operation', 'Writing', 'Education'];
 const selectedWorks = [];
 const bootSequence = [
-{
-  type: 'auth',
-  text: '[AUTH] 작가 신이재 프로필을 종료합니다...',
-},
+  {
+    type: 'auth',
+    text: '[AUTH] 작가 프로필 "신이재" 종료 중...',
+  },
 
-{
-  type: 'auth',
-  text: '[AUTH] 개발자 아카이브에 접근 중...',
-},
-
-{
-  type: 'ok',
-  text: '[OK] developer runtime restored',
-},
+  {
+    type: 'auth',
+    text: '[AUTH] 개발자 아카이브 접근 권한 확인 중...',
+  },
 
   {
     type: 'ok',
-    text: '[OK] operation archive restored',
+    text: '[OK] 개발자 모드 활성화 완료.',
+  },
+
+  {
+    type: 'ok',
+    text: '[OK] 아카이빙 시스템 초기화 완료.',
   },
 
   {
     type: 'system',
-    text: '[SYSTEM] luda-log ready.',
+    text: '[SYSTEM] Luda Log 부팅 완료.',
   },
 ];
-const runtimeLogs = [
-  '[00:00:00] initializing archive...',
-  '[00:00:01] loading operation logs...',
-  '[00:00:02] restoring systems...',
-  '[00:00:03] rebuilding structures...',
-  '[00:00:04] runtime stable.',
-];
-function SelectedWorkSection() {
-  return (
-    <section id="selected-work" className={styles.selectedSection}>
-      <div className="container">
-        <div className={styles.sectionIntro}>
-          <span className={styles.kicker}>Selected Work</span>
-          <h2>문제를 구조로 바꾼 기록</h2>
-          <p>
-            프로젝트를 썸네일로 포장하기보다, 어떤 문제를 오래 붙잡았고 어떤 방식으로 정리했는지
-            보여주는 색인입니다.
-          </p>
-        </div>
-
-        <div className={styles.workIndex}>
-          {selectedWorks.map((work) => (
-            <Link key={work.number} to={work.href} className={styles.workRow}>
-              <span className={styles.workNumber}>{work.number}</span>
-
-              <div className={styles.workBody}>
-                <span className={styles.workField}>{work.field}</span>
-                <h3>{work.title}</h3>
-                <p>{work.summary}</p>
-              </div>
-
-              <span className={styles.workMeta}>{work.meta}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-function RuntimeConsole() {
-  const [visibleLogs, setVisibleLogs] =
-    useState([]);
-
-  useEffect(() => {
-    runtimeLogs.forEach((log, index) => {
-      setTimeout(() => {
-        setVisibleLogs((prev) => [
-          ...prev,
-          log,
-        ]);
-      }, index * 850);
-    });
-  }, []);
-
-  return (
-    <div className={styles.consoleBox}>
-      {visibleLogs.map((log, index) => (
-        <div
-          key={index}
-          className={styles.consoleLine}
-        >
-          {log}
-        </div>
-      ))}
-    </div>
-  );
-}
 function BootSequence() {
   const [visible, setVisible] =
     useState([]);
@@ -144,6 +76,7 @@ function HomepageHeader() {
 
   const [ludaLogStats, setLudaLogStats] =
     useState(null);
+
 
   useEffect(() => {
 
@@ -304,8 +237,6 @@ const projects = [
                   <div className={styles.terminalBoot}>
 
                     <BootSequence />
-
-                    <RuntimeConsole />
 
                     <div className={styles.heroDescription}>
 
@@ -608,35 +539,6 @@ const total =
 
           </div>
 
-          {/* NAV */}
-
-          <nav
-            className={styles.disciplineNav}
-            aria-label="Portfolio categories"
-          >
-
-            {
-
-              disciplines.map((discipline) => (
-
-                <button
-                  key={discipline}
-                  type="button"
-                  onClick={() => {
-                    document
-                      .getElementById('selected-work')
-                      ?.scrollIntoView({
-                        behavior: 'smooth',
-                      });
-                  }}
-                >
-                  {discipline}
-                </button>
-
-              ))
-            }
-
-          </nav>
 
         </section>
 
@@ -655,7 +557,6 @@ export default function Home() {
         <HomepageHeader />
 
         <main className={styles.main}>
-          <SelectedWorkSection />
         </main>
       </div>
     </Layout>
