@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 
 import styles from '../components/ArchiveRoom/archive-room.module.css';
-
+import { jumpingBattleBook } from '../components/ArchiveRoom/FullstackSection';
 import ArchiveTopbar from '../components/ArchiveRoom/ArchiveTopbar';
 
 import ArchiveSidebar from '../components/ArchiveRoom/ArchiveSidebar';
 
 import FullstackSection from '../components/ArchiveRoom/FullstackSection';
+import TempleBackground from '../components/ArchiveRoom/TempleBackground';
 
 export default function ArchiveRoom() {
 
   const [overlayActive, setOverlayActive] =
     useState(false);
+  const [ritualIntensity, setRitualIntensity] =
+    useState(0);
 
   return (
 
@@ -26,14 +29,24 @@ export default function ArchiveRoom() {
         }
       `}
     >
+<div className={styles.archiveBackgroundImage} />
+
+      <TempleBackground
+        gates={jumpingBattleBook.gates}
+        ritualIntensity={ritualIntensity}
+      />
 
       <ArchiveTopbar />
-
-      <ArchiveSidebar />
+{
+  !overlayActive && (
+    <ArchiveSidebar />
+  )
+}
 
       <FullstackSection
         overlayActive={overlayActive}
         setOverlayActive={setOverlayActive}
+        setRitualIntensity={setRitualIntensity}
       />
 
     </main>

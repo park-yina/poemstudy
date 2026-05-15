@@ -1,56 +1,183 @@
 [
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:intro",
+    "title": "Luda Log",
+    "description": "운영과 구조, 그리고 기록을 중심으로 정리한 개발 아카이브.",
+    "content": "Luda Log 운영과 구조, 그리고 기록을 중심으로 정리한 개발 아카이브. 이 공간은 단순한 프로젝트 소개보다, 실제 서비스 운영 과정에서 마주했던 문제와 그 과정에서 고민했던 구조들을 기록하기 위해 만들어졌습니다. --- 이 아카이브에 대하여 대학교에서는 문예창작을 전공했고, 이후 외주 프로젝트와 운영 경험을 통해 실서비스 환경에서의 개발을 경험하게 되었습니다. 특히 약 30개 매장에서 사용된 스트리밍 및 랭킹 시스템 구축 경험은 \"기능 구현\"보다 \"운영 안정성과 구조\" 그리고 \"고객 경험\" 이 훨씬 중요하다는 사실을 체감하게 만든 프로젝트였습니다. 이 아카이브는 그러한 경험들을 단순 결과물이 아니라 \"왜 이러한 구조를 선택했는가\" 라는 관점에서 정리하고 있습니다. --- 주요 기록 실시간 랭킹 시스템 설계 스트리밍 및 Signed URL 인증 구조 JWT 기반 관리자 인증 흐름 KPI 및 운영 시스템 설계 Docker 및 CI/CD 구축 경험 WebRTC 기반 카메라 제어 프로젝트 IoT 장비 통신 구조 설계 --- 기록하려는 것 이곳에서는 단순히 사용 기술만 정리하지 않습니다. 대신 아래와 같은 질문들을 중심으로 기록합니다. 왜 Polling 대신 SSE를 선택했는가 왜 JWT 기반 구조를 도입했는가 운영 과정에서 어떤 문제가 발생했는가 실제 사용 환경은 개발 환경과 무엇이 달랐는가 고객 경험은 시스템 구조에 어떤 영향을 주었는가 --- 기술보다 중요한 것 프로젝트를 진행하면서 가장 크게 느낀 것은 좋은 구조는 결국 실제 운영 환경 속에서 만들어진다는 점이었습니다. 실제 사용자의 불편, 운영 중 발생하는 병목, 예상하지 못한 환경 문제들 속에서 구조는 계속 수정되고 개선되었습니다. 이 기록들은 그러한 과정들의 흔적입니다. --- Perspective Good systems are not only implemented once. They are repaired, explained, operated, and improved while real people use them. Maintainable structure Explainable code Records that last longer than the first release",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/intro"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-extras/translate-your-site",
+    "title": "Translate your site",
+    "description": "Let's translate docs/intro.md to French.",
+    "content": "Translate your site Let's translate docs/intro.md to French. Configure i18n Modify docusaurus.config.js to add support for the fr locale: Translate a doc Copy the docs/intro.md file to the i18n/fr folder: Translate i18n/fr/docusaurus-plugin-content-docs/current/intro.md in French. Start your localized site Start your site on the French locale: Your localized site is accessible at http://localhost:3000/fr/ and the Getting Started page is translated. :::caution In development, you can only use one locale at a time. ::: Add a Locale Dropdown To navigate seamlessly across languages, add a locale dropdown. Modify the docusaurus.config.js file: The locale dropdown now appears in your navbar: Build your localized site Build your site for a specific locale: Or build your site to include all the locales at once:",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-extras/translate-your-site"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-extras/manage-docs-versions",
+    "title": "Manage Docs Versions",
+    "description": "Docusaurus can manage multiple versions of your docs.",
+    "content": "Manage Docs Versions Docusaurus can manage multiple versions of your docs. Create a docs version Release a version 1.0 of your project: The docs folder is copied into versioned_docs/version-1.0 and versions.json is created. Your docs now have 2 versions: 1.0 at http://localhost:3000/docs/ for the version 1.0 docs current at http://localhost:3000/docs/next/ for the **upcoming, unreleased docs** Add a Version Dropdown To navigate seamlessly across versions, add a version dropdown. Modify the docusaurus.config.js file: The docs version dropdown appears in your navbar: Update an existing version It is possible to edit versioned docs in their respective folder: versioned_docs/version-1.0/hello.md updates http://localhost:3000/docs/hello docs/hello.md updates http://localhost:3000/docs/next/hello",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-extras/manage-docs-versions"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-basics/markdown-features",
+    "title": "Markdown Features",
+    "description": "Docusaurus supports **Markdown** and a few **additional features**.",
+    "content": "Markdown Features Docusaurus supports **Markdown** and a few **additional features**. Front Matter Markdown documents have metadata at the top called Front Matter: Headings {/* #my-heading-id */} Markdown headings are supported using the standard “#” syntax and are automatically added to the table of contents. The number of # corresponds to the heading level. Heading Ids {/* #my-custom-id */} Add {/* #my-custom-id */} after the heading text to assign it an explicit anchor id, used for linking. Links Regular Markdown links are supported, using url paths or relative file paths. **Result:** Let's see how to Create a page. Images Regular Markdown images are supported. You can use absolute paths to reference images in the static directory (static/img/docusaurus.png): You can reference images relative to the current file as well. This is particularly useful to colocate images close to the Markdown files using them: Code Blocks Markdown code blocks are supported with Syntax highlighting. jsx title=\"src/components/HelloDocusaurus.js\" function HelloDocusaurus() { return Hello, Docusaurus! ; } Admonitions Docusaurus has a special syntax to create admonitions and callouts: :::tip[My tip] Use this awesome feature option ::: :::danger[Take care] This action is dangerous ::: MDX and React Components MDX can make your documentation more **interactive** and allows using any **React components inside Markdown**: export const Highlight = ({children, color}) => ( { alert(You clicked the color ${color} with label ${children}`); }}> {children} ); This is Docusaurus green ! This is Facebook blue !",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-basics/markdown-features"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-basics/deploy-your-site",
+    "title": "Deploy your site",
+    "description": "Docusaurus is a **static-site-generator** (also called **Jamstack**).",
+    "content": "Deploy your site Docusaurus is a **static-site-generator** (also called **Jamstack**). It builds your site as simple **static HTML, JavaScript and CSS files**. Build your site Build your site **for production**: The static files are generated in the build folder. Deploy your site Test your production build locally: The build folder is now served at http://localhost:3000/. You can now deploy the build folder **almost anywhere** easily, **for free** or very small cost (read the **Deployment Guide**).",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-basics/deploy-your-site"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-basics/create-a-page",
+    "title": "Create a Page",
+    "description": "Add **Markdown or React** files to src/pages to create a **standalone page**:",
+    "content": "Create a Page Add **Markdown or React** files to src/pages to create a **standalone page**: src/pages/index.js → localhost:3000/ src/pages/foo.md → localhost:3000/foo src/pages/foo/bar.js → localhost:3000/foo/bar Create your first React Page Create a file at src/pages/my-react-page.js: A new page is now available at http://localhost:3000/my-react-page. Create your first Markdown Page Create a file at src/pages/my-markdown-page.md: A new page is now available at http://localhost:3000/my-markdown-page.",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-basics/create-a-page"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-basics/create-a-document",
+    "title": "Create a Document",
+    "description": "Documents are **groups of pages** connected through:",
+    "content": "Create a Document Documents are **groups of pages** connected through: a **sidebar** **previous/next navigation** **versioning** Create your first Doc Create a Markdown file at docs/hello.md: A new document is now available at http://localhost:3000/docs/hello. Configure the Sidebar Docusaurus automatically **creates a sidebar** from the docs folder. Add metadata to customize the sidebar label and position: It is also possible to create your sidebar explicitly in sidebars.js:",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-basics/create-a-document"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-basics/create-a-blog-post",
+    "title": "Create a Blog Post",
+    "description": "Docusaurus creates a **page for each blog post**, but also a **blog index page**, a **tag system**, an **RSS** feed...",
+    "content": "Create a Blog Post Docusaurus creates a **page for each blog post**, but also a **blog index page**, a **tag system**, an **RSS** feed... Create your first Post Create a file at blog/2021-02-28-greetings.md: A new blog post is now available at http://localhost:3000/blog/greetings.",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-basics/create-a-blog-post"
   },
   {
-    "title": "",
-    "description": "",
+    "id": "DEV WIKI:tutorial-basics/congratulations",
+    "title": "Congratulations!",
+    "description": "You have just learned the **basics of Docusaurus** and made some changes to the **initial template**.",
+    "content": "Congratulations! You have just learned the **basics of Docusaurus** and made some changes to the **initial template**. Docusaurus has **much more to offer**! Have **5 more minutes**? Take a look at **versioning** and **i18n**. Anything **unclear** or **buggy** in this tutorial? Please report it! What's next? Read the official documentation Modify your site configuration with docusaurus.config.js Add navbar and footer items with themeConfig Add a custom Design and Layout Add a search bar Find inspirations in the Docusaurus showcase Get involved in the Docusaurus Community",
     "tags": [],
+    "category": "DEV WIKI",
+    "source": "docs",
     "path": "/docs/tutorial-basics/congratulations"
+  },
+  {
+    "id": "DEV LOG:2021-08-01-mdx-blog-post",
+    "title": "MDX Blog Post",
+    "description": "Blog posts support Docusaurus Markdown features, such as MDX.",
+    "content": "Blog posts support Docusaurus Markdown features, such as MDX. :::tip Use the power of React to create interactive blog posts. ::: For example, use JSX to create an interactive button: alert('button clicked!')}>Click me!",
+    "tags": [
+      "docusaurus"
+    ],
+    "category": "DEV LOG",
+    "source": "blog",
+    "path": "/blog/2021-08-01-mdx-blog-post"
+  },
+  {
+    "id": "DEV LOG:2019-05-29-long-blog-post",
+    "title": "Long Blog Post",
+    "description": "This is the summary of a very long blog post,",
+    "content": "This is the summary of a very long blog post, Use a {/* truncate */} comment to limit blog post size in the list view. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+    "tags": [
+      "hello",
+      "docusaurus"
+    ],
+    "category": "DEV LOG",
+    "source": "blog",
+    "path": "/blog/2019-05-29-long-blog-post"
+  },
+  {
+    "id": "DEV LOG:2019-05-28-first-blog-post",
+    "title": "First Blog Post",
+    "description": "Lorem ipsum dolor sit amet...",
+    "content": "Lorem ipsum dolor sit amet... ...consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+    "tags": [
+      "hola",
+      "docusaurus"
+    ],
+    "category": "DEV LOG",
+    "source": "blog",
+    "path": "/blog/2019-05-28-first-blog-post"
+  },
+  {
+    "id": "DEV LOG:2021-08-26-welcome/index",
+    "title": "Welcome",
+    "description": "Docusaurus blogging features are powered by the blog plugin.",
+    "content": "Docusaurus blogging features are powered by the blog plugin. Here are a few tips you might find useful. Simply add Markdown files (or folders) to the blog directory. Regular blog authors can be added to authors.yml. The blog post date can be extracted from filenames, such as: 2019-05-30-welcome.md 2019-05-30-welcome/index.md A blog post folder can be convenient to co-locate blog post images: The blog supports tags as well! **And if you don't want a blog**: just delete this directory, and use blog: false in your Docusaurus config.",
+    "tags": [
+      "facebook",
+      "hello",
+      "docusaurus"
+    ],
+    "category": "DEV LOG",
+    "source": "blog",
+    "path": "/blog/2021-08-26-welcome"
+  },
+  {
+    "id": "ARCHIVE:fakejumping-admin",
+    "title": "fakejumping-admin",
+    "description": "Operational platform records focused on authentication, admin flows, deployment, and runtime maintenance.",
+    "content": "Operational platform records focused on authentication, admin flows, deployment, and runtime maintenance. live runtime Spring Boot / JWT / MyBatis / Docker / AWS",
+    "tags": [
+      "live runtime",
+      "Spring Boot / JWT / MyBatis / Docker / AWS"
+    ],
+    "category": "ARCHIVE",
+    "source": "archive",
+    "path": "/docs/intro"
+  },
+  {
+    "id": "ARCHIVE:shinchun-archive",
+    "title": "shinchun-archive",
+    "description": "A preserved service archive for event-oriented publishing, signed access, and serverless delivery notes.",
+    "content": "A preserved service archive for event-oriented publishing, signed access, and serverless delivery notes. archived Flask / AWS Lambda / HTML",
+    "tags": [
+      "archived",
+      "Flask / AWS Lambda / HTML"
+    ],
+    "category": "ARCHIVE",
+    "source": "archive",
+    "path": "/docs/intro"
+  },
+  {
+    "id": "ARCHIVE:JumpingBattle",
+    "title": "JumpingBattle",
+    "description": "Legacy project notes from real-time interaction work, frontend control surfaces, and Firebase-backed state.",
+    "content": "Legacy project notes from real-time interaction work, frontend control surfaces, and Firebase-backed state. legacy Python / Firebase / HTML",
+    "tags": [
+      "legacy",
+      "Python / Firebase / HTML"
+    ],
+    "category": "ARCHIVE",
+    "source": "archive",
+    "path": "/docs/intro"
   }
 ]

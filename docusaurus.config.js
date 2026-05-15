@@ -1,6 +1,5 @@
 // @ts-check
 
-import { language } from 'gray-matter';
 import { themes as prismThemes }
 from 'prism-react-renderer';
 
@@ -16,6 +15,16 @@ const config = {
   url: 'https://poemtudy.site',
 
   baseUrl: '/',
+
+  customFields: {
+    archiveSearch: {
+      mode: 'local',
+      route: '/search',
+      includedCategories: ['DEV WIKI', 'DEV LOG', 'ARCHIVE'],
+      excludedCategories: ['LudaRota'],
+      engine: 'minisearch',
+    },
+  },
 
   organizationName: 'park-yina',
 
@@ -98,23 +107,12 @@ const config = {
 
   hideOnScroll: true,
 
-  logo: {
-
-    alt: 'Luda Log',
-
-    src: 'img/logo.svg',
-
-    href: '/',
-
-    target: '_self',
-  },
-
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Projects',
+          label: 'DEV WIKI',
         },
 
         {

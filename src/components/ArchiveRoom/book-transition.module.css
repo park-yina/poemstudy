@@ -11,22 +11,18 @@
   place-items: center;
   background:
     radial-gradient(
-      circle at 50% 42%,
-      rgba(108, 76, 42, 0.18),
-      rgba(6, 7, 12, 0.72) 48%,
-      rgba(0, 0, 0, 0.86) 100%
+      circle at 50% 48%,
+      rgba(122, 78, 34, 0.22),
+      rgba(10, 8, 9, 0.96) 42%,
+      rgba(0, 0, 0, 0.995) 100%
+    ),
+    repeating-radial-gradient(
+      circle at 50% 54%,
+      rgba(255, 210, 126, 0.035) 0 1px,
+      transparent 1px 22px
     );
-  backdrop-filter:
-    blur(14px)
-    brightness(0.42)
-    saturate(0.72);
-  -webkit-backdrop-filter:
-    blur(14px)
-    brightness(0.42)
-    saturate(0.72);
   animation:
-    dimensionEnter 0.46s ease forwards,
-    dimensionRecover 1.25s ease 1.45s forwards;
+    dimensionEnter 0.84s cubic-bezier(0.14, 0.72, 0.18, 1) forwards;
 }
 
 .openedOverlay::before {
@@ -37,10 +33,10 @@
   background:
     radial-gradient(
       ellipse at center,
-      transparent 0%,
-      transparent 42%,
-      rgba(0, 0, 0, 0.48) 74%,
-      rgba(0, 0, 0, 0.76) 100%
+      rgba(255, 190, 96, 0.05) 0%,
+      transparent 36%,
+      rgba(0, 0, 0, 0.64) 72%,
+      rgba(0, 0, 0, 0.9) 100%
     );
   animation:
     vignetteBreath 6.5s ease-in-out infinite;
@@ -54,14 +50,27 @@
   z-index: 1;
   opacity: 0.08;
   background-image:
-    repeating-radial-gradient(
-      circle at 12% 18%,
-      rgba(255, 255, 255, 0.32) 0 1px,
-      transparent 1px 4px
+    radial-gradient(
+      circle at 18% 24%,
+      rgba(255, 198, 102, 0.2) 0 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 74% 34%,
+      rgba(255, 212, 144, 0.16) 0 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 62% 72%,
+      rgba(255, 154, 72, 0.14) 0 1px,
+      transparent 1px
     );
-  mix-blend-mode: screen;
+  background-size:
+    180px 220px,
+    260px 240px,
+    220px 180px;
   animation:
-    dimensionGrain 1.8s steps(2, end) infinite;
+    dimensionGrain 4.8s linear infinite;
   pointer-events: none;
 }
 
@@ -72,19 +81,106 @@
   background:
     radial-gradient(
       ellipse at 35% 54%,
-      rgba(255, 205, 126, 0.08),
-      transparent 34%
+      rgba(255, 198, 112, 0.13),
+      transparent 38%
     ),
     radial-gradient(
       ellipse at 68% 40%,
-      rgba(129, 164, 196, 0.07),
-      transparent 36%
+      rgba(108, 62, 36, 0.16),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.74)
     );
-  filter: blur(28px);
-  opacity: 0.82;
+  filter: blur(34px);
+  opacity: 0.94;
   animation:
     fogDrift 12s ease-in-out infinite alternate;
   pointer-events: none;
+}
+
+.ashTransitionLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 62;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  animation:
+    ashTransitionReveal 1.72s ease forwards;
+}
+
+.ashTransitionLayer canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.dimensionOpening {
+  animation:
+    dimensionEnter 0.42s ease forwards,
+    dimensionCollapse 0.82s cubic-bezier(0.22, 0.72, 0.12, 1) 0.34s forwards,
+    dimensionRitualBloom 0.92s ease 0.96s forwards;
+}
+
+@keyframes ashTransitionReveal {
+  0% {
+    opacity: 0;
+    filter:
+      blur(5px)
+      brightness(0.58);
+  }
+
+  22% {
+    opacity: 0.38;
+  }
+
+  54% {
+    opacity: 0.94;
+    filter:
+      blur(1px)
+      brightness(1.1);
+  }
+
+  100% {
+    opacity: 0;
+    filter:
+      blur(8px)
+      brightness(0.46);
+  }
+}
+
+
+.dimensionOpening .bookArtifact {
+  transition:
+    opacity 0.48s ease 0.2s,
+    transform 0.74s cubic-bezier(0.2, 0.72, 0.18, 1) 0.2s,
+    filter 0.58s ease 0.2s;
+  opacity: 0;
+  transform:
+    translate(-50%, calc(-50% + 34px))
+    translateZ(-260px)
+    scale(0.78);
+  filter:
+    blur(8px)
+    brightness(0.18);
+}
+
+.dimensionEntered {
+  background:
+    radial-gradient(
+      circle at 50% 54%,
+      rgba(148, 89, 34, 0.2),
+      rgba(5, 4, 5, 0.98) 46%,
+      #000 100%
+    ),
+    repeating-radial-gradient(
+      circle at 50% 56%,
+      rgba(255, 204, 126, 0.045) 0 1px,
+      transparent 1px 24px
+    );
 }
 
 .recordStage {
@@ -715,49 +811,64 @@
 @keyframes dimensionEnter {
   from {
     opacity: 0;
+    filter:
+      blur(18px)
+      brightness(0.18);
+    transform:
+      scale(1.035);
   }
 
   to {
     opacity: 1;
+    filter:
+      blur(0)
+      brightness(1);
+    transform:
+      scale(1);
   }
 }
 
-@keyframes dimensionRecover {
+@keyframes dimensionCollapse {
+  0% {
+    filter:
+      blur(0)
+      brightness(1);
+    transform:
+      scale(1);
+  }
+
+  100% {
+    filter:
+      blur(6px)
+      brightness(0.3);
+    transform:
+      scale(1.045);
+  }
+}
+
+@keyframes dimensionRitualBloom {
   to {
-    backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
-    -webkit-backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
+    filter:
+      blur(0)
+      brightness(0.92);
+    transform:
+      scale(1);
   }
 }
 
 @keyframes dimensionClose {
   0% {
     opacity: 1;
-    backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
-    -webkit-backdrop-filter:
-      blur(14px)
-      brightness(0.58)
-      saturate(0.8);
+    filter:
+      blur(0)
+      brightness(0.92);
   }
 
   100% {
     opacity: 0;
-    backdrop-filter:
-      blur(4px)
-      brightness(1)
-      saturate(1);
-    -webkit-backdrop-filter:
-      blur(4px)
-      brightness(1)
-      saturate(1);
+    filter:
+      blur(8px)
+      brightness(0.2);
   }
 }
 

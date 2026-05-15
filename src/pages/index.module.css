@@ -587,6 +587,9 @@
 .system {
   color: #c084fc;
 }
+.access {
+  color: #f9a8d4;
+}
 .bootSequence {
   margin-bottom: 2rem;
 }
@@ -635,7 +638,148 @@ html[data-theme='light'] .windowHeader {
       rgba(245,245,245,0.8)
     );
 }
+/* ========================= */
+/* LIGHT MODE RUNTIME */
+/* ========================= */
 
+html[data-theme='light'] .runtimeCard {
+
+  color:
+    rgba(34, 34, 34, 0.88);
+}
+
+html[data-theme='light'] .runtimeCardInner {
+
+  border-left:
+    1px dashed rgba(0,0,0,0.12);
+
+  border-right:
+    1px dashed rgba(0,0,0,0.12);
+}
+
+html[data-theme='light'] .runtimeAsciiHeader {
+
+  color:
+    #2563eb;
+}
+
+html[data-theme='light'] .runtimeAsciiLine {
+
+  color:
+    #3d8b5a;
+}
+
+html[data-theme='light'] .runtimeAsciiDivider::before {
+
+  border-top:
+    1px dashed rgba(0,0,0,0.08);
+}
+
+html[data-theme='light'] .runtimeAsciiDivider::after {
+
+  background:
+    rgba(255,255,255,0.92);
+
+  color:
+    rgba(0,0,0,0.32);
+}
+
+html[data-theme='light'] .runtimeBarAscii {
+
+  color:
+    rgba(0,0,0,0.82);
+}
+
+html[data-theme='light'] .runtimeHeader {
+
+  color:
+    rgba(0,0,0,0.42);
+}
+
+html[data-theme='light'] .runtimeHeader strong {
+
+  color:
+    rgba(0,0,0,0.88);
+}
+
+html[data-theme='light'] .runtimeMeta {
+
+  color:
+    rgba(0,0,0,0.52);
+}
+
+html[data-theme='light'] .runtimeTotal {
+
+  color:
+    rgba(0,0,0,0.46);
+}
+
+html[data-theme='light'] .runtimeTotal strong {
+
+  color:
+    rgba(0,0,0,0.9);
+}
+
+html[data-theme='light'] .runtimeBar {
+
+  background:
+    rgba(0,0,0,0.08);
+}
+
+html[data-theme='light'] .consoleBox {
+
+  border:
+    1px solid rgba(0,0,0,0.06);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.75),
+      rgba(245,245,245,0.72)
+    );
+}
+
+html[data-theme='light'] .consoleLine {
+
+  color:
+    rgba(22,22,22,0.82);
+}
+
+html[data-theme='light'] .boot {
+
+  color:
+    #2563eb;
+}
+
+html[data-theme='light'] .auth {
+
+  color:
+    #ca8a04;
+}
+
+html[data-theme='light'] .ok {
+
+  color:
+    #15803d;
+}
+
+html[data-theme='light'] .system {
+
+  color:
+    #7c3aed;
+}
+
+html[data-theme='light'] .bootCommand {
+
+  color:
+    #2563eb;
+}
+
+html[data-theme='light'] .bootLine {
+
+  color:
+    rgba(20,20,20,0.78);
+}
 html[data-theme='light'] .windowTitle {
   color: #1f2937;
 }

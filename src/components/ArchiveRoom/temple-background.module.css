@@ -1,0 +1,91 @@
+.templeBackground {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,3,8,0.92),
+      rgba(5,6,12,0.94)
+    );
+
+  --archive-awakening: 0;
+}
+
+/* 실제 공간 이미지 */
+
+.templeBackground::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    url('/img/archive-room.png')
+    center center / cover
+    no-repeat;
+
+  opacity:
+    calc(0.035 + (var(--archive-awakening) * 0.16));
+
+  filter:
+    brightness(calc(0.18 + (var(--archive-awakening) * 0.36)))
+    contrast(1.18)
+    saturate(calc(0.56 + (var(--archive-awakening) * 0.28)));
+
+  transform:
+    scale(1.01);
+}
+
+/* 하단 공기층 */
+
+.templeBackground::after {
+
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 38%;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(255,240,210,0.02)
+    );
+
+  filter: blur(32px);
+
+  opacity:
+    calc(0.12 + (var(--archive-awakening) * 0.28));
+}
+
+.templeBackground canvas {
+
+  display: block;
+
+  width: 100% !important;
+
+  height: 100% !important;
+
+  pointer-events: none;
+
+  opacity:
+    calc(0.2 + (var(--archive-awakening) * 0.34));
+
+  mix-blend-mode: screen;
+}

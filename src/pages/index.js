@@ -7,20 +7,20 @@ import { useEffect, useState } from 'react';
 const disciplines = ['Development', 'Operation', 'Writing', 'Education'];
 const selectedWorks = [];
 const bootSequence = [
-  {
-    type: 'auth',
-    text: '[AUTH] writer profile detected...',
-  },
+{
+  type: 'auth',
+  text: '[AUTH] 작가 신이재 프로필을 종료합니다...',
+},
 
-  {
-    type: 'auth',
-    text: '[AUTH] 신이재 attempting login...',
-  },
+{
+  type: 'auth',
+  text: '[AUTH] 개발자 아카이브에 접근 중...',
+},
 
-  {
-    type: 'ok',
-    text: '[OK] developer runtime initialized',
-  },
+{
+  type: 'ok',
+  text: '[OK] developer runtime restored',
+},
 
   {
     type: 'ok',
