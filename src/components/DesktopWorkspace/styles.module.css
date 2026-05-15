@@ -1007,6 +1007,8 @@
 
   flex-shrink: 0;
 
+  position: relative;
+
   display: flex;
 
   flex-direction: column;
@@ -1252,25 +1254,67 @@
 
   min-height: 0;
 
-  overflow: hidden;
+  height: 100%;
+
+  overflow: auto;
+
+  scrollbar-gutter:
+    stable;
 
   padding: 1rem;
 
-  display: flex;
-
-  align-items: flex-start;
-
-  justify-content: center;
+  display: block;
 
   background:
     #060816;
+}
+
+.previewMinimizeButton {
+
+  position: absolute;
+
+  top: 8px;
+  right: 10px;
+
+  z-index: 8;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 8px;
+
+  background:
+    rgba(10,12,22,0.72);
+
+  color:
+    rgba(255,255,255,0.62);
+
+  cursor: pointer;
+}
+
+.previewMinimizeButton:hover {
+
+  background:
+    rgba(124,156,255,0.14);
+
+  color:
+    rgba(255,255,255,0.92);
 }
 
 .previewDocument {
 
   width: 100%;
 
-  height: 100%;
+  min-height: 100%;
 
   overflow: auto;
 
@@ -1286,11 +1330,11 @@
 
   width: 100%;
 
-  height: 100%;
+  height: calc(100vh - 150px);
 
   min-width: 0;
 
-  min-height: 0;
+  min-height: 720px;
 
   border: none;
 
@@ -1313,7 +1357,7 @@
 
   width: 100%;
 
-  height: 100%;
+  min-height: 100%;
 
   overflow: auto;
 
@@ -1388,6 +1432,7 @@
 .previewContent::-webkit-scrollbar {
 
   width: 10px;
+  height: 10px;
 }
 
 .previewContent::-webkit-scrollbar-thumb {
@@ -1833,6 +1878,42 @@
     rgba(124,156,255,0.12);
 }
 
+.taskbarIconActive {
+
+  position: relative;
+
+  background:
+    rgba(124,156,255,0.16);
+
+  border-color:
+    rgba(124,156,255,0.24);
+
+  color:
+    #dbe7ff;
+}
+
+.taskbarIconActive::after {
+
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 5px;
+
+  width: 18px;
+  height: 2px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(124,156,255,0.78);
+}
+
 .taskbarIcon i {
 
   font-size: 1rem;
@@ -1905,7 +1986,14 @@
   width: 100%;
   height: 100%;
 
+  min-height: 0;
+
+  max-height: 100%;
+
   overflow: auto;
+
+  scrollbar-gutter:
+    stable both-edges;
 
   padding: 2rem;
 

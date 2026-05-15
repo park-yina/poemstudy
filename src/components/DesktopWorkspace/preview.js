@@ -106,6 +106,8 @@ export function PreviewPanel({
 
   closeTab,
 
+  minimizePreview,
+
   previewWidth,
 
   isResizing,
@@ -294,6 +296,17 @@ useEffect(() => {
           }
 
         </div>
+
+        <button
+          type="button"
+          className={styles.previewMinimizeButton}
+          onClick={() =>
+            minimizePreview?.()
+          }
+          aria-label={`Minimize ${activeItem.title}`}
+        >
+          <i className="fa-solid fa-minus" />
+        </button>
 
         {/* =========================================
            TOOLBAR

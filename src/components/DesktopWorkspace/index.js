@@ -4,6 +4,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import {createPortal} from 'react-dom';
 import {
   parsedItems,
   runtimeLinks,
@@ -45,15 +46,13 @@ function getWorkspaceInitialFiles(
 }
 
 function getCodeRows(content) {
-
-  const normalized =
-    content || '';
-
-  return normalized
-    .replace(/\r\n/g, '\n')
-    .split('\n');
+  const normalized = (content || '').replace(/\r\n/g, '\n');
+  // 끝의 단일 개행만 제거 (빈 마지막 줄 방지)
+  const trimmed = normalized.endsWith('\n')
+    ? normalized.slice(0, -1)
+    : normalized;
+  return trimmed.split('\n');
 }
-
 function clampPaneWidth(
   value,
   min,
@@ -291,7 +290,11 @@ function RuntimeCmdWindow({
 function WorkspaceOverlayView({
   item,
   onClose,
+  onMinimize,
 }) {
+
+  const [isMaximized, setIsMaximized] =
+    useState(false);
 
   const folders =
     item.workspace?.folders || [];
@@ -315,13 +318,19 @@ function WorkspaceOverlayView({
     useState({});
 
   const [treePaneWidth, setTreePaneWidth] =
-    useState(220);
+    useState(176);
 
   const [relatedPaneWidth, setRelatedPaneWidth] =
-    useState(280);
+    useState(168);
 
   const [resizingPane, setResizingPane] =
     useState(null);
+
+  const [bottomPanelHeight, setBottomPanelHeight] =
+    useState(58);
+
+  const [bottomPanelTab, setBottomPanelTab] =
+    useState('runtime');
 
   const workspaceMainRef =
     useRef(null);
@@ -415,7 +424,10 @@ function WorkspaceOverlayView({
 
   useEffect(() => {
 
-    if (!resizingPane) {
+    if (
+      resizingPane !== 'tree' &&
+      resizingPane !== 'related'
+    ) {
       return undefined;
     }
 
@@ -442,8 +454,8 @@ function WorkspaceOverlayView({
         setTreePaneWidth(
           clampPaneWidth(
             e.clientX - rect.left,
-            160,
-            360,
+            140,
+            260,
           )
         );
 
@@ -453,8 +465,89 @@ function WorkspaceOverlayView({
       setRelatedPaneWidth(
         clampPaneWidth(
           rect.right - e.clientX,
-          210,
-          420,
+          132,
+          240,
+        )
+      );
+    };
+
+    const stopResize = () => {
+
+      setResizingPane(null);
+    };
+
+    window.addEventListener(
+      'mousemove',
+      handleMouseMove,
+    );
+
+    window.addEventListener(
+      'mouseup',
+      stopResize,
+      true,
+    );
+
+    window.addEventListener(
+      'blur',
+      stopResize,
+    );
+
+    return () => {
+
+      document.body.style.cursor =
+        '';
+
+      document.body.style.userSelect =
+        '';
+
+      window.removeEventListener(
+        'mousemove',
+        handleMouseMove,
+      );
+
+      window.removeEventListener(
+        'mouseup',
+        stopResize,
+        true,
+      );
+
+      window.removeEventListener(
+        'blur',
+        stopResize,
+      );
+    };
+
+  }, [resizingPane]);
+
+  useEffect(() => {
+
+    if (resizingPane !== 'bottom') {
+      return undefined;
+    }
+
+    document.body.style.cursor =
+      'row-resize';
+
+    document.body.style.userSelect =
+      'none';
+
+    const handleMouseMove = (e) => {
+
+      const workspaceMain =
+        workspaceMainRef.current;
+
+      if (!workspaceMain) {
+        return;
+      }
+
+      const rect =
+        workspaceMain.getBoundingClientRect();
+
+      setBottomPanelHeight(
+        clampPaneWidth(
+          rect.bottom - e.clientY,
+          58,
+          Math.min(280, rect.height * 0.45),
         )
       );
     };
@@ -581,8 +674,8 @@ function WorkspaceOverlayView({
         ''
       : '';
 
-  const activeRows =
-    getCodeRows(activeContent);
+const activeRows =
+  getCodeRows(activeContent);
 
   return (
 
@@ -592,7 +685,11 @@ function WorkspaceOverlayView({
     >
 
       <div
-        className={styles.workspaceExplorer}
+        className={`${styles.workspaceExplorer} ${
+          isMaximized
+            ? styles.workspaceExplorerMaximized
+            : ''
+        }`}
         onClick={(e) =>
           e.stopPropagation()
         }
@@ -606,14 +703,33 @@ function WorkspaceOverlayView({
             aria-label="Close workspace"
           />
 
-          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowMinimize}`} />
-          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowExpand}`} />
+          <button
+            type="button"
+            className={`${styles.workspaceWindowDot} ${styles.workspaceWindowMinimize}`}
+            onClick={onMinimize}
+            aria-label="Minimize workspace"
+          />
+
+          <button
+            type="button"
+            className={`${styles.workspaceWindowDot} ${styles.workspaceWindowExpand}`}
+            onClick={() =>
+              setIsMaximized((current) =>
+                !current
+              )
+            }
+            aria-label={
+              isMaximized
+                ? 'Restore workspace'
+                : 'Maximize workspace'
+            }
+          />
         </div>
 
         <div className={styles.workspaceContent}>
           <aside className={styles.workspaceGuide}>
             <div className={styles.workspaceBadge}>
-              Curated Workspace
+              DEV
             </div>
 
             <h2>
@@ -634,7 +750,8 @@ function WorkspaceOverlayView({
           <section
             ref={workspaceMainRef}
             className={`${styles.workspaceMain} ${
-              resizingPane
+              resizingPane === 'tree' ||
+              resizingPane === 'related'
                 ? styles.workspaceMainResizing
                 : ''
             }`}
@@ -643,6 +760,8 @@ function WorkspaceOverlayView({
                 `${treePaneWidth}px`,
               '--related-pane-width':
                 `${relatedPaneWidth}px`,
+              '--bottom-panel-height':
+                `${bottomPanelHeight}px`,
             }}
           >
             <div className={styles.workspaceTree}>
@@ -759,29 +878,13 @@ function WorkspaceOverlayView({
                 activeFile ? (
 
                   <>
-                    <div className={styles.editorHeader}>
-                      <h3>
-                        {activeFile.title}
-                      </h3>
-
-                      <p>
-                        {activeFile.description}
-                      </p>
-                    </div>
-
                     <div className={styles.editorCodeFrame}>
-                      <div className={styles.editorCodeToolbar}>
-                        <span>
-                          {activeFile.language || 'text'}
-                        </span>
-
-                        <span>
-                          UTF-8
-                        </span>
-                      </div>
-
-                      <pre className={styles.editorCode}>
-                        <code>
+                      <div
+                        className={styles.editorCode}
+                        role="region"
+                        aria-label={`${activeFile.title} source`}
+                      >
+                        <code className={styles.editorCodeInner}>
                           {
                             activeRows.map((line, index) => (
 
@@ -801,11 +904,137 @@ function WorkspaceOverlayView({
                             ))
                           }
                         </code>
-                      </pre>
+                      </div>
                     </div>
 
                     <div className={styles.editorPath}>
                       Path: {activeFile.path || `src/main/java/com/parkyina/fakejumping/security/${activeFile.title}`}
+                    </div>
+
+                    <div
+                      role="separator"
+                      aria-label="Resize runtime panel"
+                      aria-orientation="horizontal"
+                      className={`${styles.bottomPanelResizeHandle} ${
+                        resizingPane === 'bottom'
+                          ? styles.bottomPanelResizeHandleActive
+                          : ''
+                      }`}
+                      onMouseDown={(e) => {
+
+                        e.preventDefault();
+
+                        setResizingPane('bottom');
+                      }}
+                    />
+
+                    <div className={styles.workspaceBottomPanel}>
+                      <div className={styles.bottomPanelTabs}>
+                        <button
+                          type="button"
+                          className={
+                            bottomPanelTab === 'runtime'
+                              ? styles.bottomPanelTabActive
+                              : ''
+                          }
+                          onClick={() =>
+                            setBottomPanelTab('runtime')
+                          }
+                        >
+                          SECURITY RUNTIME
+                        </button>
+                        <button
+                          type="button"
+                          className={
+                            bottomPanelTab === 'output'
+                              ? styles.bottomPanelTabActive
+                              : ''
+                          }
+                          onClick={() =>
+                            setBottomPanelTab('output')
+                          }
+                        >
+                          OUTPUT
+                        </button>
+                        <button
+                          type="button"
+                          className={
+                            bottomPanelTab === 'problems'
+                              ? styles.bottomPanelTabActive
+                              : ''
+                          }
+                          onClick={() =>
+                            setBottomPanelTab('problems')
+                          }
+                        >
+                          PROBLEMS
+                        </button>
+                      </div>
+
+                      <div className={styles.bottomPanelBody}>
+                        {
+                          bottomPanelTab === 'runtime' && (
+                            <>
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>
+                                  ACTIVE
+                                </span>
+                                <span>JWT FILTER ACTIVE</span>
+                                <span>access-token chain</span>
+                                <span className={styles.portStatus}>online</span>
+                              </div>
+
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>
+                                  SYNC
+                                </span>
+                                <span>REFRESH ROTATION ENABLED</span>
+                                <span>mysql session store</span>
+                                <span className={styles.portStatus}>connected</span>
+                              </div>
+
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>
+                                  TRACE
+                                </span>
+                                <span>SPRING SECURITY ONLINE</span>
+                                <span>AuthService.signIn</span>
+                                <span className={styles.portStatus}>200ms</span>
+                              </div>
+                            </>
+                          )
+                        }
+
+                        {
+                          bottomPanelTab === 'output' && (
+                            <>
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>INFO</span>
+                                <span>SecurityContext initialized</span>
+                                <span>JwtAuthenticationFilter</span>
+                                <span className={styles.portStatus}>ok</span>
+                              </div>
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>SQL</span>
+                                <span>refresh_tokens upsert completed</span>
+                                <span>TokenMapper</span>
+                                <span className={styles.portStatus}>1 row</span>
+                              </div>
+                            </>
+                          )
+                        }
+
+                        {
+                          bottomPanelTab === 'problems' && (
+                            <div className={styles.portRow}>
+                              <span className={styles.runtimeSignal}>0</span>
+                              <span>No security runtime problems detected</span>
+                              <span>workspace</span>
+                              <span className={styles.portStatus}>clean</span>
+                            </div>
+                          )
+                        }
+                      </div>
                     </div>
                   </>
 
@@ -933,6 +1162,12 @@ const [runtimeLink, setRuntimeLink] =
 
 const [workspaceItem, setWorkspaceItem] =
   useState(null);
+
+const [minimizedWorkspaceItem, setMinimizedWorkspaceItem] =
+  useState(null);
+
+const [minimizedPreviewTabs, setMinimizedPreviewTabs] =
+  useState([]);
 
 const [runtimeCmdItem, setRuntimeCmdItem] =
   useState(null);
@@ -1102,6 +1337,35 @@ const [runtimeCmdItem, setRuntimeCmdItem] =
 
   }, []);
 
+  useEffect(() => {
+
+    if (!workspaceItem) {
+      return undefined;
+    }
+
+    const previousBodyOverflow =
+      document.body.style.overflow;
+
+    const previousDocumentOverflow =
+      document.documentElement.style.overflow;
+
+    document.body.style.overflow =
+      'hidden';
+
+    document.documentElement.style.overflow =
+      'hidden';
+
+    return () => {
+
+      document.body.style.overflow =
+        previousBodyOverflow;
+
+      document.documentElement.style.overflow =
+        previousDocumentOverflow;
+    };
+
+  }, [workspaceItem]);
+
 
   /* =========================
      ACTIVE ITEM
@@ -1195,6 +1459,12 @@ const openItem = (item) => {
   }
 
   setActiveTab(item);
+
+  setMinimizedPreviewTabs((prev) =>
+    prev.filter((tab) =>
+      tab.id !== item.id
+    )
+  );
 };
 
   /* =========================
@@ -1216,6 +1486,8 @@ const handleLaunch =
    if (
   item.workspace
 ) {
+
+      setMinimizedWorkspaceItem(null);
 
       setWorkspaceItem(item);
 
@@ -1688,6 +1960,7 @@ const folders =
 
 const closeTab = (
   tabId,
+  options = {},
 ) => {
 
   const filtered =
@@ -1697,6 +1970,15 @@ const closeTab = (
     );
 
   setOpenedTabs(filtered);
+
+  if (options.removeMinimized !== false) {
+
+    setMinimizedPreviewTabs((prev) =>
+      prev.filter((tab) =>
+        tab.id !== tabId
+      )
+    );
+  }
 
   if (
     activeTab &&
@@ -1708,6 +1990,93 @@ const closeTab = (
     );
   }
 };
+
+const minimizePreview = () => {
+
+  if (!activeItem) {
+    return;
+  }
+
+  setMinimizedPreviewTabs((prev) => {
+
+    const exists =
+      prev.some((tab) =>
+        tab.id === activeItem.id
+      );
+
+    if (exists) {
+      return prev;
+    }
+
+    return [
+      ...prev,
+      activeItem,
+    ];
+  });
+
+  closeTab(
+    activeItem.id,
+    {
+      removeMinimized: false,
+    },
+  );
+};
+
+const restorePreview = (item) => {
+
+  setMinimizedPreviewTabs((prev) =>
+    prev.filter((tab) =>
+      tab.id !== item.id
+    )
+  );
+
+  setOpenedTabs((prev) => {
+
+    const exists =
+      prev.some((tab) =>
+        tab.id === item.id
+      );
+
+    if (exists) {
+      return prev;
+    }
+
+    return [
+      ...prev,
+      item,
+    ];
+  });
+
+  setActiveTab(item);
+};
+
+if (workspaceItem) {
+
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return (
+
+    createPortal(
+      <WorkspaceOverlayView
+        item={workspaceItem}
+        onClose={() => {
+
+          setWorkspaceItem(null);
+          setMinimizedWorkspaceItem(null);
+        }}
+        onMinimize={() => {
+
+          setMinimizedWorkspaceItem(workspaceItem);
+          setWorkspaceItem(null);
+        }}
+      />,
+      document.body,
+    )
+
+  );
+}
 
   /* =========================
      RENDER
@@ -1732,6 +2101,9 @@ return (
 
       <div className={styles.workspaceHeader}>
 
+        {
+          !activeItem && (
+
         <div className={styles.windowButtons}>
 
           <span
@@ -1744,6 +2116,9 @@ return (
           <span className={styles.green}></span>
 
         </div>
+
+          )
+        }
 
         <span className={styles.workspaceTitle}>
           developer-workspace
@@ -1995,25 +2370,13 @@ return (
 {/* PREVIEW */}
 
 {
-  workspaceItem && (
-
-    <WorkspaceOverlayView
-      item={workspaceItem}
-      onClose={() =>
-        setWorkspaceItem(null)
-      }
-    />
-
-  )
-}
-
-{
 
 <PreviewPanel
   activeItem={activeItem}
   openedTabs={openedTabs}
   setActiveTab={setActiveTab}
   closeTab={closeTab}
+  minimizePreview={minimizePreview}
   previewWidth={previewWidth}
   isResizing={isResizing}
   setIsResizing={setIsResizing}
@@ -2081,6 +2444,53 @@ return (
           <button className={styles.taskbarIcon}>
             <i className="fa-solid fa-folder"></i>
           </button>
+
+          {
+            minimizedWorkspaceItem && (
+
+              <button
+                type="button"
+                className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+                onClick={() => {
+
+                  setWorkspaceItem(minimizedWorkspaceItem);
+                  setMinimizedWorkspaceItem(null);
+                }}
+                title={minimizedWorkspaceItem.title}
+                aria-label={`Restore ${minimizedWorkspaceItem.title}`}
+              >
+                <i className="fa-solid fa-code"></i>
+              </button>
+
+            )
+          }
+
+          {
+            minimizedPreviewTabs.map((item) => (
+
+              <button
+                key={item.id}
+                type="button"
+                className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+                onClick={() =>
+                  restorePreview(item)
+                }
+                title={item.title}
+                aria-label={`Restore ${item.title}`}
+              >
+                <i
+                  className={`fa-solid ${
+                    item.type === 'PDF'
+                      ? 'fa-file-pdf'
+                      : item.type === 'html'
+                        ? 'fa-code'
+                        : 'fa-file-lines'
+                  }`}
+                ></i>
+              </button>
+
+            ))
+          }
 
           <a
             href="https://github.com/park-yina"

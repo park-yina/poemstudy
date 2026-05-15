@@ -227,7 +227,7 @@ const projects = [
                     <span className={styles.green} />
 
                     <div className={styles.windowTitle}>
-                      luda-commandline
+                      Luda-Bootig.log
                     </div>
 
                   </div>
