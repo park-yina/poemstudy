@@ -64,7 +64,7 @@ export default function SearchPage() {
             <span className={styles.kicker}>아카이브 검색 시스템</span>
             <h1>블로그화 된 콘텐츠만 검색됩니다.</h1>
 <p>
-  DEV WIKI · DEV LOG · ARCHIVE 기록이 색인되었습니다.
+  DEV WIKI ·  ARCHIVE 기록이 색인되었습니다.
   LudaRota는 봉인 상태를 유지합니다.
 </p>
 

@@ -17,11 +17,6 @@ const protocolSections = [
   },
   {
     code: 'NODE 03',
-    title: 'DEV LOG',
-    body: '실험 기록, 시행착오, 구현 과정, 복구 로그를 보존합니다.',
-  },
-  {
-    code: 'NODE 04',
     title: 'LUDAROTA',
     body: '마법의 도서에 봉인된 프로젝트를 확인해보세요. 타로카드가 각 기록을 해석합니다.',    special: true,
   },

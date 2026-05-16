@@ -1,10 +1,59 @@
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import DesktopWorkspace from '../components/DesktopWorkspace/index';
 
 import styles from './index.module.css';
 import { useEffect, useState } from 'react';
 const selectedWorks = [];
+const archiveNodes = [
+  {
+    id: '01',
+    title: 'ARCHIVE',
+    description:
+      '대표 프로젝트 및 복구된 기록에 접근합니다.',
+    tags: [
+      'PROJECTS',
+      'EXPERIMENTS',
+      'INTERACTION',
+    ],
+    status: 'ACCESSIBLE',
+  },
+  {
+    id: '02',
+    title: 'DEV WIKI',
+    description:
+      '운영 구조 / 설계 문서 / 시스템 아키텍처를 확인합니다.',
+    tags: [
+      'ARCHITECTURE',
+      'DOCUMENT',
+      'REFERENCE',
+    ],
+    status: 'ACCESSIBLE',
+  },
+  {
+    id: '03',
+    title: 'LUDAROTA',
+    description:
+  '트러블슈팅 기록과 개인 아카이빙이 루다로타 형태로 복원되어 있습니다.',
+    tags: [
+      'IDEAS',
+      'NOTES',
+      'PERSONAL',
+    ],
+    status: 'RESTRICTED',
+  },
+    {
+    id: '04',
+    title: 'WORKSPACE',
+ description:
+  '개발자 박이나님의 프로젝트 및 운영 기록을 runtime filesystem으로 복원합니다.',
+   tags: [
+  'FILESYSTEM',
+  'RUNTIME',
+  'ARCHIVE',
+],
+    status: 'RESTRICTED',
+  },
+];
 const bootSequence = [
   {
     type: 'auth',
@@ -66,10 +115,101 @@ function BootSequence() {
     </div>
   );
 }
+
+function ArchiveNavigationStepper({
+  onClose,
+}) {
+  return (
+    <section
+      className={styles.archiveStepper}
+      aria-label="Archive navigation layer"
+    >
+      <div className={styles.stepperScanline} />
+
+      <header className={styles.stepperHeader}>
+        <div>
+          <p>ARCHIVE SYSTEM v2.4.1</p>
+          <h1>
+            포트폴리오 탐색기
+          </h1>
+        </div>
+
+        <div className={styles.stepperHeaderRight}>
+          <span>SESSION: CLOSED</span>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close archive navigation layer"
+          >
+            X
+          </button>
+        </div>
+      </header>
+
+      <div className={styles.stepperBody}>
+        <aside className={styles.stepperStatus}>
+          <span className={styles.statusKicker}>
+            루다 포트폴리오 생성
+          </span>
+<p>개발자 블로그 시스템 연결이 종료되었습니다.</p>
+<p>포트폴리오 탐색기를 불러오는 중...</p>
+
+          <div className={styles.systemStatus}>
+            <strong>SYSTEM STATUS</strong>
+            <span>[2026.05.08]v.1.0.0 루다로그 창설</span>
+            <span>[2026.05.16]v.2.0.0 Dev-log 시스템 폐지 및 워크스페이스 통합</span>
+          </div>
+
+          <small>
+            Poet: 신이재 / Creator: 루다/ Developer: 박이나
+          </small>
+        </aside>
+
+        <ol className={styles.nodeStepper}>
+          {archiveNodes.map((node) => (
+            <li
+              key={node.id}
+              className={styles.nodeItem}
+              data-restricted={
+                node.status === 'RESTRICTED'
+                  ? 'true'
+                  : 'false'
+              }
+            >
+              <div className={styles.nodeIndex}>
+                {node.id}
+              </div>
+              <div className={styles.nodeContent}>
+                <div className={styles.nodeTitleRow}>
+                  <h2>
+                    {node.id} {node.title}
+                  </h2>
+                  <span>{node.status}</span>
+                </div>
+                <p>{node.description}</p>
+                <div className={styles.nodeTags}>
+                  {node.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+<footer className={styles.stepperFooter}>
+  <small>
+    LUDALOG ARCHIVE SYSTEM v2.0.0
+  </small>
+</footer>
+    </section>
+  );
+}
 function HomepageHeader() {
 
-  const [shutdown, setShutdown] =
-    useState(false);
+  const [terminalState, setTerminalState] =
+    useState('boot');
 
   const [runtimeStats, setRuntimeStats] =
     useState(null);
@@ -129,6 +269,14 @@ function HomepageHeader() {
 
   }, []);
 
+  const closeRuntimeSession = () => {
+    setTerminalState('closing');
+
+    setTimeout(() => {
+      setTerminalState('stepper');
+    }, 360);
+  };
+
   const createAsciiBar = (value, total) => {
 
     const BAR_LENGTH = 14;
@@ -144,10 +292,10 @@ function HomepageHeader() {
     const empty =
       BAR_LENGTH - filled;
 
-    return (
-      '█'.repeat(filled) +
-      '░'.repeat(empty)
-    );
+return (
+  '¦'.repeat(filled) +
+  '.'.repeat(empty)
+);
   };
 
 const projects = [
@@ -199,17 +347,26 @@ const projects = [
 
             {
 
-              shutdown ? (
+              terminalState === 'stepper' ? (
 
-                <DesktopWorkspace
-                  onBoot={() =>
-                    setShutdown(false)
+                <ArchiveNavigationStepper
+                  onClose={() =>
+                    setTerminalState('boot')
                   }
                 />
 
               ) : (
 
-                <div className={styles.terminalWindow}>
+                <div
+                  className={`
+                    ${styles.terminalWindow}
+                    ${
+                      terminalState === 'closing'
+                        ? styles.terminalClosing
+                        : ''
+                    }
+                  `}
+                >
 
                   {/* HEADER */}
 
@@ -217,9 +374,7 @@ const projects = [
 
                     <span
                       className={styles.red}
-                      onClick={() =>
-                        setShutdown(true)
-                      }
+                      onClick={closeRuntimeSession}
                     />
 
                     <span className={styles.yellow} />

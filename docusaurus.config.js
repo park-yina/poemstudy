@@ -20,7 +20,7 @@ const config = {
     archiveSearch: {
       mode: 'local',
       route: '/search',
-      includedCategories: ['DEV WIKI', 'DEV LOG', 'ARCHIVE'],
+      includedCategories: ['DEV WIKI',  'ARCHIVE'],
       excludedCategories: ['LudaRota'],
       engine: 'minisearch',
     },
@@ -62,23 +62,6 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
         },
-
-        blog: {
-          showReadingTime: true,
-
-          blogSidebarCount: 'ALL',
-
-          blogSidebarTitle: '최근 기록',
-
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
         
   gtag: {
 
@@ -116,8 +99,8 @@ const config = {
         },
 
         {
-          to: '/blog',
-          label: 'Dev Log',
+          to: '/workspace',
+          label: 'workspace',
           position: 'left',
         },
 

@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 import {createPortal} from 'react-dom';
+import {useHistory} from '@docusaurus/router';
 import {
   parsedItems,
   runtimeLinks,
@@ -14,7 +15,6 @@ import {
 } from './variables';
 import {PreviewPanel} from './preview';
 import  DocumentViewer from './preview';
-import Link from '@docusaurus/Link';
 import Sidebar from '../DesktopWorkspace/sidebar';
 import {
   runtimeConfig,
@@ -1332,7 +1332,14 @@ function WorkspaceOverlayView({
 
 export default function DesktopWorkspace({
   onBoot,
+  initialWorkspaceSlug,
 }) {
+  const history = useHistory();
+  const closeWorkspaceApp =
+    onBoot ||
+    (() => {
+      history.push('/');
+    });
   const [previewUrl, setPreviewUrl] =
   useState(null);
 const [menuState, setMenuState] =
@@ -1372,6 +1379,40 @@ const [minimizedPreviewTabs, setMinimizedPreviewTabs] =
 
 const [runtimeCmdItem, setRuntimeCmdItem] =
   useState(null);
+
+  useEffect(() => {
+    if (!initialWorkspaceSlug) {
+      return;
+    }
+
+    const normalizedSlug =
+      initialWorkspaceSlug.toLowerCase();
+
+    const matchedItem =
+      parsedItems.find((item) => {
+        if (!item.workspace) {
+          return false;
+        }
+
+        const titleSlug =
+          item.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '');
+
+        return (
+          item.id === normalizedSlug ||
+          titleSlug === normalizedSlug
+        );
+      });
+
+    setCurrentFolder('Projects');
+
+    if (matchedItem) {
+      setMinimizedWorkspaceItem(null);
+      setWorkspaceItem(matchedItem);
+    }
+  }, [initialWorkspaceSlug]);
 
   const getPreviewWidthBounds =
     useCallback(() => {
@@ -1766,9 +1807,7 @@ const handleLaunch =
   item.workspace
 ) {
 
-      setMinimizedWorkspaceItem(null);
-
-      setWorkspaceItem(item);
+      history.push(`/workspace/${item.id}`);
 
       return;
     }
@@ -2434,6 +2473,10 @@ if (workspaceItem) {
 
           setWorkspaceItem(null);
           setMinimizedWorkspaceItem(null);
+
+          if (initialWorkspaceSlug) {
+            history.push('/workspace');
+          }
         }}
         onMinimize={() => {
 
@@ -2477,7 +2520,7 @@ return (
 
           <span
             className={styles.red}
-            onClick={onBoot}
+            onClick={closeWorkspaceApp}
           ></span>
 
           <span className={styles.yellow}></span>
@@ -2781,7 +2824,7 @@ return (
           <button
             className={styles.runtimeButton}
 
-            onClick={onBoot}
+            onClick={closeWorkspaceApp}
           >
             {'>_'}
           </button>
