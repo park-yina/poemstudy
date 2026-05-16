@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -18,6 +19,12 @@ import Sidebar from '../DesktopWorkspace/sidebar';
 import {
   runtimeConfig,
 } from '../../config/runtime';
+import {
+  getActiveCodeLineIndex,
+  getLanguageFromFile,
+  getTokenStyle,
+  useRuntimeCodeTokens,
+} from './codeHighlight';
 import baseStyles from './styles.module.css';
 import workspaceOverlayStyles from './workspaceOverlay.module.css';
 
@@ -25,6 +32,78 @@ const styles = {
   ...baseStyles,
   ...workspaceOverlayStyles,
 };
+
+const PREVIEW_MIN_WIDTH =
+  420;
+
+const PREVIEW_MOBILE_MIN_WIDTH =
+  320;
+
+const PREVIEW_MAX_WIDTH =
+  1100;
+
+const WORKSPACE_SIDEBAR_WIDTH =
+  120;
+
+const PREVIEW_RESIZE_HANDLE_WIDTH =
+  12;
+
+const DESKTOP_MIN_WIDTH =
+  360;
+
+const codeFileIconMap = {
+  css: 'fa-brands fa-css3-alt',
+  html: 'fa-brands fa-html5',
+  java: 'fa-solid fa-mug-hot',
+  js: 'fa-brands fa-js',
+  jsx: 'fa-brands fa-react',
+  md: 'fa-brands fa-markdown',
+  py: 'fa-brands fa-python',
+  sql: 'fa-solid fa-database',
+  ts: 'fa-solid fa-file-code',
+  tsx: 'fa-brands fa-react',
+  xml: 'fa-solid fa-file-code',
+  yaml: 'fa-solid fa-sitemap',
+  yml: 'fa-solid fa-sitemap',
+};
+
+function getWorkspaceFileExtension(
+  file,
+) {
+
+  const source =
+    file?.path ||
+    file?.title ||
+    '';
+
+  const match =
+    source.match(/\.([a-z0-9]+)$/i);
+
+  return match
+    ? match[1].toLowerCase()
+    : '';
+}
+
+function getWorkspaceFileIconClass(
+  file,
+) {
+
+  if (file?.type === 'MARKDOWN') {
+    return 'fa-brands fa-markdown';
+  }
+
+  if (file?.type !== 'CODE') {
+    return 'fa-solid fa-file-lines';
+  }
+
+  const extension =
+    getWorkspaceFileExtension(file);
+
+  return (
+    codeFileIconMap[extension] ||
+    'fa-solid fa-file-code'
+  );
+}
 
 function getWorkspaceInitialFiles(
   folders,
@@ -314,6 +393,16 @@ function WorkspaceOverlayView({
   const [activeFile, setActiveFile] =
     useState(initialFile);
 
+  const [collapsedFolders, setCollapsedFolders] =
+    useState({});
+
+  const [visitedFiles, setVisitedFiles] =
+    useState(() => (
+      initialFile
+        ? {[initialFile.id]: true}
+        : {}
+    ));
+
   const [fileContentMap, setFileContentMap] =
     useState({});
 
@@ -347,7 +436,36 @@ function WorkspaceOverlayView({
 
     setFileContentMap({});
 
+    setCollapsedFolders({});
+
+    setVisitedFiles(
+      initialFile
+        ? {[initialFile.id]: true}
+        : {}
+    );
+
   }, [item, initialFile]);
+
+  const toggleFolder = (folderId) => {
+
+    setCollapsedFolders((prev) => ({
+      ...prev,
+      [folderId]: !prev[folderId],
+    }));
+  };
+
+  const openFolderFile = (
+    folderId,
+    file,
+  ) => {
+
+    setVisitedFiles((prev) => ({
+      ...prev,
+      [file.id]: true,
+    }));
+
+    openFile(file);
+  };
 
   useEffect(() => {
 
@@ -674,8 +792,14 @@ function WorkspaceOverlayView({
         ''
       : '';
 
-const activeRows =
-  getCodeRows(activeContent);
+  const activeRows =
+    useRuntimeCodeTokens(
+      activeContent,
+      getLanguageFromFile(activeFile),
+    );
+
+  const activeLineIndex =
+    getActiveCodeLineIndex(activeRows);
 
   return (
 
@@ -774,19 +898,73 @@ const activeRows =
               </div>
 
               {
-                folders.map((folder) => (
+                folders.map((folder) => {
+
+                  const isCollapsed =
+                    Boolean(
+                      collapsedFolders[folder.id]
+                    );
+
+                  const folderChildren =
+                    folder.children || [];
+
+                  const isVisited =
+                    folderChildren.length > 0 &&
+                    folderChildren.every((file) =>
+                      Boolean(
+                        visitedFiles[file.id]
+                      )
+                    );
+
+                  return (
 
                   <div
                     key={folder.id}
                     className={styles.treeFolder}
                   >
-                    <div className={styles.treeFolderName}>
-                      <i className="fa-solid fa-lock" />
-                      {folder.title}
-                    </div>
+                    <button
+                      type="button"
+                      className={`${styles.treeFolderName} ${
+                        isVisited
+                          ? styles.treeFolderNameVisited
+                          : ''
+                      }`}
+                      onClick={() =>
+                        toggleFolder(folder.id)
+                      }
+                      aria-expanded={!isCollapsed}
+                    >
+                      <span className={styles.treeFolderLabel}>
+                        <i
+                          className={`fa-solid ${
+                            isCollapsed
+                              ? 'fa-folder'
+                              : 'fa-folder-open'
+                          }`}
+                        />
+                        {folder.title}
+                      </span>
+
+                      <i
+                        className={`fa-solid ${
+                          isCollapsed
+                            ? 'fa-chevron-down'
+                            : 'fa-chevron-up'
+                        } ${styles.treeFolderToggle}`}
+                        aria-hidden="true"
+                      />
+                    </button>
 
                     {
-                      folder.children?.map((file) => (
+                      !isCollapsed &&
+                      folderChildren.map((file) => {
+
+                        const isFileVisited =
+                          Boolean(
+                            visitedFiles[file.id]
+                          );
+
+                        return (
 
                         <button
                           key={file.id}
@@ -795,26 +973,31 @@ const activeRows =
                             activeFile?.id === file.id
                               ? styles.treeFileActive
                               : ''
+                          } ${
+                            isFileVisited
+                              ? styles.treeFileVisited
+                              : ''
                           }`}
                           onClick={() =>
-                            openFile(file)
+                            openFolderFile(
+                              folder.id,
+                              file,
+                            )
                           }
                         >
                           <i
-                            className={`fa-solid ${
-                              file.type === 'MARKDOWN'
-                                ? 'fa-file-lines'
-                                : 'fa-file-code'
-                            }`}
+                            className={getWorkspaceFileIconClass(file)}
                           />
                           {file.title}
                         </button>
 
-                      ))
+                        );
+                      })
                     }
                   </div>
 
-                ))
+                  );
+                })
               }
             </div>
 
@@ -890,14 +1073,29 @@ const activeRows =
 
                               <span
                                 key={`${activeFile.id}-${index}`}
-                                className={styles.editorCodeLine}
+                                className={`${styles.editorCodeLine} ${
+                                  index === activeLineIndex
+                                    ? styles.editorCodeLineActive
+                                    : ''
+                                }`}
                               >
                                 <span className={styles.editorLineNumber}>
                                   {index + 1}
                                 </span>
 
                                 <span className={styles.editorLineText}>
-                                  {line || ' '}
+                                  {
+                                    line.map((token, tokenIndex) => (
+
+                                      <span
+                                        key={`${activeFile.id}-${index}-${tokenIndex}`}
+                                        style={getTokenStyle(token)}
+                                      >
+                                        {token.content || ' '}
+                                      </span>
+
+                                    ))
+                                  }
                                 </span>
                               </span>
 
@@ -1152,6 +1350,9 @@ const [menuState, setMenuState] =
   const [isResizing, setIsResizing] =
     useState(false);
 
+  const workspaceBodyRef =
+    useRef(null);
+
   const [weather, setWeather] =
     useState('⚙ weather runtime loading...');
     const [currentFolder, setCurrentFolder] =
@@ -1171,6 +1372,56 @@ const [minimizedPreviewTabs, setMinimizedPreviewTabs] =
 
 const [runtimeCmdItem, setRuntimeCmdItem] =
   useState(null);
+
+  const getPreviewWidthBounds =
+    useCallback(() => {
+
+      const bodyWidth =
+        workspaceBodyRef.current
+          ?.getBoundingClientRect()
+          .width ||
+        window.innerWidth;
+
+      const availablePreviewWidth =
+        bodyWidth -
+        WORKSPACE_SIDEBAR_WIDTH -
+        PREVIEW_RESIZE_HANDLE_WIDTH -
+        DESKTOP_MIN_WIDTH;
+
+      const max =
+        Math.max(
+          PREVIEW_MOBILE_MIN_WIDTH,
+          Math.min(
+            PREVIEW_MAX_WIDTH,
+            availablePreviewWidth,
+          ),
+        );
+
+      return {
+        min: Math.min(
+          PREVIEW_MIN_WIDTH,
+          max,
+        ),
+        max,
+      };
+    }, []);
+
+  const clampPreviewWidth =
+    useCallback((width) => {
+
+      const {
+        min,
+        max,
+      } = getPreviewWidthBounds();
+
+      return Math.max(
+        min,
+        Math.min(
+          max,
+          width,
+        ),
+      );
+    }, [getPreviewWidthBounds]);
 
   useEffect(() => {
 
@@ -1218,16 +1469,18 @@ const [runtimeCmdItem, setRuntimeCmdItem] =
         return;
       }
 
+      const bodyRect =
+        workspaceBodyRef.current
+          ?.getBoundingClientRect();
+
       const newWidth =
-        window.innerWidth - e.clientX;
+        bodyRect
+          ? bodyRect.right - e.clientX
+          : window.innerWidth - e.clientX;
 
-      const clamped =
-        Math.max(
-          420,
-          Math.min(1100, newWidth),
-        );
-
-      setPreviewWidth(clamped);
+      setPreviewWidth(
+        clampPreviewWidth(newWidth)
+      );
     };
 
     const handleResizeEnd = () => {
@@ -1276,7 +1529,33 @@ const [runtimeCmdItem, setRuntimeCmdItem] =
       );
     };
 
-  }, [isResizing]);
+  }, [clampPreviewWidth, isResizing]);
+
+  useEffect(() => {
+
+    const handleWindowResize = () => {
+
+      setPreviewWidth((width) =>
+        clampPreviewWidth(width)
+      );
+    };
+
+    handleWindowResize();
+
+    window.addEventListener(
+      'resize',
+      handleWindowResize,
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        'resize',
+        handleWindowResize,
+      );
+    };
+
+  }, [clampPreviewWidth]);
 
   /* =========================
      WEATHER
@@ -1660,6 +1939,37 @@ const folders =
   const [activeFile, setActiveFile] =
     useState(files[1] || files[0] || null);
 
+  const [collapsedFolders, setCollapsedFolders] =
+    useState({});
+
+  const [visitedFiles, setVisitedFiles] =
+    useState(() => (
+      files[1] || files[0]
+        ? {[files[1]?.id || files[0].id]: true}
+        : {}
+    ));
+
+  const toggleFolder = (folderId) => {
+
+    setCollapsedFolders((prev) => ({
+      ...prev,
+      [folderId]: !prev[folderId],
+    }));
+  };
+
+  const openFolderFile = (
+    folderId,
+    file,
+  ) => {
+
+    setVisitedFiles((prev) => ({
+      ...prev,
+      [file.id]: true,
+    }));
+
+    openFile(file);
+  };
+
   const openFile = (file) => {
 
     setOpenedFiles((prev) => {
@@ -1774,19 +2084,73 @@ const folders =
             </div>
 
             {
-              folders.map((folder) => (
+              folders.map((folder) => {
+
+                const isCollapsed =
+                  Boolean(
+                    collapsedFolders[folder.id]
+                  );
+
+                const folderChildren =
+                  folder.children || [];
+
+                const isVisited =
+                  folderChildren.length > 0 &&
+                  folderChildren.every((file) =>
+                    Boolean(
+                      visitedFiles[file.id]
+                    )
+                  );
+
+                return (
 
                 <div
                   key={folder.id}
                   className={styles.treeFolder}
                 >
-                  <div className={styles.treeFolderName}>
-                    <i className="fa-solid fa-lock" />
-                    {folder.title}
-                  </div>
+                  <button
+                    type="button"
+                    className={`${styles.treeFolderName} ${
+                      isVisited
+                        ? styles.treeFolderNameVisited
+                        : ''
+                    }`}
+                    onClick={() =>
+                      toggleFolder(folder.id)
+                    }
+                    aria-expanded={!isCollapsed}
+                  >
+                    <span className={styles.treeFolderLabel}>
+                      <i
+                        className={`fa-solid ${
+                          isCollapsed
+                            ? 'fa-folder'
+                            : 'fa-folder-open'
+                        }`}
+                      />
+                      {folder.title}
+                    </span>
+
+                    <i
+                      className={`fa-solid ${
+                        isCollapsed
+                          ? 'fa-chevron-down'
+                          : 'fa-chevron-up'
+                      } ${styles.treeFolderToggle}`}
+                      aria-hidden="true"
+                    />
+                  </button>
 
                   {
-                    folder.children?.map((file) => (
+                    !isCollapsed &&
+                    folderChildren.map((file) => {
+
+                      const isFileVisited =
+                        Boolean(
+                          visitedFiles[file.id]
+                        );
+
+                      return (
 
                       <button
                         key={file.id}
@@ -1795,26 +2159,31 @@ const folders =
                           activeFile?.id === file.id
                             ? styles.treeFileActive
                             : ''
+                        } ${
+                          isFileVisited
+                            ? styles.treeFileVisited
+                            : ''
                         }`}
                         onClick={() =>
-                          openFile(file)
+                          openFolderFile(
+                            folder.id,
+                            file,
+                          )
                         }
                       >
                         <i
-                          className={`fa-solid ${
-                            file.type === 'MARKDOWN'
-                              ? 'fa-file-lines'
-                              : 'fa-file-code'
-                          }`}
+                          className={getWorkspaceFileIconClass(file)}
                         />
                         {file.title}
                       </button>
 
-                    ))
+                      );
+                    })
                   }
                 </div>
 
-              ))
+                );
+              })
             }
           </div>
 
@@ -2128,7 +2497,10 @@ return (
 
       {/* BODY */}
 
-      <div className={styles.workspaceBody}>
+      <div
+        ref={workspaceBodyRef}
+        className={styles.workspaceBody}
+      >
 
         {/* SIDEBAR */}
 

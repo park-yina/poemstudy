@@ -397,6 +397,8 @@
 
   flex: 1;
 
+  min-width: 360px;
+
   position: relative;
 
   padding: 3rem;
@@ -1468,7 +1470,16 @@
   .desktopArea {
   position: relative;
 
+    min-width: 0;
+
     padding: 1.5rem;
+  }
+
+  .previewPanel {
+
+    width: 100% !important;
+
+    min-height: 52vh;
   }
   .desktopGrid {
 
@@ -1997,10 +2008,16 @@
 
   padding: 2rem;
 
-  border-radius: 12px;
+  border-radius: 8px;
 
   background:
-    #050816;
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.018) 0,
+      rgba(255,255,255,0.018) 46px,
+      transparent 46px
+    ),
+    #050914;
 
   color:
     rgba(255,255,255,0.88);
@@ -2016,4 +2033,87 @@
   white-space: pre;
 
   tab-size: 2;
+
+  cursor: text;
+
+  user-select: text;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.035),
+    inset 0 18px 30px rgba(0,0,0,0.16);
+}
+
+.previewCodeInner {
+
+  display: block;
+  min-width: 100%;
+  width: max-content;
+}
+
+.previewCodeLine {
+
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: start;
+
+  min-width: max-content;
+  min-height: 1.7em;
+
+  line-height: 1.7;
+
+  position: relative;
+}
+
+.previewCodeLine:hover {
+
+  background:
+    rgba(255,255,255,0.024);
+}
+
+.previewCodeLineActive {
+
+  background:
+    rgba(255,255,255,0.026);
+}
+
+.previewCodeLineActive::before {
+
+  content: '';
+
+  position: absolute;
+  left: 0;
+  top: 0.18em;
+  bottom: 0.18em;
+
+  width: 2px;
+
+  background:
+    rgba(186,199,218,0.32);
+}
+
+.previewLineNumber {
+
+  padding-right: 0.75rem;
+
+  color:
+    rgba(148,163,184,0.36);
+
+  text-align: right;
+
+  user-select: none;
+}
+
+.previewLineText {
+
+  display: block;
+
+  min-width: 0;
+
+  padding-right: 1.3rem;
+
+  white-space: pre;
+
+  cursor: text;
+
+  user-select: text;
 }
