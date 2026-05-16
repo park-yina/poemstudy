@@ -1,9 +1,12 @@
 import React, {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
+import {createPortal} from 'react-dom';
+import {useHistory} from '@docusaurus/router';
 import {
   parsedItems,
   runtimeLinks,
@@ -12,11 +15,16 @@ import {
 } from './variables';
 import {PreviewPanel} from './preview';
 import  DocumentViewer from './preview';
-import Link from '@docusaurus/Link';
 import Sidebar from '../DesktopWorkspace/sidebar';
 import {
   runtimeConfig,
 } from '../../config/runtime';
+import {
+  getActiveCodeLineIndex,
+  getLanguageFromFile,
+  getTokenStyle,
+  useRuntimeCodeTokens,
+} from './codeHighlight';
 import baseStyles from './styles.module.css';
 import workspaceOverlayStyles from './workspaceOverlay.module.css';
 
@@ -24,6 +32,78 @@ const styles = {
   ...baseStyles,
   ...workspaceOverlayStyles,
 };
+
+const PREVIEW_MIN_WIDTH =
+  420;
+
+const PREVIEW_MOBILE_MIN_WIDTH =
+  320;
+
+const PREVIEW_MAX_WIDTH =
+  1100;
+
+const WORKSPACE_SIDEBAR_WIDTH =
+  120;
+
+const PREVIEW_RESIZE_HANDLE_WIDTH =
+  12;
+
+const DESKTOP_MIN_WIDTH =
+  360;
+
+const codeFileIconMap = {
+  css: 'fa-brands fa-css3-alt',
+  html: 'fa-brands fa-html5',
+  java: 'fa-solid fa-mug-hot',
+  js: 'fa-brands fa-js',
+  jsx: 'fa-brands fa-react',
+  md: 'fa-brands fa-markdown',
+  py: 'fa-brands fa-python',
+  sql: 'fa-solid fa-database',
+  ts: 'fa-solid fa-file-code',
+  tsx: 'fa-brands fa-react',
+  xml: 'fa-solid fa-file-code',
+  yaml: 'fa-solid fa-sitemap',
+  yml: 'fa-solid fa-sitemap',
+};
+
+function getWorkspaceFileExtension(
+  file,
+) {
+
+  const source =
+    file?.path ||
+    file?.title ||
+    '';
+
+  const match =
+    source.match(/\.([a-z0-9]+)$/i);
+
+  return match
+    ? match[1].toLowerCase()
+    : '';
+}
+
+function getWorkspaceFileIconClass(
+  file,
+) {
+
+  if (file?.type === 'MARKDOWN') {
+    return 'fa-brands fa-markdown';
+  }
+
+  if (file?.type !== 'CODE') {
+    return 'fa-solid fa-file-lines';
+  }
+
+  const extension =
+    getWorkspaceFileExtension(file);
+
+  return (
+    codeFileIconMap[extension] ||
+    'fa-solid fa-file-code'
+  );
+}
 
 function getWorkspaceInitialFiles(
   folders,
@@ -45,15 +125,13 @@ function getWorkspaceInitialFiles(
 }
 
 function getCodeRows(content) {
-
-  const normalized =
-    content || '';
-
-  return normalized
-    .replace(/\r\n/g, '\n')
-    .split('\n');
+  const normalized = (content || '').replace(/\r\n/g, '\n');
+  // 끝의 단일 개행만 제거 (빈 마지막 줄 방지)
+  const trimmed = normalized.endsWith('\n')
+    ? normalized.slice(0, -1)
+    : normalized;
+  return trimmed.split('\n');
 }
-
 function clampPaneWidth(
   value,
   min,
@@ -69,10 +147,233 @@ function clampPaneWidth(
   );
 }
 
-function WorkspaceOverlayView({
+function RuntimeCmdWindow({
   item,
   onClose,
 }) {
+
+  const entries =
+    item.logEntries || [];
+
+  const [visibleCount, setVisibleCount] =
+    useState(0);
+
+  const [position, setPosition] =
+    useState({
+      x: 210,
+      y: 116,
+    });
+
+  const streamRef =
+    useRef(null);
+
+  const dragRef =
+    useRef(null);
+
+  useEffect(() => {
+
+    setVisibleCount(0);
+    setPosition({
+      x: 210,
+      y: 116,
+    });
+
+    const timers =
+      entries.map((entry, index) =>
+        setTimeout(() => {
+          setVisibleCount((count) =>
+            Math.min(
+              count + 1,
+              entries.length,
+            )
+          );
+        }, 900 + index * 1450)
+      );
+
+    return () => {
+      timers.forEach((timer) =>
+        clearTimeout(timer)
+      );
+    };
+
+  }, [item.id, entries]);
+
+  useEffect(() => {
+
+    const stream =
+      streamRef.current;
+
+    if (!stream) {
+      return;
+    }
+
+    stream.scrollTo({
+      top: stream.scrollHeight,
+      behavior: 'smooth',
+    });
+
+  }, [visibleCount]);
+
+  useEffect(() => {
+
+    const handleMove = (event) => {
+
+      if (!dragRef.current) {
+        return;
+      }
+
+      const nextX =
+        event.clientX - dragRef.current.offsetX;
+
+      const nextY =
+        event.clientY - dragRef.current.offsetY;
+
+      setPosition({
+        x: Math.max(24, nextX),
+        y: Math.max(78, nextY),
+      });
+    };
+
+    const handleUp = () => {
+      dragRef.current = null;
+    };
+
+    window.addEventListener(
+      'mousemove',
+      handleMove,
+    );
+
+    window.addEventListener(
+      'mouseup',
+      handleUp,
+    );
+
+    return () => {
+      window.removeEventListener(
+        'mousemove',
+        handleMove,
+      );
+
+      window.removeEventListener(
+        'mouseup',
+        handleUp,
+      );
+    };
+
+  }, []);
+
+  const visibleEntries =
+    entries.slice(0, visibleCount);
+
+  return (
+
+    <section
+      className={styles.runtimeCmdWindow}
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`,
+      }}
+      aria-label={`${item.logLabel} runtime session`}
+    >
+
+      <div
+        className={styles.runtimeCmdTitlebar}
+        onMouseDown={(event) => {
+          dragRef.current = {
+            offsetX: event.clientX - position.x,
+            offsetY: event.clientY - position.y,
+          };
+        }}
+      >
+
+        <div className={styles.runtimeCmdControls}>
+          <button
+            type="button"
+            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdClose}`}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              onClose();
+            }}
+            aria-label="Terminate runtime session"
+          />
+
+          <button
+            type="button"
+            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdMinimize}`}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+            }}
+            aria-label="Minimize runtime session"
+          />
+
+          <button
+            type="button"
+            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdExpand}`}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+            }}
+            aria-label="Expand runtime session"
+          />
+        </div>
+
+        <span className={styles.runtimeCmdTitle}>
+          {item.title} - runtime session
+        </span>
+
+      </div>
+
+      <div
+        ref={streamRef}
+        className={styles.runtimeCmdStream}
+      >
+        <p className={styles.runtimeCmdCommand}>
+          <span>{'C:\\runtime>'}</span>
+          stream --source {item.logLabel} --mode live
+        </p>
+
+        {
+          visibleEntries.map((entry, index) => {
+
+            const age =
+              visibleEntries.length - index;
+
+            return (
+
+              <p
+                key={entry}
+                className={styles.runtimeCmdLine}
+                data-age={
+                  age > 4
+                    ? 'old'
+                    : age > 2
+                      ? 'settled'
+                      : 'new'
+                }
+              >
+                <span>
+                  [{item.logLabel}]
+                </span>
+
+                {entry}
+              </p>
+
+            );
+          })
+        }
+      </div>
+
+    </section>
+
+  );
+}
+
+function WorkspaceOverlayView({
+  item,
+  onClose,
+  onMinimize,
+}) {
+
+  const [isMaximized, setIsMaximized] =
+    useState(false);
 
   const folders =
     item.workspace?.folders || [];
@@ -92,17 +393,33 @@ function WorkspaceOverlayView({
   const [activeFile, setActiveFile] =
     useState(initialFile);
 
+  const [collapsedFolders, setCollapsedFolders] =
+    useState({});
+
+  const [visitedFiles, setVisitedFiles] =
+    useState(() => (
+      initialFile
+        ? {[initialFile.id]: true}
+        : {}
+    ));
+
   const [fileContentMap, setFileContentMap] =
     useState({});
 
   const [treePaneWidth, setTreePaneWidth] =
-    useState(220);
+    useState(176);
 
   const [relatedPaneWidth, setRelatedPaneWidth] =
-    useState(280);
+    useState(168);
 
   const [resizingPane, setResizingPane] =
     useState(null);
+
+  const [bottomPanelHeight, setBottomPanelHeight] =
+    useState(58);
+
+  const [bottomPanelTab, setBottomPanelTab] =
+    useState('runtime');
 
   const workspaceMainRef =
     useRef(null);
@@ -119,7 +436,36 @@ function WorkspaceOverlayView({
 
     setFileContentMap({});
 
+    setCollapsedFolders({});
+
+    setVisitedFiles(
+      initialFile
+        ? {[initialFile.id]: true}
+        : {}
+    );
+
   }, [item, initialFile]);
+
+  const toggleFolder = (folderId) => {
+
+    setCollapsedFolders((prev) => ({
+      ...prev,
+      [folderId]: !prev[folderId],
+    }));
+  };
+
+  const openFolderFile = (
+    folderId,
+    file,
+  ) => {
+
+    setVisitedFiles((prev) => ({
+      ...prev,
+      [file.id]: true,
+    }));
+
+    openFile(file);
+  };
 
   useEffect(() => {
 
@@ -196,7 +542,10 @@ function WorkspaceOverlayView({
 
   useEffect(() => {
 
-    if (!resizingPane) {
+    if (
+      resizingPane !== 'tree' &&
+      resizingPane !== 'related'
+    ) {
       return undefined;
     }
 
@@ -223,8 +572,8 @@ function WorkspaceOverlayView({
         setTreePaneWidth(
           clampPaneWidth(
             e.clientX - rect.left,
-            160,
-            360,
+            140,
+            260,
           )
         );
 
@@ -234,8 +583,89 @@ function WorkspaceOverlayView({
       setRelatedPaneWidth(
         clampPaneWidth(
           rect.right - e.clientX,
-          210,
-          420,
+          132,
+          240,
+        )
+      );
+    };
+
+    const stopResize = () => {
+
+      setResizingPane(null);
+    };
+
+    window.addEventListener(
+      'mousemove',
+      handleMouseMove,
+    );
+
+    window.addEventListener(
+      'mouseup',
+      stopResize,
+      true,
+    );
+
+    window.addEventListener(
+      'blur',
+      stopResize,
+    );
+
+    return () => {
+
+      document.body.style.cursor =
+        '';
+
+      document.body.style.userSelect =
+        '';
+
+      window.removeEventListener(
+        'mousemove',
+        handleMouseMove,
+      );
+
+      window.removeEventListener(
+        'mouseup',
+        stopResize,
+        true,
+      );
+
+      window.removeEventListener(
+        'blur',
+        stopResize,
+      );
+    };
+
+  }, [resizingPane]);
+
+  useEffect(() => {
+
+    if (resizingPane !== 'bottom') {
+      return undefined;
+    }
+
+    document.body.style.cursor =
+      'row-resize';
+
+    document.body.style.userSelect =
+      'none';
+
+    const handleMouseMove = (e) => {
+
+      const workspaceMain =
+        workspaceMainRef.current;
+
+      if (!workspaceMain) {
+        return;
+      }
+
+      const rect =
+        workspaceMain.getBoundingClientRect();
+
+      setBottomPanelHeight(
+        clampPaneWidth(
+          rect.bottom - e.clientY,
+          58,
+          Math.min(280, rect.height * 0.45),
         )
       );
     };
@@ -363,7 +793,13 @@ function WorkspaceOverlayView({
       : '';
 
   const activeRows =
-    getCodeRows(activeContent);
+    useRuntimeCodeTokens(
+      activeContent,
+      getLanguageFromFile(activeFile),
+    );
+
+  const activeLineIndex =
+    getActiveCodeLineIndex(activeRows);
 
   return (
 
@@ -373,7 +809,11 @@ function WorkspaceOverlayView({
     >
 
       <div
-        className={styles.workspaceExplorer}
+        className={`${styles.workspaceExplorer} ${
+          isMaximized
+            ? styles.workspaceExplorerMaximized
+            : ''
+        }`}
         onClick={(e) =>
           e.stopPropagation()
         }
@@ -387,14 +827,33 @@ function WorkspaceOverlayView({
             aria-label="Close workspace"
           />
 
-          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowMinimize}`} />
-          <span className={`${styles.workspaceWindowDot} ${styles.workspaceWindowExpand}`} />
+          <button
+            type="button"
+            className={`${styles.workspaceWindowDot} ${styles.workspaceWindowMinimize}`}
+            onClick={onMinimize}
+            aria-label="Minimize workspace"
+          />
+
+          <button
+            type="button"
+            className={`${styles.workspaceWindowDot} ${styles.workspaceWindowExpand}`}
+            onClick={() =>
+              setIsMaximized((current) =>
+                !current
+              )
+            }
+            aria-label={
+              isMaximized
+                ? 'Restore workspace'
+                : 'Maximize workspace'
+            }
+          />
         </div>
 
         <div className={styles.workspaceContent}>
           <aside className={styles.workspaceGuide}>
             <div className={styles.workspaceBadge}>
-              Curated Workspace
+              DEV
             </div>
 
             <h2>
@@ -415,7 +874,8 @@ function WorkspaceOverlayView({
           <section
             ref={workspaceMainRef}
             className={`${styles.workspaceMain} ${
-              resizingPane
+              resizingPane === 'tree' ||
+              resizingPane === 'related'
                 ? styles.workspaceMainResizing
                 : ''
             }`}
@@ -424,6 +884,8 @@ function WorkspaceOverlayView({
                 `${treePaneWidth}px`,
               '--related-pane-width':
                 `${relatedPaneWidth}px`,
+              '--bottom-panel-height':
+                `${bottomPanelHeight}px`,
             }}
           >
             <div className={styles.workspaceTree}>
@@ -436,19 +898,73 @@ function WorkspaceOverlayView({
               </div>
 
               {
-                folders.map((folder) => (
+                folders.map((folder) => {
+
+                  const isCollapsed =
+                    Boolean(
+                      collapsedFolders[folder.id]
+                    );
+
+                  const folderChildren =
+                    folder.children || [];
+
+                  const isVisited =
+                    folderChildren.length > 0 &&
+                    folderChildren.every((file) =>
+                      Boolean(
+                        visitedFiles[file.id]
+                      )
+                    );
+
+                  return (
 
                   <div
                     key={folder.id}
                     className={styles.treeFolder}
                   >
-                    <div className={styles.treeFolderName}>
-                      <i className="fa-solid fa-lock" />
-                      {folder.title}
-                    </div>
+                    <button
+                      type="button"
+                      className={`${styles.treeFolderName} ${
+                        isVisited
+                          ? styles.treeFolderNameVisited
+                          : ''
+                      }`}
+                      onClick={() =>
+                        toggleFolder(folder.id)
+                      }
+                      aria-expanded={!isCollapsed}
+                    >
+                      <span className={styles.treeFolderLabel}>
+                        <i
+                          className={`fa-solid ${
+                            isCollapsed
+                              ? 'fa-folder'
+                              : 'fa-folder-open'
+                          }`}
+                        />
+                        {folder.title}
+                      </span>
+
+                      <i
+                        className={`fa-solid ${
+                          isCollapsed
+                            ? 'fa-chevron-down'
+                            : 'fa-chevron-up'
+                        } ${styles.treeFolderToggle}`}
+                        aria-hidden="true"
+                      />
+                    </button>
 
                     {
-                      folder.children?.map((file) => (
+                      !isCollapsed &&
+                      folderChildren.map((file) => {
+
+                        const isFileVisited =
+                          Boolean(
+                            visitedFiles[file.id]
+                          );
+
+                        return (
 
                         <button
                           key={file.id}
@@ -457,26 +973,31 @@ function WorkspaceOverlayView({
                             activeFile?.id === file.id
                               ? styles.treeFileActive
                               : ''
+                          } ${
+                            isFileVisited
+                              ? styles.treeFileVisited
+                              : ''
                           }`}
                           onClick={() =>
-                            openFile(file)
+                            openFolderFile(
+                              folder.id,
+                              file,
+                            )
                           }
                         >
                           <i
-                            className={`fa-solid ${
-                              file.type === 'MARKDOWN'
-                                ? 'fa-file-lines'
-                                : 'fa-file-code'
-                            }`}
+                            className={getWorkspaceFileIconClass(file)}
                           />
                           {file.title}
                         </button>
 
-                      ))
+                        );
+                      })
                     }
                   </div>
 
-                ))
+                  );
+                })
               }
             </div>
 
@@ -540,53 +1061,178 @@ function WorkspaceOverlayView({
                 activeFile ? (
 
                   <>
-                    <div className={styles.editorHeader}>
-                      <h3>
-                        {activeFile.title}
-                      </h3>
-
-                      <p>
-                        {activeFile.description}
-                      </p>
-                    </div>
-
                     <div className={styles.editorCodeFrame}>
-                      <div className={styles.editorCodeToolbar}>
-                        <span>
-                          {activeFile.language || 'text'}
-                        </span>
-
-                        <span>
-                          UTF-8
-                        </span>
-                      </div>
-
-                      <pre className={styles.editorCode}>
-                        <code>
+                      <div
+                        className={styles.editorCode}
+                        role="region"
+                        aria-label={`${activeFile.title} source`}
+                      >
+                        <code className={styles.editorCodeInner}>
                           {
                             activeRows.map((line, index) => (
 
                               <span
                                 key={`${activeFile.id}-${index}`}
-                                className={styles.editorCodeLine}
+                                className={`${styles.editorCodeLine} ${
+                                  index === activeLineIndex
+                                    ? styles.editorCodeLineActive
+                                    : ''
+                                }`}
                               >
                                 <span className={styles.editorLineNumber}>
                                   {index + 1}
                                 </span>
 
                                 <span className={styles.editorLineText}>
-                                  {line || ' '}
+                                  {
+                                    line.map((token, tokenIndex) => (
+
+                                      <span
+                                        key={`${activeFile.id}-${index}-${tokenIndex}`}
+                                        style={getTokenStyle(token)}
+                                      >
+                                        {token.content || ' '}
+                                      </span>
+
+                                    ))
+                                  }
                                 </span>
                               </span>
 
                             ))
                           }
                         </code>
-                      </pre>
+                      </div>
                     </div>
 
                     <div className={styles.editorPath}>
                       Path: {activeFile.path || `src/main/java/com/parkyina/fakejumping/security/${activeFile.title}`}
+                    </div>
+
+                    <div
+                      role="separator"
+                      aria-label="Resize runtime panel"
+                      aria-orientation="horizontal"
+                      className={`${styles.bottomPanelResizeHandle} ${
+                        resizingPane === 'bottom'
+                          ? styles.bottomPanelResizeHandleActive
+                          : ''
+                      }`}
+                      onMouseDown={(e) => {
+
+                        e.preventDefault();
+
+                        setResizingPane('bottom');
+                      }}
+                    />
+
+                    <div className={styles.workspaceBottomPanel}>
+                      <div className={styles.bottomPanelTabs}>
+                        <button
+                          type="button"
+                          className={
+                            bottomPanelTab === 'runtime'
+                              ? styles.bottomPanelTabActive
+                              : ''
+                          }
+                          onClick={() =>
+                            setBottomPanelTab('runtime')
+                          }
+                        >
+                          SECURITY RUNTIME
+                        </button>
+                        <button
+                          type="button"
+                          className={
+                            bottomPanelTab === 'output'
+                              ? styles.bottomPanelTabActive
+                              : ''
+                          }
+                          onClick={() =>
+                            setBottomPanelTab('output')
+                          }
+                        >
+                          OUTPUT
+                        </button>
+                        <button
+                          type="button"
+                          className={
+                            bottomPanelTab === 'problems'
+                              ? styles.bottomPanelTabActive
+                              : ''
+                          }
+                          onClick={() =>
+                            setBottomPanelTab('problems')
+                          }
+                        >
+                          PROBLEMS
+                        </button>
+                      </div>
+
+                      <div className={styles.bottomPanelBody}>
+                        {
+                          bottomPanelTab === 'runtime' && (
+                            <>
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>
+                                  ACTIVE
+                                </span>
+                                <span>JWT FILTER ACTIVE</span>
+                                <span>access-token chain</span>
+                                <span className={styles.portStatus}>online</span>
+                              </div>
+
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>
+                                  SYNC
+                                </span>
+                                <span>REFRESH ROTATION ENABLED</span>
+                                <span>mysql session store</span>
+                                <span className={styles.portStatus}>connected</span>
+                              </div>
+
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>
+                                  TRACE
+                                </span>
+                                <span>SPRING SECURITY ONLINE</span>
+                                <span>AuthService.signIn</span>
+                                <span className={styles.portStatus}>200ms</span>
+                              </div>
+                            </>
+                          )
+                        }
+
+                        {
+                          bottomPanelTab === 'output' && (
+                            <>
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>INFO</span>
+                                <span>SecurityContext initialized</span>
+                                <span>JwtAuthenticationFilter</span>
+                                <span className={styles.portStatus}>ok</span>
+                              </div>
+                              <div className={styles.portRow}>
+                                <span className={styles.runtimeSignal}>SQL</span>
+                                <span>refresh_tokens upsert completed</span>
+                                <span>TokenMapper</span>
+                                <span className={styles.portStatus}>1 row</span>
+                              </div>
+                            </>
+                          )
+                        }
+
+                        {
+                          bottomPanelTab === 'problems' && (
+                            <div className={styles.portRow}>
+                              <span className={styles.runtimeSignal}>0</span>
+                              <span>No security runtime problems detected</span>
+                              <span>workspace</span>
+                              <span className={styles.portStatus}>clean</span>
+                            </div>
+                          )
+                        }
+                      </div>
                     </div>
                   </>
 
@@ -686,7 +1332,14 @@ function WorkspaceOverlayView({
 
 export default function DesktopWorkspace({
   onBoot,
+  initialWorkspaceSlug,
 }) {
+  const history = useHistory();
+  const closeWorkspaceApp =
+    onBoot ||
+    (() => {
+      history.push('/');
+    });
   const [previewUrl, setPreviewUrl] =
   useState(null);
 const [menuState, setMenuState] =
@@ -704,6 +1357,9 @@ const [menuState, setMenuState] =
   const [isResizing, setIsResizing] =
     useState(false);
 
+  const workspaceBodyRef =
+    useRef(null);
+
   const [weather, setWeather] =
     useState('⚙ weather runtime loading...');
     const [currentFolder, setCurrentFolder] =
@@ -714,6 +1370,100 @@ const [runtimeLink, setRuntimeLink] =
 
 const [workspaceItem, setWorkspaceItem] =
   useState(null);
+
+const [minimizedWorkspaceItem, setMinimizedWorkspaceItem] =
+  useState(null);
+
+const [minimizedPreviewTabs, setMinimizedPreviewTabs] =
+  useState([]);
+
+const [runtimeCmdItem, setRuntimeCmdItem] =
+  useState(null);
+
+  useEffect(() => {
+    if (!initialWorkspaceSlug) {
+      return;
+    }
+
+    const normalizedSlug =
+      initialWorkspaceSlug.toLowerCase();
+
+    const matchedItem =
+      parsedItems.find((item) => {
+        if (!item.workspace) {
+          return false;
+        }
+
+        const titleSlug =
+          item.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '');
+
+        return (
+          item.id === normalizedSlug ||
+          titleSlug === normalizedSlug
+        );
+      });
+
+    setCurrentFolder('Projects');
+
+    if (matchedItem) {
+      setMinimizedWorkspaceItem(null);
+      setWorkspaceItem(matchedItem);
+    }
+  }, [initialWorkspaceSlug]);
+
+  const getPreviewWidthBounds =
+    useCallback(() => {
+
+      const bodyWidth =
+        workspaceBodyRef.current
+          ?.getBoundingClientRect()
+          .width ||
+        window.innerWidth;
+
+      const availablePreviewWidth =
+        bodyWidth -
+        WORKSPACE_SIDEBAR_WIDTH -
+        PREVIEW_RESIZE_HANDLE_WIDTH -
+        DESKTOP_MIN_WIDTH;
+
+      const max =
+        Math.max(
+          PREVIEW_MOBILE_MIN_WIDTH,
+          Math.min(
+            PREVIEW_MAX_WIDTH,
+            availablePreviewWidth,
+          ),
+        );
+
+      return {
+        min: Math.min(
+          PREVIEW_MIN_WIDTH,
+          max,
+        ),
+        max,
+      };
+    }, []);
+
+  const clampPreviewWidth =
+    useCallback((width) => {
+
+      const {
+        min,
+        max,
+      } = getPreviewWidthBounds();
+
+      return Math.max(
+        min,
+        Math.min(
+          max,
+          width,
+        ),
+      );
+    }, [getPreviewWidthBounds]);
+
   useEffect(() => {
 
   const interval = setInterval(() => {
@@ -760,16 +1510,18 @@ const [workspaceItem, setWorkspaceItem] =
         return;
       }
 
+      const bodyRect =
+        workspaceBodyRef.current
+          ?.getBoundingClientRect();
+
       const newWidth =
-        window.innerWidth - e.clientX;
+        bodyRect
+          ? bodyRect.right - e.clientX
+          : window.innerWidth - e.clientX;
 
-      const clamped =
-        Math.max(
-          420,
-          Math.min(1100, newWidth),
-        );
-
-      setPreviewWidth(clamped);
+      setPreviewWidth(
+        clampPreviewWidth(newWidth)
+      );
     };
 
     const handleResizeEnd = () => {
@@ -818,7 +1570,33 @@ const [workspaceItem, setWorkspaceItem] =
       );
     };
 
-  }, [isResizing]);
+  }, [clampPreviewWidth, isResizing]);
+
+  useEffect(() => {
+
+    const handleWindowResize = () => {
+
+      setPreviewWidth((width) =>
+        clampPreviewWidth(width)
+      );
+    };
+
+    handleWindowResize();
+
+    window.addEventListener(
+      'resize',
+      handleWindowResize,
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        'resize',
+        handleWindowResize,
+      );
+    };
+
+  }, [clampPreviewWidth]);
 
   /* =========================
      WEATHER
@@ -878,6 +1656,35 @@ const [workspaceItem, setWorkspaceItem] =
     fetchWeather();
 
   }, []);
+
+  useEffect(() => {
+
+    if (!workspaceItem) {
+      return undefined;
+    }
+
+    const previousBodyOverflow =
+      document.body.style.overflow;
+
+    const previousDocumentOverflow =
+      document.documentElement.style.overflow;
+
+    document.body.style.overflow =
+      'hidden';
+
+    document.documentElement.style.overflow =
+      'hidden';
+
+    return () => {
+
+      document.body.style.overflow =
+        previousBodyOverflow;
+
+      document.documentElement.style.overflow =
+        previousDocumentOverflow;
+    };
+
+  }, [workspaceItem]);
 
 
   /* =========================
@@ -951,7 +1758,8 @@ const openItem = (item) => {
 
   if (
     item.workspace ||
-    item.type === 'FOLDER'
+    item.type === 'FOLDER' ||
+    item.type === 'LOG'
   ) {
     return;
   }
@@ -971,6 +1779,12 @@ const openItem = (item) => {
   }
 
   setActiveTab(item);
+
+  setMinimizedPreviewTabs((prev) =>
+    prev.filter((tab) =>
+      tab.id !== item.id
+    )
+  );
 };
 
   /* =========================
@@ -981,10 +1795,19 @@ const handleLaunch =
   async (item) => {
 
    if (
+     item.type === 'LOG'
+   ) {
+
+      setRuntimeCmdItem(item);
+
+      return;
+    }
+
+   if (
   item.workspace
 ) {
 
-      setWorkspaceItem(item);
+      history.push(`/workspace/${item.id}`);
 
       return;
     }
@@ -1155,6 +1978,37 @@ const folders =
   const [activeFile, setActiveFile] =
     useState(files[1] || files[0] || null);
 
+  const [collapsedFolders, setCollapsedFolders] =
+    useState({});
+
+  const [visitedFiles, setVisitedFiles] =
+    useState(() => (
+      files[1] || files[0]
+        ? {[files[1]?.id || files[0].id]: true}
+        : {}
+    ));
+
+  const toggleFolder = (folderId) => {
+
+    setCollapsedFolders((prev) => ({
+      ...prev,
+      [folderId]: !prev[folderId],
+    }));
+  };
+
+  const openFolderFile = (
+    folderId,
+    file,
+  ) => {
+
+    setVisitedFiles((prev) => ({
+      ...prev,
+      [file.id]: true,
+    }));
+
+    openFile(file);
+  };
+
   const openFile = (file) => {
 
     setOpenedFiles((prev) => {
@@ -1269,19 +2123,73 @@ const folders =
             </div>
 
             {
-              folders.map((folder) => (
+              folders.map((folder) => {
+
+                const isCollapsed =
+                  Boolean(
+                    collapsedFolders[folder.id]
+                  );
+
+                const folderChildren =
+                  folder.children || [];
+
+                const isVisited =
+                  folderChildren.length > 0 &&
+                  folderChildren.every((file) =>
+                    Boolean(
+                      visitedFiles[file.id]
+                    )
+                  );
+
+                return (
 
                 <div
                   key={folder.id}
                   className={styles.treeFolder}
                 >
-                  <div className={styles.treeFolderName}>
-                    <i className="fa-solid fa-lock" />
-                    {folder.title}
-                  </div>
+                  <button
+                    type="button"
+                    className={`${styles.treeFolderName} ${
+                      isVisited
+                        ? styles.treeFolderNameVisited
+                        : ''
+                    }`}
+                    onClick={() =>
+                      toggleFolder(folder.id)
+                    }
+                    aria-expanded={!isCollapsed}
+                  >
+                    <span className={styles.treeFolderLabel}>
+                      <i
+                        className={`fa-solid ${
+                          isCollapsed
+                            ? 'fa-folder'
+                            : 'fa-folder-open'
+                        }`}
+                      />
+                      {folder.title}
+                    </span>
+
+                    <i
+                      className={`fa-solid ${
+                        isCollapsed
+                          ? 'fa-chevron-down'
+                          : 'fa-chevron-up'
+                      } ${styles.treeFolderToggle}`}
+                      aria-hidden="true"
+                    />
+                  </button>
 
                   {
-                    folder.children?.map((file) => (
+                    !isCollapsed &&
+                    folderChildren.map((file) => {
+
+                      const isFileVisited =
+                        Boolean(
+                          visitedFiles[file.id]
+                        );
+
+                      return (
 
                       <button
                         key={file.id}
@@ -1290,26 +2198,31 @@ const folders =
                           activeFile?.id === file.id
                             ? styles.treeFileActive
                             : ''
+                        } ${
+                          isFileVisited
+                            ? styles.treeFileVisited
+                            : ''
                         }`}
                         onClick={() =>
-                          openFile(file)
+                          openFolderFile(
+                            folder.id,
+                            file,
+                          )
                         }
                       >
                         <i
-                          className={`fa-solid ${
-                            file.type === 'MARKDOWN'
-                              ? 'fa-file-lines'
-                              : 'fa-file-code'
-                          }`}
+                          className={getWorkspaceFileIconClass(file)}
                         />
                         {file.title}
                       </button>
 
-                    ))
+                      );
+                    })
                   }
                 </div>
 
-              ))
+                );
+              })
             }
           </div>
 
@@ -1455,6 +2368,7 @@ const folders =
 
 const closeTab = (
   tabId,
+  options = {},
 ) => {
 
   const filtered =
@@ -1464,6 +2378,15 @@ const closeTab = (
     );
 
   setOpenedTabs(filtered);
+
+  if (options.removeMinimized !== false) {
+
+    setMinimizedPreviewTabs((prev) =>
+      prev.filter((tab) =>
+        tab.id !== tabId
+      )
+    );
+  }
 
   if (
     activeTab &&
@@ -1475,6 +2398,97 @@ const closeTab = (
     );
   }
 };
+
+const minimizePreview = () => {
+
+  if (!activeItem) {
+    return;
+  }
+
+  setMinimizedPreviewTabs((prev) => {
+
+    const exists =
+      prev.some((tab) =>
+        tab.id === activeItem.id
+      );
+
+    if (exists) {
+      return prev;
+    }
+
+    return [
+      ...prev,
+      activeItem,
+    ];
+  });
+
+  closeTab(
+    activeItem.id,
+    {
+      removeMinimized: false,
+    },
+  );
+};
+
+const restorePreview = (item) => {
+
+  setMinimizedPreviewTabs((prev) =>
+    prev.filter((tab) =>
+      tab.id !== item.id
+    )
+  );
+
+  setOpenedTabs((prev) => {
+
+    const exists =
+      prev.some((tab) =>
+        tab.id === item.id
+      );
+
+    if (exists) {
+      return prev;
+    }
+
+    return [
+      ...prev,
+      item,
+    ];
+  });
+
+  setActiveTab(item);
+};
+
+if (workspaceItem) {
+
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return (
+
+    createPortal(
+      <WorkspaceOverlayView
+        item={workspaceItem}
+        onClose={() => {
+
+          setWorkspaceItem(null);
+          setMinimizedWorkspaceItem(null);
+
+          if (initialWorkspaceSlug) {
+            history.push('/workspace');
+          }
+        }}
+        onMinimize={() => {
+
+          setMinimizedWorkspaceItem(workspaceItem);
+          setWorkspaceItem(null);
+        }}
+      />,
+      document.body,
+    )
+
+  );
+}
 
   /* =========================
      RENDER
@@ -1499,11 +2513,14 @@ return (
 
       <div className={styles.workspaceHeader}>
 
+        {
+          !activeItem && (
+
         <div className={styles.windowButtons}>
 
           <span
             className={styles.red}
-            onClick={onBoot}
+            onClick={closeWorkspaceApp}
           ></span>
 
           <span className={styles.yellow}></span>
@@ -1511,6 +2528,9 @@ return (
           <span className={styles.green}></span>
 
         </div>
+
+          )
+        }
 
         <span className={styles.workspaceTitle}>
           developer-workspace
@@ -1520,7 +2540,10 @@ return (
 
       {/* BODY */}
 
-      <div className={styles.workspaceBody}>
+      <div
+        ref={workspaceBodyRef}
+        className={styles.workspaceBody}
+      >
 
         {/* SIDEBAR */}
 
@@ -1532,6 +2555,15 @@ return (
         {/* DESKTOP */}
 
 <div className={styles.desktopArea}>
+
+{
+  runtimeCmdItem && (
+    <div
+      className={styles.runtimeCmdBackdrop}
+      aria-hidden="true"
+    />
+  )
+}
 
   <div className={styles.desktopGrid}>
 
@@ -1575,6 +2607,9 @@ return (
     ${
       activeItem &&
       activeItem.id === item.id
+        ? styles.active
+        : runtimeCmdItem &&
+          runtimeCmdItem.id === item.id
         ? styles.active
         : ''
     }
@@ -1750,29 +2785,30 @@ return (
 {/* PREVIEW */}
 
 {
-  workspaceItem && (
-
-    <WorkspaceOverlayView
-      item={workspaceItem}
-      onClose={() =>
-        setWorkspaceItem(null)
-      }
-    />
-
-  )
-}
-
-{
 
 <PreviewPanel
   activeItem={activeItem}
   openedTabs={openedTabs}
   setActiveTab={setActiveTab}
   closeTab={closeTab}
+  minimizePreview={minimizePreview}
   previewWidth={previewWidth}
   isResizing={isResizing}
   setIsResizing={setIsResizing}
 />
+}
+
+{
+  runtimeCmdItem && (
+
+    <RuntimeCmdWindow
+      item={runtimeCmdItem}
+      onClose={() =>
+        setRuntimeCmdItem(null)
+      }
+    />
+
+  )
 }
 
       </div>
@@ -1788,7 +2824,7 @@ return (
           <button
             className={styles.runtimeButton}
 
-            onClick={onBoot}
+            onClick={closeWorkspaceApp}
           >
             {'>_'}
           </button>
@@ -1823,6 +2859,53 @@ return (
           <button className={styles.taskbarIcon}>
             <i className="fa-solid fa-folder"></i>
           </button>
+
+          {
+            minimizedWorkspaceItem && (
+
+              <button
+                type="button"
+                className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+                onClick={() => {
+
+                  setWorkspaceItem(minimizedWorkspaceItem);
+                  setMinimizedWorkspaceItem(null);
+                }}
+                title={minimizedWorkspaceItem.title}
+                aria-label={`Restore ${minimizedWorkspaceItem.title}`}
+              >
+                <i className="fa-solid fa-code"></i>
+              </button>
+
+            )
+          }
+
+          {
+            minimizedPreviewTabs.map((item) => (
+
+              <button
+                key={item.id}
+                type="button"
+                className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+                onClick={() =>
+                  restorePreview(item)
+                }
+                title={item.title}
+                aria-label={`Restore ${item.title}`}
+              >
+                <i
+                  className={`fa-solid ${
+                    item.type === 'PDF'
+                      ? 'fa-file-pdf'
+                      : item.type === 'html'
+                        ? 'fa-code'
+                        : 'fa-file-lines'
+                  }`}
+                ></i>
+              </button>
+
+            ))
+          }
 
           <a
             href="https://github.com/park-yina"

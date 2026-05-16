@@ -1,0 +1,129 @@
+package com.parkvina.fakejumping.security;
+
+import com.parkvina.fakejumping.entity.Admin;
+import com.parkvina.fakejumping.enums.AdminStatus;
+import com.parkvina.fakejumping.mapper.AdminMapper;
+import com.parkvina.fakejumping.service.JwtUtils;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import lombok.RequiredArgsConstructor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    private final JwtUtils jwtUtils;
+    private final AdminMapper adminMapper;
+
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        /*
+         * 로그인 및 정적 리소스 요청은 JWT 인증 제외
+         */
+        if (
+                path.equals("/sign-in")
+                        || path.equals("/auth/sign-in")
+                        || path.equals("/auth/refresh")
+                        || path.startsWith("/css")
+                        || path.startsWith("/js")
+                        || path.startsWith("/images")
+        ) {
+
+            filterChain.doFilter(request, response);
+
+            return;
+        }
+
+        String token = jwtUtils.resolveToken(request);
+
+        /*
+         * Access Token 검증
+         */
+        if (token != null && jwtUtils.isValidToken(token)) {
+
+            Long adminId = jwtUtils.getAdminId(token);
+
+            Admin admin =
+                    adminMapper.findById(adminId);
+
+            /*
+             * 존재하지 않는 계정 차단
+             */
+            if (admin == null) {
+
+                log.debug("[AUTH] 존재하지 않는 관리자");
+
+                filterChain.doFilter(request, response);
+
+                return;
+            }
+
+            /*
+             * 비활성화 계정 접근 차단
+             */
+            if (admin.getAdminStatus() == AdminStatus.INACTIVE) {
+
+                log.debug("[AUTH] 비활성화된 계정 접근 차단");
+
+                response.setStatus(
+                        HttpServletResponse.SC_UNAUTHORIZED
+                );
+
+                response.setContentType(
+                        "application/json;charset=UTF-8"
+                );
+
+                response.getWriter().write(
+                        "{\"message\":\"비활성화된 계정입니다.\"}"
+                );
+
+                return;
+            }
+
+            /*
+             * JWT → Authentication 변환
+             */
+            Authentication authentication =
+                    jwtUtils.getAuthentication(token);
+
+            /*
+             * SecurityContext 저장
+             */
+            SecurityContext context =
+                    SecurityContextHolder.createEmptyContext();
+
+            context.setAuthentication(authentication);
+
+            SecurityContextHolder.setContext(context);
+
+        } else {
+
+            log.debug("[AUTH] 토큰 없음 또는 유효하지 않음");
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}

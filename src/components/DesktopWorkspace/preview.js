@@ -4,6 +4,12 @@ import React, {
 } from 'react';
 
 import styles from './styles.module.css';
+import {
+  getActiveCodeLineIndex,
+  getLanguageFromFile,
+  getTokenStyle,
+  useRuntimeCodeTokens,
+} from './codeHighlight';
 
 import { documents }
 from '../../data/documents';
@@ -106,6 +112,8 @@ export function PreviewPanel({
 
   closeTab,
 
+  minimizePreview,
+
   previewWidth,
 
   isResizing,
@@ -143,6 +151,15 @@ export function PreviewPanel({
 
   const [codeContent, setCodeContent] =
     useState('');
+
+  const codeRows =
+    useRuntimeCodeTokens(
+      codeContent,
+      getLanguageFromFile(activeItem),
+    );
+
+  const activeLineIndex =
+    getActiveCodeLineIndex(codeRows);
 
 useEffect(() => {
 
@@ -295,6 +312,17 @@ useEffect(() => {
 
         </div>
 
+        <button
+          type="button"
+          className={styles.previewMinimizeButton}
+          onClick={() =>
+            minimizePreview?.()
+          }
+          aria-label={`Minimize ${activeItem.title}`}
+        >
+          <i className="fa-solid fa-minus" />
+        </button>
+
         {/* =========================================
            TOOLBAR
         ========================================= */}
@@ -337,13 +365,49 @@ useEffect(() => {
           {
             isCode && (
 
-              <pre className={styles.previewCode}>
+              <div
+                className={styles.previewCode}
+                role="region"
+                aria-label={`${activeItem.title} source`}
+              >
 
-                <code>
-                  {codeContent}
+                <code className={styles.previewCodeInner}>
+                  {
+                    codeRows.map((line, index) => (
+
+                      <span
+                        key={`${activeItem.id}-${index}`}
+                        className={`${styles.previewCodeLine} ${
+                          index === activeLineIndex
+                            ? styles.previewCodeLineActive
+                            : ''
+                        }`}
+                      >
+                        <span className={styles.previewLineNumber}>
+                          {index + 1}
+                        </span>
+
+                        <span className={styles.previewLineText}>
+                          {
+                            line.map((token, tokenIndex) => (
+
+                              <span
+                                key={`${activeItem.id}-${index}-${tokenIndex}`}
+                                style={getTokenStyle(token)}
+                              >
+                                {token.content || ' '}
+                              </span>
+
+                            ))
+                          }
+                        </span>
+                      </span>
+
+                    ))
+                  }
                 </code>
 
-              </pre>
+              </div>
 
             )
           }

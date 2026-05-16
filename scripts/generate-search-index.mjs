@@ -7,7 +7,6 @@ const root = process.cwd();
 
 const CATEGORY = {
   DEV_WIKI: 'DEV WIKI',
-  DEV_LOG: 'DEV LOG',
   ARCHIVE: 'ARCHIVE',
 };
 
@@ -105,7 +104,6 @@ function cleanContent(content) {
 
 const docs = [
   ...readMarkdownCollection('docs', CATEGORY.DEV_WIKI, '/docs'),
-  ...readMarkdownCollection('blog', CATEGORY.DEV_LOG, '/blog'),
   ...archiveEntries.map((entry) => ({
     id: `${CATEGORY.ARCHIVE}:${entry.title}`,
     title: entry.title,

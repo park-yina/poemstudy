@@ -1,0 +1,24 @@
+.workspacePage {
+  height: 100vh;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      #070707,
+      #020202
+    );
+  color: #f0e7d6;
+}
+
+.workspaceShell {
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.workspaceShell :global(.navbar),
+.workspaceShell :global(.footer) {
+  display: none;
+}

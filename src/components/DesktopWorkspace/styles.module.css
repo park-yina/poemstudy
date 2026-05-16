@@ -397,6 +397,8 @@
 
   flex: 1;
 
+  min-width: 360px;
+
   position: relative;
 
   padding: 3rem;
@@ -420,6 +422,19 @@
     );
 
   pointer-events: none;
+}
+
+.runtimeCmdBackdrop {
+  position:
+    absolute;
+  inset:
+    0;
+  z-index:
+    70;
+  background:
+    transparent;
+  cursor:
+    default;
 }
 
 .desktopGrid {
@@ -508,6 +523,286 @@
   transition:
     color 0.16s ease;
 }
+
+.runtimeCmdWindow {
+  position:
+    absolute;
+  left:
+    0;
+  top:
+    0;
+  z-index:
+    80;
+  width:
+    min(940px, calc(100% - 3rem));
+  height:
+    min(560px, calc(100% - 7rem));
+  min-height:
+    390px;
+  display:
+    flex;
+  flex-direction:
+    column;
+  overflow:
+    hidden;
+  border:
+    1px solid rgba(255,255,255,0.16);
+  border-radius:
+    12px;
+  background:
+    #030303;
+  box-shadow:
+    0 34px 90px rgba(0,0,0,0.56),
+    0 0 0 1px rgba(0,0,0,0.4);
+}
+
+.runtimeCmdTitlebar {
+  height:
+    42px;
+  flex-shrink:
+    0;
+  display:
+    flex;
+  align-items:
+    center;
+  justify-content:
+    center;
+  position:
+    relative;
+  cursor:
+    grab;
+  user-select:
+    none;
+  border-bottom:
+    1px solid rgba(255,255,255,0.1);
+  background:
+    linear-gradient(
+      180deg,
+      #2d2d2d,
+      #1b1b1b
+    );
+}
+
+.runtimeCmdTitlebar:active {
+  cursor:
+    grabbing;
+}
+
+.runtimeCmdControls {
+  position:
+    absolute;
+  left:
+    8px;
+  display:
+    flex;
+  align-items:
+    center;
+  gap:
+    0.15rem;
+}
+
+.runtimeCmdControl {
+  width:
+    26px;
+  height:
+    26px;
+  padding:
+    0;
+  border:
+    none;
+  border-radius:
+    50%;
+  cursor:
+    pointer;
+  position:
+    relative;
+  background:
+    transparent;
+}
+
+.runtimeCmdControl::before {
+  content:
+    '';
+  position:
+    absolute;
+  left:
+    50%;
+  top:
+    50%;
+  width:
+    14px;
+  height:
+    14px;
+  border-radius:
+    50%;
+  transform:
+    translate(-50%, -50%);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.24);
+}
+
+.runtimeCmdControl:hover {
+  filter:
+    brightness(1.08);
+}
+
+.runtimeCmdClose::before {
+  background:
+    #ff5f57;
+}
+
+.runtimeCmdMinimize::before {
+  background:
+    #febc2e;
+}
+
+.runtimeCmdExpand::before {
+  background:
+    #28c840;
+}
+
+.runtimeCmdTitle {
+  color:
+    rgba(255,255,255,0.72);
+  font-family:
+    'IBM Plex Mono',
+    'Fira Code',
+    Consolas,
+    monospace;
+  font-size:
+    0.76rem;
+  letter-spacing:
+    0.02em;
+}
+
+.runtimeCmdStream {
+  flex:
+    1;
+  min-height:
+    0;
+  overflow-y:
+    auto;
+  overflow-x:
+    hidden;
+  padding:
+    clamp(1rem, 1.7vw, 1.55rem);
+  background:
+    #030303;
+  color:
+    rgba(235,235,235,0.88);
+  font-family:
+    'IBM Plex Mono',
+    'Fira Code',
+    Consolas,
+    'Courier New',
+    monospace;
+  font-size:
+    clamp(0.82rem, 0.92vw, 0.96rem);
+  line-height:
+    1.75;
+  scrollbar-width:
+    thin;
+  scrollbar-color:
+    rgba(255,255,255,0.16)
+    transparent;
+}
+
+.runtimeCmdStream::-webkit-scrollbar {
+  width:
+    8px;
+}
+
+.runtimeCmdStream::-webkit-scrollbar-thumb {
+  background:
+    rgba(255,255,255,0.14);
+  border-radius:
+    999px;
+}
+
+.runtimeCmdCommand,
+.runtimeCmdTermination,
+.runtimeCmdLine {
+  margin:
+    0;
+  white-space:
+    pre-wrap;
+}
+
+.runtimeCmdCommand {
+  margin-bottom:
+    0.75rem;
+  color:
+    rgba(235,235,235,0.76);
+}
+
+.runtimeCmdCommand span {
+  color:
+    rgba(126,231,135,0.92);
+  margin-right:
+    0.65rem;
+}
+
+.runtimeCmdLine {
+  display:
+    grid;
+  grid-template-columns:
+    minmax(136px, 0.24fr) 1fr;
+  gap:
+    clamp(0.8rem, 1.5vw, 1.2rem);
+  padding:
+    0.18rem 0;
+  color:
+    rgba(236,236,236,0.84);
+  animation:
+    runtimeCmdLineIn 480ms steps(3, end) forwards;
+}
+
+.runtimeCmdLine span {
+  color:
+    rgba(126,231,135,0.78);
+}
+
+.runtimeCmdLine[data-age='settled'] {
+  color:
+    rgba(236,236,236,0.56);
+}
+
+.runtimeCmdLine[data-age='old'] {
+  color:
+    rgba(236,236,236,0.34);
+}
+
+.runtimeCmdLine[data-age='settled'] span {
+  color:
+    rgba(126,231,135,0.52);
+}
+
+.runtimeCmdLine[data-age='old'] span {
+  color:
+    rgba(126,231,135,0.32);
+}
+
+.runtimeCmdTermination {
+  color:
+    rgba(235,235,235,0.58);
+}
+
+@keyframes runtimeCmdLineIn {
+  from {
+    opacity:
+      0;
+    transform:
+      translateY(7px);
+  }
+
+  to {
+    opacity:
+      1;
+    transform:
+      translateY(0);
+  }
+}
+
 .desktopIcon i {
 
   font-size: 3rem;
@@ -713,6 +1008,8 @@
 .previewPanel {
 
   flex-shrink: 0;
+
+  position: relative;
 
   display: flex;
 
@@ -959,24 +1256,67 @@
 
   min-height: 0;
 
-  overflow: hidden;
+  height: 100%;
+
+  overflow: auto;
+
+  scrollbar-gutter:
+    stable;
 
   padding: 1rem;
 
-  display: flex;
-
-  align-items: flex-start;
-
-  justify-content: center;
+  display: block;
 
   background:
     #060816;
 }
+
+.previewMinimizeButton {
+
+  position: absolute;
+
+  top: 8px;
+  right: 10px;
+
+  z-index: 8;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 8px;
+
+  background:
+    rgba(10,12,22,0.72);
+
+  color:
+    rgba(255,255,255,0.62);
+
+  cursor: pointer;
+}
+
+.previewMinimizeButton:hover {
+
+  background:
+    rgba(124,156,255,0.14);
+
+  color:
+    rgba(255,255,255,0.92);
+}
+
 .previewDocument {
 
   width: 100%;
 
-  height: 100%;
+  min-height: 100%;
 
   overflow: auto;
 
@@ -992,11 +1332,11 @@
 
   width: 100%;
 
-  height: 100%;
+  height: calc(100vh - 150px);
 
   min-width: 0;
 
-  min-height: 0;
+  min-height: 720px;
 
   border: none;
 
@@ -1019,7 +1359,7 @@
 
   width: 100%;
 
-  height: 100%;
+  min-height: 100%;
 
   overflow: auto;
 
@@ -1094,6 +1434,7 @@
 .previewContent::-webkit-scrollbar {
 
   width: 10px;
+  height: 10px;
 }
 
 .previewContent::-webkit-scrollbar-thumb {
@@ -1129,7 +1470,16 @@
   .desktopArea {
   position: relative;
 
+    min-width: 0;
+
     padding: 1.5rem;
+  }
+
+  .previewPanel {
+
+    width: 100% !important;
+
+    min-height: 52vh;
   }
   .desktopGrid {
 
@@ -1539,6 +1889,42 @@
     rgba(124,156,255,0.12);
 }
 
+.taskbarIconActive {
+
+  position: relative;
+
+  background:
+    rgba(124,156,255,0.16);
+
+  border-color:
+    rgba(124,156,255,0.24);
+
+  color:
+    #dbe7ff;
+}
+
+.taskbarIconActive::after {
+
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 5px;
+
+  width: 18px;
+  height: 2px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(124,156,255,0.78);
+}
+
 .taskbarIcon i {
 
   font-size: 1rem;
@@ -1611,14 +1997,27 @@
   width: 100%;
   height: 100%;
 
+  min-height: 0;
+
+  max-height: 100%;
+
   overflow: auto;
+
+  scrollbar-gutter:
+    stable both-edges;
 
   padding: 2rem;
 
-  border-radius: 12px;
+  border-radius: 8px;
 
   background:
-    #050816;
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.018) 0,
+      rgba(255,255,255,0.018) 46px,
+      transparent 46px
+    ),
+    #050914;
 
   color:
     rgba(255,255,255,0.88);
@@ -1634,4 +2033,87 @@
   white-space: pre;
 
   tab-size: 2;
+
+  cursor: text;
+
+  user-select: text;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.035),
+    inset 0 18px 30px rgba(0,0,0,0.16);
+}
+
+.previewCodeInner {
+
+  display: block;
+  min-width: 100%;
+  width: max-content;
+}
+
+.previewCodeLine {
+
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: start;
+
+  min-width: max-content;
+  min-height: 1.7em;
+
+  line-height: 1.7;
+
+  position: relative;
+}
+
+.previewCodeLine:hover {
+
+  background:
+    rgba(255,255,255,0.024);
+}
+
+.previewCodeLineActive {
+
+  background:
+    rgba(255,255,255,0.026);
+}
+
+.previewCodeLineActive::before {
+
+  content: '';
+
+  position: absolute;
+  left: 0;
+  top: 0.18em;
+  bottom: 0.18em;
+
+  width: 2px;
+
+  background:
+    rgba(186,199,218,0.32);
+}
+
+.previewLineNumber {
+
+  padding-right: 0.75rem;
+
+  color:
+    rgba(148,163,184,0.36);
+
+  text-align: right;
+
+  user-select: none;
+}
+
+.previewLineText {
+
+  display: block;
+
+  min-width: 0;
+
+  padding-right: 1.3rem;
+
+  white-space: pre;
+
+  cursor: text;
+
+  user-select: text;
 }

@@ -1,14 +1,13 @@
 import MiniSearch from 'minisearch';
 import records from '../generated/search-docs.json';
 
-export const SEARCH_CATEGORIES = ['DEV WIKI', 'DEV LOG', 'ARCHIVE'];
+export const SEARCH_CATEGORIES = ['DEV WIKI', , 'ARCHIVE'];
 
 export const SEARCH_FILTERS = [
   { id: 'all', label: 'ALL', mode: 'all' },
   { id: 'titles', label: 'TITLES', mode: 'title' },
   { id: 'content', label: 'CONTENT', mode: 'content' },
   { id: 'dev-wiki', label: 'DEV WIKI', mode: 'category', category: 'DEV WIKI' },
-  { id: 'dev-log', label: 'DEV LOG', mode: 'category', category: 'DEV LOG' },
   { id: 'archive', label: 'ARCHIVE', mode: 'category', category: 'ARCHIVE' },
 ];
 

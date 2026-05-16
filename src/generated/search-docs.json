@@ -90,58 +90,6 @@
     "path": "/docs/tutorial-basics/congratulations"
   },
   {
-    "id": "DEV LOG:2021-08-01-mdx-blog-post",
-    "title": "MDX Blog Post",
-    "description": "Blog posts support Docusaurus Markdown features, such as MDX.",
-    "content": "Blog posts support Docusaurus Markdown features, such as MDX. :::tip Use the power of React to create interactive blog posts. ::: For example, use JSX to create an interactive button: alert('button clicked!')}>Click me!",
-    "tags": [
-      "docusaurus"
-    ],
-    "category": "DEV LOG",
-    "source": "blog",
-    "path": "/blog/2021-08-01-mdx-blog-post"
-  },
-  {
-    "id": "DEV LOG:2019-05-29-long-blog-post",
-    "title": "Long Blog Post",
-    "description": "This is the summary of a very long blog post,",
-    "content": "This is the summary of a very long blog post, Use a {/* truncate */} comment to limit blog post size in the list view. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
-    "tags": [
-      "hello",
-      "docusaurus"
-    ],
-    "category": "DEV LOG",
-    "source": "blog",
-    "path": "/blog/2019-05-29-long-blog-post"
-  },
-  {
-    "id": "DEV LOG:2019-05-28-first-blog-post",
-    "title": "First Blog Post",
-    "description": "Lorem ipsum dolor sit amet...",
-    "content": "Lorem ipsum dolor sit amet... ...consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
-    "tags": [
-      "hola",
-      "docusaurus"
-    ],
-    "category": "DEV LOG",
-    "source": "blog",
-    "path": "/blog/2019-05-28-first-blog-post"
-  },
-  {
-    "id": "DEV LOG:2021-08-26-welcome/index",
-    "title": "Welcome",
-    "description": "Docusaurus blogging features are powered by the blog plugin.",
-    "content": "Docusaurus blogging features are powered by the blog plugin. Here are a few tips you might find useful. Simply add Markdown files (or folders) to the blog directory. Regular blog authors can be added to authors.yml. The blog post date can be extracted from filenames, such as: 2019-05-30-welcome.md 2019-05-30-welcome/index.md A blog post folder can be convenient to co-locate blog post images: The blog supports tags as well! **And if you don't want a blog**: just delete this directory, and use blog: false in your Docusaurus config.",
-    "tags": [
-      "facebook",
-      "hello",
-      "docusaurus"
-    ],
-    "category": "DEV LOG",
-    "source": "blog",
-    "path": "/blog/2021-08-26-welcome"
-  },
-  {
     "id": "ARCHIVE:fakejumping-admin",
     "title": "fakejumping-admin",
     "description": "Operational platform records focused on authentication, admin flows, deployment, and runtime maintenance.",
