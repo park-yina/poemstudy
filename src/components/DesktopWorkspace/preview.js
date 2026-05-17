@@ -348,8 +348,7 @@ useEffect(() => {
           ========================================= */}
 
           {
-            isDocument &&
-            currentDocument && (
+            isDocument && (
 
               <DocumentViewer
                 doc={currentDocument}

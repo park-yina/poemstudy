@@ -1271,6 +1271,1849 @@
     #060816;
 }
 
+.workspacePackageSurface {
+
+  width:
+    100%;
+
+  min-height:
+    100%;
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  overflow:
+    auto;
+
+  border:
+    none;
+
+  border-radius:
+    0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,20,32,0.56),
+      rgba(8,12,20,0.18)
+    );
+
+  box-shadow:
+    none;
+}
+
+.workspacePackageHeader {
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    1rem;
+
+  padding:
+    1.45rem 1.55rem 1.1rem;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(255,255,255,0.025);
+}
+
+.workspacePackageKicker {
+
+  display:
+    block;
+
+  margin-bottom:
+    0.55rem;
+
+  color:
+    rgba(148,191,255,0.72);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.68rem;
+
+  letter-spacing:
+    0.16em;
+}
+
+.workspacePackageHeader h2 {
+
+  margin:
+    0;
+
+  color:
+    rgba(255,255,255,0.95);
+
+  font-size:
+    1.45rem;
+
+  letter-spacing:
+    0;
+}
+
+.workspacePackageHeader p {
+
+  margin:
+    0.45rem 0 0;
+
+  color:
+    rgba(226,232,240,0.58);
+
+  font-size:
+    0.9rem;
+}
+
+.workspacePackageClose,
+.archiveAppClose {
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  border:
+    1px solid rgba(255,255,255,0.10);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  color:
+    rgba(255,255,255,0.72);
+
+  cursor:
+    pointer;
+}
+
+.workspacePackagePath {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    0.7rem;
+
+  padding:
+    0.8rem 1.55rem;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.06);
+
+  color:
+    rgba(226,232,240,0.46);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.68rem;
+
+  text-transform:
+    uppercase;
+}
+
+.workspacePackagePath span:not(:last-child)::after {
+
+  content:
+    '/';
+
+  margin-left:
+    0.7rem;
+
+  color:
+    rgba(226,232,240,0.26);
+}
+
+.workspaceObjectGrid {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    clamp(1.1rem, 2.4vw, 1.8rem);
+
+  padding:
+    clamp(1.5rem, 3.2vw, 2.5rem);
+
+  min-height:
+    310px;
+
+  align-items:
+    flex-start;
+}
+
+.workspaceFolderObject,
+.workspaceExecutableObject {
+
+  width:
+    124px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  gap:
+    0.42rem;
+
+  padding:
+    0.72rem 0.58rem;
+
+  border:
+    1px solid transparent;
+
+  border-radius:
+    10px;
+
+  background:
+    transparent;
+
+  color:
+    rgba(255,255,255,0.92);
+
+  text-align:
+    center;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.workspaceFolderObject:hover,
+.workspaceExecutableObject:hover {
+
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255,255,255,0.045);
+
+  border-color:
+    rgba(255,255,255,0.08);
+}
+
+.codeAppEntry:hover {
+
+  border-color:
+    rgba(96,165,250,0.30);
+
+  background:
+    rgba(59,130,246,0.08);
+}
+
+.docsAppEntry:hover {
+
+  border-color:
+    rgba(218,184,116,0.30);
+
+  background:
+    rgba(218,184,116,0.075);
+}
+
+.workspaceFolderIcon,
+.codeAppIcon,
+.docsAppIcon {
+
+  width:
+    74px;
+
+  height:
+    74px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    18px;
+}
+
+.workspaceFolderIcon {
+
+  color:
+    #f6c85f;
+
+  font-size:
+    3.8rem;
+}
+
+.codeAppIcon {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(59,130,246,0.94),
+      rgba(30,64,175,0.98)
+    );
+
+  color:
+    #eaf3ff;
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    1.85rem;
+
+  box-shadow:
+    0 18px 42px rgba(37,99,235,0.34),
+    inset 0 0 0 1px rgba(255,255,255,0.18);
+}
+
+.docsAppIcon {
+
+  position:
+    relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d3b06b,
+      #7b5b2d
+    );
+
+  color:
+    #fff5dc;
+
+  font-size:
+    1.85rem;
+
+  box-shadow:
+    0 18px 42px rgba(116,80,31,0.35),
+    inset 0 0 0 1px rgba(255,246,220,0.24);
+}
+
+.docsAppIcon::after {
+
+  content:
+    '';
+
+  position:
+    absolute;
+
+  inset:
+    13px;
+
+  border:
+    1px solid rgba(255,246,220,0.24);
+
+  border-radius:
+    14px;
+}
+
+.workspaceFolderObject strong,
+.workspaceExecutableObject strong,
+.workspaceExecutableObject small {
+
+  display:
+    block;
+}
+
+.workspaceFolderObject strong,
+.workspaceExecutableObject strong {
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.86rem;
+
+  letter-spacing:
+    0.08em;
+}
+
+.docsAppEntry strong {
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  color:
+    #f7e7bd;
+
+  font-size:
+    1rem;
+}
+
+.workspaceExecutableObject small {
+
+  max-width:
+    15ch;
+
+  color:
+    rgba(226,232,240,0.36);
+
+  font-size:
+    0.72rem;
+
+  line-height:
+    1.35;
+}
+
+.docsAppEntry small {
+
+  color:
+    rgba(239,228,207,0.42);
+}
+
+.workspacePackageFooter {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  gap:
+    1rem;
+
+  padding:
+    0.85rem 1.55rem;
+
+  border-top:
+    1px solid rgba(255,255,255,0.07);
+
+  color:
+    rgba(226,232,240,0.42);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.68rem;
+
+  text-transform:
+    uppercase;
+}
+
+.archiveAppOverlay {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    10000;
+
+  display:
+    flex;
+
+  align-items:
+    stretch;
+
+  justify-content:
+    stretch;
+
+  padding:
+    clamp(0.7rem, 1.6vw, 1.35rem);
+
+  background:
+    rgba(8,10,14,0.68);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.archiveAppWindow {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  overflow:
+    hidden;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  border:
+    1px solid rgba(232,236,243,0.08);
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #17191f,
+      #13151b 36%,
+      #101217
+    );
+
+  color:
+    #e8e5dc;
+
+  font-family:
+    'Georgia',
+    'Times New Roman',
+    serif;
+
+  box-shadow:
+    0 32px 92px rgba(0,0,0,0.46);
+}
+
+.archiveWindowBar {
+
+  height:
+    42px;
+
+  flex-shrink:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  position:
+    relative;
+
+  border-bottom:
+    1px solid rgba(232,236,243,0.07);
+
+  background:
+    rgba(18,20,25,0.88);
+}
+
+.archiveWindowControls {
+
+  position:
+    absolute;
+
+  left:
+    12px;
+
+  display:
+    flex;
+
+  gap:
+    0.48rem;
+}
+
+.archiveWindowDot {
+
+  width:
+    13px;
+
+  height:
+    13px;
+
+  padding:
+    0;
+
+  border:
+    none;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(232,236,243,0.20);
+}
+
+.archiveWindowClose {
+
+  background:
+    #ff5f57;
+
+  cursor:
+    pointer;
+}
+
+.archiveWindowMinimize {
+
+  background:
+    #febc2e;
+}
+
+.archiveWindowExpand {
+
+  background:
+    #28c840;
+}
+
+.archiveWindowTitle {
+
+  color:
+    rgba(232,236,243,0.44);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.74rem;
+
+  letter-spacing:
+    0.04em;
+}
+
+.archiveBootTrace {
+
+  min-height:
+    32px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.7rem;
+
+  padding:
+    0 1.4rem;
+
+  border-bottom:
+    1px solid rgba(232,236,243,0.055);
+
+  background:
+    rgba(16,18,23,0.46);
+
+  color:
+    rgba(210,216,226,0.42);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.62rem;
+
+  letter-spacing:
+    0.08em;
+
+  overflow-x:
+    auto;
+}
+
+.archiveAppWindow .archiveRuntimeBody {
+
+  min-height:
+    0;
+
+  grid-template-columns:
+    minmax(190px, 0.28fr) minmax(0, 1fr) minmax(180px, 0.25fr);
+}
+
+.archiveDocumentRuntimeBody {
+
+  flex:
+    1;
+
+  min-height:
+    0;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(210px, 0.24fr) minmax(0, 1fr) minmax(200px, 0.24fr);
+
+  background:
+    #15171c;
+}
+
+.archiveDocsNavigator,
+.archiveDocumentAside {
+
+  min-width:
+    0;
+
+  overflow:
+    auto;
+
+  padding:
+    1.15rem 1rem;
+
+  background:
+    rgba(19,21,27,0.48);
+}
+
+.archiveDocsNavigator {
+
+  border-right:
+    1px solid rgba(232,236,243,0.065);
+}
+
+.archiveDocumentAside {
+
+  border-left:
+    1px solid rgba(232,236,243,0.065);
+}
+
+.docsTreeNodes {
+
+  display:
+    grid;
+
+  gap:
+    0.28rem;
+
+  margin-top:
+    0.9rem;
+}
+
+.docsTreeFolder {
+
+  display:
+    grid;
+
+  gap:
+    0.26rem;
+}
+
+.docsTreeFolder .docsTreeNodes {
+
+  margin-top:
+    0.1rem;
+
+  margin-left:
+    0.85rem;
+
+  padding-left:
+    0.65rem;
+
+  border-left:
+    1px solid rgba(232,236,243,0.08);
+}
+
+.docsTreeFolderName,
+.docsTreeFile {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.52rem;
+
+  min-height:
+    32px;
+
+  color:
+    rgba(222,226,234,0.58);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.72rem;
+}
+
+.docsTreeFolderName i {
+
+  color:
+    rgba(169,179,194,0.72);
+}
+
+.docsTreeFile {
+
+  width:
+    100%;
+
+  padding:
+    0.42rem 0.5rem;
+
+  border:
+    1px solid transparent;
+
+  border-radius:
+    7px;
+
+  background:
+    transparent;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+}
+
+.docsTreeFile:hover,
+.docsTreeFileActive {
+
+  color:
+    #f2f4f8;
+
+  background:
+    rgba(232,236,243,0.055);
+
+  border-color:
+    rgba(232,236,243,0.08);
+}
+
+.archiveDocumentPage {
+
+  min-width:
+    0;
+
+  overflow:
+    auto;
+
+  padding:
+    clamp(1.4rem, 3vw, 3rem);
+
+  background:
+    #181a20;
+}
+
+.archiveDocumentHeader {
+
+  max-width:
+    820px;
+
+  margin:
+    0 auto 1.4rem;
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    1rem;
+
+  padding-bottom:
+    1rem;
+
+  border-bottom:
+    1px solid rgba(232,236,243,0.08);
+}
+
+.archiveDocumentHeader span,
+.archiveDocumentHeader strong,
+.archiveDocumentStatus {
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+}
+
+.archiveDocumentHeader span {
+
+  display:
+    block;
+
+  margin-bottom:
+    0.45rem;
+
+  color:
+    rgba(176,184,198,0.58);
+
+  font-size:
+    0.68rem;
+}
+
+.archiveDocumentHeader h2 {
+
+  margin:
+    0;
+
+  color:
+    #f4f1e8;
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  font-size:
+    clamp(1.6rem, 2.8vw, 2.7rem);
+
+  line-height:
+    1.12;
+}
+
+.archiveDocumentHeader strong {
+
+  padding:
+    0.35rem 0.5rem;
+
+  border:
+    1px solid rgba(232,236,243,0.10);
+
+  color:
+    rgba(218,222,230,0.56);
+
+  font-size:
+    0.68rem;
+
+  text-transform:
+    uppercase;
+}
+
+.archiveDocumentDescription,
+.archiveMarkdownDocument,
+.archiveEmptyState,
+.archiveDocumentStatus {
+
+  max-width:
+    820px;
+
+  margin-left:
+    auto;
+
+  margin-right:
+    auto;
+}
+
+.archiveDocumentDescription {
+
+  color:
+    rgba(218,222,230,0.62);
+
+  font-size:
+    1rem;
+
+  line-height:
+    1.8;
+}
+
+.archiveMarkdownDocument {
+
+  color:
+    rgba(237,237,232,0.84);
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  font-size:
+    1.05rem;
+
+  line-height:
+    1.9;
+}
+
+.archiveMarkdownDocument h1,
+.archiveMarkdownDocument h2,
+.archiveMarkdownDocument h3,
+.archiveMarkdownDocument h4,
+.archiveMarkdownDocument h5,
+.archiveMarkdownDocument h6 {
+
+  color:
+    #f4f1e8;
+
+  line-height:
+    1.22;
+
+  margin:
+    1.75rem 0 0.8rem;
+}
+
+.archiveMarkdownDocument h1 {
+
+  font-size:
+    2.1rem;
+}
+
+.archiveMarkdownDocument h2 {
+
+  font-size:
+    1.55rem;
+}
+
+.archiveMarkdownDocument h3 {
+
+  font-size:
+    1.25rem;
+}
+
+.archiveMarkdownDocument p {
+
+  margin:
+    0 0 1.05rem;
+}
+
+.archiveMarkdownDocument a {
+
+  color:
+    #b9c9ee;
+
+  text-decoration:
+    underline;
+
+  text-underline-offset:
+    0.18em;
+}
+
+.archiveMarkdownDocument blockquote {
+
+  margin:
+    1.2rem 0;
+
+  padding:
+    0.2rem 0 0.2rem 1rem;
+
+  border-left:
+    3px solid rgba(169,179,194,0.34);
+
+  color:
+    rgba(218,222,230,0.68);
+
+  background:
+    rgba(232,236,243,0.04);
+}
+
+.archiveMarkdownDocument ul {
+
+  margin:
+    0 0 1.15rem 1.2rem;
+
+  padding:
+    0;
+}
+
+.archiveMarkdownDocument ol {
+
+  margin:
+    0 0 1.15rem 1.35rem;
+
+  padding:
+    0;
+}
+
+.archiveMarkdownDocument li {
+
+  margin:
+    0.34rem 0;
+}
+
+.archiveMarkdownDocument table {
+
+  width:
+    100%;
+
+  margin:
+    1.25rem 0;
+
+  border-collapse:
+    collapse;
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.82rem;
+}
+
+.archiveMarkdownDocument th,
+.archiveMarkdownDocument td {
+
+  padding:
+    0.62rem 0.72rem;
+
+  border:
+    1px solid rgba(232,236,243,0.09);
+
+  text-align:
+    left;
+}
+
+.archiveMarkdownDocument th {
+
+  color:
+    #f4f1e8;
+
+  background:
+    rgba(232,236,243,0.055);
+}
+
+.archiveMarkdownDocument code {
+
+  padding:
+    0.12rem 0.32rem;
+
+  border:
+    1px solid rgba(232,236,243,0.10);
+
+  background:
+    rgba(10,12,16,0.48);
+
+  color:
+    #dbe5f8;
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.85em;
+}
+
+.archiveMarkdownDocument hr {
+
+  margin:
+    1.6rem 0;
+
+  border:
+    none;
+
+  border-top:
+    1px solid rgba(232,236,243,0.09);
+}
+
+.archiveHtmlDocument {
+
+  width:
+    100%;
+
+  min-height:
+    68vh;
+
+  border:
+    1px solid rgba(232,236,243,0.10);
+
+  background:
+    #fffdf7;
+}
+
+.archiveEmptyState h2 {
+
+  color:
+    #f4f1e8;
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+}
+
+.archiveEmptyState p,
+.archiveDocumentStatus {
+
+  color:
+    rgba(218,222,230,0.56);
+}
+
+.archiveMetadata {
+
+  display:
+    grid;
+
+  gap:
+    0.5rem;
+
+  margin:
+    1rem 0 1.25rem;
+}
+
+.archiveMetadata div {
+
+  padding:
+    0.48rem 0;
+
+  border-bottom:
+    1px solid rgba(232,236,243,0.07);
+}
+
+.archiveMetadata dt {
+
+  color:
+    rgba(176,184,198,0.54);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.66rem;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
+}
+
+.archiveMetadata dd {
+
+  margin:
+    0.34rem 0 0;
+
+  color:
+    rgba(232,234,238,0.78);
+
+  font-size:
+    0.9rem;
+}
+
+.archiveLinkedRecords {
+
+  min-width:
+    0;
+
+  padding:
+    1.3rem 1rem;
+
+  border-left:
+    1px solid rgba(232,236,243,0.065);
+
+  background:
+    rgba(19,21,27,0.42);
+}
+
+.archiveLinkedRecord {
+
+  width:
+    100%;
+
+  padding:
+    0.82rem 0;
+
+  border-bottom:
+    1px solid rgba(232,236,243,0.065);
+
+  border-left:
+    none;
+
+  border-right:
+    none;
+
+  border-top:
+    none;
+
+  background:
+    transparent;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+}
+
+.archiveLinkedRecord strong,
+.archiveLinkedRecord span,
+.archiveTrace span {
+
+  display:
+    block;
+}
+
+.archiveLinkedRecord strong {
+
+  color:
+    rgba(237,237,232,0.84);
+
+  font-size:
+    0.86rem;
+}
+
+.archiveLinkedRecord span {
+
+  margin-top:
+    0.28rem;
+
+  color:
+    rgba(176,184,198,0.44);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.66rem;
+}
+
+.archiveTrace {
+
+  display:
+    grid;
+
+  gap:
+    0.48rem;
+
+  margin-top:
+    1.2rem;
+
+  padding:
+    0.85rem;
+
+  border:
+    1px solid rgba(232,236,243,0.08);
+
+  background:
+    rgba(232,236,243,0.035);
+}
+
+.archiveTrace span {
+
+  color:
+    rgba(176,184,198,0.58);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.66rem;
+}
+
+.archiveRuntimeHeader {
+
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    1.25rem;
+
+  padding:
+    1rem 1.4rem 0.95rem;
+
+  border-bottom:
+    1px solid rgba(232,236,243,0.07);
+
+  background:
+    rgba(18,20,25,0.64);
+}
+
+.archiveRuntimeKicker,
+.archiveRuntimeStamp span,
+.archiveManuscriptMeta,
+.archiveRuntimeFooter,
+.archiveLedgerTitle {
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+}
+
+.archiveRuntimeKicker {
+
+  display:
+    block;
+
+  margin-bottom:
+    0.36rem;
+
+  color:
+    rgba(176,184,198,0.64);
+
+  font-size:
+    0.62rem;
+
+  letter-spacing:
+    0.08em;
+}
+
+.archiveRuntimeHeader h1 {
+
+  margin:
+    0;
+
+  color:
+    #f4f1e8;
+
+  font-size:
+    clamp(1.08rem, 1.7vw, 1.55rem);
+
+  line-height:
+    1.18;
+
+  font-weight:
+    520;
+
+  letter-spacing:
+    0;
+}
+
+.archiveRuntimeStamp {
+
+  min-width:
+    150px;
+
+  padding:
+    0.78rem 0.9rem;
+
+  border:
+    1px solid rgba(232,236,243,0.10);
+
+  background:
+    rgba(232,236,243,0.04);
+}
+
+.archiveRuntimeStamp span {
+
+  display:
+    block;
+
+  margin-bottom:
+    0.28rem;
+
+  color:
+    rgba(176,184,198,0.44);
+
+  font-size:
+    0.62rem;
+
+  letter-spacing:
+    0.15em;
+
+  text-transform:
+    uppercase;
+}
+
+.archiveRuntimeStamp strong {
+
+  display:
+    block;
+
+  color:
+    rgba(237,237,232,0.84);
+
+  font-size:
+    0.78rem;
+
+  line-height:
+    1.35;
+}
+
+.archiveRuntimeBody {
+
+  flex:
+    1;
+
+  min-height:
+    0;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(170px, 0.34fr) minmax(0, 1fr);
+}
+
+.archiveLedger {
+
+  padding:
+    1.3rem 1rem;
+
+  border-right:
+    1px solid rgba(218,184,116,0.16);
+
+  background:
+    rgba(15,12,9,0.34);
+}
+
+.archiveLedgerTitle {
+
+  color:
+    rgba(218,184,116,0.72);
+
+  font-size:
+    0.66rem;
+
+  letter-spacing:
+    0.15em;
+
+  text-transform:
+    uppercase;
+}
+
+.archiveLedgerPath {
+
+  margin-top:
+    1rem;
+
+  color:
+    rgba(239,228,207,0.56);
+
+  font-size:
+    0.8rem;
+
+  line-height:
+    1.6;
+}
+
+.archiveLedgerMetrics {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    0.6rem;
+
+  margin:
+    1.25rem 0;
+}
+
+.archiveLedgerMetrics span {
+
+  padding:
+    0.62rem;
+
+  border:
+    1px solid rgba(218,184,116,0.14);
+
+  color:
+    rgba(239,228,207,0.48);
+
+  font-size:
+    0.66rem;
+
+  text-transform:
+    uppercase;
+}
+
+.archiveLedgerMetrics strong {
+
+  display:
+    block;
+
+  margin-top:
+    0.32rem;
+
+  color:
+    #fff2d6;
+
+  font-size:
+    0.82rem;
+
+  text-transform:
+    none;
+}
+
+.archiveSectionNav {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    0.54rem;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  list-style:
+    none;
+}
+
+.archiveSectionNav li {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    2.1rem 1fr;
+
+  gap:
+    0.45rem;
+
+  color:
+    rgba(239,228,207,0.66);
+
+  font-size:
+    0.78rem;
+
+  line-height:
+    1.35;
+}
+
+.archiveSectionNav span {
+
+  color:
+    rgba(218,184,116,0.48);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+}
+
+.archiveManuscript {
+
+  min-width:
+    0;
+
+  overflow:
+    auto;
+
+  padding:
+    clamp(1.25rem, 2.4vw, 2.4rem);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,246,223,0.035),
+      transparent 34%
+    );
+}
+
+.archiveManuscriptMeta {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    0.55rem;
+
+  color:
+    rgba(218,184,116,0.58);
+
+  font-size:
+    0.68rem;
+
+  letter-spacing:
+    0.12em;
+
+  text-transform:
+    uppercase;
+}
+
+.archiveDescription {
+
+  max-width:
+    64ch;
+
+  margin:
+    1.1rem 0 1.6rem;
+
+  color:
+    rgba(255,248,232,0.78);
+
+  font-size:
+    1rem;
+
+  line-height:
+    1.8;
+}
+
+.archiveSection {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    3rem minmax(0, 1fr);
+
+  gap:
+    1rem;
+
+  padding:
+    1.25rem 0;
+
+  border-top:
+    1px solid rgba(218,184,116,0.14);
+}
+
+.archiveSectionNumber {
+
+  color:
+    rgba(218,184,116,0.50);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.78rem;
+}
+
+.archiveSection h2 {
+
+  margin:
+    0 0 0.62rem;
+
+  color:
+    #fff3dc;
+
+  font-size:
+    clamp(1.05rem, 1.5vw, 1.32rem);
+
+  letter-spacing:
+    0;
+}
+
+.archiveSection p {
+
+  margin:
+    0;
+
+  color:
+    rgba(239,228,207,0.76);
+
+  font-size:
+    0.95rem;
+
+  line-height:
+    1.85;
+
+  white-space:
+    pre-wrap;
+}
+
+.archiveTags {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    0.48rem;
+
+  margin-top:
+    0.9rem;
+}
+
+.archiveTags span {
+
+  padding:
+    0.34rem 0.58rem;
+
+  border:
+    1px solid rgba(218,184,116,0.18);
+
+  color:
+    rgba(255,248,232,0.72);
+
+  background:
+    rgba(255,246,223,0.04);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.68rem;
+}
+
+.archiveRuntimeFooter {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    0.9rem;
+
+  padding:
+    0.74rem 1.6rem;
+
+  border-top:
+    1px solid rgba(218,184,116,0.14);
+
+  color:
+    rgba(239,228,207,0.42);
+
+  background:
+    rgba(12,10,8,0.64);
+
+  font-size:
+    0.68rem;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
+}
+
 .previewMinimizeButton {
 
   position: absolute;
@@ -1446,6 +3289,174 @@
 }
 
 /* =========================
+   DOCUMENT VIEWER LIGHT THEME
+========================= */
+
+:global([data-theme='light']) .archiveAppOverlay {
+
+  background:
+    rgba(239,241,245,0.70);
+}
+
+:global([data-theme='light']) .archiveAppWindow {
+
+  border-color:
+    rgba(15,23,42,0.12);
+
+  background:
+    #f5f5f2;
+
+  color:
+    #1f2933;
+
+  box-shadow:
+    0 28px 80px rgba(15,23,42,0.18);
+}
+
+:global([data-theme='light']) .archiveWindowBar,
+:global([data-theme='light']) .archiveRuntimeHeader,
+:global([data-theme='light']) .archiveBootTrace {
+
+  border-color:
+    rgba(15,23,42,0.09);
+
+  background:
+    rgba(247,247,244,0.86);
+}
+
+:global([data-theme='light']) .archiveWindowTitle,
+:global([data-theme='light']) .archiveBootTrace,
+:global([data-theme='light']) .archiveRuntimeKicker,
+:global([data-theme='light']) .archiveDocumentHeader span,
+:global([data-theme='light']) .archiveLedgerTitle,
+:global([data-theme='light']) .archiveMetadata dt,
+:global([data-theme='light']) .archiveLinkedRecord span,
+:global([data-theme='light']) .archiveTrace span {
+
+  color:
+    rgba(71,85,105,0.62);
+}
+
+:global([data-theme='light']) .archiveDocumentRuntimeBody,
+:global([data-theme='light']) .archiveDocumentPage {
+
+  background:
+    #fbfaf7;
+}
+
+:global([data-theme='light']) .archiveDocsNavigator,
+:global([data-theme='light']) .archiveDocumentAside,
+:global([data-theme='light']) .archiveLinkedRecords {
+
+  border-color:
+    rgba(15,23,42,0.09);
+
+  background:
+    #f1f2f4;
+}
+
+:global([data-theme='light']) .docsTreeFolderName,
+:global([data-theme='light']) .docsTreeFile {
+
+  color:
+    rgba(51,65,85,0.78);
+}
+
+:global([data-theme='light']) .docsTreeFolderName i {
+
+  color:
+    rgba(100,116,139,0.78);
+}
+
+:global([data-theme='light']) .docsTreeFolder .docsTreeNodes,
+:global([data-theme='light']) .archiveDocumentHeader,
+:global([data-theme='light']) .archiveMetadata div,
+:global([data-theme='light']) .archiveLinkedRecord,
+:global([data-theme='light']) .archiveTrace,
+:global([data-theme='light']) .archiveMarkdownDocument th,
+:global([data-theme='light']) .archiveMarkdownDocument td,
+:global([data-theme='light']) .archiveMarkdownDocument code,
+:global([data-theme='light']) .archiveMarkdownDocument hr,
+:global([data-theme='light']) .archiveDocumentHeader strong {
+
+  border-color:
+    rgba(15,23,42,0.10);
+}
+
+:global([data-theme='light']) .docsTreeFile:hover,
+:global([data-theme='light']) .docsTreeFileActive {
+
+  color:
+    #111827;
+
+  background:
+    rgba(15,23,42,0.055);
+
+  border-color:
+    rgba(15,23,42,0.08);
+}
+
+:global([data-theme='light']) .archiveRuntimeHeader h1,
+:global([data-theme='light']) .archiveDocumentHeader h2,
+:global([data-theme='light']) .archiveEmptyState h2,
+:global([data-theme='light']) .archiveMarkdownDocument h1,
+:global([data-theme='light']) .archiveMarkdownDocument h2,
+:global([data-theme='light']) .archiveMarkdownDocument h3,
+:global([data-theme='light']) .archiveMarkdownDocument h4,
+:global([data-theme='light']) .archiveMarkdownDocument h5,
+:global([data-theme='light']) .archiveMarkdownDocument h6,
+:global([data-theme='light']) .archiveLinkedRecord strong {
+
+  color:
+    #15171c;
+}
+
+:global([data-theme='light']) .archiveMarkdownDocument,
+:global([data-theme='light']) .archiveMetadata dd {
+
+  color:
+    rgba(31,41,55,0.84);
+}
+
+:global([data-theme='light']) .archiveDocumentDescription,
+:global([data-theme='light']) .archiveEmptyState p,
+:global([data-theme='light']) .archiveDocumentStatus,
+:global([data-theme='light']) .archiveMarkdownDocument blockquote {
+
+  color:
+    rgba(51,65,85,0.70);
+}
+
+:global([data-theme='light']) .archiveMarkdownDocument a {
+
+  color:
+    #315f9d;
+}
+
+:global([data-theme='light']) .archiveMarkdownDocument blockquote,
+:global([data-theme='light']) .archiveMarkdownDocument th,
+:global([data-theme='light']) .archiveTrace {
+
+  background:
+    rgba(15,23,42,0.035);
+}
+
+:global([data-theme='light']) .archiveMarkdownDocument code {
+
+  background:
+    rgba(15,23,42,0.055);
+
+  color:
+    #27364a;
+}
+
+:global([data-theme='light']) .archiveDocumentHeader strong {
+
+  color:
+    rgba(51,65,85,0.66);
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 
@@ -1494,6 +3505,67 @@
   .previewContent {
 
     padding: 1.5rem;
+  }
+
+  .archiveRuntimeHeader {
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .archiveRuntimeBody {
+
+    grid-template-columns:
+      1fr;
+  }
+
+  .archiveDocumentRuntimeBody {
+
+    grid-template-columns:
+      1fr;
+  }
+
+  .archiveDocsNavigator,
+  .archiveDocumentAside {
+
+    max-height:
+      26vh;
+  }
+
+  .archiveDocsNavigator {
+
+    border-right:
+      none;
+
+    border-bottom:
+      1px solid rgba(232,236,243,0.065);
+  }
+
+  .archiveDocumentAside {
+
+    border-left:
+      none;
+
+    border-top:
+      1px solid rgba(232,236,243,0.065);
+  }
+
+  .archiveLedger {
+
+    border-right:
+      none;
+
+    border-bottom:
+      1px solid rgba(218,184,116,0.16);
+  }
+
+  .archiveSection {
+
+    grid-template-columns:
+      2.4rem minmax(0, 1fr);
   }
 }
 /* =========================
@@ -1945,6 +4017,30 @@
   color: rgba(255,255,255,0.45);
 
   letter-spacing: 0.08em;
+}
+
+.awsStatus {
+
+  color:
+    rgba(255,255,255,0.58);
+}
+
+.awsStatusOk {
+
+  color:
+    rgba(126,231,135,0.76);
+}
+
+.awsStatusIssue {
+
+  color:
+    rgba(255,184,107,0.86);
+}
+
+.awsStatusUnknown {
+
+  color:
+    rgba(255,114,114,0.74);
 }
 
 .windowActions {

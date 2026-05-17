@@ -2,6 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { globSync } from 'glob';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import { toHtml } from 'hast-util-to-html';
 
 const root = process.cwd();
 
@@ -102,6 +107,146 @@ function cleanContent(content) {
     .trim();
 }
 
+function readRuntimeDocsManifest() {
+  const directory = 'static/code/Fake/docs';
+  const basePath = path.join(root, directory);
+
+  if (!fs.existsSync(basePath)) {
+    return {
+      root: 'docs',
+      basePath: '/code/Fake/docs',
+      files: [],
+      tree: [],
+    };
+  }
+
+  const files = globSync('**/*.{md,mdx,html,htm}', {
+    cwd: basePath,
+    nodir: true,
+  })
+    .sort((first, second) =>
+      first.localeCompare(second)
+    )
+    .map((file) => {
+      const fullPath = path.join(basePath, file);
+      const raw = fs.readFileSync(fullPath, 'utf-8');
+      const normalizedPath = file.replace(/\\/g, '/');
+      const extension = path.extname(file).slice(1).toLowerCase();
+      const slug = normalizedPath.replace(/\.(mdx?|html?)$/i, '');
+      const directoryName = path.dirname(normalizedPath);
+      const directoryParts =
+        directoryName === '.'
+          ? []
+          : directoryName.split('/');
+
+      if (extension === 'md' || extension === 'mdx') {
+        const { data, content } = matter(raw);
+
+        return {
+          id: slug,
+          title: data.title || findFirstHeading(content) || titleFromSlug(slug),
+          description: data.description || firstParagraph(content),
+          tags: data.tags || [],
+          type: 'markdown',
+          extension,
+          html: renderMarkdownToHtml(content),
+          path: normalizedPath,
+          publicPath: `/code/Fake/docs/${normalizedPath}`,
+          directory: directoryParts,
+        };
+      }
+
+      return {
+        id: slug,
+        title: findHtmlTitle(raw) || titleFromSlug(slug),
+        description: findHtmlDescription(raw),
+        tags: [],
+        type: 'html',
+        extension,
+        path: normalizedPath,
+        publicPath: `/code/Fake/docs/${normalizedPath}`,
+        directory: directoryParts,
+      };
+    });
+
+  return {
+    root: 'docs',
+    basePath: '/code/Fake/docs',
+    files,
+    tree: buildRuntimeDocsTree(files),
+  };
+}
+
+function renderMarkdownToHtml(content) {
+  const processor =
+    unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .use(remarkRehype, {
+        allowDangerousHtml: false,
+      });
+
+  const markdownTree =
+    processor.parse(content);
+
+  const hastTree =
+    processor.runSync(markdownTree);
+
+  return toHtml(hastTree);
+}
+
+function findHtmlTitle(content) {
+  const match = content.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  return match ? cleanContent(match[1]) : '';
+}
+
+function findHtmlDescription(content) {
+  const match = content.match(
+    /<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["'][^>]*>/i,
+  );
+
+  return match ? cleanContent(match[1]) : '';
+}
+
+function buildRuntimeDocsTree(files) {
+  const rootNode = [];
+
+  files.forEach((file) => {
+    let level = rootNode;
+
+    file.directory.forEach((part, index) => {
+      let folder = level.find(
+        (node) =>
+          node.type === 'folder' &&
+          node.name === part
+      );
+
+      if (!folder) {
+        folder = {
+          id: file.directory.slice(0, index + 1).join('/'),
+          type: 'folder',
+          name: part,
+          children: [],
+        };
+
+        level.push(folder);
+      }
+
+      level = folder.children;
+    });
+
+    level.push({
+      id: file.id,
+      type: 'file',
+      title: file.title,
+      path: file.path,
+      extension: file.extension,
+    });
+  });
+
+  return rootNode;
+}
+
 const docs = [
   ...readMarkdownCollection('docs', CATEGORY.DEV_WIKI, '/docs'),
   ...archiveEntries.map((entry) => ({
@@ -117,6 +262,7 @@ const docs = [
 ];
 
 const outputPath = path.join(root, 'src/generated/search-docs.json');
+
 
 fs.mkdirSync(path.dirname(outputPath), {
   recursive: true,

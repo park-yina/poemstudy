@@ -20,6 +20,11 @@ const protocolSections = [
     title: 'LUDAROTA',
     body: '마법의 도서에 봉인된 프로젝트를 확인해보세요. 타로카드가 각 기록을 해석합니다.',    special: true,
   },
+    {
+    code: 'NODE 04',
+    title: 'WORKSPACE',  special: true,
+body:
+  '프로젝트, 운영 기록 및 이력서를 runtime filesystem 형태로 탐색합니다.',  },
 ];
 
 const revealLines = [

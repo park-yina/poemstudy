@@ -158,6 +158,9 @@ function ArchiveNavigationStepper({
             <strong>SYSTEM STATUS</strong>
             <span>[2026.05.08]v.1.0.0 루다로그 창설</span>
             <span>[2026.05.16]v.2.0.0 Dev-log 시스템 폐지 및 워크스페이스 통합</span>
+            <span>[2026.05.17]v.3.0.0 운영기록과 코드 기록의 분리UI추가 및 워크스페이스 이전 파일 탐색기 추가</span>
+            <span>[2026.05.17]v.3.1.0 워크스페이스 내의 task바 내의 aws상태 표시 추가</span>
+
           </div>
 
           <small>
@@ -200,7 +203,7 @@ function ArchiveNavigationStepper({
 
 <footer className={styles.stepperFooter}>
   <small>
-    LUDALOG ARCHIVE SYSTEM v2.0.0
+    LUDALOG ARCHIVE SYSTEM v3.1.0
   </small>
 </footer>
     </section>

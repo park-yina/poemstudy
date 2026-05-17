@@ -1,0 +1,25 @@
+{
+  "root": "docs",
+  "basePath": "/code/Fake/docs",
+  "files": [
+    {
+      "id": "AdminLifecyclePolicy",
+      "title": "AdminLifecyclePolicy.md",
+      "tags": [],
+      "type": "markdown",
+      "extension": "md",
+      "path": "AdminLifecyclePolicy.md",
+      "publicPath": "/code/Fake/docs/AdminLifecyclePolicy.md",
+      "directory": []
+    }
+  ],
+  "tree": [
+    {
+      "id": "AdminLifecyclePolicy",
+      "type": "file",
+      "title": "AdminLifecyclePolicy.md",
+      "path": "AdminLifecyclePolicy.md",
+      "extension": "md"
+    }
+  ]
+}
