@@ -1013,31 +1013,6 @@ export function WorkspaceOverlayView({
             />
 
             <aside className={styles.workspaceRelated}>
-              <h3>
-                Related Docs
-              </h3>
-
-              {
-                relatedDocs.map((file) => (
-
-                  <button
-                    key={file.id}
-                    type="button"
-                    className={styles.relatedItem}
-                    onClick={() =>
-                      openFile(file)
-                    }
-                  >
-                    <strong>
-                      {file.title}
-                    </strong>
-                    <span>
-                      {file.description}
-                    </span>
-                  </button>
-
-                ))
-              }
 
               <h3>
                 Related Code

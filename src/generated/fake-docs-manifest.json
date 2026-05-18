@@ -11,6 +11,16 @@
       "path": "AdminLifecyclePolicy.md",
       "publicPath": "/code/Fake/docs/AdminLifecyclePolicy.md",
       "directory": []
+    },
+        {
+      "id": "Tile",
+      "title": "Tile.md",
+      "tags": [],
+      "type": "markdown",
+      "extension": "md",
+      "path": "Tile.md",
+      "publicPath": "/code/Fake/docs/Tile.md",
+      "directory": []
     }
   ],
   "tree": [
@@ -19,6 +29,13 @@
       "type": "file",
       "title": "AdminLifecyclePolicy.md",
       "path": "AdminLifecyclePolicy.md",
+      "extension": "md"
+    },
+        {
+      "id": "Tile",
+      "type": "file",
+      "title": "Tile.md",
+      "path": "Tile.md",
       "extension": "md"
     }
   ]

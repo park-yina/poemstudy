@@ -123,9 +123,9 @@ export function WorkspacePackageView({
               {item.title}
             </h2>
 
-            <p>
-              Installed runtime applications are available inside this project workspace.
-            </p>
+<p>
+  이 워크스페이스에는 프로젝트 기록과 개발 문서를 열람할 수 있는 런타임 앱이 포함되어 있습니다.
+</p>
           </div>
 
           <button
@@ -147,38 +147,22 @@ export function WorkspacePackageView({
         <div className={styles.workspaceObjectGrid}>
           <button
             type="button"
-            className={styles.workspaceFolderObject}
-          >
-            <span className={styles.workspaceFolderIcon}>
-              <i className="fa-solid fa-folder" />
-            </span>
-
-            <strong>src</strong>
-          </button>
-
-          <button
-            type="button"
-            className={styles.workspaceFolderObject}
-          >
-            <span className={styles.workspaceFolderIcon}>
-              <i className="fa-solid fa-folder" />
-            </span>
-
-            <strong>docs</strong>
-          </button>
-
-          <button
-            type="button"
             className={`${styles.workspaceExecutableObject} ${styles.codeAppEntry}`}
             onDoubleClick={onOpenCode}
             onClick={onOpenCode}
           >
             <span className={styles.codeAppIcon}>
               <i className="fa-solid fa-code" />
+              <span
+                className={styles.appShortcutBadge}
+                aria-hidden="true"
+              >
+                <i className="fa-solid fa-arrow-up-right-from-square" />
+              </span>
             </span>
 
             <strong>CODE</strong>
-            <small>runtime.exe</small>
+            <small>code열람.exe</small>
           </button>
 
           <button
@@ -189,10 +173,16 @@ export function WorkspacePackageView({
           >
             <span className={styles.docsAppIcon}>
               <i className="fa-solid fa-scroll" />
+              <span
+                className={styles.appShortcutBadge}
+                aria-hidden="true"
+              >
+                <i className="fa-solid fa-arrow-up-right-from-square" />
+              </span>
             </span>
 
             <strong>DOCS</strong>
-            <small>archive.app</small>
+            <small>아카이빙.app</small>
           </button>
         </div>
 
@@ -208,6 +198,7 @@ export function WorkspacePackageView({
 export function ArchiveRuntimeApplication({
   item,
   onClose,
+  onMinimize,
 }) {
 
   const bootLines = [
@@ -333,7 +324,13 @@ export function ArchiveRuntimeApplication({
               aria-label="Close document archive"
             />
 
-            <span className={`${styles.archiveWindowDot} ${styles.archiveWindowMinimize}`} />
+            <button
+              type="button"
+              className={`${styles.archiveWindowDot} ${styles.archiveWindowMinimize}`}
+              onClick={onMinimize}
+              aria-label="Minimize document archive"
+            />
+
             <span className={`${styles.archiveWindowDot} ${styles.archiveWindowExpand}`} />
           </div>
 
@@ -475,10 +472,6 @@ export function ArchiveRuntimeApplication({
                 <dd>{selectedDoc?.type || 'empty'}</dd>
               </div>
 
-              <div>
-                <dt>status</dt>
-                <dd>{documentStatus}</dd>
-              </div>
             </dl>
 
             {
@@ -495,9 +488,6 @@ export function ArchiveRuntimeApplication({
               )
             }
 
-            <div className={styles.archiveLedgerTitle}>
-              linked records
-            </div>
 
             {
               relatedDocs.map((doc) => (
@@ -520,17 +510,6 @@ export function ArchiveRuntimeApplication({
               ))
             }
 
-            <div className={styles.archiveTrace}>
-              <span>
-                document {documentStatus}
-              </span>
-              <span>
-                manuscript restored
-              </span>
-              <span>
-                structural analysis indexed
-              </span>
-            </div>
           </aside>
         </div>
       </section>
@@ -538,4 +517,3 @@ export function ArchiveRuntimeApplication({
 
   );
 }
-

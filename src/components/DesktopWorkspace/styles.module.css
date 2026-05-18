@@ -135,6 +135,41 @@
   background:
     rgba(255,255,255,0.08);
 }
+
+.taskbarContextMenu {
+
+  position: fixed;
+
+  z-index: 12000;
+
+  min-width: 178px;
+
+  transform:
+    translate(
+      -12px,
+      calc(-100% - 12px)
+    );
+
+  pointer-events: auto;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(20,24,34,0.96);
+
+  backdrop-filter:
+    blur(22px);
+
+  box-shadow:
+    0 12px 38px rgba(0,0,0,0.42),
+    0 0 0 1px rgba(255,255,255,0.03);
+
+  overflow: hidden;
+}
 .workspaceWindow {
 
   width: min(1680px, 96vw);
@@ -435,6 +470,9 @@
     transparent;
   cursor:
     default;
+
+  pointer-events:
+    none;
 }
 
 .desktopGrid {
@@ -1292,7 +1330,7 @@
     none;
 
   border-radius:
-    0;
+    10px;
 
   background:
     linear-gradient(
@@ -1530,19 +1568,19 @@
 .codeAppEntry:hover {
 
   border-color:
-    rgba(96,165,250,0.30);
+    rgba(255,255,255,0.08);
 
   background:
-    rgba(59,130,246,0.08);
+    rgba(255,255,255,0.045);
 }
 
 .docsAppEntry:hover {
 
   border-color:
-    rgba(218,184,116,0.30);
+    rgba(255,255,255,0.08);
 
   background:
-    rgba(218,184,116,0.075);
+    rgba(255,255,255,0.045);
 }
 
 .workspaceFolderIcon,
@@ -1565,7 +1603,7 @@
     center;
 
   border-radius:
-    18px;
+    0;
 }
 
 .workspaceFolderIcon {
@@ -1579,15 +1617,11 @@
 
 .codeAppIcon {
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(59,130,246,0.94),
-      rgba(30,64,175,0.98)
-    );
+  position:
+    relative;
 
   color:
-    #eaf3ff;
+    #79b8ff;
 
   font-family:
     'JetBrains Mono',
@@ -1595,11 +1629,10 @@
     monospace;
 
   font-size:
-    1.85rem;
+    3.55rem;
 
-  box-shadow:
-    0 18px 42px rgba(37,99,235,0.34),
-    inset 0 0 0 1px rgba(255,255,255,0.18);
+  filter:
+    drop-shadow(0 12px 18px rgba(20,36,64,0.34));
 }
 
 .docsAppIcon {
@@ -1607,40 +1640,62 @@
   position:
     relative;
 
-  background:
-    linear-gradient(
-      180deg,
-      #d3b06b,
-      #7b5b2d
-    );
-
   color:
-    #fff5dc;
+    #e9c46a;
 
   font-size:
-    1.85rem;
+    3.55rem;
 
-  box-shadow:
-    0 18px 42px rgba(116,80,31,0.35),
-    inset 0 0 0 1px rgba(255,246,220,0.24);
+  filter:
+    drop-shadow(0 12px 18px rgba(82,58,25,0.36));
 }
 
-.docsAppIcon::after {
-
-  content:
-    '';
+.appShortcutBadge {
 
   position:
     absolute;
 
-  inset:
-    13px;
+  left:
+    8px;
 
-  border:
-    1px solid rgba(255,246,220,0.24);
+  bottom:
+    8px;
+
+  width:
+    18px;
+
+  height:
+    18px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
 
   border-radius:
-    14px;
+    4px;
+
+  border:
+    1px solid rgba(0,0,0,0.22);
+
+  background:
+    rgba(244,246,248,0.96);
+
+  color:
+    rgba(15,23,42,0.82);
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.24);
+}
+
+.appShortcutBadge i {
+
+  font-size:
+    0.58rem;
 }
 
 .workspaceFolderObject strong,
@@ -1882,6 +1937,9 @@
 
   background:
     #febc2e;
+
+  cursor:
+    pointer;
 }
 
 .archiveWindowExpand {
@@ -3794,6 +3852,12 @@
   color: #ff7272;
 }
 .taskbar {
+
+  position:
+    relative;
+
+  z-index:
+    9999;
 
   height: 76px;
 

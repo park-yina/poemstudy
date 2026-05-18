@@ -368,6 +368,9 @@ export default function DesktopWorkspace({
 const [menuState, setMenuState] =
   useState(null);
 
+const [taskbarMenuState, setTaskbarMenuState] =
+  useState(null);
+
   const [openedTabs, setOpenedTabs] =
     useState([]);
 
@@ -401,6 +404,9 @@ const [archiveItem, setArchiveItem] =
   useState(null);
 
 const [minimizedWorkspaceItem, setMinimizedWorkspaceItem] =
+  useState(null);
+
+const [minimizedArchiveItem, setMinimizedArchiveItem] =
   useState(null);
 
 const [minimizedPreviewTabs, setMinimizedPreviewTabs] =
@@ -589,6 +595,24 @@ const [awsStatus, setAwsStatus] =
       cancelled = true;
       clearInterval(interval);
     };
+
+  }, []);
+
+  useEffect(() => {
+
+    const closeTaskbarMenu = () =>
+      setTaskbarMenuState(null);
+
+    window.addEventListener(
+      'click',
+      closeTaskbarMenu,
+    );
+
+    return () =>
+      window.removeEventListener(
+        'click',
+        closeTaskbarMenu,
+      );
 
   }, []);
   /* =========================
@@ -1068,6 +1092,112 @@ const handleContextMenu = (
 
     item,
   });
+
+  setTaskbarMenuState(null);
+};
+
+const handleTaskbarAppMenu = (
+  e,
+  task,
+) => {
+
+  e.preventDefault();
+
+  e.stopPropagation();
+
+  setTaskbarMenuState({
+
+    x:
+      e.clientX,
+
+    y:
+      e.clientY,
+
+    task,
+  });
+
+  setMenuState(null);
+};
+
+const restoreTaskbarItem = (task) => {
+
+  if (task.type === 'code') {
+
+    setWorkspaceItem(task.item);
+    setPackageItem(null);
+    setArchiveItem(null);
+    setMinimizedWorkspaceItem(null);
+
+    return;
+  }
+
+  if (task.type === 'docs') {
+
+    setArchiveItem(task.item);
+    setPackageItem(null);
+    setWorkspaceItem(null);
+    setMinimizedArchiveItem(null);
+
+    return;
+  }
+
+  if (task.type === 'preview') {
+
+    restorePreview(task.item);
+
+    return;
+  }
+
+  if (task.type === 'runtime') {
+
+    closeWorkspaceApp();
+  }
+};
+
+const removeTaskbarItem = (task) => {
+
+  if (task.type === 'code') {
+
+    setMinimizedWorkspaceItem(null);
+
+    return;
+  }
+
+  if (task.type === 'docs') {
+
+    setMinimizedArchiveItem(null);
+
+    return;
+  }
+
+  if (task.type === 'preview') {
+
+    setMinimizedPreviewTabs((prev) =>
+      prev.filter((tab) =>
+        tab.id !== task.item.id
+      )
+    );
+
+    return;
+  }
+
+  if (task.type === 'runtime') {
+
+    closeWorkspaceApp();
+  }
+};
+
+const minimizeTaskbarItem = () => {
+
+  setTaskbarMenuState(null);
+};
+
+const handleFolderChange = (folder) => {
+
+  setCurrentFolder(folder);
+  setPackageItem(null);
+  setMenuState(null);
+  setTaskbarMenuState(null);
 };
 
 const ProjectWorkspaceOverlay = ({
@@ -1586,9 +1716,17 @@ if (archiveItem) {
     createPortal(
       <ArchiveRuntimeApplication
         item={archiveItem}
-        onClose={() =>
-          setArchiveItem(null)
-        }
+        onClose={() => {
+
+          setPackageItem(archiveItem);
+          setArchiveItem(null);
+        }}
+        onMinimize={() => {
+
+          setMinimizedArchiveItem(archiveItem);
+          setPackageItem(archiveItem);
+          setArchiveItem(null);
+        }}
       />,
       document.body,
     )
@@ -1609,6 +1747,7 @@ if (workspaceItem) {
         item={workspaceItem}
         onClose={() => {
 
+          setPackageItem(workspaceItem);
           setWorkspaceItem(null);
           setMinimizedWorkspaceItem(null);
 
@@ -1619,6 +1758,7 @@ if (workspaceItem) {
         onMinimize={() => {
 
           setMinimizedWorkspaceItem(workspaceItem);
+          setPackageItem(workspaceItem);
           setWorkspaceItem(null);
         }}
       />,
@@ -1636,14 +1776,19 @@ return (
 
   <div
     className={styles.workspaceWindow}
+ 
+    onClick={() => {
 
-    onClick={() =>
-      setMenuState(null)
-    }
+      setMenuState(null);
+      setTaskbarMenuState(null);
+    }}
 
-    onContextMenu={(e) =>
-      e.preventDefault()
-    }
+    onContextMenu={(e) => {
+
+      e.preventDefault();
+      setMenuState(null);
+      setTaskbarMenuState(null);
+    }}
   >
   
 
@@ -1687,7 +1832,7 @@ return (
 
 <Sidebar
   currentFolder={currentFolder}
-  setCurrentFolder={setCurrentFolder}
+  setCurrentFolder={handleFolderChange}
 />
 
         {/* DESKTOP */}
@@ -1716,12 +1861,14 @@ return (
         setWorkspaceItem(packageItem);
         setPackageItem(null);
         setArchiveItem(null);
+        setMinimizedWorkspaceItem(null);
       }}
       onOpenDocs={() => {
 
         setArchiveItem(packageItem);
         setPackageItem(null);
         setWorkspaceItem(null);
+        setMinimizedArchiveItem(null);
       }}
     />
 
@@ -1992,8 +2139,19 @@ return (
 
           <button
             className={styles.runtimeButton}
-
+ 
             onClick={closeWorkspaceApp}
+            onContextMenu={(e) =>
+              handleTaskbarAppMenu(
+                e,
+                {
+                  type: 'runtime',
+                  item: {
+                    title: 'runtime',
+                  },
+                },
+              )
+            }
           >
             {'>_'}
           </button>
@@ -2025,57 +2183,164 @@ return (
 
         <div className={styles.taskbarApps}>
 
-          <button className={styles.taskbarIcon}>
+          {/* <button className={styles.taskbarIcon}>
             <i className="fa-solid fa-folder"></i>
-          </button>
+          </button> */}
 
+{
+  minimizedWorkspaceItem && (
+
+    <button
+      type="button"
+      className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+      onClick={() =>
+        restoreTaskbarItem({
+          type: 'code',
+          item: minimizedWorkspaceItem,
+        })
+      }
+      onContextMenu={(e) =>
+        handleTaskbarAppMenu(
+          e,
           {
-            minimizedWorkspaceItem && (
+            type: 'code',
+            item: minimizedWorkspaceItem,
+          },
+        )
+      }
+      title={minimizedWorkspaceItem.title}
+      aria-label={`Restore ${minimizedWorkspaceItem.title}`}
+    >
+      <i className="fa-solid fa-code"></i>
+    </button>
 
-              <button
-                type="button"
-                className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
-                onClick={() => {
+  )
+}
 
-                  setWorkspaceItem(minimizedWorkspaceItem);
-                  setMinimizedWorkspaceItem(null);
-                }}
-                title={minimizedWorkspaceItem.title}
-                aria-label={`Restore ${minimizedWorkspaceItem.title}`}
-              >
-                <i className="fa-solid fa-code"></i>
-              </button>
+{
+  minimizedArchiveItem && (
 
-            )
-          }
-
+    <button
+      type="button"
+      className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+      onClick={() =>
+        restoreTaskbarItem({
+          type: 'docs',
+          item: minimizedArchiveItem,
+        })
+      }
+      onContextMenu={(e) =>
+        handleTaskbarAppMenu(
+          e,
           {
-            minimizedPreviewTabs.map((item) => (
+            type: 'docs',
+            item: minimizedArchiveItem,
+          },
+        )
+      }
+      title={`${minimizedArchiveItem.title} docs`}
+      aria-label={`Restore ${minimizedArchiveItem.title} docs`}
+    >
+      <i className="fa-solid fa-scroll"></i>
+    </button>
 
-              <button
-                key={item.id}
-                type="button"
-                className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
-                onClick={() =>
-                  restorePreview(item)
-                }
-                title={item.title}
-                aria-label={`Restore ${item.title}`}
-              >
-                <i
-                  className={`fa-solid ${
-                    item.type === 'PDF'
-                      ? 'fa-file-pdf'
-                      : item.type === 'html'
-                        ? 'fa-code'
-                        : 'fa-file-lines'
-                  }`}
-                ></i>
-              </button>
+  )
+}
 
-            ))
-          }
+{
+  minimizedPreviewTabs.map((item) => (
 
+    <button
+      key={item.id}
+      type="button"
+      className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+      onClick={() =>
+        restoreTaskbarItem({
+          type: 'preview',
+          item,
+        })
+      }
+      onContextMenu={(e) =>
+        handleTaskbarAppMenu(
+          e,
+          {
+            type: 'preview',
+            item,
+          },
+        )
+      }
+      title={item.title}
+      aria-label={`Restore ${item.title}`}
+    >
+      <i
+        className={`fa-solid ${
+          item.type === 'PDF'
+            ? 'fa-file-pdf'
+            : item.type === 'html'
+              ? 'fa-code'
+              : 'fa-file-lines'
+        }`}
+      ></i>
+    </button>
+
+  ))
+}
+
+{
+  taskbarMenuState &&
+
+  createPortal(
+
+    <div
+      className={`
+        ${styles.contextMenu}
+        ${styles.taskbarContextMenu}
+      `}
+      style={{
+        top: taskbarMenuState.y,
+        left: taskbarMenuState.x,
+      }}
+      onClick={(e) =>
+        e.stopPropagation()
+      }
+    >
+
+      <button
+        type="button"
+        className={styles.contextMenuItem}
+        onClick={() => {
+
+          restoreTaskbarItem(
+            taskbarMenuState.task
+          );
+
+          setTaskbarMenuState(null);
+        }}
+      >
+        열기
+      </button>
+
+
+      <button
+        type="button"
+        className={styles.contextMenuItem}
+        onClick={() => {
+
+          removeTaskbarItem(
+            taskbarMenuState.task
+          );
+
+          setTaskbarMenuState(null);
+        }}
+      >
+        제거
+      </button>
+
+    </div>,
+
+    document.body
+  )
+}
           <a
             href="https://github.com/park-yina"
 
