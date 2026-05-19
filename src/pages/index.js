@@ -204,7 +204,7 @@ function ArchiveNavigationStepper({
 
 <footer className={styles.stepperFooter}>
   <small>
-    LUDALOG ARCHIVE SYSTEM v3.2.0
+    LUDALOG ARCHIVE SYSTEM v3.2.2
   </small>
 </footer>
     </section>

@@ -1,7 +1,7 @@
 import MiniSearch from 'minisearch';
 import records from '../generated/search-docs.json';
 
-export const SEARCH_CATEGORIES = ['DEV WIKI', , 'ARCHIVE'];
+export const SEARCH_CATEGORIES = ['DEV WIKI', 'ARCHIVE'];
 
 export const SEARCH_FILTERS = [
   { id: 'all', label: 'ALL', mode: 'all' },

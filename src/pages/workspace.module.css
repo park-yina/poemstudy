@@ -10,6 +10,21 @@
   color: #f0e7d6;
 }
 
+:global([data-theme='light']) .workspacePage {
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(160,174,192,0.22),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      #f7f8fb,
+      #e7ebf0
+    );
+  color: #1f2933;
+}
+
 .workspaceShell {
   height: 100vh;
   overflow: hidden;

@@ -12,7 +12,7 @@
       "publicPath": "/code/Fake/docs/AdminLifecyclePolicy.md",
       "directory": []
     },
-        {
+    {
       "id": "Tile",
       "title": "Tile.md",
       "tags": [],
@@ -31,7 +31,7 @@
       "path": "AdminLifecyclePolicy.md",
       "extension": "md"
     },
-        {
+    {
       "id": "Tile",
       "type": "file",
       "title": "Tile.md",
