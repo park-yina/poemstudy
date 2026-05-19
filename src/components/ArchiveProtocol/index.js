@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
 const STORAGE_KEY = 'archiveProtocolHidden';
+const SESSION_DISMISSED_KEY = 'archiveProtocolDismissedForSession';
 
 const protocolSections = [
   {
@@ -40,10 +41,12 @@ export default function ArchiveProtocol() {
   useEffect(() => {
     const hidden =
       window.localStorage.getItem(STORAGE_KEY) === 'true';
+    const dismissedForSession =
+      window.sessionStorage.getItem(SESSION_DISMISSED_KEY) === 'true';
 
     setAcknowledged(hidden);
 
-    if (!hidden) {
+    if (!hidden && !dismissedForSession) {
       const timer = window.setTimeout(() => {
         setOpen(true);
       }, 1400);
@@ -77,7 +80,7 @@ export default function ArchiveProtocol() {
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
-        setOpen(false);
+        dismissForSession();
       }
     };
 
@@ -87,6 +90,11 @@ export default function ArchiveProtocol() {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [open]);
+
+  const dismissForSession = () => {
+    window.sessionStorage.setItem(SESSION_DISMISSED_KEY, 'true');
+    setOpen(false);
+  };
 
   const handleAcknowledge = (event) => {
     const checked = event.target.checked;
@@ -111,7 +119,7 @@ export default function ArchiveProtocol() {
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
-          setOpen(false);
+          dismissForSession();
         }
       }}
     >
@@ -126,7 +134,7 @@ export default function ArchiveProtocol() {
           type="button"
           className={styles.closeButton}
           aria-label="Close archive protocol"
-          onClick={() => setOpen(false)}
+          onClick={dismissForSession}
         >
           x
         </button>

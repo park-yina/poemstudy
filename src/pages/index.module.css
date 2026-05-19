@@ -13,6 +13,117 @@
   background: var(--home-bg);
   color: var(--home-text);
 }
+html[data-theme='light'] .page {
+
+  --home-bg: #f6f1e8;
+  --home-bg-soft: #ebe4d8;
+
+  --home-line:
+    rgba(60, 44, 32, 0.08);
+
+  --home-line-strong:
+    rgba(60, 44, 32, 0.14);
+
+  --home-text: #221d18;
+
+  --home-muted: #6f655c;
+
+  --home-dim: #8a7f74;
+
+  --home-accent: #8b5e3c;
+
+  --home-accent-soft:
+    rgba(139, 94, 60, 0.12);
+}
+html[data-theme='light'] .hero {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.72),
+      #f6f1e8 88%
+    ),
+    radial-gradient(
+      circle at 78% 18%,
+      rgba(139, 94, 60, 0.08),
+      transparent 30%
+    ),
+    #f6f1e8;
+}
+html[data-theme='light'] .selectedSection {
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8f4ec,
+      #efe7da 52%,
+      #f8f4ec
+    );
+}
+html[data-theme='light'] .recentItem strong {
+  color: #1f2937;
+}
+
+html[data-theme='light'] .recentItem:hover strong {
+  color: #000;
+}
+html[data-theme='light'] .workMeta {
+  color: #6b7280;
+}
+html[data-theme='light'] .workRow:hover {
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(120, 90, 60, 0.05),
+      transparent
+    );
+}
+html[data-theme='light'] .archiveStepper {
+
+  background:
+    linear-gradient(
+      180deg,
+      #faf6ef,
+      #eee6d8
+    );
+
+  color:
+    #2b2118;
+
+  border:
+    1px solid rgba(80,60,40,0.12);
+
+  box-shadow:
+    0 16px 40px rgba(0,0,0,0.08);
+}
+html[data-theme='light'] .stepperHeader {
+
+  background:
+    rgba(255,255,255,0.72);
+
+  border-bottom:
+    1px solid rgba(0,0,0,0.06);
+}
+html[data-theme='light'] .nodeContent {
+
+  background:
+    rgba(255,255,255,0.58);
+
+  border:
+    1px solid rgba(60,40,20,0.08);
+}
+html[data-theme='light'] .heroTexture {
+
+  opacity: 0.08;
+}
+html[data-theme='light'] .terminalTitle {
+
+  color:
+    #374151;
+
+  text-shadow: none;
+}
 .runtimeGrid {
 
   display: grid;

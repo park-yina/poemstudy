@@ -61,12 +61,12 @@ export default function SearchPage() {
     >
       <main className={styles.page}>
         <section className={styles.shell}>
-            <span className={styles.kicker}>아카이브 검색 시스템</span>
+          <span className={styles.kicker}>아카이브 검색 시스템</span>
             <h1>블로그화 된 콘텐츠만 검색됩니다.</h1>
-<p>
+          <p>
   DEV WIKI ·  ARCHIVE 기록이 색인되었습니다.
   LudaRota는 봉인 상태를 유지합니다.
-</p>
+          </p>
 
           <div className={styles.console}>
             <div className={styles.consoleBar}>

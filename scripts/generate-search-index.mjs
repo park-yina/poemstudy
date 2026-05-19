@@ -70,6 +70,17 @@ function readMarkdownCollection(directory, category, pathPrefix) {
   });
 }
 
+function getRouteSlug(slug, data, directory) {
+  if (data.slug) {
+    return String(data.slug).replace(/^\/+/, '');
+  }
+
+  const routeSlug = slug.replace(/\/index$/, '');
+
+
+  return routeSlug;
+}
+
 function findFirstHeading(content) {
   const match = content.match(/^#\s+(.+)$/m);
   return match ? match[1].trim() : '';
@@ -261,13 +272,28 @@ const docs = [
   })),
 ];
 
-const outputPath = path.join(root, 'src/generated/search-docs.json');
+const runtimeDocsManifest = readRuntimeDocsManifest();
 
+writeJsonFile(
+  path.join(root, 'src/generated/search-docs.json'),
+  docs
+);
 
-fs.mkdirSync(path.dirname(outputPath), {
-  recursive: true,
-});
-
-fs.writeFileSync(outputPath, JSON.stringify(docs, null, 2));
+writeJsonFile(
+  path.join(root, 'src/generated/fake-docs-manifest.json'),
+  runtimeDocsManifest
+);
 
 console.log(`archive search index generated: ${docs.length} records`);
+console.log(`runtime docs manifest generated: ${runtimeDocsManifest.files.length} records`);
+
+function writeJsonFile(outputPath, data) {
+  const temporaryOutputPath = `${outputPath}.tmp`;
+
+  fs.mkdirSync(path.dirname(outputPath), {
+    recursive: true,
+  });
+
+  fs.writeFileSync(temporaryOutputPath, JSON.stringify(data, null, 2));
+  fs.renameSync(temporaryOutputPath, outputPath);
+}

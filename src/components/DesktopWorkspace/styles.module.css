@@ -314,6 +314,10 @@
   text-transform: lowercase;
 }
 
+.lightExplorerChrome {
+  display: none;
+}
+
 /* =========================
    BODY
 ========================= */
@@ -1307,6 +1311,15 @@
 
   background:
     #060816;
+}
+
+.previewContentHtml {
+
+  overflow:
+    hidden;
+
+  padding:
+    0;
 }
 
 .workspacePackageSurface {
@@ -3252,6 +3265,18 @@
 
 }
 
+.previewHtmlIframe {
+
+  height:
+    100%;
+
+  min-height:
+    0;
+
+  border-radius:
+    0;
+}
+
 .previewIframeResizing {
 
   pointer-events: none;
@@ -4133,7 +4158,498 @@
 .windowDotExpand {
   background: #28c840;
 }
+
+/* =========================
+   PORTFOLIO EXPLORER LIGHT THEME
+========================= */
+
+:global([data-theme='light']) .workspaceWindow {
+  border-color:
+    rgba(15,23,42,0.10);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.92),
+      rgba(236,240,245,0.96)
+    );
+
+  box-shadow:
+    0 38px 100px rgba(38,48,62,0.20),
+    0 0 0 1px rgba(255,255,255,0.72);
+}
+
+:global([data-theme='light']) .workspaceWindow::before {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(64,110,255,0.08),
+      transparent 34%
+    );
+}
+
+:global([data-theme='light']) .workspaceHeader {
+  border-color:
+    rgba(15,23,42,0.08);
+
+  background:
+    rgba(255,255,255,0.62);
+
+  box-shadow:
+    inset 0 -1px 0 rgba(255,255,255,0.58);
+}
+
+:global([data-theme='light']) .workspaceTitle {
+  color:
+    rgba(43,48,56,0.68);
+}
+
+:global([data-theme='light']) .lightExplorerChrome {
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(220px, 0.9fr) minmax(220px, 1fr) auto;
+
+  align-items:
+    center;
+
+  gap:
+    1rem;
+
+  min-height:
+    74px;
+
+  padding:
+    0.9rem 1.35rem;
+
+  border-bottom:
+    1px solid rgba(15,23,42,0.08);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.86),
+      rgba(242,245,248,0.72)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.82),
+    inset 0 -1px 0 rgba(255,255,255,0.54);
+}
+
+:global([data-theme='light']) .lightExplorerIdentity {
+  min-width:
+    0;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    0.24rem;
+}
+
+:global([data-theme='light']) .lightExplorerKicker {
+  color:
+    rgba(64,110,255,0.82);
+
+  font-family:
+    'JetBrains Mono',
+    Consolas,
+    monospace;
+
+  font-size:
+    0.68rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
+}
+
+:global([data-theme='light']) .lightExplorerIdentity strong {
+  min-width:
+    0;
+
+  overflow:
+    hidden;
+
+  color:
+    #182235;
+
+  font-size:
+    1.05rem;
+
+  font-weight:
+    750;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+:global([data-theme='light']) .lightExplorerTrail {
+  min-width:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.55rem;
+
+  justify-self:
+    stretch;
+
+  padding:
+    0.64rem 0.78rem;
+
+  border:
+    1px solid rgba(15,23,42,0.08);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255,255,255,0.64);
+
+  color:
+    rgba(43,48,56,0.64);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.76);
+}
+
+:global([data-theme='light']) .lightExplorerTrail span {
+  overflow:
+    hidden;
+
+  font-size:
+    0.82rem;
+
+  font-weight:
+    650;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+:global([data-theme='light']) .lightExplorerTrail i {
+  color:
+    rgba(43,48,56,0.32);
+
+  font-size:
+    0.62rem;
+
+  flex:
+    0 0 auto;
+}
+
+:global([data-theme='light']) .lightExplorerStats {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    flex-end;
+
+  gap:
+    0.45rem;
+
+  min-width:
+    0;
+}
+
+:global([data-theme='light']) .lightExplorerStats span {
+  padding:
+    0.46rem 0.62rem;
+
+  border:
+    1px solid rgba(15,23,42,0.075);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255,255,255,0.56);
+
+  color:
+    rgba(43,48,56,0.62);
+
+  font-size:
+    0.72rem;
+
+  font-weight:
+    700;
+
+  white-space:
+    nowrap;
+}
+
+:global([data-theme='light']) .sidebar {
+  border-color:
+    rgba(15,23,42,0.08);
+
+  background:
+    rgba(245,247,250,0.72);
+}
+
+:global([data-theme='light']) .sidebarTitle,
+:global([data-theme='light']) .taskbarRight,
+:global([data-theme='light']) .runtimeTicker {
+  color:
+    rgba(43,48,56,0.44);
+}
+
+:global([data-theme='light']) .sidebarItem {
+  color:
+    rgba(43,48,56,0.70);
+}
+
+:global([data-theme='light']) .sidebarItem:hover,
+:global([data-theme='light']) .activeSidebar {
+  background:
+    rgba(64,110,255,0.08);
+
+  color:
+    #1f2a44;
+}
+
+:global([data-theme='light']) .active {
+  background:
+    rgba(64,110,255,0.11);
+
+  border-color:
+    rgba(64,110,255,0.18);
+
+  color:
+    #1f3f97;
+
+  box-shadow:
+    0 0 18px rgba(64,110,255,0.08);
+}
+
+:global([data-theme='light']) .desktopArea {
+  background:
+    linear-gradient(
+      180deg,
+      #f8fafc,
+      #eef2f6
+    );
+}
+
+:global([data-theme='light']) .desktopArea::before {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(64,110,255,0.07),
+      transparent 40%
+    );
+}
+
+:global([data-theme='light']) .desktopIcon:hover {
+  background:
+    rgba(15,23,42,0.045);
+}
+
+:global([data-theme='light']) .desktopIcon.active {
+  background:
+    rgba(64,110,255,0.10);
+
+  border-color:
+    rgba(64,110,255,0.18);
+
+  box-shadow:
+    0 0 0 1px rgba(64,110,255,0.06);
+}
+
+:global([data-theme='light']) .desktopLabel,
+:global([data-theme='light']) .iconTitle,
+:global([data-theme='light']) .desktopIcon.active .desktopLabel {
+  color:
+    rgba(31,41,55,0.88);
+}
+
+:global([data-theme='light']) .iconDate {
+  color:
+    rgba(43,48,56,0.58);
+}
+
+:global([data-theme='light']) .tabs {
+  border-color:
+    rgba(15,23,42,0.08);
+
+  background:
+    rgba(235,239,244,0.84);
+}
+
+:global([data-theme='light']) .tab {
+  border-color:
+    rgba(15,23,42,0.07);
+
+  background:
+    rgba(255,255,255,0.36);
+
+  color:
+    rgba(43,48,56,0.58);
+}
+
+:global([data-theme='light']) .tab:hover {
+  background:
+    rgba(255,255,255,0.58);
+
+  color:
+    rgba(43,48,56,0.82);
+}
+
+:global([data-theme='light']) .activeTab {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.92),
+      rgba(244,247,250,0.96)
+    );
+
+  border-color:
+    rgba(64,110,255,0.16);
+
+  color:
+    #1f2937;
+
+  box-shadow:
+    0 12px 28px rgba(15,23,42,0.08);
+}
+
+:global([data-theme='light']) .tab::after {
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(15,23,42,0.10),
+      transparent
+    );
+}
+
+:global([data-theme='light']) .closeButton {
+  color:
+    rgba(43,48,56,0.44);
+}
+
+:global([data-theme='light']) .closeButton:hover {
+  background:
+    rgba(15,23,42,0.055);
+
+  color:
+    #b42318;
+}
+
+:global([data-theme='light']) .taskbar {
+  border-color:
+    rgba(15,23,42,0.08);
+
+  background:
+    rgba(248,250,252,0.76);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+:global([data-theme='light']) .runtimeButton,
+:global([data-theme='light']) .taskbarIcon {
+  border-color:
+    rgba(15,23,42,0.08);
+
+  background:
+    rgba(15,23,42,0.045);
+
+  color:
+    rgba(31,41,55,0.78);
+}
+
+:global([data-theme='light']) .runtimeButton:hover,
+:global([data-theme='light']) .taskbarIcon:hover {
+  background:
+    rgba(64,110,255,0.10);
+}
+
+:global([data-theme='light']) .taskbarIconActive {
+  background:
+    rgba(64,110,255,0.12);
+
+  border-color:
+    rgba(64,110,255,0.20);
+
+  color:
+    #2146a6;
+}
+
+:global([data-theme='light']) .weatherText,
+:global([data-theme='light']) .awsStatus {
+  color:
+    rgba(43,48,56,0.62);
+}
+
+:global([data-theme='light']) .awsStatusOk {
+  color:
+    rgba(36,122,76,0.82);
+}
+
+:global([data-theme='light']) .awsStatusIssue {
+  color:
+    rgba(180,83,9,0.86);
+}
+
+:global([data-theme='light']) .awsStatusUnknown {
+  color:
+    rgba(180,35,24,0.82);
+}
+
 @media (max-width: 996px) {
+
+  :global([data-theme='light']) .lightExplorerChrome {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    align-items:
+      stretch;
+
+    gap:
+      0.75rem;
+
+    padding:
+      0.85rem 1rem;
+  }
+
+  :global([data-theme='light']) .lightExplorerStats {
+    justify-content:
+      flex-start;
+
+    flex-wrap:
+      wrap;
+  }
 
   .taskbar {
 

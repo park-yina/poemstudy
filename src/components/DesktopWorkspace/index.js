@@ -1219,7 +1219,7 @@ const folders =
         ? [files[1]]
         : files[0]
           ? [files[0]]
-          : []
+        : []
     );
 
   const [activeFile, setActiveFile] =
@@ -1280,6 +1280,9 @@ const folders =
   };
 
   const closeFile = (fileId) => {
+    if (!fileId) {
+      return;
+    }
 
     setOpenedFiles((prev) => {
 
@@ -2321,20 +2324,24 @@ return (
       </button>
 
 
-      <button
-        type="button"
-        className={styles.contextMenuItem}
-        onClick={() => {
+<button
+  type="button"
+  className={styles.contextMenuItem}
+  onClick={() => {
 
-          removeTaskbarItem(
-            taskbarMenuState.task
-          );
+    removeTaskbarItem(
+      taskbarMenuState.task
+    );
 
-          setTaskbarMenuState(null);
-        }}
-      >
-        제거
-      </button>
+    setTaskbarMenuState(null);
+  }}
+>
+<i
+  className="fa-solid fa-thumbtack"
+  style={{ marginRight: '0.45rem' }}
+/>
+  작업표시줄에서 제거
+</button>
 
     </div>,
 
