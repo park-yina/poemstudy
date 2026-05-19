@@ -23,10 +23,11 @@ export default function SearchPage() {
     setFilter(initialFilter);
   }, [initialQuery, initialFilter]);
 
-  const results = useMemo(
+  const searchState = useMemo(
     () => runArchiveSearch(initialQuery, initialFilter),
     [initialQuery, initialFilter]
   );
+  const results = searchState.results;
   const groupedResults = useMemo(() => groupResultsByCategory(results), [results]);
 
   const submitSearch = (nextFilter = filter) => {

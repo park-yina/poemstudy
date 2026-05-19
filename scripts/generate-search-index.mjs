@@ -15,35 +15,12 @@ const CATEGORY = {
   ARCHIVE: 'ARCHIVE',
 };
 
-const archiveEntries = [
-  {
-    title: 'fakejumping-admin',
-    status: 'live runtime',
-    stack: 'Spring Boot / JWT / MyBatis / Docker / AWS',
-    href: '/docs/intro',
-    description:
-      'Operational platform records focused on authentication, admin flows, deployment, and runtime maintenance.',
-  },
-  {
-    title: 'shinchun-archive',
-    status: 'archived',
-    stack: 'Flask / AWS Lambda / HTML',
-    href: '/docs/intro',
-    description:
-      'A preserved service archive for event-oriented publishing, signed access, and serverless delivery notes.',
-  },
-  {
-    title: 'JumpingBattle',
-    status: 'legacy',
-    stack: 'Python / Firebase / HTML',
-    href: '/docs/intro',
-    description:
-      'Legacy project notes from real-time interaction work, frontend control surfaces, and Firebase-backed state.',
-  },
-];
-
 function readMarkdownCollection(directory, category, pathPrefix) {
   const basePath = path.join(root, directory);
+
+  if (!fs.existsSync(basePath)) {
+    return [];
+  }
 
   return globSync('**/*.{md,mdx}', {
     cwd: basePath,
@@ -68,17 +45,6 @@ function readMarkdownCollection(directory, category, pathPrefix) {
       path: `${pathPrefix}/${routeSlug}`,
     };
   });
-}
-
-function getRouteSlug(slug, data, directory) {
-  if (data.slug) {
-    return String(data.slug).replace(/^\/+/, '');
-  }
-
-  const routeSlug = slug.replace(/\/index$/, '');
-
-
-  return routeSlug;
 }
 
 function findFirstHeading(content) {
@@ -258,18 +224,59 @@ function buildRuntimeDocsTree(files) {
   return rootNode;
 }
 
+function readArchiveWikiRecords() {
+  const directory = 'archive-wiki';
+  const basePath = path.join(root, directory);
+
+  if (!fs.existsSync(basePath)) {
+    return [];
+  }
+
+  return globSync('**/*.{md,mdx}', {
+    cwd: basePath,
+    ignore: ['index.md', 'index.mdx', '**/_category_.json'],
+  })
+    .sort((first, second) =>
+      first.localeCompare(second)
+    )
+    .map((file) => {
+      const fullPath = path.join(basePath, file);
+      const raw = fs.readFileSync(fullPath, 'utf-8');
+      const { data, content } = matter(raw);
+      const slug = file.replace(/\\/g, '/').replace(/\.mdx?$/, '');
+      const title = data.title || findFirstHeading(content) || titleFromSlug(slug);
+      const description = data.description || firstParagraph(content);
+      const tags = data.tags || [];
+      const anchor = slug.replace(/[^a-z0-9_-]+/gi, '-');
+      const wikiPath = `/archive-wiki?record=${encodeURIComponent(slug)}`;
+      const workspacePath = data.workspaceHref || data.href || '';
+
+      return {
+        id: `${CATEGORY.ARCHIVE}:${slug}`,
+        slug,
+        title,
+        description,
+        content: cleanContent(content),
+        markdown: content.trim(),
+        status: data.status || 'archived',
+        stack: data.stack || '',
+        tags,
+        category: CATEGORY.ARCHIVE,
+        source: directory,
+        sourcePath: `${directory}/${slug}.md`,
+        anchor,
+        wikiPath,
+        workspacePath,
+        path: wikiPath,
+      };
+    });
+}
+
+const archiveRecords = readArchiveWikiRecords();
+
 const docs = [
   ...readMarkdownCollection('docs', CATEGORY.DEV_WIKI, '/docs'),
-  ...archiveEntries.map((entry) => ({
-    id: `${CATEGORY.ARCHIVE}:${entry.title}`,
-    title: entry.title,
-    description: entry.description,
-    content: `${entry.description} ${entry.status} ${entry.stack}`,
-    tags: [entry.status, entry.stack],
-    category: CATEGORY.ARCHIVE,
-    source: 'archive',
-    path: entry.href,
-  })),
+  ...archiveRecords,
 ];
 
 const runtimeDocsManifest = readRuntimeDocsManifest();
@@ -280,11 +287,17 @@ writeJsonFile(
 );
 
 writeJsonFile(
+  path.join(root, 'src/generated/archive-records.json'),
+  archiveRecords
+);
+
+writeJsonFile(
   path.join(root, 'src/generated/fake-docs-manifest.json'),
   runtimeDocsManifest
 );
 
 console.log(`archive search index generated: ${docs.length} records`);
+console.log(`archive wiki generated: ${archiveRecords.length} records`);
 console.log(`runtime docs manifest generated: ${runtimeDocsManifest.files.length} records`);
 
 function writeJsonFile(outputPath, data) {

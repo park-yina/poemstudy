@@ -20,7 +20,7 @@ const config = {
     archiveSearch: {
       mode: 'local',
       route: '/search',
-      includedCategories: ['DEV WIKI',  'ARCHIVE'],
+      includedCategories: ['DEVWIKI',  'ARCHIVE'],
       excludedCategories: ['LudaRota'],
       engine: 'minisearch',
     },
@@ -95,7 +95,7 @@ const config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'DEV WIKI',
+          label: 'DevWIKI',
         },
 
         {

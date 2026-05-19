@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ARCHIVE:records/fakejumping-admin",
+    "slug": "records/fakejumping-admin",
+    "title": "fakejumping-admin",
+    "description": "관리자 인증, 디바이스 관리, 운영 흐름을 중심으로 구축된 Spring Boot 기반 운영 시스템.",
+    "content": "fakejumping-admin Spring Boot 기반으로 구축된 관리자 운영 시스템입니다. 현재 구현 범위: JWT 기반 인증 및 Refresh Token 구조 관리자 권한 처리 및 인증 필터 KPI 및 운영 관리 기능 가상 Device 등록 / 삭제 / 조회 기능 Runtime 상태 관리 및 운영 흐름 처리 Docker 기반 배포 환경 구성",
+    "markdown": "# fakejumping-admin\n\nSpring Boot 기반으로 구축된 관리자 운영 시스템입니다.\n\n현재 구현 범위:\n\n- JWT 기반 인증 및 Refresh Token 구조\n- 관리자 권한 처리 및 인증 필터\n- KPI 및 운영 관리 기능\n- 가상 Device 등록 / 삭제 / 조회 기능\n- Runtime 상태 관리 및 운영 흐름 처리\n- Docker 기반 배포 환경 구성",
+    "status": "developing",
+    "stack": "Spring Boot / JWT / MyBatis / Docker / AWS",
+    "tags": [
+      "spring-boot",
+      "jwt",
+      "mybatis",
+      "docker",
+      "aws"
+    ],
+    "category": "ARCHIVE",
+    "source": "archive-wiki",
+    "sourcePath": "archive-wiki/records/fakejumping-admin.md",
+    "anchor": "records-fakejumping-admin",
+    "wikiPath": "/archive-wiki?record=records%2Ffakejumping-admin",
+    "workspacePath": "/workspace/fakejumping",
+    "path": "/archive-wiki?record=records%2Ffakejumping-admin"
+  },
+  {
+    "id": "ARCHIVE:records/jumpingbattle",
+    "slug": "records/jumpingbattle",
+    "title": "JumpingBattle",
+    "description": "현재 30개가 넘는 매장에서 상용서비스중인 프로젝트로, 다운로드(jpg/mp3)및 스트리밍 사이트 제작하였습니다.",
+    "content": "JumpingBattle Firebase 기반 다운로드 및 스트리밍 시스템 운영 프로젝트입니다. 현재 30개 이상의 매장에서 사용 중인 서비스로: jpg/mp3 다운로드 및 스트리밍 처리 기한 만료 파일 자동 삭제 시스템 다운로드 및 스트리밍 이벤트 기록 Firebase 기반 상태 관리 Zappa 기반 배포 자동화 등의 구조를 운영하였습니다. 단순 기능 구현보다, 실제 운영 환경에서의 파일 관리와 이벤트 처리 흐름, 그리고 유지보수를 고려한 구조 설계 경험을 경험할 수 있던 프로젝트입니다.",
+    "markdown": "# JumpingBattle\n\nFirebase 기반 다운로드 및 스트리밍 시스템 운영 프로젝트입니다.\n\n현재 30개 이상의 매장에서 사용 중인 서비스로:\n\n- jpg/mp3 다운로드 및 스트리밍 처리\n- 기한 만료 파일 자동 삭제 시스템\n- 다운로드 및 스트리밍 이벤트 기록\n- Firebase 기반 상태 관리\n- Zappa 기반 배포 자동화\n\n등의 구조를 운영하였습니다.\n\n단순 기능 구현보다,\n실제 운영 환경에서의 파일 관리와 이벤트 처리 흐름,\n그리고 유지보수를 고려한 구조 설계 경험을 경험할 수 있던 프로젝트입니다.",
+    "status": "Deployed",
+    "stack": "Python / Firebase / HTML / zappa",
+    "tags": [
+      "python",
+      "firebase",
+      "realtime",
+      "legacy",
+      "zappa"
+    ],
+    "category": "ARCHIVE",
+    "source": "archive-wiki",
+    "sourcePath": "archive-wiki/records/jumpingbattle.md",
+    "anchor": "records-jumpingbattle",
+    "wikiPath": "/archive-wiki?record=records%2Fjumpingbattle",
+    "workspacePath": "/workspace/jumpingbattle",
+    "path": "/archive-wiki?record=records%2Fjumpingbattle"
+  },
+  {
+    "id": "ARCHIVE:records/shinchun-archive",
+    "slug": "records/shinchun-archive",
+    "title": "shinchun-archive",
+    "description": "현재 상용중인 서비스인 신춘회관을 사용하며 느낀 불편을 토대로 제작한 신춘문예 당선작 아카이빙 사이트입니다.",
+    "content": "shinchun-archive 기존 신춘회관 서비스 사용 과정에서 느꼈던 검색 및 필터링 구조의 불편함을 개선하기 위해 제작한 신춘문예 아카이빙 프로젝트입니다. 특히: 모바일 환경에서의 가독성과 탐색 경험 작품 검색 및 필터링 흐름 개선 빠른 접근성을 고려한 UI 구조 S3 및 Firebase Storage 기반 백업 구조 등을 중심으로 설계하였습니다. 단순 아카이빙보다, 실제 사용자의 탐색 흐름과 접근 경험 개선에 초점을 두고 진행한 프로젝트입니다.",
+    "markdown": "# shinchun-archive\n\n기존 신춘회관 서비스 사용 과정에서 느꼈던\n검색 및 필터링 구조의 불편함을 개선하기 위해 제작한 신춘문예 아카이빙 프로젝트입니다.\n\n특히:\n\n- 모바일 환경에서의 가독성과 탐색 경험\n- 작품 검색 및 필터링 흐름 개선\n- 빠른 접근성을 고려한 UI 구조\n- S3 및 Firebase Storage 기반 백업 구조\n\n등을 중심으로 설계하였습니다.\n\n단순 아카이빙보다,\n실제 사용자의 탐색 흐름과 접근 경험 개선에 초점을 두고 진행한 프로젝트입니다.",
+    "status": "Deployed",
+    "stack": "Flask / AWS Lambda / HTML",
+    "tags": [
+      "flask",
+      "aws-lambda",
+      "tailwind",
+      "zappa"
+    ],
+    "category": "ARCHIVE",
+    "source": "archive-wiki",
+    "sourcePath": "archive-wiki/records/shinchun-archive.md",
+    "anchor": "records-shinchun-archive",
+    "wikiPath": "/archive-wiki?record=records%2Fshinchun-archive",
+    "workspacePath": "",
+    "path": "/archive-wiki?record=records%2Fshinchun-archive"
+  }
+]

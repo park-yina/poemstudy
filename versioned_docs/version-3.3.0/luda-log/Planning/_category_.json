@@ -1,0 +1,8 @@
+{
+  "label": "기획",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Luda Log의 핵심 컨셉과 기록 중심 설계 방향을 정리한 기획 문서입니다."
+  }
+}
