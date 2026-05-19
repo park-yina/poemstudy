@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
 const STORAGE_KEY = 'archiveProtocolHidden';
-const SESSION_DISMISSED_KEY = 'archiveProtocolDismissedForSession';
+const SESSION_SUPPRESSED_KEY = 'archiveProtocolSuppressedForSession';
 
 const protocolSections = [
   {
@@ -41,13 +41,14 @@ export default function ArchiveProtocol() {
   useEffect(() => {
     const hidden =
       window.localStorage.getItem(STORAGE_KEY) === 'true';
-    const dismissedForSession =
-      window.sessionStorage.getItem(SESSION_DISMISSED_KEY) === 'true';
+    const suppressedForSession =
+      window.sessionStorage.getItem(SESSION_SUPPRESSED_KEY) === 'true';
 
     setAcknowledged(hidden);
 
-    if (!hidden && !dismissedForSession) {
+    if (!hidden && !suppressedForSession) {
       const timer = window.setTimeout(() => {
+        window.sessionStorage.setItem(SESSION_SUPPRESSED_KEY, 'true');
         setOpen(true);
       }, 1400);
 
@@ -92,7 +93,7 @@ export default function ArchiveProtocol() {
   }, [open]);
 
   const dismissForSession = () => {
-    window.sessionStorage.setItem(SESSION_DISMISSED_KEY, 'true');
+    window.sessionStorage.setItem(SESSION_SUPPRESSED_KEY, 'true');
     setOpen(false);
   };
 

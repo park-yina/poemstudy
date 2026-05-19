@@ -1,34 +1,8 @@
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 
+import archives from '../generated/archive-records.json';
 import styles from './archive.module.css';
-
-const archives = [
-  {
-    title: 'fakejumping-admin',
-    status: 'live runtime',
-    stack: 'Spring Boot / JWT / MyBatis / Docker / AWS',
-    href: '/docs/intro',
-    description:
-      'Operational platform records focused on authentication, admin flows, deployment, and runtime maintenance.',
-  },
-  {
-    title: 'shinchun-archive',
-    status: 'archived',
-    stack: 'Flask / AWS Lambda / HTML',
-    href: '/docs/intro',
-    description:
-      'A preserved service archive for event-oriented publishing, signed access, and serverless delivery notes.',
-  },
-  {
-    title: 'JumpingBattle',
-    status: 'legacy',
-    stack: 'Python / Firebase / HTML',
-    href: '/docs/intro',
-    description:
-      'Legacy project notes from real-time interaction work, frontend control surfaces, and Firebase-backed state.',
-  },
-];
 
 export default function ArchivePage() {
   return (
@@ -37,22 +11,37 @@ export default function ArchivePage() {
       description="Runtime and project archive index"
     >
       <main className={styles.page}>
-        <section className={styles.hero}>
-          <div className="container">
-            <p className={styles.kicker}>Archive Index</p>
-            <h1>Runtime records, moved out of the home page.</h1>
-            <p className={styles.lead}>
-              Older systems and project notes live here so the home page can stay focused on the current profile.
-            </p>
-          </div>
-        </section>
+<section className={styles.hero}>
+  <div className="container">
+
+    <p className={styles.kicker}>
+      ARCHIVE INDEX
+    </p>
+
+    <h1>
+      개발 기록과 워크스페이스를<br />
+      정리한 아카이브 공간입니다.
+    </h1>
+
+    <p className={styles.lead}>
+      Runtime Workspace,
+      기술 문서,
+      프로젝트 기록과 운영 노트들을
+      카테고리별로 정리해두었습니다.<br />
+
+      보다 정리된 형태의 개발 문서와
+      아카이브 시스템으로 이동할 수 있습니다.
+    </p>
+
+  </div>
+</section>
 
         <section className={styles.archiveList}>
           <div className="container">
             {archives.map((archive, index) => (
-              <Link
-                key={archive.title}
-                to={archive.href}
+              <article
+                id={archive.anchor}
+                key={archive.id}
                 className={styles.archiveItem}
               >
                 <span className={styles.number}>
@@ -62,13 +51,20 @@ export default function ArchivePage() {
                 <div className={styles.archiveBody}>
                   <div className={styles.archiveMeta}>
                     <span>{archive.status}</span>
-                    <span>{archive.stack}</span>
+                    {archive.stack && <span>{archive.stack}</span>}
                   </div>
 
                   <h2>{archive.title}</h2>
                   <p>{archive.description}</p>
+
+                  <div className={styles.archiveActions}>
+                    <Link to={archive.wikiPath}>Archive Wiki</Link>
+                    {archive.workspacePath && (
+                      <Link to={archive.workspacePath}>Workspace</Link>
+                    )}
+                  </div>
                 </div>
-              </Link>
+              </article>
             ))}
           </div>
         </section>
