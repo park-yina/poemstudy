@@ -1,0 +1,109 @@
+<select id="findStoresPaged"
+        resultType="com.parkvina.fakejumping.entity.Store">
+
+    SELECT *
+    FROM store
+
+    WHERE 1=1
+
+    <!-- 지역 -->
+    <if test="region != null and region != ''">
+        AND region = #{region}
+    </if>
+
+    <!-- 하위 지역 -->
+    <if test="subRegion != null and subRegion != ''">
+
+        AND (
+            city = #{subRegion}
+            OR (
+                (city IS NULL OR city = '')
+                AND district = #{subRegion}
+            )
+        )
+
+    </if>
+
+    <!-- 상태 -->
+    <if test="status != null and status != ''">
+
+        <!-- 운영중 -->
+        <if test='"OPERATING".equals(status)'>
+
+            AND is_active = 1
+
+            AND open_at IS NOT NULL
+
+            AND open_at <![CDATA[ <= ]]> NOW()
+
+            AND (
+                closed_at IS NULL
+                OR closed_at <![CDATA[ > ]]> NOW()
+            )
+
+        </if>
+
+        <!-- 오픈 예정 -->
+        <if test='"OPEN_SCHEDULED".equals(status)'>
+
+            AND is_active = 1
+
+            AND open_at <![CDATA[ > ]]> NOW()
+
+            AND (
+                closed_at IS NULL
+                OR closed_at <![CDATA[ > ]]> NOW()
+            )
+
+        </if>
+
+        <!-- 오픈 미정 -->
+        <if test='"NOT_OPENED".equals(status)'>
+
+            AND is_active = 1
+
+            AND open_at IS NULL
+
+            AND (
+                closed_at IS NULL
+                OR closed_at <![CDATA[ > ]]> NOW()
+            )
+
+        </if>
+
+        <!-- 폐점 완료 -->
+        <if test='"CLOSED".equals(status)'>
+
+            AND closed_at IS NOT NULL
+
+            AND open_at IS NOT NULL
+
+            AND closed_at <![CDATA[ <= ]]> NOW()
+
+        </if>
+
+    </if>
+
+    <!-- 정렬 -->
+    ORDER BY
+
+    <choose>
+
+        <when test='"OPEN_SCHEDULED".equals(status)'>
+            open_at ASC
+        </when>
+
+        <when test='"CLOSED".equals(status)'>
+            closed_at DESC
+        </when>
+
+        <otherwise>
+            id DESC
+        </otherwise>
+
+    </choose>
+
+    LIMIT #{size}
+    OFFSET #{offset}
+
+</select>

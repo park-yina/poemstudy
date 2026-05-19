@@ -1,3 +1,84 @@
+export const qeuryFolder={
+    id: 'query-folder',
+
+  title: 'qeury,xml,mappers',
+
+  type: 'FOLDER',
+  children:[
+    {
+  id: 'region-normalization',
+
+  title: 'RegionNormalization.sql',
+
+  type: 'CODE',
+
+  language: 'sql',
+
+  previewUrl:
+    '/code/Fake/query/RegionNormalization.sql',
+
+  description:
+    '운영 데이터 내 city / district 값 차이를 보정하기 위한 지역 정규화 쿼리. 지역 구조가 일관되지 않은 실제 데이터를 통합 처리.',
+
+  path:
+    'src/main/java/com/parkyina/fakejumping/mapper/RegionNormalization.sql',
+},
+{
+  id: 'dynamic-store-query',
+
+  title: 'DynamicStoreQuery.xml',
+
+  type: 'CODE',
+
+  language: 'xml',
+
+  previewUrl:
+    '/code/Fake/query/DynamicStoreQuery.xml',
+
+  description:
+    '지역, 하위 지역, 운영 상태 조건에 따라 동적으로 검색 조건을 구성하는 관리자 조회 쿼리. 운영 상태를 시간 기반으로 계산하여 필터링.',
+
+  path:
+    'src/main/resources/mapper/store.xml',
+},
+{
+  id: 'store-admin-sync',
+
+  title: 'StoreAdminSync.sql',
+
+  type: 'CODE',
+
+  language: 'sql',
+
+  previewUrl:
+    '/code/Fake/query/StoreAdminSync.java',
+
+  description:
+    '폐점된 매장의 관리자 계정을 자동 비활성화하기 위한 운영 동기화 쿼리. 운영 상태와 관리자 권한 상태를 함께 검사.',
+
+  path:
+    'src/main/java/com/parkyina/fakejumping/mapper/StoreMapper.java',
+},
+{
+  id: 'refresh-token-upsert',
+
+  title: 'RefreshTokenUpsert.sql',
+
+  type: 'CODE',
+
+  language: 'sql',
+
+  previewUrl:
+    '/code/query/TokenMapper.java',
+
+  description:
+    'RefreshToken Rotation을 위한 토큰 저장 쿼리. 기존 토큰 존재 여부에 따라 Insert 또는 Update를 수행하여 인증 상태를 유지.',
+
+  path:
+    'src/main/java/com/parkyina/fakejumping/mapper/TokenMapper.java',
+},
+  ]
+}
 export const securityFolder = {
 
   id: 'security-folder',
