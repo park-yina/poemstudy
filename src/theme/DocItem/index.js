@@ -100,11 +100,14 @@ export default function DocItem(props) {
   }
 
   const docHtmlClassName = `docs-doc-id-${enhancedContent.metadata.id}`;
+  const docModeClassName = enhancedContent.frontMatter.archiveManuscript
+    ? 'docs-archive-manuscript'
+    : '';
   const MDXComponent = enhancedContent;
 
   return (
     <DocProvider content={enhancedContent}>
-      <HtmlClassNameProvider className={docHtmlClassName}>
+      <HtmlClassNameProvider className={`${docHtmlClassName} ${docModeClassName}`}>
         <DocItemMetadata />
         <DocItemLayout>
           <MDXComponent />

@@ -243,7 +243,9 @@ function readArchiveWikiRecords() {
       const fullPath = path.join(basePath, file);
       const raw = fs.readFileSync(fullPath, 'utf-8');
       const { data, content } = matter(raw);
-      const slug = file.replace(/\\/g, '/').replace(/\.mdx?$/, '');
+      const fileSlug = file.replace(/\\/g, '/').replace(/\.mdx?$/, '');
+      const slug = normalizeIndexSlug(fileSlug);
+      const parentSlug = findParentSlug(slug);
       const title = data.title || findFirstHeading(content) || titleFromSlug(slug);
       const description = data.description || firstParagraph(content);
       const tags = data.tags || [];
@@ -260,16 +262,20 @@ function readArchiveWikiRecords() {
         markdown: content.trim(),
         status: data.status || 'archived',
         stack: data.stack || '',
+        order: Number.isFinite(data.order) ? data.order : 0,
         tags,
         category: CATEGORY.ARCHIVE,
         source: directory,
-        sourcePath: `${directory}/${slug}.md`,
+        sourcePath: `${directory}/${fileSlug}.md`,
+        parentSlug,
+        depth: slug.split('/').length,
         anchor,
         wikiPath,
         workspacePath,
         path: wikiPath,
       };
-    });
+    })
+    .sort(sortArchiveRecords);
 }
 
 const archiveRecords = readArchiveWikiRecords();
@@ -309,4 +315,25 @@ function writeJsonFile(outputPath, data) {
 
   fs.writeFileSync(temporaryOutputPath, JSON.stringify(data, null, 2));
   fs.renameSync(temporaryOutputPath, outputPath);
+}
+
+function normalizeIndexSlug(slug) {
+  return slug.replace(/\/index$/, '');
+}
+
+function findParentSlug(slug) {
+  const parts = slug.split('/');
+
+  if (parts.length <= 2) {
+    return '';
+  }
+
+  return parts.slice(0, -1).join('/');
+}
+
+function sortArchiveRecords(first, second) {
+  return (
+    first.order - second.order ||
+    first.slug.localeCompare(second.slug)
+  );
 }

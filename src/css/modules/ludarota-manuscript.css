@@ -1,0 +1,1378 @@
+﻿/* ========================================
+   LudaRota: Archive Manuscript Document
+======================================== */
+
+.docs-archive-manuscript {
+  --ludarota-paper: #131017;
+  --ludarota-paper-soft: #19141c;
+  --ludarota-ink: #efe8dc;
+  --ludarota-muted: #a99a87;
+  --ludarota-faint: rgba(239, 232, 220, 0.58);
+  --ludarota-rule: rgba(216, 180, 160, 0.22);
+  --ludarota-rule-strong: rgba(216, 180, 160, 0.42);
+  --ludarota-accent: #d8b4a0;
+  --ludarota-red: #8f3d4d;
+  --ludarota-code:
+    "SFMono-Regular",
+    "Consolas",
+    "Liberation Mono",
+    monospace;
+  --ludarota-serif:
+    "Noto Serif KR",
+    "Iowan Old Style",
+    "Palatino Linotype",
+    Georgia,
+    serif;
+}
+
+.docs-archive-manuscript .theme-doc-toc-desktop,
+.docs-archive-manuscript .theme-doc-toc-mobile {
+  display: none;
+}
+
+.docs-archive-manuscript [class*="docItemCol"] {
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
+.docs-archive-manuscript main {
+
+  position: relative;
+
+  background:
+    var(--luda-page-gradient);
+
+  color:
+    var(--luda-text);
+
+  overflow: hidden;
+}
+
+.docs-archive-manuscript main::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 12% 0%,
+      color-mix(
+        in srgb,
+        var(--luda-accent) 18%,
+        transparent
+      ),
+      transparent 34%
+    );
+
+  opacity: 0.7;
+}
+
+[data-theme="light"]
+.docs-archive-manuscript main::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.04;
+
+  background-image:
+    radial-gradient(#000 0.4px, transparent 0.4px);
+
+  background-size:
+    6px 6px;
+}
+.pagination-nav {
+
+  gap: 1rem;
+}
+
+.pagination-nav__link {
+
+  border:
+    1px solid var(--luda-border);
+
+  background:
+    var(--luda-paper-gradient);
+
+  box-shadow:
+    var(--luda-shadow);
+
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.pagination-nav__link:hover {
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--luda-accent) 48%,
+      var(--luda-border)
+    );
+
+  transform:
+    translateY(-2px);
+}
+
+.pagination-nav__sublabel {
+
+  color:
+    var(--luda-text-soft);
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+
+  font-size: 0.72rem;
+}
+
+.pagination-nav__label {
+
+  color:
+    var(--luda-text);
+
+  font-weight: 700;
+
+  font-size: 1rem;
+
+  line-height: 1.5;
+}
+.docs-archive-manuscript .theme-doc-markdown {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 3.2rem clamp(1.4rem, 4vw, 4.8rem) 6rem;
+}
+
+.ludarota-page {
+
+  width: min(1380px, 100%);
+
+  margin: 0 auto;
+
+  padding:
+    clamp(2rem, 4vw, 4rem)
+    clamp(2rem, 5vw, 5rem)
+    10rem;
+}
+
+.ludarota-top-layout {
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    360px;
+
+  gap:
+    clamp(2rem, 4vw, 4rem);
+
+  align-items: start;
+
+  margin:
+    3rem
+    0
+    5rem;
+}
+
+.ludarota-summary {
+
+  padding:
+    1.8rem
+    2rem;
+
+  border:
+    1px solid var(--luda-border);
+
+  background:
+    var(--luda-surface);
+
+  box-shadow:
+    var(--luda-shadow);
+
+  backdrop-filter: blur(10px);
+}
+
+.ludarota-summary h2 {
+
+  margin:
+    0
+    0
+    1.5rem;
+
+  color:
+    var(--luda-text);
+}
+
+.ludarota-summary ol {
+
+  margin: 0;
+
+  padding-left: 1.5rem;
+}
+
+.ludarota-summary li {
+
+  margin-top: 0.9rem;
+
+  line-height: 1.8;
+}
+
+.ludarota-summary ol ol {
+
+  margin-top: 0.7rem;
+
+  padding-left: 1.4rem;
+
+  border-left:
+    1px solid var(--luda-border);
+}
+
+.ludarota-summary a {
+
+  color:
+    var(--luda-link);
+
+  text-decoration: none;
+}
+
+.ludarota-summary a:hover {
+
+  color:
+    var(--luda-accent-soft);
+}
+
+.ludarota-infobox {
+
+  overflow: hidden;
+
+  border:
+    1px solid var(--luda-border);
+
+  background:
+    var(--luda-surface);
+
+  box-shadow:
+    var(--luda-shadow);
+}
+
+.ludarota-infobox__title {
+
+  padding:
+    1rem
+    1.4rem;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--luda-accent),
+      color-mix(
+        in srgb,
+        var(--luda-accent) 60%,
+        black
+      )
+    );
+
+  border-bottom:
+    1px solid var(--luda-border);
+
+  color:
+    rgba(255,240,224,0.96);
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+.luda-fold {
+
+  margin:
+    0.8rem 0
+    1.4rem;
+
+  border-top:
+    1px solid var(--luda-border);
+
+  padding-top:
+    0.6rem;
+
+  background:
+    transparent;
+}
+
+.luda-fold summary {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.42rem;
+
+  cursor: pointer;
+
+  list-style: none;
+
+  padding:
+    0.2rem 0;
+
+  font-size:
+    1.05rem;
+
+  font-weight:
+    700;
+
+  color:
+    var(--luda-text);
+
+  user-select: none;
+}
+
+.luda-fold summary::-webkit-details-marker {
+
+  display: none;
+}
+
+.luda-fold summary::before {
+
+  content: ">";
+
+  font-size:
+    0.78rem;
+
+  color:
+    var(--luda-text-soft);
+
+  transition:
+    transform 120ms ease;
+}
+
+.luda-fold[open] summary::before {
+
+  transform:
+    rotate(90deg);
+}
+
+.luda-fold > *:not(summary) {
+
+  margin-left:
+    1rem;
+
+  padding-top:
+    0.65rem;
+}
+/* ========================================
+   WIKI FOLD
+======================================== */
+
+.docs-archive-manuscript details.wiki-fold {
+
+  margin:
+    1.6rem 0 2.4rem !important;
+
+  padding:
+    0 !important;
+
+  border:
+    none !important;
+
+  border-top:
+    1px solid var(--luda-border) !important;
+
+  background:
+    transparent !important;
+
+  outline:
+    none !important;
+
+  box-shadow:
+    none !important;
+
+  overflow:
+    visible;
+}
+
+/* ========================================
+   Docusaurus Alert Reset
+======================================== */
+
+.docs-archive-manuscript details.wiki-fold.alert,
+.docs-archive-manuscript details.wiki-fold.alert--info {
+
+  --ifm-alert-background-color:
+    transparent !important;
+
+  --ifm-alert-border-color:
+    transparent !important;
+
+  --ifm-alert-color:
+    inherit !important;
+
+  background:
+    transparent !important;
+
+  border:
+    none !important;
+
+  box-shadow:
+    none !important;
+}
+
+/* ========================================
+   SUMMARY
+======================================== */
+
+.docs-archive-manuscript details.wiki-fold > summary {
+
+  position:
+    relative;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  min-height:
+    54px;
+
+  padding:
+    0.9rem 0 0.9rem 1.65rem !important;
+
+  cursor:
+    pointer;
+
+  list-style:
+    none;
+
+  background:
+    transparent !important;
+
+  border:
+    none !important;
+
+  user-select:
+    none;
+}
+
+/* 湲곕낯 留덉빱 ?쒓굅 */
+
+.docs-archive-manuscript details.wiki-fold > summary::-webkit-details-marker {
+
+  display:
+    none;
+}
+
+.docs-archive-manuscript details.wiki-fold > summary::marker {
+
+  display:
+    none;
+}
+
+/* ========================================
+   CUSTOM ARROW
+======================================== */
+
+.docs-archive-manuscript details.wiki-fold > summary::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    0.25rem;
+
+  top:
+    50%;
+
+  width:
+    0;
+
+  height:
+    0;
+
+  border-top:
+    5px solid transparent;
+
+  border-bottom:
+    5px solid transparent;
+
+  border-left:
+    7px solid var(--luda-accent-soft);
+
+  transform:
+    translateY(-50%)
+    rotate(0deg);
+
+  opacity:
+    0.82;
+
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+/* ?대졇????*/
+
+.docs-archive-manuscript details.wiki-fold[open] > summary::before {
+
+  transform:
+    translateY(-50%)
+    rotate(90deg);
+
+  opacity:
+    1;
+}
+
+/* ========================================
+   TITLE
+======================================== */
+
+.docs-archive-manuscript details.wiki-fold > summary h2 {
+
+  margin:
+    0 !important;
+
+  padding:
+    0 !important;
+
+  border:
+    none !important;
+
+  color:
+    var(--luda-text);
+
+  font-size:
+    clamp(1.55rem, 2.5vw, 2rem);
+
+  line-height:
+    1.2;
+}
+
+/* Docusaurus heading decoration ?쒓굅 */
+
+.docs-archive-manuscript details.wiki-fold > summary h2::before {
+
+  display:
+    none !important;
+}
+
+/* hash link ?쒓굅 */
+
+.docs-archive-manuscript details.wiki-fold > summary .hash-link {
+
+  display:
+    none !important;
+}
+
+/* ========================================
+   CONTENT
+======================================== */
+.docs-archive-manuscript .wiki-fold-title {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  font-size:
+    clamp(1.55rem, 2.5vw, 2rem);
+
+  font-weight:
+    800;
+
+  line-height:
+    1.2;
+
+  color:
+    var(--luda-text);
+
+  letter-spacing:
+    -0.02em;
+}
+
+
+.docs-archive-manuscript details.wiki-fold .collapsibleContent_i85q {
+
+  padding:
+    0.65rem
+    0
+    0.4rem
+    1.65rem;
+}
+/* ========================================
+   WIKI SEE ALSO
+======================================== */
+
+.wiki-see-also {
+
+  margin-top:
+    5rem;
+
+  padding-top:
+    2rem;
+
+  border-top:
+    1px solid var(--luda-border);
+}
+
+.wiki-see-also h3 {
+
+  margin-bottom:
+    1.25rem;
+
+  font-size:
+    1.05rem;
+
+  color:
+    var(--luda-text-soft);
+
+  letter-spacing:
+    0.04em;
+}
+
+.wiki-see-grid {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    0.85rem;
+}
+
+.wiki-see-grid a {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  padding:
+    0.7rem
+    1rem;
+
+  border:
+    1px solid var(--luda-border);
+
+  border-radius:
+    999px;
+
+  text-decoration:
+    none;
+
+  color:
+    var(--luda-text);
+
+  background:
+    rgba(255,255,255,0.02);
+
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.wiki-see-grid a:hover {
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    var(--luda-accent-soft);
+
+  background:
+    rgba(255,255,255,0.04);
+}
+/* ========================================
+   WIKI FOOTNOTE
+======================================== */
+
+/* ========================================
+   WIKI FOOTNOTE
+======================================== */
+
+.wiki-footnotes {
+
+  margin-top:
+    4rem;
+
+  padding-top:
+    1.5rem;
+
+  border-top:
+    1px solid var(--luda-border);
+
+  color:
+    var(--luda-text-soft);
+
+  line-height:
+    1.82;
+}
+.wiki-footnote-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.wiki-footnote-marker {
+  color: #d58a2f !important;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.wiki-footnote-marker:hover {
+  opacity: 0.72;
+}
+
+.wiki-footnote-content {
+  color: var(--luda-text-soft);
+}
+
+/* ol */
+/* Docusaurus/Infima-safe wiki footnote rendering.
+   MDX renders <li data-footnote="1">, so the label comes from the data attribute. */
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes {
+  margin: 4rem 0 0 !important;
+  padding: 1.35rem 0 0 !important;
+  color: var(--luda-text-soft);
+  font-family: var(--luda-code);
+  font-size: 0.82rem;
+  line-height: 1.78;
+  text-align: left;
+  border-top: 1px solid var(--luda-border);
+  background: transparent !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes ol,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes > ol {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  list-style-type: none !important;
+  counter-reset: none !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes ol > li,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes > ol > li,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes .wiki-footnote-item {
+  position: relative !important;
+  display: block !important;
+  margin: 0 0 0.72rem !important;
+  padding: 0 0 0 2.05rem !important;
+  color: var(--luda-text);
+  list-style: none !important;
+  list-style-type: none !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes ol > li:target,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes > ol > li:target {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1.25rem);
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes ol > li::marker,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes > ol > li::marker {
+  content: "" !important;
+  display: none !important;
+  font-size: 0 !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes ol > li::before,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes > ol > li::before,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes .wiki-footnote-item::before {
+  content: "[" attr(data-footnote) "]";
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 1.55rem;
+  color: #d8b4a0;
+  font-family: var(--luda-code);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes ol > li:not([data-footnote])::before,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes > ol > li:not([data-footnote])::before {
+  content: "[" counter(list-item) "]";
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes .wiki-footnote-linked::before {
+  content: "" !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes p {
+  display: inline;
+  margin: 0 !important;
+  color: inherit;
+  line-height: inherit;
+}
+
+.docs-archive-manuscript .theme-doc-markdown a.wiki-ref {
+  display: inline-flex;
+  align-items: baseline;
+  margin: 0 0.12rem;
+  color: var(--luda-accent-soft);
+  font-family: var(--luda-code);
+  font-size: 0.78em;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none !important;
+  vertical-align: super;
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1.25rem);
+}
+
+.docs-archive-manuscript .theme-doc-markdown a.wiki-ref:hover,
+.docs-archive-manuscript .theme-doc-markdown a.wiki-ref:focus {
+  color: var(--luda-accent);
+  text-decoration: underline !important;
+  text-underline-offset: 0.18em;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-ref-anchor {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1.25rem);
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a:hover,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a.footnote-backref,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes .footnote-backref,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes [aria-label*="Back"],
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes [href^="#ref-"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  text-decoration: none !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a.wiki-footnote-marker,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a.wiki-footnote-marker:hover,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a.wiki-footnote-marker:focus {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  min-width: 1.55rem;
+  color: var(--luda-accent-soft);
+  font-family: var(--luda-code);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a.wiki-footnote-marker:hover,
+.docs-archive-manuscript .theme-doc-markdown .wiki-footnotes a.wiki-footnote-marker:focus {
+  color: var(--luda-accent);
+  text-decoration: underline !important;
+  text-underline-offset: 0.18em;
+}
+/* ?대? div margin ?쒓굅 */
+
+.docs-archive-manuscript details.wiki-fold .collapsibleContent_i85q > div {
+
+  margin:
+    0;
+}
+.luda-nav-rail {
+
+  position: fixed;
+
+  right: 1.45rem;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 1200;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1.1rem;
+}
+
+.luda-nav-rail button {
+
+  position: relative;
+
+  width: 18px;
+
+  height: 18px;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--luda-accent-soft);
+
+  cursor: pointer;
+
+  font-size: 0.9rem;
+
+  opacity: 0.62;
+
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease,
+    color 160ms ease;
+}
+
+.luda-nav-rail button:hover {
+
+  opacity: 1;
+
+  transform: scale(1.12);
+
+  color: var(--luda-accent);
+}
+
+/* ========================================
+   NAV TOOLTIP
+======================================== */
+
+.luda-nav-rail button::after {
+
+  content: attr(data-label);
+
+  position: absolute;
+
+  right: 2.1rem;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%)
+    translateX(8px);
+
+  padding:
+    0.34rem
+    0.72rem;
+
+  border-radius: 10px;
+
+  background:
+    rgba(18,18,22,0.92);
+
+  color:
+    rgba(255,255,255,0.92);
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+
+  letter-spacing: -0.01em;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.24);
+}
+
+.luda-nav-rail button:hover::after {
+
+  opacity: 1;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
+}
+
+/* ========================================
+   LIGHT MODE
+======================================== */
+
+[data-theme="light"]
+.luda-nav-rail button::after {
+
+  background:
+    rgba(40,32,30,0.88);
+
+  color:
+    rgba(255,248,244,0.94);
+
+  box-shadow:
+    0 8px 22px rgba(40,20,20,0.12);
+}
+.ludarota-infobox table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+    margin: 0 !important;
+
+}
+
+.ludarota-infobox tr {
+
+  border-bottom:
+    1px solid var(--luda-border);
+}
+
+.ludarota-infobox td {
+
+  padding:
+    1rem
+    1.35rem;
+
+  vertical-align: top;
+
+  line-height: 1.7;
+
+  color:
+    var(--luda-text);
+
+  word-break: keep-all;
+}
+
+.ludarota-infobox td:first-child {
+
+  width: 92px;
+
+  color:
+    var(--luda-text-soft);
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* ========================================
+   SUB FOLD
+======================================== */
+
+.docs-archive-manuscript details.wiki-subfold {
+
+  margin:
+    1.2rem 0;
+
+  border:
+    none !important;
+
+  background:
+    transparent !important;
+}
+
+/* summary */
+
+.docs-archive-manuscript
+details.wiki-subfold > summary {
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  padding:
+    0.45rem 0 0.45rem 1.2rem;
+
+  cursor: pointer;
+
+  list-style: none;
+
+  color:
+    var(--luda-text);
+
+  font-size:
+    1rem;
+
+  font-weight:
+    700;
+}
+
+/* marker 제거 */
+
+.docs-archive-manuscript
+details.wiki-subfold > summary::-webkit-details-marker {
+
+  display: none;
+}
+
+.docs-archive-manuscript
+details.wiki-subfold > summary::marker {
+
+  display: none;
+}
+
+/* 화살표 */
+
+.docs-archive-manuscript
+details.wiki-subfold > summary::before {
+
+  content:
+    '';
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  top:
+    50%;
+
+  width: 0;
+  height: 0;
+
+  border-top:
+    4px solid transparent;
+
+  border-bottom:
+    4px solid transparent;
+
+  border-left:
+    6px solid var(--luda-accent-soft);
+
+  transform:
+    translateY(-50%);
+
+  transition:
+    transform 140ms ease;
+}
+
+/* open */
+
+.docs-archive-manuscript
+details.wiki-subfold[open]
+> summary::before {
+
+  transform:
+    translateY(-50%)
+    rotate(90deg);
+}
+
+/* 내부 */
+
+.docs-archive-manuscript
+details.wiki-subfold
+.collapsibleContent_i85q {
+
+  padding:
+    0.5rem
+    0
+    0.5rem
+    1.2rem;
+}
+/* ========================================
+   WIKI REF
+======================================== */
+
+/* ========================================
+   본문 각주
+======================================== */
+
+.wiki-ref {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  margin-left: 0.15rem;
+
+  color: #d58a2f;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  text-decoration: none !important;
+
+  vertical-align: super;
+}
+
+/* ========================================
+   하단 footnote marker
+======================================== */
+
+.wiki-footnote-marker {
+  position: static !important;
+
+  display: inline-block !important;
+
+  min-width: auto !important;
+
+  color: #d58a2f !important;
+
+  font-weight: 700;
+
+  text-decoration: none !important;
+
+  white-space: nowrap;
+}
+
+/* hover preview */
+
+.wiki-ref-preview {
+
+  position: absolute;
+
+  left: 50%;
+  top: calc(100% + 0.75rem);
+
+  transform:
+    translateX(-50%)
+    translateY(4px);
+
+  width:
+    320px;
+
+  padding:
+    0.85rem
+    1rem;
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(20,18,28,0.96);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 14px 36px rgba(0,0,0,0.32);
+
+  color:
+    rgba(255,255,255,0.92);
+
+  font-size:
+    0.82rem;
+
+  line-height:
+    1.72;
+
+  white-space:
+    normal;
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+
+  z-index:
+    200;
+
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+/* hover */
+
+.wiki-ref:hover .wiki-ref-preview,
+.wiki-ref:focus .wiki-ref-preview,
+.wiki-ref:focus-visible .wiki-ref-preview {
+
+  opacity:
+    1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+
+  transition-delay:
+    90ms;
+}
+
+/* 모바일 */
+
+@media (max-width: 996px) {
+
+  .wiki-ref-preview {
+
+    display: none;
+  }
+}
+@media (max-width: 1100px) {
+
+  .ludarota-top-layout {
+
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 996px) {
+  .ludarota-layout {
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+  }
+
+  .ludarota-body {
+    max-width: 100%;
+  }
+
+  .ludarota-sidebar {
+    position: static;
+    order: -1;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 760px) {
+  .docs-archive-manuscript .theme-doc-markdown {
+    padding: 1rem 0 3rem;
+  }
+
+  .ludarota-manuscript {
+    padding: 3.6rem 1.1rem 3.2rem;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .ludarota-manuscript::before {
+    left: 1.1rem;
+    right: auto;
+  }
+
+  .ludarota-infobox {
+    width: 100%;
+    margin: 0;
+  }
+
+  .ludarota-index > ol {
+    display: flex;
+    flex-direction: column;
+  }
+}

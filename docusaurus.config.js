@@ -71,7 +71,10 @@ const config = {
   },
 
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: [
+            './src/css/custom.css',
+            './src/css/modules/ludarota-manuscript.css',
+          ],
         },
       }),
     ],
@@ -100,7 +103,7 @@ const config = {
 
         {
           to: '/workspace',
-          label: 'workspace',
+          label: 'Workspace',
           position: 'left',
         },
 
