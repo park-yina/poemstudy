@@ -432,6 +432,7 @@
   /* Shadow */
   --ifm-global-shadow-lw: 0 2px 12px rgba(15, 23, 42, 0.04);
   --ifm-global-shadow-md: 0 6px 24px rgba(15, 23, 42, 0.08);
+  --doc-sidebar-width: 206px;
 }
 
 /* ===== Dark Mode ===== */
@@ -934,13 +935,20 @@ pre {
 
 .docs-wrapper,
 .theme-doc-root,
-main[class*='docMainContainer'],
-div[class*='docItemContainer'] {
+main[class*='docMainContainer'] {
   color:
     var(--luda-doc-text);
 
   background:
     var(--luda-doc-bg);
+}
+
+div[class*='docItemContainer'] {
+  color:
+    var(--luda-doc-text);
+
+  background:
+    transparent;
 }
 
 .theme-doc-markdown {
@@ -949,6 +957,28 @@ div[class*='docItemContainer'] {
 
   background:
     transparent;
+
+  line-height:
+    1.84;
+}
+
+div[class*='docItemContainer'] {
+  padding:
+    clamp(2.4rem, 5vw, 4.5rem)
+    clamp(2.2rem, 6vw, 5.75rem)
+    6rem;
+}
+
+.theme-doc-sidebar-container,
+div[class*='docSidebarContainer'] {
+  width:
+    var(--doc-sidebar-width) !important;
+
+  max-width:
+    var(--doc-sidebar-width) !important;
+
+  flex:
+    0 0 var(--doc-sidebar-width) !important;
 }
 
 .theme-doc-sidebar-container {
@@ -960,6 +990,20 @@ div[class*='docItemContainer'] {
 
   backdrop-filter:
     blur(12px);
+}
+
+.theme-doc-sidebar-container .menu {
+  padding:
+    0.85rem
+    0.56rem
+    1.35rem
+    0.62rem;
+
+  font-size:
+    0.74rem;
+
+  line-height:
+    1.54;
 }
 
 .theme-doc-markdown h1,
@@ -977,6 +1021,18 @@ div[class*='docItemContainer'] {
 .theme-doc-markdown td {
   color:
     var(--luda-doc-text);
+
+  line-height:
+    1.84;
+}
+
+.theme-doc-markdown p,
+.theme-doc-markdown ul,
+.theme-doc-markdown ol,
+.theme-doc-markdown blockquote,
+.theme-doc-markdown table {
+  margin-bottom:
+    1.25rem;
 }
 
 .theme-doc-markdown blockquote {
@@ -1035,6 +1091,7 @@ div[class*='codeBlockContainer'] {
 .theme-doc-toc-mobile .table-of-contents__link {
   color:
     var(--luda-doc-muted);
+    
 }
 
 .theme-doc-breadcrumbs .breadcrumbs__link:hover,
@@ -1045,7 +1102,12 @@ div[class*='codeBlockContainer'] {
   color:
     var(--ifm-color-primary);
 }
+.tableOfContents_bqdL,
+.theme-doc-toc-desktop,
+.theme-doc-toc-mobile {
 
+  display: none !important;
+}
 .theme-doc-breadcrumbs .breadcrumbs__item--active .breadcrumbs__link,
 .theme-doc-breadcrumbs .breadcrumbs__item--active .breadcrumbs__link:hover {
   color:
@@ -1061,9 +1123,26 @@ div[class*='codeBlockContainer'] {
     var(--luda-doc-text);
 }
 
+.pagination-nav {
+  gap:
+    0.75rem;
+
+  max-width:
+    min(100%, 920px);
+
+  margin:
+    2.4rem auto 0;
+}
+
 .pagination-nav__link {
   color:
     var(--luda-doc-text);
+
+  min-height:
+    74px;
+
+  padding:
+    0.72rem 0.95rem;
 
   border-color:
     var(--luda-doc-border);
@@ -1075,11 +1154,20 @@ div[class*='codeBlockContainer'] {
 .pagination-nav__sublabel {
   color:
     var(--luda-doc-muted);
+
+  font-size:
+    0.68rem;
 }
 
 .pagination-nav__label {
   color:
     var(--ifm-heading-color);
+
+  font-size:
+    0.9rem;
+
+  line-height:
+    1.35;
 }
 
 .theme-doc-card,
@@ -1145,14 +1233,14 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
 .menu {
 
   padding:
-    1.15rem
-    0.85rem
-    1.75rem
-    0.95rem;
+    0.9rem
+    0.58rem
+    1.4rem
+    0.64rem;
 
-  font-size: 0.84rem;
+  font-size: 0.78rem;
 
-  line-height: 1.72;
+  line-height: 1.58;
 }
 
 .docs-archive-manuscript
@@ -1235,9 +1323,9 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
 
   padding:
     0.24rem
-    0.38rem
+    0.3rem
     0.24rem
-    0.66rem;
+    0.5rem;
 
   border-left:
     2px solid transparent;
@@ -1265,7 +1353,7 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
 .theme-doc-sidebar-container
 .menu__link:hover {
 
-  padding-left: 0.92rem;
+  padding-left: 0.72rem;
 
   color:
     var(--luda-accent-soft);
@@ -1330,7 +1418,7 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
   font-family:
     var(--archive-sidebar-serif);
 
-  font-size: 0.82rem;
+  font-size: 0.76rem;
 
   font-weight: 700;
 
@@ -1460,12 +1548,12 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
   font-family:
     var(--archive-sidebar-code),
     var(--ifm-font-family-base);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
 }
 
 .theme-doc-sidebar-container .menu__list .menu__list .menu__link:not(.menu__link--sublist) {
   color: var(--archive-sidebar-muted);
-  font-size: 0.76rem;
+  font-size: 0.7rem;
 }
 
 .theme-doc-sidebar-container .menu__link[data-doc-read-state='visited'] {
@@ -1502,7 +1590,7 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
     var(--ifm-font-family-base);
 
   font-size:
-    0.79rem;
+    0.72rem;
 
   letter-spacing:
     -0.01em;
@@ -1513,7 +1601,7 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
     var(--ifm-font-family-base);
 
   font-size:
-    0.78rem;
+    0.73rem;
 
   font-weight:
     650;
@@ -1536,7 +1624,7 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
     2px solid var(--archive-sidebar-active);
 
   padding-left:
-    0.95rem;
+    0.76rem;
 }
 .theme-doc-sidebar-container
 .menu__list
@@ -1558,3 +1646,80 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
   margin: 0.08rem 0;
 }
 
+/* LudaRota keeps its footnotes and diamond navigator; only the left doc sidebar is adjusted here. */
+.docs-archive-manuscript {
+  --doc-sidebar-width: 220px;
+}
+
+.docs-archive-manuscript .theme-doc-sidebar-container,
+.docs-archive-manuscript div[class*='docSidebarContainer'] {
+  width:
+    var(--doc-sidebar-width) !important;
+
+  max-width:
+    var(--doc-sidebar-width) !important;
+
+  flex:
+    0 0 var(--doc-sidebar-width) !important;
+}
+
+.docs-archive-manuscript .theme-doc-sidebar-container .menu {
+  padding:
+    0.95rem
+    0.58rem
+    1.5rem
+    0.64rem;
+
+  font-size:
+    0.76rem;
+
+  line-height:
+    1.56;
+}
+
+.docs-archive-manuscript .theme-doc-sidebar-container .menu__link {
+  padding:
+    0.24rem
+    0.32rem
+    0.24rem
+    0.56rem;
+}
+
+.docs-archive-manuscript .theme-doc-sidebar-container .menu__link:hover {
+  padding-left:
+    0.78rem;
+}
+
+.docs-archive-manuscript
+.theme-doc-sidebar-container
+.menu__link:not(.menu__link--sublist) {
+  font-size:
+    0.72rem;
+}
+
+.docs-archive-manuscript
+.theme-doc-sidebar-container
+.menu__list
+.menu__list
+.menu__link:not(.menu__link--sublist) {
+  font-size:
+    0.7rem;
+}
+
+.docs-archive-manuscript
+.theme-doc-sidebar-container
+.menu__list-item-collapsible
+> .menu__link {
+  font-size:
+    0.74rem;
+}
+
+.docs-archive-manuscript
+.theme-doc-sidebar-container
+.menu__link--active,
+.docs-archive-manuscript
+.theme-doc-sidebar-container
+.menu__link--active:hover {
+  padding-left:
+    0.82rem;
+}

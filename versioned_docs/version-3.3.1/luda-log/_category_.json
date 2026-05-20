@@ -1,8 +1,8 @@
 {
-  "label": "Luda log v3.2.0",
+  "label": "Luda Log",
   "position": 2,
   "link": {
     "type": "generated-index",
-"description": "개발이라는 기록 행위를 어디까지 하나의 세계관으로 밀어붙일 수 있는가"
+    "description": "개발이라는 기록 행위를 어디까지 하나의 세계관으로 밀어붙일 수 있는가"
   }
 }

@@ -110,7 +110,8 @@ export default function DocItem(props) {
       <HtmlClassNameProvider className={`${docHtmlClassName} ${docModeClassName}`}>
         <DocItemMetadata />
         <DocItemLayout>
-          <MDXComponent />
+          <MDXComponent />import versions from '@site/versions.json';
+
         </DocItemLayout>
       </HtmlClassNameProvider>
     </DocProvider>
