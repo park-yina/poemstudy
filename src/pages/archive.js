@@ -4,6 +4,9 @@ import Link from '@docusaurus/Link';
 import archives from '../generated/archive-records.json';
 import styles from './archive.module.css';
 
+const topLevelArchives =
+  archives.filter((archive) => !archive.parentSlug);
+
 export default function ArchivePage() {
   return (
     <Layout
@@ -38,7 +41,7 @@ export default function ArchivePage() {
 
         <section className={styles.archiveList}>
           <div className="container">
-            {archives.map((archive, index) => (
+            {topLevelArchives.map((archive, index) => (
               <article
                 id={archive.anchor}
                 key={archive.id}

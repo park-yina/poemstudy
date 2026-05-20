@@ -1,5 +1,7 @@
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import React from 'react';
+import versions from '@site/versions.json';
 
 import styles from './index.module.css';
 import { useEffect, useState } from 'react';
@@ -116,9 +118,11 @@ function BootSequence() {
   );
 }
 
+
 function ArchiveNavigationStepper({
   onClose,
 }) {
+const currentVersion = versions[0];
   return (
     <section
       className={styles.archiveStepper}
@@ -128,7 +132,10 @@ function ArchiveNavigationStepper({
 
       <header className={styles.stepperHeader}>
         <div>
-          <p>ARCHIVE SYSTEM v2.4.1</p>
+          <p>
+            ARCHIVE SYSTEM v{currentVersion}
+          </p>
+
           <h1>
             포트폴리오 탐색기
           </h1>
@@ -136,6 +143,7 @@ function ArchiveNavigationStepper({
 
         <div className={styles.stepperHeaderRight}>
           <span>SESSION: CLOSED</span>
+
           <button
             type="button"
             onClick={onClose}
@@ -147,69 +155,118 @@ function ArchiveNavigationStepper({
       </header>
 
       <div className={styles.stepperBody}>
+
         <aside className={styles.stepperStatus}>
+
           <span className={styles.statusKicker}>
             루다 포트폴리오 생성
           </span>
-<p>개발자 블로그 시스템 연결이 종료되었습니다.</p>
-<p>포트폴리오 탐색기를 불러오는 중...</p>
+
+          <p>
+            개발자 블로그 시스템 연결이 종료되었습니다.
+          </p>
+
+          <p>
+            포트폴리오 탐색기를 불러오는 중...
+          </p>
 
           <div className={styles.systemStatus}>
-            <strong>SYSTEM STATUS</strong>
-            <span>[2026.05.08]v.1.0.0 루다로그 창설</span>
-            <span>[2026.05.16]v.2.0.0 Dev-log 시스템 폐지 및 워크스페이스 통합</span>
-            <span>[2026.05.17]v.3.0.0 운영기록과 코드 기록의 분리UI추가 및 워크스페이스 이전 파일 탐색기 추가</span>
-            <span>[2026.05.17]v.3.1.0 워크스페이스 내의 task바 내의 aws상태 표시 추가</span>
-            <span>[2026.05.18]v.3.2.0 task바 아이콘 제거 기능 및 열기 기능 추가</span>
+
+            <strong>
+              SYSTEM STATUS
+            </strong>
+
+            <span>
+              [2026.05.08] v1.0.0 루다로그 창설
+            </span>
+
+            <span>
+              [2026.05.16] v2.0.0 Dev-log 시스템 폐지 및 워크스페이스 통합
+            </span>
+
+            <span>
+              [2026.05.17] v3.0.0 운영기록과 코드 기록의 분리 UI 추가 및 워크스페이스 이전 파일 탐색기 추가
+            </span>
+
+            <span>
+              [2026.05.17] v3.1.0 워크스페이스 내 taskbar AWS 상태 표시 추가
+            </span>
+
+            <span>
+              [2026.05.18] v3.2.0 taskbar 아이콘 제거 및 열기 기능 추가
+            </span>
+
+            <span>
+              [2026.05.18] v3.2.1 docs 버전 시스템 도입
+            </span>
 
           </div>
 
           <small>
-            Poet: 신이재 / Creator: 루다/ Developer: 박이나
+            Poet: 신이재 / Creator: 루다 / Developer: 박이나
           </small>
+
         </aside>
 
         <ol className={styles.nodeStepper}>
-          {archiveNodes.map((node) => (
-            <li
-              key={node.id}
-              className={styles.nodeItem}
-              data-restricted={
-                node.status === 'RESTRICTED'
-                  ? 'true'
-                  : 'false'
-              }
-            >
-              <div className={styles.nodeIndex}>
-                {node.id}
-              </div>
-              <div className={styles.nodeContent}>
-                <div className={styles.nodeTitleRow}>
-                  <h2>
-                    {node.id} {node.title}
-                  </h2>
-                  <span>{node.status}</span>
+          {
+            archiveNodes.map((node) => (
+              <li
+                key={node.id}
+                className={styles.nodeItem}
+                data-restricted={
+                  node.status === 'RESTRICTED'
+                    ? 'true'
+                    : 'false'
+                }
+              >
+                <div className={styles.nodeIndex}>
+                  {node.id}
                 </div>
-                <p>{node.description}</p>
-                <div className={styles.nodeTags}>
-                  {node.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
+
+                <div className={styles.nodeContent}>
+
+                  <div className={styles.nodeTitleRow}>
+                    <h2>
+                      {node.id} {node.title}
+                    </h2>
+
+                    <span>
+                      {node.status}
+                    </span>
+                  </div>
+
+                  <p>
+                    {node.description}
+                  </p>
+
+                  <div className={styles.nodeTags}>
+                    {
+                      node.tags.map((tag) => (
+                        <span key={tag}>
+                          {tag}
+                        </span>
+                      ))
+                    }
+                  </div>
+
                 </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            ))
+          }
         </ol>
       </div>
 
-<footer className={styles.stepperFooter}>
-  <small>
-    LUDALOG ARCHIVE SYSTEM v3.2.2
-  </small>
-</footer>
+      <footer className={styles.stepperFooter}>
+        <small>
+          LUDALOG ARCHIVE SYSTEM v{currentVersion}
+        </small>
+      </footer>
+
     </section>
   );
 }
+
 function HomepageHeader() {
 
   const [terminalState, setTerminalState] =

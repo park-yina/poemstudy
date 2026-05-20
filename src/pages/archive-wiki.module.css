@@ -30,6 +30,10 @@
   gap: 0.35rem;
 }
 
+.recordGroup {
+  display: grid;
+}
+
 .recordNav a {
   display: grid;
   gap: 0.3rem;
@@ -63,6 +67,21 @@
 .recordNav a:hover strong,
 .recordNav .activeRecord strong {
   color: #f2ece4;
+}
+
+.childRecords {
+  display: grid;
+  margin-left: 0.75rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid rgba(238, 232, 224, 0.08);
+}
+
+.childRecords a {
+  padding: 0.65rem 0;
+}
+
+.childRecords strong {
+  font-size: 0.9rem;
 }
 
 .document {
