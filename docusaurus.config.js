@@ -73,7 +73,7 @@ const config = {
         theme: {
           customCss: [
             './src/css/custom.css',
-            './src/css/modules/ludarota-manuscript.css',
+            './src/css/modules/docs-manuscript.css',
           ],
         },
       }),

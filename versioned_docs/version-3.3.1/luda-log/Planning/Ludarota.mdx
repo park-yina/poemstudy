@@ -1,17 +1,18 @@
 ---
 sidebar_position: 2
 archiveManuscript: true
+manuscriptTheme: ludarota
 ---
 
 import {
-  WikiRef,
-  WikiFootnotes,
-  WikiFootnoteProvider,
-} from '@site/src/components/WikiFootnote';
+  DocsRef,
+  DocsFootnotes,
+  DocsDocumentProvider,
+} from '@site/src/components/DocsManuscript';
 
-<WikiFootnoteProvider>
+<DocsDocumentProvider>
 
-<div className="ludarota-page">
+<div className="docs-manuscript">
 
 # LudaRota
 
@@ -20,37 +21,55 @@ import {
 
 ---
 
-<div className="ludarota-top-layout">
+<div className="docs-manuscript-top-layout">
 
-  <div className="ludarota-summary">
+  <div className="docs-summary">
 
   ## 목차
 
-  1. [개요](#개요)
-  2. [제작 배경](#제작-배경)
-  3. [기존 포트폴리오 구조의 한계](#기존-포트폴리오-구조의-한계)
-  4. [인터랙션 구조 설계](#인터랙션-구조-설계)
-
-     4.1 [Tarot 형태를 선택한 이유](#tarot-형태를-선택한-이유)  
-     4.2 [서브카드 시스템 도입](#서브카드-도입)  
-     4.3 [기록 해석 중심 UX](#기록-해석-중심-ux)
-
-  5. [주요 구성 요소](#주요-구성-요소)
+  <ol className="docs-summary-list">
+    <li>
+      <a href="#개요">개요</a>
+    </li>
+    <li>
+      <a href="#제작-배경">제작 배경</a>
+    </li>
+    <li>
+      <a href="#기존-포트폴리오-구조의-한계">기존 포트폴리오 구조의 한계</a>
+    </li>
+    <li className="docs-summary-group">
+      <a href="#인터랙션-구조-설계">인터랙션 구조 설계</a>
+      <ol className="docs-summary-sublist">
+        <li>
+          <a href="#tarot-형태를-선택한-이유">Tarot 형태를 선택한 이유</a>
+        </li>
+        <li>
+          <a href="#서브카드-도입">서브카드 시스템 도입</a>
+        </li>
+        <li>
+          <a href="#기록-해석-중심-ux">기록 해석 중심 UX</a>
+        </li>
+      </ol>
+    </li>
+    <li>
+      <a href="#주요-구성-요소">주요 구성 요소</a>
+    </li>
+  </ol>
 
   </div>
 
   <aside
-    className="ludarota-infobox"
+    className="docs-infobox"
     aria-label="LudaRota archive metadata"
   >
 
-  <div className="ludarota-infobox__title">
+  <div className="docs-infobox__title">
     ARCHIVE FILE
   </div>
 
 | 항목 | 내용 |
 | --- | --- |
-| 분류 | Interactive Archive Runtime |
+| 분류 | Interactive Archive Systme |
 | 주요 기술 | React / P5.js / StoryTelling |
 | 목적 | 프로젝트 기록 및 운영 경험 아카이빙 |
 | 특징 | Tarot Interaction / Archive UX |
@@ -77,7 +96,7 @@ import {
 <div markdown="1">
 
 LudaRota는 단순 프로젝트 목록 시스템이 아니라,
-사용자가 직접 프로젝트 기록을 탐색하고<WikiRef>단순 기능 소개보다: 왜 이런 구조가 만들어졌는가, 어떤 문제를 겪었는가를 먼저 읽도록 설계하였다.</WikiRef>개발자 박이나(이하 루다)가 선정한
+사용자가 직접 프로젝트 기록을 탐색하고<DocsRef>단순 기능 소개보다: 왜 이런 구조가 만들어졌는가, 어떤 문제를 겪었는가를 먼저 읽도록 설계하였다.</DocsRef>개발자 박이나(이하 루다)가 선정한
 각 프로젝트별 운영 기록과 구조적 이슈를 확인할 수 있도록 제작되었다.
 
 특히 운영 경험과 구조적 고민을
@@ -143,10 +162,10 @@ LudaRota는 단순 프로젝트 카드 나열 방식의 포트폴리오에서 �
 <div markdown="1">
 
 기존 깃허브 블로그 및 레파지토리 포트폴리오는
-결과물 중심 구조에 치우쳐 있었으며<WikiRef>기능 구현 여부와 사용 기술 소개 중심으로 구성되는 경우가 많았다.</WikiRef>기술 스택 중심 설명에 초점이 맞추어져있다.
+결과물 중심 구조에 치우쳐 있었으며<DocsRef>기능 구현 여부와 사용 기술 소개 중심으로 구성되는 경우가 많았다.</DocsRef>기술 스택 중심 설명에 초점이 맞추어져있다.
 
 반면 노션 기반 포트폴리오는
-탐색 depth가 깊어지는 경향이 있었고<WikiRef>문서 링크 이동이 반복되며 피로도가 증가하는 문제가 존재하였다.</WikiRef>문서 탐색 피로도가 발생하기도 하였다.
+탐색 depth가 깊어지는 경향이 있었고<DocsRef>문서 링크 이동이 반복되며 피로도가 증가하는 문제가 존재하였다.</DocsRef>문서 탐색 피로도가 발생하기도 하였다.
 
 물론 학습에 의의를 둔 프로젝트에서는
 해당 과정이 필수적이다.
@@ -157,7 +176,7 @@ LudaRota는 단순 프로젝트 카드 나열 방식의 포트폴리오에서 �
 - 어떤 문제를 경험했는가
 - 무엇을 포기하거나 변경했는가
 
-등의 과정이 훨씬 중요하다고 판단하였다.<WikiRef>운영 과정 자체를 하나의 기록물처럼 읽게 만드는 방향을 우선시하였다.</WikiRef>
+등의 과정이 훨씬 중요하다고 판단하였다.<DocsRef>운영 과정 자체를 하나의 기록물처럼 읽게 만드는 방향을 우선시하였다.</DocsRef>
 
 </div>
 
@@ -429,11 +448,11 @@ Subcard System
 </div>
 
 </details>
-<WikiFootnotes />
-<nav className="luda-nav-rail" aria-label="LudaRota manuscript navigation">
-  <div className="luda-nav-rail__utility" aria-label="Manuscript controls">
+<DocsFootnotes />
+<nav className="docs-nav-rail" aria-label="Docs manuscript navigation">
+  <div className="docs-nav-rail__utility" aria-label="Manuscript controls">
     <button
-      className="luda-nav-rail__control"
+      className="docs-nav-rail__control"
       data-label="맨 위"
       aria-label="맨 위로 이동"
       onClick={() =>
@@ -447,12 +466,12 @@ Subcard System
     </button>
 
     <button
-      className="luda-nav-rail__control"
+      className="docs-nav-rail__control"
       data-label="목차"
       aria-label="목차로 이동"
       onClick={() =>
         document
-          .querySelector('.ludarota-summary')
+          .querySelector('.docs-summary')
           ?.scrollIntoView({
             behavior: 'smooth',
             block: 'start',
@@ -463,9 +482,9 @@ Subcard System
     </button>
   </div>
 
-  <div className="luda-nav-rail__nodes" aria-label="Archive section nodes">
+  <div className="docs-nav-rail__nodes" aria-label="Archive section nodes">
     <button
-      className="luda-nav-rail__node"
+      className="docs-nav-rail__node"
       data-label="1. 개요"
       aria-label="1. 개요로 이동"
       onClick={() =>
@@ -481,7 +500,7 @@ Subcard System
     </button>
 
     <button
-      className="luda-nav-rail__node"
+      className="docs-nav-rail__node"
       data-label="2. 제작 배경"
       aria-label="2. 제작 배경으로 이동"
       onClick={() =>
@@ -497,7 +516,7 @@ Subcard System
     </button>
 
     <button
-      className="luda-nav-rail__node"
+      className="docs-nav-rail__node"
       data-label="3. 기존 포트폴리오 구조의 한계"
       aria-label="3. 기존 포트폴리오 구조의 한계로 이동"
       onClick={() =>
@@ -513,7 +532,7 @@ Subcard System
     </button>
 
     <button
-      className="luda-nav-rail__node"
+      className="docs-nav-rail__node"
       data-label="4. 인터랙션 구조 설계"
       aria-label="4. 인터랙션 구조 설계로 이동"
       onClick={() =>
@@ -529,7 +548,7 @@ Subcard System
     </button>
 
     <button
-      className="luda-nav-rail__node"
+      className="docs-nav-rail__node"
       data-label="5. 주요 구성 요소"
       aria-label="5. 주요 구성 요소로 이동"
       onClick={() =>
@@ -545,9 +564,9 @@ Subcard System
     </button>
   </div>
 
-  <div className="luda-nav-rail__utility luda-nav-rail__utility--bottom" aria-label="Manuscript end control">
+  <div className="docs-nav-rail__utility docs-nav-rail__utility--bottom" aria-label="Manuscript end control">
     <button
-      className="luda-nav-rail__control"
+      className="docs-nav-rail__control"
       data-label="맨 아래"
       aria-label="맨 아래로 이동"
       onClick={() =>
@@ -564,4 +583,4 @@ Subcard System
 
 </div>
 
-</WikiFootnoteProvider>
+</DocsDocumentProvider>

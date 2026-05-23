@@ -1,0 +1,306 @@
+---
+sidebar_position: 3
+archiveManuscript: true
+manuscriptTheme: workspace
+---
+
+import {
+  DocsRef,
+  DocsFootnotes,
+  DocsDocumentProvider,
+} from '@site/src/components/DocsManuscript';
+
+<DocsDocumentProvider>
+
+<div className="docs-manuscript">
+
+# Workspace
+
+> Workspace는 프로젝트 결과물이 아니라,
+> 구조와 구현 과정 자체를 탐색 대상으로 만들기 위해 설계되었다.
+
+---
+
+<div className="docs-manuscript-top-layout">
+
+  <div className="docs-summary">
+
+  ## 목차
+
+  1. [개요](#개요)
+  2. [제작 배경](#제작-배경)
+  3. [구조 방향](#구조-방향)
+
+  </div>
+
+  <aside className="docs-infobox" aria-label="Workspace document metadata">
+
+  <div className="docs-infobox__title">
+    ARCHIVE FILE
+  </div>
+
+| 항목 | 내용 |
+| --- | --- |
+| 분류 | Interactive Archiving System |
+| 주요 기술 | React / Runtime UI Design / Advanced CSS |
+| 목적 | 프로젝트 기록을 단순 문서가 아닌 탐색 경험으로 전환 |
+| 특징 | Workspace Runtime / OS-inspired UI / Archive Explorer |
+
+  </aside>
+
+</div>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="개요">
+
+  <span className="wiki-fold-title">
+    개요
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+Workspace는 단순 프로젝트 목록 시스템이 아니라,
+사용자가 직접 프로젝트 기록을 탐색하는 경험 자체를 목표로 설계되었다.
+
+특히 실제 코드와 문서,
+그리고 운영 기록이 하나의 파일 시스템처럼 탐색되도록 구성하는 데에 초점을 두었다.
+
+<DocsRef>
+
+Workspace는 실제 파일 구조와 구현 기록 중심으로 설계된 archive runtime이다.
+
+프로젝트를 하나의 narrative 단위로 해석하는 LudaRota와 달리,
+Workspace는 코드, 문서, 운영 기록 등 실질적인 구현 단위를 중심으로 탐색하도록 구성되었다.
+
+<a href="/ludarota">
+  → 관련 archive interface: LudaRota
+</a>
+
+</DocsRef>
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="제작-배경">
+
+  <span className="wiki-fold-title">
+    제작 배경
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+Workspace는 단순 레파지토리 링크가 아니라,
+실제 구현 기록과 운영 과정 자체를 열람할 수 있도록 만들었다.
+
+깃허브 레파지토리만으로는 보여주기 어려운:
+
+- 구조 설계 과정
+- 운영 중 발생한 문제
+- 구현 도중의 판단
+- 요약된 코드 흐름
+- 기능 폐기 과정
+
+등을 함께 기록하기 위한 목적도 포함되어 있다.
+
+동시에:
+
+`홈과의 통일성을 주면서, 사용자의 클릭을 어떻게 유도할 것인가`
+
+라는 고민에서 출발한 구조이기도 하다.
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="구조-방향">
+
+  <span className="wiki-fold-title">
+    구조 방향
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+Workspace는 실제 파일을 열람하듯 탐색하는 흐름을 만들기 위하여:
+
+- folder navigation
+- runtime preview
+- minimized workspace
+- taskbar interaction
+- document viewer
+- code preview runtime
+
+등의 구조를 직접 구현하였다.
+
+특히 단순 IDE 모방보다는:
+
+`기록을 실제 작업 공간처럼 탐색하게 만드는 경험`
+
+에 가까운 방향을 목표로 하였다.
+
+또한 실제 운영 기록과 구조 문서를
+하나의 archive runtime 안에서 자연스럽게 연결할 수 있도록 구성하였다.
+
+</div>
+
+</details>
+
+---
+
+<div className="docs-closing-line">
+
+Workspace는 결과보다 구현 과정과 구조 자체를 탐색 대상으로 남기기 위해 만들어진 archive runtime이다.
+
+</div>
+
+<DocsFootnotes />
+
+<nav
+  className="docs-nav-rail"
+  aria-label="Docs manuscript navigation"
+>
+
+  <div
+    className="docs-nav-rail__utility"
+    aria-label="Manuscript controls"
+  >
+
+    <button
+      className="docs-nav-rail__control"
+      data-label="맨 위"
+      aria-label="맨 위로 이동"
+      onClick={() =>
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
+      }
+    >
+      <span aria-hidden="true">⌃</span>
+    </button>
+
+    <button
+      className="docs-nav-rail__control"
+      data-label="목차"
+      aria-label="목차로 이동"
+      onClick={() =>
+        document
+          .querySelector('.docs-summary')
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+      }
+    >
+      <span aria-hidden="true">☰</span>
+    </button>
+
+  </div>
+
+  <div
+    className="docs-nav-rail__nodes"
+    aria-label="Archive section nodes"
+  >
+
+    <button
+      className="docs-nav-rail__node"
+      data-label="1. 개요"
+      aria-label="1. 개요로 이동"
+      onClick={() =>
+        document
+          .getElementById('개요')
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+      }
+    >
+      <span aria-hidden="true">⋄</span>
+    </button>
+
+    <button
+      className="docs-nav-rail__node"
+      data-label="2. 제작 배경"
+      aria-label="2. 제작 배경으로 이동"
+      onClick={() =>
+        document
+          .getElementById('제작-배경')
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+      }
+    >
+      <span aria-hidden="true">⋄</span>
+    </button>
+
+    <button
+      className="docs-nav-rail__node"
+      data-label="3. 구조 방향"
+      aria-label="3. 구조 방향으로 이동"
+      onClick={() =>
+        document
+          .getElementById('구조-방향')
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+      }
+    >
+      <span aria-hidden="true">⋄</span>
+    </button>
+
+  </div>
+
+  <div
+    className="docs-nav-rail__utility docs-nav-rail__utility--bottom"
+    aria-label="Manuscript end control"
+  >
+
+    <button
+      className="docs-nav-rail__control"
+      data-label="맨 아래"
+      aria-label="맨 아래로 이동"
+      onClick={() =>
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
+    >
+      <span aria-hidden="true">⌄</span>
+    </button>
+
+  </div>
+
+</nav>
+
+</div>
+
+</DocsDocumentProvider>

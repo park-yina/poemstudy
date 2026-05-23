@@ -112,8 +112,8 @@
       #4b1f2d 100%
     );
 }
-[data-theme='light'] .ludarota-summary,
-[data-theme='light'] .ludarota-infobox {
+[data-theme='light'] .docs-summary,
+[data-theme='light'] .docs-infobox {
 
   background:
     rgba(255,255,255,0.18);
@@ -124,19 +124,19 @@
   backdrop-filter:
     blur(10px);
 }
-[data-theme='light'] .ludarota-page h1,
-[data-theme='light'] .ludarota-page h2 {
+[data-theme='light'] .docs-manuscript h1,
+[data-theme='light'] .docs-manuscript h2 {
 
   color:
     #382b28;
 }
-[data-theme='light'] .ludarota-infobox {
+[data-theme='light'] .docs-infobox {
 
   box-shadow:
     0 8px 24px rgba(40,20,20,0.06);
 }
 
-[data-theme='dark'] .ludarota-infobox {
+[data-theme='dark'] .docs-infobox {
 
   box-shadow:
     0 14px 40px rgba(0,0,0,0.28);
@@ -1646,7 +1646,7 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
   margin: 0.08rem 0;
 }
 
-/* LudaRota keeps its footnotes and diamond navigator; only the left doc sidebar is adjusted here. */
+/* Docs manuscript keeps its footnotes and archive navigator; only the left doc sidebar is adjusted here. */
 .docs-archive-manuscript {
   --doc-sidebar-width: 220px;
 }

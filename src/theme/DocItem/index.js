@@ -6,6 +6,17 @@ import DocItemMetadata from '@theme/DocItem/Metadata';
 import DocItemLayout from '@theme/DocItem/Layout';
 import {setDocReadState} from '../../utils/docReadProgress';
 
+function normalizeManuscriptTheme(value) {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, '');
+}
+
 function titleFromDocId(id) {
   return id
     .split('/')
@@ -39,13 +50,15 @@ function getFallbackMetadata(pathname, content) {
 
 function withDocStatics(content, fallbackMetadata) {
   const MDXComponent = content;
+  const metadata = content?.metadata || fallbackMetadata;
+  const frontMatter = content?.frontMatter || metadata.frontMatter || {};
 
   function EnhancedDocContent(props) {
     return <MDXComponent {...props} />;
   }
 
-  EnhancedDocContent.metadata = content?.metadata || fallbackMetadata;
-  EnhancedDocContent.frontMatter = content?.frontMatter || {};
+  EnhancedDocContent.metadata = metadata;
+  EnhancedDocContent.frontMatter = frontMatter;
   EnhancedDocContent.assets = content?.assets || {};
   EnhancedDocContent.contentTitle = content?.contentTitle;
   EnhancedDocContent.toc = content?.toc || [];
@@ -78,6 +91,20 @@ function useDocReadProgress(pathname) {
   }, [pathname]);
 }
 
+function useHtmlManuscriptTheme(manuscriptTheme) {
+  useEffect(() => {
+    if (!manuscriptTheme || typeof document === 'undefined') {
+      return undefined;
+    }
+
+    document.documentElement.dataset.manuscriptTheme = manuscriptTheme;
+
+    return () => {
+      delete document.documentElement.dataset.manuscriptTheme;
+    };
+  }, [manuscriptTheme]);
+}
+
 export default function DocItem(props) {
   const location = useLocation();
   const content = props.content;
@@ -95,6 +122,12 @@ export default function DocItem(props) {
 
   useDocReadProgress(location.pathname);
 
+  const manuscriptTheme = normalizeManuscriptTheme(
+    enhancedContent?.frontMatter.manuscriptTheme,
+  );
+
+  useHtmlManuscriptTheme(manuscriptTheme);
+
   if (!enhancedContent) {
     return null;
   }
@@ -109,10 +142,14 @@ export default function DocItem(props) {
     <DocProvider content={enhancedContent}>
       <HtmlClassNameProvider className={`${docHtmlClassName} ${docModeClassName}`}>
         <DocItemMetadata />
-        <DocItemLayout>
-          <MDXComponent />import versions from '@site/versions.json';
-
-        </DocItemLayout>
+        <div
+          className="docs-manuscript-root"
+          data-manuscript-theme={manuscriptTheme || undefined}
+        >
+          <DocItemLayout>
+            <MDXComponent />
+          </DocItemLayout>
+        </div>
       </HtmlClassNameProvider>
     </DocProvider>
   );

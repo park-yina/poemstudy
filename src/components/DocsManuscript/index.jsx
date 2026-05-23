@@ -3,10 +3,10 @@ import React, {
   isValidElement,
   useContext,
   useMemo,
-  useRef,
+  useState,
 } from 'react';
 
-const WikiFootnoteContext = createContext(null);
+const DocsDocumentContext = createContext(null);
 
 function normalizeFootnoteKey(children) {
   const read = (value) => {
@@ -32,7 +32,7 @@ function normalizeFootnoteKey(children) {
   return read(children).replace(/\s+/g, ' ').trim();
 }
 
-function createEmptyRegistry() {
+function createDocumentFootnoteState() {
   return {
     noteCounter: 0,
     refCounter: 0,
@@ -41,43 +41,46 @@ function createEmptyRegistry() {
   };
 }
 
-export function WikiFootnoteProvider({children}) {
-  const registryRef = useRef(createEmptyRegistry());
+function resetDocumentFootnoteState(state) {
+  state.noteCounter = 0;
+  state.refCounter = 0;
+  state.notes = [];
+  state.noteByKey = new Map();
+}
 
-  registryRef.current.noteCounter = 0;
-  registryRef.current.refCounter = 0;
-  registryRef.current.notes = [];
-  registryRef.current.noteByKey = new Map();
+export function DocsDocumentProvider({children}) {
+  const [footnoteState] = useState(() => createDocumentFootnoteState());
+
+  resetDocumentFootnoteState(footnoteState);
 
   const value = useMemo(
     () => ({
       register(childrenToRegister, options = {}) {
-        const registry = registryRef.current;
-        const refNumber = registry.refCounter + 1;
-        const refId = `ref-${refNumber}`;
+        const refNumber = footnoteState.refCounter + 1;
+        const refId = `docs-ref-${refNumber}`;
         const normalizedKey = normalizeFootnoteKey(childrenToRegister);
         const key =
           options.dedupe === false || !normalizedKey
             ? `__ref_${refNumber}`
             : normalizedKey;
 
-        registry.refCounter = refNumber;
+        footnoteState.refCounter = refNumber;
 
-        let note = registry.noteByKey.get(key);
+        let note = footnoteState.noteByKey.get(key);
 
         if (!note) {
-          const number = registry.noteCounter + 1;
+          const number = footnoteState.noteCounter + 1;
 
           note = {
             number,
-            noteId: `note-${number}`,
+            noteId: `docs-note-${number}`,
             refIds: [],
             content: childrenToRegister,
           };
 
-          registry.noteCounter = number;
-          registry.noteByKey.set(key, note);
-          registry.notes.push(note);
+          footnoteState.noteCounter = number;
+          footnoteState.noteByKey.set(key, note);
+          footnoteState.notes.push(note);
         }
 
         note.refIds.push(refId);
@@ -90,24 +93,24 @@ export function WikiFootnoteProvider({children}) {
       },
 
       getNotes() {
-        return registryRef.current.notes;
+        return footnoteState.notes;
       },
     }),
-    [],
+    [footnoteState],
   );
 
   return (
-    <WikiFootnoteContext.Provider value={value}>
+    <DocsDocumentContext.Provider value={value}>
       {children}
-    </WikiFootnoteContext.Provider>
+    </DocsDocumentContext.Provider>
   );
 }
 
-export function WikiRef({children, dedupe = true}) {
-  const context = useContext(WikiFootnoteContext);
+export function DocsRef({children, dedupe = true}) {
+  const context = useContext(DocsDocumentContext);
 
   if (!context) {
-    throw new Error('WikiRef must be used inside WikiFootnoteProvider.');
+    throw new Error('DocsRef must be used inside DocsDocumentProvider.');
   }
 
   const {number, noteId, refId} = context.register(children, {dedupe});
@@ -115,24 +118,24 @@ export function WikiRef({children, dedupe = true}) {
   return (
     <a
       id={refId}
-      className="wiki-ref"
+      className="docs-ref"
       href={`#${noteId}`}
       aria-describedby={noteId}
       aria-label={`각주 ${number}로 이동`}
     >
       [{number}]
-      <span className="wiki-ref-preview" aria-hidden="true">
+      <span className="docs-ref-preview" aria-hidden="true">
         {children}
       </span>
     </a>
   );
 }
 
-export function WikiFootnotes({title = '각주'}) {
-  const context = useContext(WikiFootnoteContext);
+export function DocsFootnotes({title = '각주'}) {
+  const context = useContext(DocsDocumentContext);
 
   if (!context) {
-    throw new Error('WikiFootnotes must be used inside WikiFootnoteProvider.');
+    throw new Error('DocsFootnotes must be used inside DocsDocumentProvider.');
   }
 
   const notes = context.getNotes();
@@ -142,19 +145,19 @@ export function WikiFootnotes({title = '각주'}) {
   }
 
   return (
-    <section className="wiki-footnotes" aria-labelledby="wiki-footnotes-heading">
-      <h2 id="wiki-footnotes-heading">{title}</h2>
+    <section className="docs-footnotes" aria-labelledby="docs-footnotes-heading">
+      <h2 id="docs-footnotes-heading">{title}</h2>
 
       {notes.map((note) => (
         <div
           key={note.noteId}
           id={note.noteId}
-          className="wiki-footnote-row"
+          className="docs-footnote-row"
           data-footnote={note.number}
         >
-          <div className="wiki-footnote-index">
+          <div className="docs-footnote-index">
             <a
-              className="wiki-footnote-marker"
+              className="docs-footnote-marker"
               href={`#${note.refIds[0]}`}
               aria-label={`본문 각주 ${note.number}로 이동`}
             >
@@ -162,7 +165,7 @@ export function WikiFootnotes({title = '각주'}) {
             </a>
           </div>
 
-          <div className="wiki-footnote-content">{note.content}</div>
+          <div className="docs-footnote-content">{note.content}</div>
         </div>
       ))}
     </section>
