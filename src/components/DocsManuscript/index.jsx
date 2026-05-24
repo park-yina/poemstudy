@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  isValidElement,
   useContext,
   useMemo,
   useState,
@@ -8,36 +7,12 @@ import React, {
 
 const DocsDocumentContext = createContext(null);
 
-function normalizeFootnoteKey(children) {
-  const read = (value) => {
-    if (value == null || typeof value === 'boolean') {
-      return '';
-    }
-
-    if (typeof value === 'string' || typeof value === 'number') {
-      return String(value);
-    }
-
-    if (Array.isArray(value)) {
-      return value.map(read).join('');
-    }
-
-    if (isValidElement(value)) {
-      return read(value.props.children);
-    }
-
-    return '';
-  };
-
-  return read(children).replace(/\s+/g, ' ').trim();
-}
-
 function createDocumentFootnoteState() {
   return {
     noteCounter: 0,
     refCounter: 0,
     notes: [],
-    noteByKey: new Map(),
+    noteById: new Map(),
   };
 }
 
@@ -45,7 +20,7 @@ function resetDocumentFootnoteState(state) {
   state.noteCounter = 0;
   state.refCounter = 0;
   state.notes = [];
-  state.noteByKey = new Map();
+  state.noteById = new Map();
 }
 
 export function DocsDocumentProvider({children}) {
@@ -54,32 +29,29 @@ export function DocsDocumentProvider({children}) {
   resetDocumentFootnoteState(footnoteState);
 
   const value = useMemo(
-    () => ({
-      register(childrenToRegister, options = {}) {
+    () => {
+      const addFootnote = ({id, content}) => {
         const refNumber = footnoteState.refCounter + 1;
         const refId = `docs-ref-${refNumber}`;
-        const normalizedKey = normalizeFootnoteKey(childrenToRegister);
-        const key =
-          options.dedupe === false || !normalizedKey
-            ? `__ref_${refNumber}`
-            : normalizedKey;
+        const noteKey = id || `docs-note-entry-${refNumber}`;
 
         footnoteState.refCounter = refNumber;
 
-        let note = footnoteState.noteByKey.get(key);
+        let note = footnoteState.noteById.get(noteKey);
 
         if (!note) {
           const number = footnoteState.noteCounter + 1;
 
           note = {
+            id: noteKey,
             number,
             noteId: `docs-note-${number}`,
             refIds: [],
-            content: childrenToRegister,
+            content,
           };
 
           footnoteState.noteCounter = number;
-          footnoteState.noteByKey.set(key, note);
+          footnoteState.noteById.set(noteKey, note);
           footnoteState.notes.push(note);
         }
 
@@ -90,12 +62,23 @@ export function DocsDocumentProvider({children}) {
           noteId: note.noteId,
           refId,
         };
-      },
+      };
 
-      getNotes() {
-        return footnoteState.notes;
-      },
-    }),
+      return {
+        addFootnote,
+
+        register(content, options = {}) {
+          return addFootnote({
+            id: options.id,
+            content,
+          });
+        },
+
+        getNotes() {
+          return footnoteState.notes;
+        },
+      };
+    },
     [footnoteState],
   );
 
@@ -106,28 +89,33 @@ export function DocsDocumentProvider({children}) {
   );
 }
 
-export function DocsRef({children, dedupe = true}) {
+export function DocsRef({children, id}) {
   const context = useContext(DocsDocumentContext);
 
   if (!context) {
     throw new Error('DocsRef must be used inside DocsDocumentProvider.');
   }
 
-  const {number, noteId, refId} = context.register(children, {dedupe});
+  const {number, noteId, refId} = context.addFootnote({
+    id,
+    content: children,
+  });
 
   return (
-    <a
-      id={refId}
-      className="docs-ref"
-      href={`#${noteId}`}
-      aria-describedby={noteId}
-      aria-label={`각주 ${number}로 이동`}
-    >
-      [{number}]
-      <span className="docs-ref-preview" aria-hidden="true">
+    <span className="docs-ref-shell">
+      <a
+        id={refId}
+        className="docs-ref"
+        href={`#${noteId}`}
+        aria-describedby={noteId}
+        aria-label={`각주 ${number}로 이동`}
+      >
+        [{number}]
+      </a>
+      <span className="docs-ref-preview" role="note">
         {children}
       </span>
-    </a>
+    </span>
   );
 }
 

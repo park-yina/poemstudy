@@ -1381,7 +1381,7 @@
     translateY(-1px);
 }
 
-.docs-ref {
+.docs-ref-shell {
   position: relative;
 
   display: inline-flex;
@@ -1391,80 +1391,142 @@
   vertical-align: middle;
 }
 
+.docs-ref {
+  display: inline-flex;
+
+  align-items: center;
+}
+
 .docs-ref-preview {
   position: absolute;
 
-  left: 50%;
-  bottom: calc(100% + 10px);
+  left: 0;
+  bottom: calc(100% + 12px);
 
   transform:
-    translateX(-50%)
-    translateY(4px);
+    translateY(6px);
 
-  width: min(320px, 70vw);
+  width: min(340px, 72vw);
 
   padding:
-    0.68rem
-    0.88rem;
+    0.74rem
+    0.95rem;
 
-  border-radius:
-    14px;
+  border-radius: 16px;
 
   background:
     color-mix(
       in srgb,
-      var(--manuscript-panel) 98%,
-      #000 18%
+      var(--manuscript-panel) 96%,
+      #000 24%
     );
-
-  backdrop-filter:
-    blur(10px);
 
   border:
     1px solid color-mix(
       in srgb,
-      var(--manuscript-border) 84%,
-      #fff 8%
+      var(--manuscript-border) 82%,
+      #fff 10%
     );
 
   box-shadow:
-    0 14px 30px rgba(0,0,0,0.24);
+    0 18px 40px rgba(0,0,0,0.28);
+
+  backdrop-filter: blur(12px);
+
+  color: var(--manuscript-text);
+
+  font-size: 0.76rem;
+  line-height: 1.62;
+
+  white-space: normal;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  z-index: 9999;
+
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+.docs-inline-reference-text {
 
   color:
     var(--manuscript-text);
 
-  font-size:
-    0.74rem;
-
   line-height:
-    1.55;
-
-  white-space:
-    normal;
-
-  opacity:
-    0;
-
-  pointer-events:
-    none;
-
-  z-index:
-    9999;
-
-  transition:
-    opacity 140ms ease,
-    transform 140ms ease;
+    1.6;
 }
 
-.docs-ref:hover .docs-ref-preview,
-.docs-ref:focus .docs-ref-preview,
-.docs-ref:focus-visible .docs-ref-preview {
+.docs-inline-archive-link {
 
-  opacity: 1;
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.34rem;
+
+  margin:
+    0 0.18rem;
+
+  color:
+    var(--manuscript-accent);
+
+  text-decoration:
+    none;
+
+  font-weight:
+    650;
+
+  transition:
+    opacity 140ms ease;
+}
+
+.docs-inline-archive-link:hover {
+
+  opacity:
+    0.82;
+}
+
+.docs-inline-archive-link i {
+
+  font-size:
+    0.68em;
+
+  opacity:
+    0.72;
 
   transform:
-    translateX(-50%)
+    translateY(-1px);
+
+  transition:
+    transform 140ms ease,
+    opacity 140ms ease;
+}
+
+.docs-inline-archive-link:hover i {
+
+  opacity:
+    1;
+
+  transform:
+    translateY(-1px)
+    translateX(2px);
+}
+.docs-ref-shell:hover .docs-ref-preview,
+.docs-ref-shell:focus-within .docs-ref-preview {
+
+  opacity: 1;
+  visibility: visible;
+
+  transform:
     translateY(0);
+
+  pointer-events: auto;
 }
 .docs-archive-manuscript .theme-doc-markdown .docs-footnotes,
 .docs-footnotes {
@@ -1513,9 +1575,6 @@
     inherit;
 }
 
-.docs-archive-manuscript .theme-doc-markdown .docs-footnotes a:not(.docs-footnote-marker),
-.docs-archive-manuscript .theme-doc-markdown .docs-footnotes a:not(.docs-footnote-marker):hover,
-.docs-archive-manuscript .theme-doc-markdown .docs-footnotes a.footnote-backref,
 .docs-archive-manuscript .theme-doc-markdown .docs-footnotes .footnote-backref,
 .docs-archive-manuscript .theme-doc-markdown .docs-footnotes [aria-label*="Back"] {
   display:
@@ -1529,6 +1588,46 @@
 
   text-decoration:
     none !important;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .docs-footnotes a:not(.docs-footnote-marker):not(.footnote-backref),
+.docs-footnotes a:not(.docs-footnote-marker):not(.footnote-backref) {
+  color:
+    var(--manuscript-accent-soft);
+
+  font-weight:
+    650;
+
+  text-decoration:
+    underline;
+
+  text-decoration-color:
+    color-mix(in srgb, var(--manuscript-accent) 34%, transparent);
+
+  text-decoration-thickness:
+    1px;
+
+  text-underline-offset:
+    0.18em;
+
+  transition:
+    color 140ms ease,
+    text-decoration-color 140ms ease,
+    background 140ms ease;
+}
+
+.docs-archive-manuscript .theme-doc-markdown .docs-footnotes a:not(.docs-footnote-marker):not(.footnote-backref):hover,
+.docs-archive-manuscript .theme-doc-markdown .docs-footnotes a:not(.docs-footnote-marker):not(.footnote-backref):focus,
+.docs-footnotes a:not(.docs-footnote-marker):not(.footnote-backref):hover,
+.docs-footnotes a:not(.docs-footnote-marker):not(.footnote-backref):focus {
+  color:
+    var(--manuscript-accent);
+
+  background:
+    color-mix(in srgb, var(--manuscript-accent) 9%, transparent);
+
+  text-decoration-color:
+    color-mix(in srgb, var(--manuscript-accent) 72%, transparent);
 }
 
 /* ========================================

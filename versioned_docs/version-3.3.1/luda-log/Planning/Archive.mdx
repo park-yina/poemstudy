@@ -28,7 +28,6 @@ import {
 
   1. [개요](#개요)
   2. [제작 배경](#제작-배경)
-  3. [구조 방향](#구조-방향)
 
   </div>
 
@@ -65,22 +64,11 @@ import {
 
 <div markdown="1">
 
-Workspace는 단순 프로젝트 목록 시스템이 아니라,
-사용자가 직접 프로젝트 기록을 탐색하는 경험 자체를 목표로 설계되었다.
-
-특히 실제 코드와 문서,
-그리고 운영 기록이 하나의 파일 시스템처럼 탐색되도록 구성하는 데에 초점을 두었다.
-
+Archive는 다른 시스템과 달리,
+사용자가 한눈에 루다가 진행한 프로젝트들을 정리하여 알아볼 수 있는 데에 의미를 두었다.
 <DocsRef>
 
-Workspace는 실제 파일 구조와 구현 기록 중심으로 설계된 archive runtime이다.
-
-프로젝트를 하나의 narrative 단위로 해석하는 LudaRota와 달리,
-Workspace는 코드, 문서, 운영 기록 등 실질적인 구현 단위를 중심으로 탐색하도록 구성되었다.
-
-<a href="/ludarota">
-  → 관련 archive interface: LudaRota
-</a>
+따라서 workspace로의 바로 이동 뿐만 아니라, 아카이브 위키를 별도 관리중이다.
 
 </DocsRef>
 
@@ -105,72 +93,20 @@ Workspace는 코드, 문서, 운영 기록 등 실질적인 구현 단위를 중
 
 <div markdown="1">
 
-Workspace는 단순 레파지토리 링크가 아니라,
-실제 구현 기록과 운영 과정 자체를 열람할 수 있도록 만들었다.
-
-깃허브 레파지토리만으로는 보여주기 어려운:
-
-- 구조 설계 과정
-- 운영 중 발생한 문제
-- 구현 도중의 판단
-- 요약된 코드 흐름
-- 기능 폐기 과정
+아카이브는 워크스페이스로의 프로젝트별 이동 뿐만 아니라,
+아카이브 위키를 통하여 최대한 간소화된 프로젝트에 대한 요약본
 
 등을 함께 기록하기 위한 목적도 포함되어 있다.
 
 동시에:
 
-`홈과의 통일성을 주면서, 사용자의 클릭을 어떻게 유도할 것인가`
-
-라는 고민에서 출발한 구조이기도 하다.
-
-</div>
-
-</details>
-
----
-
-<details
-  className="wiki-fold"
-  open
->
-
-<summary id="구조-방향">
-
-  <span className="wiki-fold-title">
-    구조 방향
-  </span>
-
-</summary>
-
-<div markdown="1">
-
-Workspace는 실제 파일을 열람하듯 탐색하는 흐름을 만들기 위하여:
-
-- folder navigation
-- runtime preview
-- minimized workspace
-- taskbar interaction
-- document viewer
-- code preview runtime
-
-등의 구조를 직접 구현하였다.
-
-특히 단순 IDE 모방보다는:
-
-`기록을 실제 작업 공간처럼 탐색하게 만드는 경험`
-
-에 가까운 방향을 목표로 하였다.
-
-또한 실제 운영 기록과 구조 문서를
-하나의 archive runtime 안에서 자연스럽게 연결할 수 있도록 구성하였다.
+`다른 시스템에서 발생하는 피로도를 줄이고, 최대한 현실적인 이력서나 포트폴리오스럽도록`
+보이게 설계한 유일한 시스템이기도 하다.
 
 </div>
 
 </details>
-
 ---
-
 <div className="docs-closing-line">
 
 Workspace는 결과보다 구현 과정과 구조 자체를 탐색 대상으로 남기기 위해 만들어진 archive runtime이다.
@@ -249,22 +185,6 @@ Workspace는 결과보다 구현 과정과 구조 자체를 탐색 대상으로 
       onClick={() =>
         document
           .getElementById('제작-배경')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          })
-      }
-    >
-      <span aria-hidden="true">⋄</span>
-    </button>
-
-    <button
-      className="docs-nav-rail__node"
-      data-label="3. 구조 방향"
-      aria-label="3. 구조 방향으로 이동"
-      onClick={() =>
-        document
-          .getElementById('구조-방향')
           ?.scrollIntoView({
             behavior: 'smooth',
             block: 'start',
