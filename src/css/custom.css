@@ -1544,6 +1544,19 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
   transform: scale(0.7);
 }
 
+.theme-doc-sidebar-container .menu__caret {
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 0.18rem 0.2rem;
+  line-height: 1;
+}
+
+.theme-doc-sidebar-container .menu__caret::before {
+  width: 0.82rem;
+  height: 0.82rem;
+  background-size: 1.15rem 1.15rem;
+}
+
 .theme-doc-sidebar-container .menu__link:not(.menu__link--sublist) {
   font-family:
     var(--archive-sidebar-code),

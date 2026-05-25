@@ -278,6 +278,145 @@
       #2e3946
     );
 }
+/* =========================================================
+   SEPIA THEME
+   manuscript / archive note / research paper
+========================================================= */
+
+/* LIGHT */
+
+[data-theme="light"][data-manuscript-theme="sepia"].docs-archive-manuscript,
+[data-theme="light"][data-manuscript-theme="sepia"] .docs-archive-manuscript,
+[data-theme="light"] .docs-archive-manuscript [data-manuscript-theme="sepia"] {
+
+  --manuscript-accent:
+    #8b5e3c;
+
+  --manuscript-accent-soft:
+    #b8845f;
+
+  --manuscript-accent-muted:
+    rgba(139, 94, 60, 0.10);
+
+  --manuscript-accent-border:
+    rgba(139, 94, 60, 0.22);
+
+  --manuscript-text:
+    #2d241d;
+
+  --manuscript-text-soft:
+    #6d6259;
+
+  --manuscript-bg:
+    #f6f1e7;
+
+  --manuscript-panel:
+    #fffaf2;
+
+  --manuscript-panel-soft:
+    #efe6d7;
+
+  --manuscript-border:
+    rgba(60, 42, 28, 0.10);
+
+  --manuscript-infobox-title:
+    linear-gradient(
+      90deg,
+      #7a5235,
+      #c19469
+    );
+}
+
+/* DARK */
+
+[data-theme="dark"][data-manuscript-theme="sepia"].docs-archive-manuscript,
+[data-theme="dark"][data-manuscript-theme="sepia"] .docs-archive-manuscript,
+[data-theme="dark"] .docs-archive-manuscript [data-manuscript-theme="sepia"] {
+
+  --manuscript-accent:
+    #d6a77a;
+
+  --manuscript-accent-soft:
+    #f0c89f;
+
+  --manuscript-accent-muted:
+    rgba(214, 167, 122, 0.12);
+
+  --manuscript-accent-border:
+    rgba(214, 167, 122, 0.18);
+
+  --manuscript-text:
+    #f3e4d2;
+
+  --manuscript-text-soft:
+    #b9a48d;
+
+  --manuscript-bg:
+    #16110d;
+
+  --manuscript-panel:
+    #211913;
+
+  --manuscript-panel-soft:
+    #2b2119;
+
+  --manuscript-border:
+    rgba(255, 220, 180, 0.08);
+
+  --manuscript-infobox-title:
+    linear-gradient(
+      90deg,
+      #d6a77a,
+      #5b3d28
+    );
+}
+[data-theme="light"][data-manuscript-theme="home"].docs-archive-manuscript,
+[data-theme="light"][data-manuscript-theme="home"] .docs-archive-manuscript,
+[data-theme="light"] .docs-archive-manuscript [data-manuscript-theme="home"] {
+
+  --manuscript-accent:
+    #2f8f63;
+
+  --manuscript-accent-soft:
+    #57b084;
+
+  --manuscript-accent-muted:
+    rgba(47, 143, 99, 0.12);
+
+  --manuscript-accent-border:
+    rgba(47, 143, 99, 0.28);
+
+  --manuscript-infobox-title:
+    linear-gradient(
+      90deg,
+      #256f4d,
+      #57b084
+    );
+}
+
+[data-theme="dark"][data-manuscript-theme="home"].docs-archive-manuscript,
+[data-theme="dark"][data-manuscript-theme="home"] .docs-archive-manuscript,
+[data-theme="dark"] .docs-archive-manuscript [data-manuscript-theme="home"] {
+
+  --manuscript-accent:
+    #5dffb3;
+
+  --manuscript-accent-soft:
+    #9dffd2;
+
+  --manuscript-accent-muted:
+    rgba(93, 255, 179, 0.12);
+
+  --manuscript-accent-border:
+    rgba(93, 255, 179, 0.24);
+
+  --manuscript-infobox-title:
+    linear-gradient(
+      90deg,
+      #47d693,
+      #123528
+    );
+}
 [data-theme="light"][data-manuscript-theme="ludarota"].docs-archive-manuscript,
 [data-theme="light"][data-manuscript-theme="ludarota"] .docs-archive-manuscript,
 [data-theme="light"] .docs-archive-manuscript [data-manuscript-theme="ludarota"] {
