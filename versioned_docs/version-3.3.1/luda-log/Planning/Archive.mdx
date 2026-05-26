@@ -1,4 +1,4 @@
----
+﻿---
 sidebar_position: 5
 archiveManuscript: true
 manuscriptTheme: archive
@@ -8,6 +8,7 @@ import {
   DocsRef,
   DocsFootnotes,
   DocsDocumentProvider,
+  DocsNavigationRail,
 } from '@site/src/components/DocsManuscript';
 
 <DocsDocumentProvider>
@@ -115,110 +116,9 @@ Archive는 다른 시스템과 달리,
 
 <DocsFootnotes />
 
-<nav
-  className="docs-nav-rail"
-  aria-label="Docs manuscript navigation"
->
-
-  <div
-    className="docs-nav-rail__utility"
-    aria-label="Manuscript controls"
-  >
-
-    <button
-      className="docs-nav-rail__control"
-      data-label="맨 위"
-      aria-label="맨 위로 이동"
-      onClick={() =>
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        })
-      }
-    >
-      <span aria-hidden="true">⌃</span>
-    </button>
-
-    <button
-      className="docs-nav-rail__control"
-      data-label="목차"
-      aria-label="목차로 이동"
-      onClick={() =>
-        document
-          .querySelector('.docs-summary')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          })
-      }
-    >
-      <span aria-hidden="true">☰</span>
-    </button>
-
-  </div>
-
-  <div
-    className="docs-nav-rail__nodes"
-    aria-label="Archive section nodes"
-  >
-
-    <button
-      className="docs-nav-rail__node"
-      data-label="1. 개요"
-      aria-label="1. 개요로 이동"
-      onClick={() =>
-        document
-          .getElementById('개요')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          })
-      }
-    >
-      <span aria-hidden="true">⋄</span>
-    </button>
-
-    <button
-      className="docs-nav-rail__node"
-      data-label="2. 제작 배경"
-      aria-label="2. 제작 배경으로 이동"
-      onClick={() =>
-        document
-          .getElementById('제작-배경')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          })
-      }
-    >
-      <span aria-hidden="true">⋄</span>
-    </button>
-
-  </div>
-
-  <div
-    className="docs-nav-rail__utility docs-nav-rail__utility--bottom"
-    aria-label="Manuscript end control"
-  >
-
-    <button
-      className="docs-nav-rail__control"
-      data-label="맨 아래"
-      aria-label="맨 아래로 이동"
-      onClick={() =>
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth',
-        })
-      }
-    >
-      <span aria-hidden="true">⌄</span>
-    </button>
-
-  </div>
-
-</nav>
+<DocsNavigationRail marker="circle" />
 
 </div>
 
 </DocsDocumentProvider>
+

@@ -2137,40 +2137,42 @@
 
 .docs-nav-rail__node {
   width:
-    18px;
+    22px;
 
   height:
-    18px;
+    22px;
 
   color:
     var(--manuscript-text-soft);
 
   font-size:
-    0.68rem;
+    0.82rem;
 }
 
-.docs-nav-rail__node::before {
-  content:
-    "";
-
+.docs-nav-rail__marker {
   position:
-    absolute;
+    relative;
 
-  inset:
-    3px;
+  z-index:
+    1;
 
-  border-radius:
-    999px;
+  display:
+    inline-flex;
 
-  border:
-    1px solid color-mix(in srgb, var(--manuscript-accent-soft) 24%, transparent);
+  align-items:
+    center;
 
-  background:
-    transparent;
+  justify-content:
+    center;
 
-  transition:
-    border-color 160ms ease,
-    background 160ms ease;
+  width:
+    100%;
+
+  height:
+    100%;
+
+  line-height:
+    1;
 }
 
 .docs-nav-rail__node[aria-current="true"],
@@ -2180,17 +2182,11 @@
     var(--manuscript-accent-soft);
 }
 
-.docs-nav-rail__node[aria-current="true"]::before,
-.docs-nav-rail__node[data-active="true"]::before,
-.docs-nav-rail__node.is-active::before {
-  border-color:
-    var(--manuscript-accent-soft);
-
-  background:
-    color-mix(in srgb, var(--manuscript-accent) 28%, transparent);
-
-  box-shadow:
-    0 0 0 2px color-mix(in srgb, var(--manuscript-accent) 10%, transparent);
+.docs-nav-rail__node[aria-current="true"] .docs-nav-rail__marker,
+.docs-nav-rail__node[data-active="true"] .docs-nav-rail__marker,
+.docs-nav-rail__node.is-active .docs-nav-rail__marker {
+  text-shadow:
+    0 0 10px color-mix(in srgb, var(--manuscript-accent) 42%, transparent);
 }
 
 .docs-nav-rail__node:hover {
@@ -2201,12 +2197,9 @@
     translateX(-1px);
 }
 
-.docs-nav-rail__node:hover::before {
-  border-color:
-    color-mix(in srgb, var(--manuscript-accent-soft) 46%, transparent);
-
-  background:
-    color-mix(in srgb, var(--manuscript-accent-soft) 8%, transparent);
+.docs-nav-rail__node:hover .docs-nav-rail__marker {
+  text-shadow:
+    0 0 8px color-mix(in srgb, var(--manuscript-accent-soft) 34%, transparent);
 }
 
 .docs-nav-rail button::after {
