@@ -1,0 +1,126 @@
+---
+sidebar_position: 4
+archiveManuscript: true
+manuscriptTheme: workspace
+---
+
+import {
+  DocsRef,
+  DocsFootnotes,
+  DocsDocumentProvider,
+  DocsNavigationRail,
+} from '@site/src/components/DocsManuscript';
+
+<DocsDocumentProvider>
+
+<div className="docs-manuscript">
+
+# Workspace 기술 의사 결정
+
+> Workspace는 프로젝트 결과물이 아니라,
+> 구조와 구현 과정 자체를 탐색 대상으로 만들기 위해 설계되었다.
+
+---
+
+<div className="docs-manuscript-top-layout">
+
+  <div className="docs-summary">
+
+  ## 목차
+
+1. [Explorer 형태를 선택한 이유](#explorer-structure)
+2. [Preview 시스템 설계](#preview-system)
+3. [Taskbar 및 Window Interaction](#taskbar-interaction)
+4. [Code Preview Runtime](#code-preview-runtime)
+5. [문서와 Code를 분리하지 않은 이유](#runtime-docs)
+6. [탐색 피로도를 줄이기 위한 구조](#navigation-fatigue)
+
+  </div>
+
+  <aside
+    className="docs-infobox"
+    aria-label="Archive document metadata"
+  >
+
+  <div className="docs-infobox__title">
+    Workspace 기술 의사 결정
+  </div>
+
+| 항목 | 내용 |
+| --- | --- |
+| 분류 | Interactive Archiving System |
+| 주요 기술 | React / Runtime UI Design / Advanced CSS |
+| 목적 | 프로젝트 기록을 단순 문서가 아닌 탐색 경험으로 전환 |
+| 특징 | Workspace Runtime / OS-inspired UI / Archive Explorer |
+
+  </aside>
+
+</div>
+
+---
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="wiki-structure-background">
+
+  <span className="wiki-fold-title">
+    explorer-structure
+  </span>
+
+</summary>
+
+<div markdown="1">
+탐색기 구조를 채택한 가장 큰 이유는,
+사용자가 이미 익숙하게 학습한 인터페이스를 활용하기 위함이었다.
+
+일반 archive 및 wiki 구조에서는
+문서 depth가 깊어질수록 탐색 자체에 대한 피로도가 증가하기 쉽다.
+
+반면 파일 탐색기 형태의 구조는:
+
+- folder 이동
+- file 선택
+- preview 열람
+
+등의 흐름이 이미 익숙한 패턴으로 받아들여지기 때문에,
+상대적으로 depth에 대한 거부감이 낮다고 판단하였다.
+
+또한 Workspace는
+홈의 CMD runtime과 하나의 흐름처럼 이어지도록 설계되었기 때문에,
+단순 문서 리스트보다
+`실제 작업 공간을 탐색하는 감각`에 가까운 방향을 목표로 하였다.
+</div>
+
+</details>
+---
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="wiki-structure-background">
+
+  <span className="wiki-fold-title">
+    preview-system
+  </span>
+
+</summary>
+
+<div markdown="1">
+프리뷰 시스템은 크게 html/pdf와 같은 기존 파일에 대한 랜더링 및 project내의 파일 탐색으로 이루어진다.
+project내부의 프리뷰는 설계 당시 문서뷰어와 코드뷰어의 최적화를 가장 신경 쓰며 제작하였다.
+
+</div>
+
+</details>
+---
+
+<DocsFootnotes />
+
+</div>
+
+<DocsNavigationRail marker="sharp" />
+
+</DocsDocumentProvider>

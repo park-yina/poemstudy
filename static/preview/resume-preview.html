@@ -6,6 +6,49 @@
 
   <title>resume-preview.html</title>
 
+  <script>
+    (() => {
+      const applyTheme = () => {
+        let theme = null;
+
+        try {
+          theme =
+            window.parent?.document?.documentElement?.dataset?.theme ||
+            null;
+        } catch (error) {
+          theme = null;
+        }
+
+        if (!theme) {
+          theme = window.matchMedia?.('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'dark';
+        }
+
+        document.documentElement.dataset.theme = theme;
+      };
+
+      applyTheme();
+
+      try {
+        const parentRoot =
+          window.parent?.document?.documentElement;
+
+        if (parentRoot) {
+          new MutationObserver(applyTheme)
+            .observe(parentRoot, {
+              attributes: true,
+              attributeFilter: ['data-theme'],
+            });
+        }
+      } catch (error) {
+      }
+
+      window.matchMedia?.('(prefers-color-scheme: light)')
+        .addEventListener?.('change', applyTheme);
+    })();
+  </script>
+
   <link
     href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
     rel="stylesheet"
@@ -18,13 +61,103 @@
       padding: 0;
     }
 
+    html {
+      overflow-wrap: anywhere;
+    }
+
+    :root {
+      color-scheme: dark;
+      --resume-page-bg: #070a14;
+      --resume-document-bg:
+        radial-gradient(circle at top right, rgba(96,165,250,0.10), transparent 30%),
+        linear-gradient(180deg, rgba(18,22,36,0.98), rgba(8,10,18,0.98));
+      --resume-text: #f3f4f6;
+      --resume-heading: #ffffff;
+      --resume-muted: rgba(255,255,255,0.72);
+      --resume-soft: rgba(255,255,255,0.58);
+      --resume-faint: rgba(255,255,255,0.46);
+      --resume-border: rgba(255,255,255,0.07);
+      --resume-border-soft: rgba(255,255,255,0.06);
+      --resume-panel-bg: rgba(255,255,255,0.035);
+      --resume-accent: #60a5fa;
+      --resume-accent-strong: #7dd3fc;
+      --resume-accent-text: #dbeafe;
+      --resume-link-text: #bfdbfe;
+      --resume-pill-bg: rgba(96,165,250,0.08);
+      --resume-pill-border: rgba(96,165,250,0.16);
+      --resume-pill-icon-bg: rgba(255,255,255,0.10);
+      --resume-button-bg: rgba(147,197,253,0.10);
+      --resume-button-bg-hover: rgba(147,197,253,0.16);
+      --resume-scroll-track: rgba(255,255,255,0.06);
+      --resume-scroll-thumb: rgba(147,197,253,0.44);
+      --resume-scroll-thumb-hover: rgba(147,197,253,0.62);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme='dark']) {
+        color-scheme: light;
+        --resume-page-bg: #eef4fb;
+        --resume-document-bg:
+          radial-gradient(circle at top right, rgba(14,116,144,0.13), transparent 31%),
+          linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,244,251,0.98));
+        --resume-text: #111827;
+        --resume-heading: #0f172a;
+        --resume-muted: rgba(15,23,42,0.72);
+        --resume-soft: rgba(15,23,42,0.62);
+        --resume-faint: rgba(15,23,42,0.50);
+        --resume-border: rgba(15,23,42,0.10);
+        --resume-border-soft: rgba(15,23,42,0.08);
+        --resume-panel-bg: rgba(255,255,255,0.68);
+        --resume-accent: #2563eb;
+        --resume-accent-strong: #0284c7;
+        --resume-accent-text: #1e3a8a;
+        --resume-link-text: #1d4ed8;
+        --resume-pill-bg: rgba(37,99,235,0.08);
+        --resume-pill-border: rgba(37,99,235,0.18);
+        --resume-pill-icon-bg: rgba(37,99,235,0.10);
+        --resume-button-bg: rgba(37,99,235,0.09);
+        --resume-button-bg-hover: rgba(37,99,235,0.14);
+        --resume-scroll-track: rgba(15,23,42,0.08);
+        --resume-scroll-thumb: rgba(37,99,235,0.34);
+        --resume-scroll-thumb-hover: rgba(37,99,235,0.50);
+      }
+    }
+
+    :root[data-theme='light'] {
+      color-scheme: light;
+      --resume-page-bg: #eef4fb;
+      --resume-document-bg:
+        radial-gradient(circle at top right, rgba(14,116,144,0.13), transparent 31%),
+        linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,244,251,0.98));
+      --resume-text: #111827;
+      --resume-heading: #0f172a;
+      --resume-muted: rgba(15,23,42,0.72);
+      --resume-soft: rgba(15,23,42,0.62);
+      --resume-faint: rgba(15,23,42,0.50);
+      --resume-border: rgba(15,23,42,0.10);
+      --resume-border-soft: rgba(15,23,42,0.08);
+      --resume-panel-bg: rgba(255,255,255,0.68);
+      --resume-accent: #2563eb;
+      --resume-accent-strong: #0284c7;
+      --resume-accent-text: #1e3a8a;
+      --resume-link-text: #1d4ed8;
+      --resume-pill-bg: rgba(37,99,235,0.08);
+      --resume-pill-border: rgba(37,99,235,0.18);
+      --resume-pill-icon-bg: rgba(37,99,235,0.10);
+      --resume-button-bg: rgba(37,99,235,0.09);
+      --resume-button-bg-hover: rgba(37,99,235,0.14);
+      --resume-scroll-track: rgba(15,23,42,0.08);
+      --resume-scroll-thumb: rgba(37,99,235,0.34);
+      --resume-scroll-thumb-hover: rgba(37,99,235,0.50);
+    }
+
     html,
     body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #070a14;
-      color: #f3f4f6;
+      background: var(--resume-page-bg);
+      color: var(--resume-text);
       font-family: Inter, Pretendard, system-ui, sans-serif;
     }
 
@@ -35,11 +168,9 @@
       overflow-y: auto;
       overflow-x: hidden;
       padding: 2rem 3.2rem 5.5rem;
-      background:
-        radial-gradient(circle at top right, rgba(96,165,250,0.10), transparent 30%),
-        linear-gradient(180deg, rgba(18,22,36,0.98), rgba(8,10,18,0.98));
+      background: var(--resume-document-bg);
       scrollbar-width: thin;
-      scrollbar-color: rgba(147,197,253,0.48) rgba(255,255,255,0.06);
+      scrollbar-color: var(--resume-scroll-thumb) var(--resume-scroll-track);
     }
 
     .resumeDocument::-webkit-scrollbar {
@@ -47,12 +178,12 @@
     }
 
     .resumeDocument::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.06);
+      background: var(--resume-scroll-track);
       border-radius: 999px;
     }
 
     .resumeDocument::-webkit-scrollbar-thumb {
-      background: rgba(147,197,253,0.44);
+      background: var(--resume-scroll-thumb);
       border-radius: 999px;
       border: 2px solid transparent;
       background-clip: padding-box;
@@ -81,13 +212,13 @@
   border-radius: 999px;
 
   border:
-    1px solid rgba(147,197,253,0.16);
+    1px solid var(--resume-pill-border);
 
   background:
-    rgba(96,165,250,0.06);
+    var(--resume-button-bg);
 
   color:
-    #bfdbfe;
+    var(--resume-link-text);
 
   font-size: 0.74rem;
 
@@ -107,10 +238,10 @@
 .runtimeLink:hover {
 
   background:
-    rgba(96,165,250,0.12);
+    var(--resume-button-bg-hover);
 
   border-color:
-    rgba(147,197,253,0.34);
+    var(--resume-scroll-thumb);
 
   transform:
     translateY(-1px);
@@ -118,7 +249,7 @@
 .profileLink {
 
   color:
-    #7dd3fc;
+    var(--resume-accent-strong);
 
   text-decoration: none;
 
@@ -131,7 +262,7 @@
   opacity: 0.92;
 }
     .resumeDocument::-webkit-scrollbar-thumb:hover {
-      background: rgba(147,197,253,0.62);
+      background: var(--resume-scroll-thumb-hover);
       background-clip: padding-box;
     }
 
@@ -146,12 +277,12 @@
       font-family: "JetBrains Mono", monospace;
       font-size: 0.78rem;
       letter-spacing: 0.18em;
-      color: #60a5fa;
+      color: var(--resume-accent);
       margin-bottom: 1rem;
     }
 
     h1 {
-      font-size: 3.2rem;
+      font-size: clamp(2.15rem, 6vw, 3.2rem);
       line-height: 1.15;
       letter-spacing: -0.04em;
       margin-bottom: 1.2rem;
@@ -161,22 +292,22 @@
       max-width: 760px;
       font-size: 1.08rem;
       line-height: 1.8;
-      color: rgba(255,255,255,0.72);
+      color: var(--resume-muted);
     }
 
     .contactBox {
-      min-width: 280px;
+      min-width: min(280px, 100%);
       align-self: flex-start;
       padding: 1.4rem;
       border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--resume-border);
+      background: var(--resume-panel-bg);
     }
 
     .contactBox div {
       font-size: 0.9rem;
       line-height: 1.9;
-      color: rgba(255,255,255,0.68);
+      color: var(--resume-soft);
     }
 
     .grid {
@@ -185,10 +316,19 @@
       gap: 1.4rem;
     }
 
+    .resumeHeader > *,
+    .grid > *,
+    .panel,
+    .item,
+    .contactBox,
+    .tag {
+      min-width: 0;
+    }
+
     .panel {
       border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--resume-border);
+      background: var(--resume-panel-bg);
       padding: 1.8rem;
       margin-bottom: 1.4rem;
     }
@@ -197,7 +337,7 @@
       font-family: "JetBrains Mono", monospace;
       font-size: 0.78rem;
       letter-spacing: 0.18em;
-      color: #60a5fa;
+      color: var(--resume-accent);
       text-transform: uppercase;
       margin-bottom: 1.4rem;
     }
@@ -205,7 +345,7 @@
     .item {
       padding-bottom: 1.4rem;
       margin-bottom: 1.4rem;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid var(--resume-border-soft);
     }
 
     .item:last-child {
@@ -223,19 +363,20 @@
 
     .item h3 {
       font-size: 1.05rem;
-      color: #ffffff;
+      color: var(--resume-heading);
     }
 
     .date {
       font-family: "JetBrains Mono", monospace;
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.42);
-      white-space: nowrap;
+      color: var(--resume-faint);
+      white-space: normal;
+      text-align: right;
     }
 
     ul {
       padding-left: 1.1rem;
-      color: rgba(255,255,255,0.72);
+      color: var(--resume-muted);
       line-height: 1.85;
       font-size: 0.95rem;
     }
@@ -252,9 +393,9 @@
       gap: 0.72rem;
       padding: 0.85rem 0.95rem;
       border-radius: 16px;
-      background: rgba(96,165,250,0.08);
-      border: 1px solid rgba(96,165,250,0.16);
-      color: #dbeafe;
+      background: var(--resume-pill-bg);
+      border: 1px solid var(--resume-pill-border);
+      color: var(--resume-accent-text);
       font-size: 0.88rem;
       font-weight: 600;
     }
@@ -267,8 +408,8 @@
       justify-content: center;
       flex-shrink: 0;
       border-radius: 12px;
-      background: rgba(255,255,255,0.10);
-      color: #ffffff;
+      background: var(--resume-pill-icon-bg);
+      color: var(--resume-heading);
       font-size: 1.35rem;
     }
 
@@ -279,7 +420,7 @@
           rgba(96,165,250,0.18),
           rgba(20,184,166,0.10)
         );
-      border-color: rgba(147,197,253,0.28);
+      border-color: var(--resume-scroll-thumb);
     }
 
     .tagMore {
@@ -293,10 +434,10 @@
     .moreStackButton {
       width: 100%;
       margin-top: 0.9rem;
-      border: 1px solid rgba(147,197,253,0.26);
+      border: 1px solid var(--resume-pill-border);
       border-radius: 14px;
-      background: rgba(147,197,253,0.10);
-      color: #dbeafe;
+      background: var(--resume-button-bg);
+      color: var(--resume-accent-text);
       padding: 0.82rem 1rem;
       font-weight: 700;
       cursor: pointer;
@@ -306,8 +447,8 @@
     }
 
     .moreStackButton:hover {
-      background: rgba(147,197,253,0.16);
-      border-color: rgba(147,197,253,0.42);
+      background: var(--resume-button-bg-hover);
+      border-color: var(--resume-scroll-thumb-hover);
     }
 
 .metricRow {
@@ -324,10 +465,10 @@
     1.4rem 0;
 
   border-top:
-    1px solid rgba(255,255,255,0.05);
+    1px solid var(--resume-border-soft);
 
   border-bottom:
-    1px solid rgba(255,255,255,0.05);
+    1px solid var(--resume-border-soft);
 }
 
 .metric {
@@ -350,7 +491,7 @@
   font-weight: 800;
 
   color:
-    #60a5fa;
+    var(--resume-accent);
 
   line-height: 1;
 }
@@ -361,11 +502,11 @@
   letter-spacing: 0.28em;
 
   color:
-    rgba(255,255,255,0.48);
+    var(--resume-faint);
 }
 
     .note {
-      color: rgba(255,255,255,0.58);
+      color: var(--resume-soft);
       font-size: 0.9rem;
       line-height: 1.75;
     }
@@ -382,7 +523,94 @@
       }
 
       .metricRow {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .resumeDocument {
+        width: 100%;
+        padding: 1.35rem 1rem 4rem;
+      }
+
+      .resumeHeader {
+        gap: 1rem;
+        margin-bottom: 1.6rem;
+      }
+
+      h1 {
+        letter-spacing: 0;
+      }
+
+      .summary {
+        font-size: 0.98rem;
+        line-height: 1.68;
+      }
+
+      .contactBox,
+      .panel {
+        border-radius: 16px;
+        padding: 1rem;
+      }
+
+      .metricRow {
+        display: grid;
         grid-template-columns: 1fr;
+        gap: 0.85rem;
+        padding: 1rem 0;
+      }
+
+      .metric strong {
+        font-size: 2.35rem;
+      }
+
+      .metric span {
+        letter-spacing: 0.16em;
+        text-align: center;
+      }
+
+      .itemHeader {
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .date {
+        text-align: left;
+      }
+
+      .tags {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .resumeDocument {
+        padding: 1rem 0.72rem 3.5rem;
+      }
+
+      .eyebrow,
+      .panelTitle {
+        letter-spacing: 0.12em;
+      }
+
+      .runtimeLinks {
+        gap: 0.5rem;
+      }
+
+      .runtimeLink,
+      .moreStackButton {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .tag {
+        padding: 0.72rem 0.78rem;
+      }
+
+      ul {
+        padding-left: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.72;
       }
     }
 .sensitive {
@@ -430,7 +658,7 @@
   font-size: 0.82rem;
 
   color:
-    rgba(255,255,255,0.46);
+    var(--resume-faint);
 
   font-family:
     'JetBrains Mono',

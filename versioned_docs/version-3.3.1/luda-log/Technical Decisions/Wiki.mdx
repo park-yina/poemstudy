@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 archiveManuscript: true
 manuscriptTheme: sepia
 ---
@@ -8,16 +8,21 @@ import {
   DocsRef,
   DocsFootnotes,
   DocsDocumentProvider,
+  DocsNavigationRail,
 } from '@site/src/components/DocsManuscript';
 
 <DocsDocumentProvider>
 
 <div className="docs-manuscript">
 
-# wiki 기술 의사 결정
+# Wiki 기술 의사 결정
 
 > Wiki는 블로그처럼 기록이 흩어지는 문제와,
 > 일반 문서 툴에서 발생하는 탐색 흐름의 단절을 줄이기 위해 제작되었다.
+>
+> 단순 문서 보관이 아니라,
+> 운영 과정 자체를 하나의 archive처럼 읽히게 만드는 것을 목표로 한다.
+
 ---
 
 <div className="docs-manuscript-top-layout">
@@ -26,11 +31,12 @@ import {
 
   ## 목차
 
-1. [Wiki 구조 설계 배경](#wiki-구조-설계-배경)
+1. [Wiki 구조 설계 배경](#wiki-structure-background)
 2. [Archive Wiki와 Dev Wiki를 분리하지 않은 이유](#wiki-separation)
-3. [Theme 기반 Wiki 구조](#theme-기반-wiki-구조)
-4. [Manuscript 형태를 선택한 이유](#manuscript-형태를-선택한-이유)
-5. [검색 시스템 설계](#검색-시스템-설계)
+3. [Theme 기반 Wiki 구조](#wiki-theme-structure)
+4. [Manuscript 형태를 선택한 이유](#wiki-manuscript-reason)
+5. [검색 시스템 설계](#wiki-search-system)
+
   </div>
 
   <aside
@@ -53,6 +59,7 @@ import {
 </div>
 
 ---
+
 <details
   className="wiki-fold"
   open
@@ -90,11 +97,11 @@ import {
 
 </DocsRef>
 
-따라서 해당 문제들을 해결하기 위해:
+따라서 이러한 문제들을 해결하기 위해:
 
 - markdown 파일 단위 관리
 - versioning 시스템
-- category 기반 분류 구조
+- category 기반 문서 구조
 - theme 기반 archive 분리
 - footnote 기반 보조 설명
 - 검색 시스템
@@ -133,10 +140,10 @@ Archive Wiki와 Dev Wiki를 별도의 시스템으로 구분하여 설명하지 
 
 이는 두 시스템 모두:
 
-- "기록 기반 탐색"
-- 백과사전 형태의 구조
-- category 기반 문서 탐색
-- manuscript 스타일 문서 구성
+- 기록 기반 탐색 구조
+- 백과사전 형태의 문서 흐름
+- category 기반 탐색
+- manuscript 스타일 구성
 
 이라는 공통된 설계 철학을 공유하고 있기 때문이다.
 
@@ -150,38 +157,21 @@ Archive Wiki와 Dev Wiki를 별도의 시스템으로 구분하여 설명하지 
 - 연출 방식
 - 분위기(theme)
 - 공개 범위
-의 차이에 가까웠기 때문에,
+- archive presentation
+
+등의 차이에 가까웠기 때문에,
 별개의 엔진처럼 분리하여 설명하지 않았다.
 
 </DocsRef>
-</div>
 
-</details>
----
+결과적으로 현재 구조에서는:
 
-<details
-  className="wiki-fold"
-  open
->
+- Archive Wiki
+- Dev Wiki
+- Workspace
+- Runtime Record
 
-<summary id="theme-기반-wiki-구조">
-
-  <span className="wiki-fold-title">
-    theme-기반-wiki-구조
-  </span>
-
-</summary>
-
-<div markdown="1">
-
-LudaLog의 위키를 제작당시 가장 많이 참고한 플랫폼은 나무위키이다.
-따라서 theme색상을 통한 미세한 변화를 주는 것 역시 해당 플랫폼에서 차용한 시스템이다.
-<DocsRef>
-theme색상 도입 이후 가장 눈에 띄는 변화는 프로젝트 별, 혹은 더 작은 단위의 분류 별로
-성격을 정해줄 수 있다는 것이다.
-대표적인 예시로 LudaLog라는 하나의 시스템을 서술하는 데에
-WIKI,Archive,Workspace,LudaRota등의 테마가 사용되었다.
-</DocsRef>
+등을 모두 하나의 archive ecosystem 안에서 연결되도록 설계하고 있다.
 
 </div>
 
@@ -194,22 +184,42 @@ WIKI,Archive,Workspace,LudaRota등의 테마가 사용되었다.
   open
 >
 
-<summary id="manuscript-형태를-선택한-이유">
+<summary id="wiki-theme-structure">
 
   <span className="wiki-fold-title">
-manuscript-형태를-선택한-이유
+    Theme 기반 Wiki 구조
   </span>
 
 </summary>
 
 <div markdown="1">
 
-manuscript 형태의 가장 큰 장점은 원고 형태로, 각주와 본문의 분리가 가능하다.
-따라서 독자가 원하는 방식의 리딩이 가능하기 때문에 해당 형태를 착안하게 되었다.
+LudaLog의 Wiki 구조를 설계할 당시,
+가장 큰 영향을 준 플랫폼 중 하나는 나무위키였다.
+
+특히 theme 색상을 통한 문서 분위기 분리는
+사용자가 현재 어떤 종류의 기록을 읽고 있는지를
+직관적으로 인식할 수 있도록 만드는 데에 영향을 주었다.
+
 <DocsRef>
-제작자인 루다의 의도는 아니나, 그녀의 전공이 문예창작이라는 것을 고려한다면
-간접적으로 자신의 성질에 대한 어필이기도 하다.
+
+theme 시스템 도입 이후 가장 큰 변화는,
+프로젝트나 기록의 성격에 따라 서로 다른 분위기를 부여할 수 있게 되었다는 점이다.
+
+대표적인 예시로:
+
+- Wiki
+- Archive
+- Workspace
+- LudaRota
+
+등은 모두 동일한 archive ecosystem 안에 존재하지만,
+theme를 통해 서로 다른 탐색 감각을 가지도록 설계되었다.
+
 </DocsRef>
+
+이는 단순 색상 변경이 아니라,
+문서의 분위기와 탐색 흐름 자체를 구분하기 위한 장치에 가까웠다.
 
 </div>
 
@@ -222,23 +232,100 @@ manuscript 형태의 가장 큰 장점은 원고 형태로, 각주와 본문의 
   open
 >
 
-<summary id="#검색-시스템-설계">
+<summary id="wiki-manuscript-reason">
 
   <span className="wiki-fold-title">
-   #검색-시스템-설계
+    Manuscript 형태를 선택한 이유
   </span>
 
 </summary>
 
 <div markdown="1">
-해당 위키의 MVP모델이 나온 직후부터 검색시스템을 우선 설계하였다.
-초반 검색 모델의 경우, 검색어 일치시에만 검색이 가능하였으나 현재에는
-연관검색어 대소문자 변환 공백 변환 등이 자동으로 제공되고 있다.
+
+manuscript 형태의 가장 큰 특징은,
+본문과 각주를 분리하여 독자의 읽기 흐름을 조절할 수 있다는 점이었다.
+
+일반적인 문서 구조에서는
+보조 설명이나 제작 배경까지 모두 본문 안에 포함되기 쉽지만,
+manuscript 구조에서는 각주를 통해 흐름을 분리할 수 있었다.
+
 <DocsRef>
-차후에는 점핑배틀 랭킹 시스템과 유사하게 유사 검색어에 대한 결과 역시 제공할 예정이다.
-문자열 유사도나 거리 알고리즘의 병행 사용으로,
-예를 들어 LudaRota의 오타로 Ludarot를 검색 할 경우 유사 검색어 결과를 띄울 계획에 있다.
+
+이는 독자가 원하는 방식대로 문서를 읽을 수 있도록 만들기 위한 선택이었다.
+
+- 본문만 따라 읽는 방식
+- 각주까지 포함하여 읽는 방식
+- 특정 설명만 탐색하는 방식
+
+등이 모두 가능하도록 구성하였다.
+
+제작자인 루다의 의도는 아니었으나,
+문예창작 전공이라는 배경 역시 이러한 manuscript 형태에 자연스럽게 영향을 주었다.
+
 </DocsRef>
+
+결과적으로 현재의 문서 구조는:
+
+- 기술 문서
+- archive
+- 원고(manuscript)
+
+사이 어딘가의 형태를 지향하게 되었다.
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="wiki-search-system">
+
+  <span className="wiki-fold-title">
+    검색 시스템 설계
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+해당 Wiki의 MVP 구조가 제작된 직후부터,
+검색 시스템은 우선적으로 설계되었다.
+
+이는 archive 구조 특성상,
+문서 수가 증가할수록 탐색 비용 역시 빠르게 증가하기 때문이다.
+
+초기 검색 모델은 단순 문자열 일치 기반이었으나,
+현재는 다음과 같은 기능들이 함께 적용되고 있다:
+
+- 대소문자 정규화
+- 공백 처리
+- 연관 검색어 처리
+- category 기반 탐색
+
+<DocsRef>
+
+차후에는 JumpingBattle 랭킹 시스템에서 사용했던
+부분 갱신 및 유사 탐색 구조와 비슷하게,
+문자열 유사도 기반 검색 역시 추가할 예정이다.
+
+예를 들어:
+
+- `LudaRota`
+- `Luda Rota`
+- `Ludarot`
+
+등과 같은 오타 및 유사 문자열에 대해서도
+유사 검색 결과를 반환할 수 있도록 설계하고 있다.
+
+</DocsRef>
+
+검색 시스템 역시 단순 기능 구현보다는,
+archive 전체의 탐색 흐름을 유지하기 위한 방향으로 설계되었다.
 
 </div>
 
@@ -249,6 +336,7 @@ manuscript 형태의 가장 큰 장점은 원고 형태로, 각주와 본문의 
 <DocsFootnotes />
 
 </div>
+
 <DocsNavigationRail marker="circle" />
 
 </DocsDocumentProvider>

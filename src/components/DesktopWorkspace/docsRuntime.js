@@ -6,12 +6,14 @@ import React, {
 
 import docsManifest from '../../generated/fake-docs-manifest.json';
 import baseStyles from './styles.module.css';
+import docsRuntimeStyles from './docsRuntime.module.css';
 import workspaceOverlayStyles from './workspaceOverlay.module.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 const styles = {
   ...baseStyles,
+  ...docsRuntimeStyles,
   ...workspaceOverlayStyles,
 };
 

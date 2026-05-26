@@ -3,7 +3,6 @@ import React from 'react';
 import styles from './archive-room.module.css';
 
 export default function ArchiveTopbar() {
-
   return (
     <header className={styles.topbar}>
 
@@ -26,26 +25,6 @@ export default function ArchiveTopbar() {
         </div>
 
       </div>
-
-      <nav className={styles.nav}>
-
-        <a href="#records">
-          Records
-        </a>
-
-        <a href="#ludarota">
-          Ludarota
-        </a>
-
-        <a href="#runtime">
-          Runtime
-        </a>
-
-        <a href="#logs">
-          Logs
-        </a>
-
-      </nav>
 
       <a
         href="/"

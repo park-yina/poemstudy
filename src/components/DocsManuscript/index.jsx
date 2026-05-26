@@ -31,7 +31,7 @@ export function DocsNavigationRail({
   marker = 'diamond',
   renderMarker,
   observeActive = true,
-  summarySelector = 'summary[id]',
+  summarySelector = 'details.wiki-fold > summary[id]',
   summaryTargetSelector = '.docs-summary',
   topLabel = '맨 위',
   summaryLabel = '목차',
@@ -200,7 +200,7 @@ function renderDefaultMarker(marker) {
 
 export function useDocsSummaryNavigation({
   rootRef,
-  selector = 'summary[id]',
+  selector = 'details.wiki-fold > summary[id]',
   observeActive = true,
 } = {}) {
   const [items, setItems] = useState([]);
