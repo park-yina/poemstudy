@@ -18,7 +18,8 @@ import {
 # Ludarota 기술 의사 결정
 
 > Ludarota는 단순 기능 기록이 아니라,
-> 프로젝트의 의사결정 흐름과 실패 과정을 카드 리딩 형태로 서사화한 아카이브 시스템이다.
+> 프로젝트의 의사결정 흐름과 실패 과정을
+> 카드 리딩 형태로 풀어낸 아카이브 시스템이다.
 
 ---
 
@@ -63,7 +64,7 @@ import {
     <li className="docs-summary-group">
 
       <a href="#card-decode">
-        카드 확장 및 Decode 구조
+        카드 확장 및 기록 분리 구조
       </a>
 
       <ol className="docs-summary-sublist">
@@ -80,13 +81,13 @@ import {
 
     <li>
       <a href="#p5js-ambient">
-        p5.js 기반 Ambient Animation
+        p5.js 기반 배경 연출
       </a>
     </li>
 
     <li>
       <a href="#tarot-theme">
-        Theme 기반 Tarot 구성
+        테마 기반 카드 구성
       </a>
     </li>
 
@@ -106,15 +107,15 @@ import {
   >
 
   <div className="docs-infobox__title">
-    Wiki 기술 의사 결정
+    Ludarota 기술 의사 결정
   </div>
 
 | 항목 | 내용 |
 | --- | --- |
 | 분류 | Interactive Archive System |
-| 주요 기술 | React / P5.js / StoryTelling |
+| 주요 기술 | React / P5.js / UI 설계 |
 | 목적 | 프로젝트 기록 및 운영 경험 아카이빙 |
-| 특징 | Tarot Interaction / Archive UX |
+| 특징 | 카드 기반 탐색 / 기록 중심 구조 / 탐색 흐름 설계 |
 
   </aside>
 
@@ -138,8 +139,8 @@ import {
 <div markdown="1">
 
 루다로타의 입구 시스템은
-사용자가 archive 내부로 진입하기 이전,
-분위기와 탐색 흐름을 전환하기 위해 설계되었다.
+사용자가 프로젝트 기록을 읽기 이전,
+현재 보고 있는 공간의 분위기가 자연스럽게 전환되도록 설계하였다.
 
 특히:
 
@@ -149,7 +150,7 @@ import {
 
 해당 구조는 모두
 단순 정보 분류보다,
-현재 사용자가 어떤 archive에 접근하고 있는가를
+현재 사용자가 어떤 기록에 접근하고 있는지를
 직관적으로 전달하는 데에 초점을 두었다.
 
 <details
@@ -170,7 +171,7 @@ import {
 
 하지만 JumpingBattle과 같이
 프로젝트 내부의 구조 변화와 운영 기록이 지속적으로 증가하는 경우,
-하나의 시리즈 archive처럼 보이도록 구조를 변경하였다.
+하나의 시리즈 기록처럼 보이도록 구조를 변경하였다.
 
 이를 통해:
 
@@ -200,7 +201,7 @@ import {
 <div markdown="1">
 
 사용자가 단순 버튼을 클릭하는 것이 아니라,
-archive 내부로 진입하기 이전의 분위기 전환을 느낄 수 있도록
+프로젝트 기록을 열람하기 이전의 분위기 전환을 느낄 수 있도록
 기도초 형태의 선택 구조를 도입하였다.
 
 <DocsRef>
@@ -247,14 +248,14 @@ LudaRota의 핵심 목표는
 특히:
 
 - 카드 포커싱
-- 미세한 animation
+- 미세한 움직임
 - 카드별 서사 구조
 
 등을 통해
 사용자가 프로젝트를 읽는 것이 아니라,
 하나의 기록을 해석하는 흐름을 목표로 하였다.
 
-또한 각 프로젝트별 분위기와 runtime 특성을
+또한 프로젝트별 분위기와 구조적 특징을
 카드 단계에서 먼저 전달할 수 있도록 설계하였다.
 
 </div>
@@ -271,7 +272,7 @@ LudaRota의 핵심 목표는
 <summary id="card-decode">
 
   <span className="wiki-fold-title">
-    카드 확장 및 Decode 구조
+    카드 확장 및 기록 분리 구조
   </span>
 
 </summary>
@@ -285,14 +286,14 @@ LudaRota의 핵심 목표는
 
 - SSE 시스템 도입 과정
 - CacheKey 설계 및 실패 경험
-- Delta Payload 구조
-- Runtime Synchronization
+- 부분 갱신 구조
+- 상태 동기화 문제
 
 등은
 실패 과정과 구조 선택 이유 모두 중요하였다.
 
-따라서 특정 archive 내부에
-별도의 decoding 및 확장 흐름을 추가하였다.
+따라서 특정 기록 내부에
+세부 구조를 단계적으로 열람할 수 있는 흐름을 추가하였다.
 
 <details
   className="wiki-subfold"
@@ -307,7 +308,7 @@ LudaRota의 핵심 목표는
 
 <div markdown="1">
 
-Subcard 시스템은
+서브 카드 시스템은
 하나의 프로젝트 내부에서
 세부 구조와 실패 사례를 다시 탐색할 수 있도록 만들기 위해 도입되었다.
 
@@ -316,13 +317,13 @@ Subcard 시스템은
 
 특히:
 
-- ranking 구조 변경
-- cache invalidation
-- partial update
-- runtime state
+- 랭킹 구조 변경
+- 캐시 무효화
+- 부분 갱신
+- 상태 관리
 
 등의 기록은
-별도의 subcard로 분리하여 설명하였다.
+별도의 서브 카드로 분리하여 설명하였다.
 
 </div>
 
@@ -342,29 +343,29 @@ Subcard 시스템은
 <summary id="p5js-ambient">
 
   <span className="wiki-fold-title">
-    p5.js 기반 Ambient Animation
+    p5.js 기반 배경 연출
   </span>
 
 </summary>
 
 <div markdown="1">
 
-LudaRota의 animation은
+LudaRota의 배경 효과는
 단순 시각 효과보다,
-archive 내부의 공간감과 정적인 분위기를 강화하는 데에 초점을 두었다.
+기록 공간의 분위기와 정적인 공간감을 강화하는 데에 초점을 두었다.
 
 특히:
 
-- ambient particle
-- mouse interaction
-- archive dust
-- runtime motion
+- 먼지 입자 효과
+- 마우스 반응 효과
+- 배경 움직임
+- 카드 주변 연출
 
 등을 통해
-사용자의 입력에 반응하는 archive 공간을 구성하였다.
+사용자의 입력에 따라 공간이 반응하는 느낌을 구성하였다.
 
-또한 단순 CSS animation보다,
-보다 유기적인 interaction 흐름을 구현하기 위해
+또한 단순 CSS 애니메이션보다,
+보다 자연스러운 움직임을 구현하기 위하여
 p5.js 기반 구조를 일부 도입하였다.
 
 </div>
@@ -381,26 +382,26 @@ p5.js 기반 구조를 일부 도입하였다.
 <summary id="tarot-theme">
 
   <span className="wiki-fold-title">
-    Theme 기반 Tarot 구성
+    테마 기반 카드 구성
   </span>
 
 </summary>
 
 <div markdown="1">
 
-theme는 단순 색상 변경이 아니라,
-archive별 분위기와 탐색 흐름 자체를 구분하기 위한 구조였다.
+테마 구조는 단순 색상 변경이 아니라,
+기록별 분위기와 탐색 흐름 자체를 구분하기 위한 구조였다.
 
 특히:
 
-- forbidden archive
-- runtime overlay
+- 금서 형태의 기록
+- 카드 열람 화면
 
 등을 중심으로,
-각 기록이 서로 다른 감각을 가지도록 설계하였다.
+각 기록이 서로 다른 분위기를 가지도록 설계하였다.
 
-또한 동일한 archive ecosystem 안에서도,
-theme에 따라 전혀 다른 탐색 경험을 제공할 수 있도록 구성하였다.
+또한 동일한 아카이브 내부에서도,
+기록의 성격에 따라 서로 다른 탐색 경험을 제공할 수 있도록 구성하였다.
 
 </div>
 
@@ -423,22 +424,23 @@ theme에 따라 전혀 다른 탐색 경험을 제공할 수 있도록 구성하
 
 <div markdown="1">
 
-기존 wiki 기반 구조에서는
-문서 depth가 깊어질수록
+기존 위키 기반 구조에서는
+문서 깊이가 깊어질수록
 사용자의 탐색 피로도 역시 증가하는 문제가 존재하였다.
 
 LudaRota에서는:
 
-- overlay 기반 탐색
-- 카드 포커싱 animation
-- decoding 방식 탐색
-- runtime 중심 흐름 유지
+- 카드 중심 탐색
+- 현재 흐름 유지
+- 단계별 기록 열람
+- 프로젝트별 분위기 분리
 
 등을 통해
 사용자가 현재 읽고 있는 흐름이 끊기지 않도록 설계하였다.
 
 특히 단순 링크 이동보다,
-“현재 archive 내부를 계속 탐색하는 감각”을 유지하는 데에 집중하였다.
+현재 보고 있는 기록 안에서
+계속 탐색이 이어지는 감각을 유지하는 데에 집중하였다.
 
 </div>
 
