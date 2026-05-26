@@ -108,7 +108,125 @@ export const runtimeShikiTheme = {
     },
   ],
 };
+export const runtimeShikiLightTheme = {
+  name: 'runtime-observatory-light',
+  type: 'light',
 
+  colors: {
+
+    'editor.background': '#f3f6fb',
+
+    'editor.foreground': '#1e293b',
+
+    'editorLineNumber.foreground': '#94a3b8',
+
+    'editor.selectionBackground': '#bfd4ee66',
+
+    'editor.lineHighlightBackground': '#00000008',
+  },
+
+  tokenColors: [
+
+    {
+      scope: [
+        'comment',
+        'punctuation.definition.comment',
+      ],
+      settings: {
+        foreground: '#7c8798',
+        fontStyle: 'italic',
+      },
+    },
+
+    {
+      scope: [
+        'keyword',
+        'storage.type',
+        'storage.modifier',
+      ],
+      settings: {
+        foreground: '#3b5b8a',
+      },
+    },
+
+    {
+      scope: [
+        'string',
+        'punctuation.definition.string',
+      ],
+      settings: {
+        foreground: '#4f7a5d',
+      },
+    },
+
+    {
+      scope: [
+        'entity.name.type',
+        'entity.name.class',
+        'support.class',
+        'support.type',
+      ],
+      settings: {
+        foreground: '#2f6f86',
+      },
+    },
+
+    {
+      scope: [
+        'entity.name.function',
+        'support.function',
+        'meta.method',
+      ],
+      settings: {
+        foreground: '#7b5c2e',
+      },
+    },
+
+    {
+      scope: [
+        'meta.annotation',
+        'storage.type.annotation',
+        'punctuation.definition.annotation',
+      ],
+      settings: {
+        foreground: '#9a6a2f',
+      },
+    },
+
+    {
+      scope: [
+        'constant.numeric',
+        'constant.language',
+        'variable.other.constant',
+      ],
+      settings: {
+        foreground: '#765ca8',
+      },
+    },
+
+    {
+      scope: [
+        'variable.parameter',
+        'variable.other',
+        'variable.language',
+      ],
+      settings: {
+        foreground: '#334155',
+      },
+    },
+
+    {
+      scope: [
+        'keyword.operator',
+        'punctuation',
+        'meta.brace',
+      ],
+      settings: {
+        foreground: '#64748b',
+      },
+    },
+  ],
+};
 const supportedLanguages = [
   'css',
   'html',
@@ -137,7 +255,10 @@ let highlighterPromise;
 function getRuntimeHighlighter() {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighter({
-      themes: [runtimeShikiTheme],
+      themes: [
+        runtimeShikiTheme,
+        runtimeShikiLightTheme,
+      ],
       langs: supportedLanguages,
     });
   }
@@ -191,6 +312,7 @@ function getFallbackRows(content) {
 export function useRuntimeCodeTokens(
   content,
   language,
+  colorMode = 'dark',
 ) {
   const [tokenRows, setTokenRows] =
     useState(() => getFallbackRows(content));
@@ -201,6 +323,11 @@ export function useRuntimeCodeTokens(
       [language],
     );
 
+  const themeName =
+    colorMode === 'light'
+      ? runtimeShikiLightTheme.name
+      : runtimeShikiTheme.name;
+
   useEffect(() => {
     let cancelled = false;
 
@@ -210,7 +337,7 @@ export function useRuntimeCodeTokens(
       .then((highlighter) =>
         highlighter.codeToTokensBase(content || '', {
           lang: normalizedLanguage,
-          theme: runtimeShikiTheme.name,
+          theme: themeName,
         })
       )
       .then((rows) => {
@@ -236,7 +363,7 @@ export function useRuntimeCodeTokens(
     return () => {
       cancelled = true;
     };
-  }, [content, normalizedLanguage]);
+  }, [content, normalizedLanguage, themeName]);
 
   return tokenRows;
 }

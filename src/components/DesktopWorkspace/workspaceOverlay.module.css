@@ -894,6 +894,8 @@
   background: transparent;
   min-width: 100%;
   width: 100%;
+  border: 0;
+  border-radius: 0;
 }
 
 .editorCodeLine {
@@ -1456,6 +1458,12 @@ grid-template-columns:
 
   box-sizing:
     border-box;
+
+  border:
+    0;
+
+  border-radius:
+    0;
 }
 
 .editorCodeLine {

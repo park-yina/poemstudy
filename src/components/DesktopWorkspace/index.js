@@ -56,6 +56,24 @@ const AWS_STATUS_REGION =
 const AWS_STATUS_RSS_URL =
   'https://status.aws.amazon.com/rss/ec2-us-east-1.rss';
 
+function getWorkspaceSlug(item) {
+
+  if (!item?.workspace) {
+    return null;
+  }
+
+  const slugSource =
+    item.workspaceSlug ||
+    item.title ||
+    item.id;
+
+  return slugSource
+    ?.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '') ||
+    null;
+}
+
 function parseAwsStatusRss(xmlText) {
 
   const document =
@@ -440,15 +458,12 @@ const [awsStatus, setAwsStatus] =
           return false;
         }
 
-        const titleSlug =
-          item.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-|-$/g, '');
+        const workspaceSlug =
+          getWorkspaceSlug(item);
 
         return (
           item.id === normalizedSlug ||
-          titleSlug === normalizedSlug
+          workspaceSlug === normalizedSlug
         );
       });
 
@@ -887,10 +902,22 @@ useEffect(() => {
 }, [activeItem]);
 const openItem = (item) => {
 
-  if (
-    item.workspace ||
-    item.type === 'FOLDER'
-  ) {
+  if (item.workspace) {
+    const workspaceSlug =
+      getWorkspaceSlug(item);
+
+    if (workspaceSlug) {
+      history.push(`/workspace/${workspaceSlug}`);
+    }
+
+    setPackageItem(item);
+    setArchiveItem(null);
+    setRuntimeCmdItem(null);
+
+    return;
+  }
+
+  if (item.type === 'FOLDER') {
     setPackageItem(item);
     setArchiveItem(null);
     setRuntimeCmdItem(null);
@@ -943,9 +970,15 @@ const handleLaunch =
       return;
     }
 
-   if (
+    if (
   item.workspace
 ) {
+      const workspaceSlug =
+        getWorkspaceSlug(item);
+
+      if (workspaceSlug) {
+        history.push(`/workspace/${workspaceSlug}`);
+      }
 
       setPackageItem(item);
       setArchiveItem(null);

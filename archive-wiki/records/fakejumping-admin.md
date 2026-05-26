@@ -3,7 +3,7 @@ title: fakejumping-admin
 description: 관리자 인증, 디바이스 관리, 운영 흐름을 중심으로 구축된 Spring Boot 기반 운영 시스템.
 status: developing
 stack: Spring Boot / JWT / MyBatis / Docker / AWS
-workspaceHref: /workspace/fakejumping
+workspaceHref: /workspace/fakejumping-admin
 tags:
   - spring-boot
   - jwt
