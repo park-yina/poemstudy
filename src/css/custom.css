@@ -1356,12 +1356,12 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
   padding-left: 0.72rem;
 
   color:
-    var(--luda-accent-soft);
+    var(--manuscript-accent-soft, var(--luda-accent-soft));
 
   background:
     color-mix(
       in srgb,
-      var(--luda-accent) 8%,
+      var(--manuscript-accent, var(--luda-accent)) 8%,
       transparent
     ) !important;
 }
@@ -1371,16 +1371,20 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
 .menu__link--active {
 
   color:
-    var(--luda-accent-soft);
+    var(--manuscript-accent-soft, var(--luda-accent-soft));
 
   border-left:
-    2px solid var(--luda-accent);
+    2px solid var(--manuscript-accent, var(--luda-accent));
 
   background:
-    color-mix(
-      in srgb,
-      var(--luda-accent) 10%,
-      transparent
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--manuscript-accent, var(--luda-accent)) 10%, transparent) 0%,
+      color-mix(in srgb, var(--manuscript-accent, var(--luda-accent)) 10%, transparent) calc(100% - 8px),
+      color-mix(in srgb, var(--manuscript-panel, var(--luda-surface)) 64%, transparent)
+        calc(100% - 3px),
+      color-mix(in srgb, var(--manuscript-border, var(--luda-border)) 54%, transparent)
+        100%
     ) !important;
 }
 
@@ -1388,7 +1392,80 @@ html[data-theme='dark'] .navbar-sidebar__backdrop {
 .theme-doc-sidebar-container
 .menu__link--active::before {
 
-  display: none;
+  content:
+    "";
+
+  display:
+    block;
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  right:
+    0;
+
+  width:
+    16px;
+
+  height:
+    16px;
+
+  pointer-events:
+    none;
+
+  clip-path:
+    polygon(100% 0, 100% 100%, 0 0);
+
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--manuscript-panel, var(--luda-surface)) 78%, transparent) 0%,
+      color-mix(in srgb, var(--manuscript-surface, var(--luda-surface)) 66%, transparent) 62%,
+      color-mix(in srgb, var(--manuscript-border, var(--luda-border)) 40%, transparent) 100%
+    );
+
+  opacity:
+    0.72;
+}
+
+.docs-archive-manuscript
+.theme-doc-sidebar-container
+.menu__link--active::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    0;
+
+  width:
+    5px;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      color-mix(in srgb, var(--manuscript-border, var(--luda-border)) 34%, transparent) 45%,
+      color-mix(in srgb, var(--manuscript-accent, var(--luda-accent)) 20%, transparent) 100%
+    );
+
+  opacity:
+    0.82;
 }
 
 .docs-archive-manuscript

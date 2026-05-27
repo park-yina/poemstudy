@@ -404,6 +404,12 @@ const [taskbarMenuState, setTaskbarMenuState] =
   const workspaceBodyRef =
     useRef(null);
 
+  const desktopAreaRef =
+    useRef(null);
+
+  const [showDesktopScrollHint, setShowDesktopScrollHint] =
+    useState(false);
+
   const [weather, setWeather] =
     useState('⚙ weather runtime loading...');
     const [currentFolder, setCurrentFolder] =
@@ -443,6 +449,66 @@ const [awsStatus, setAwsStatus] =
     severity:
       'pending',
   });
+
+  const updateDesktopScrollHint =
+    useCallback(() => {
+      const desktopArea =
+        desktopAreaRef.current;
+
+      if (!desktopArea || packageItem) {
+        setShowDesktopScrollHint(false);
+        return;
+      }
+
+      const maxScrollTop =
+        desktopArea.scrollHeight -
+        desktopArea.clientHeight;
+
+      setShowDesktopScrollHint(
+        maxScrollTop > 8 &&
+        desktopArea.scrollTop < maxScrollTop - 8
+      );
+    }, [packageItem]);
+
+  useEffect(() => {
+    const desktopArea =
+      desktopAreaRef.current;
+
+    if (!desktopArea) {
+      return undefined;
+    }
+
+    const animationFrame =
+      window.requestAnimationFrame(
+        updateDesktopScrollHint
+      );
+
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(updateDesktopScrollHint);
+
+    resizeObserver?.observe(desktopArea);
+
+    window.addEventListener(
+      'resize',
+      updateDesktopScrollHint
+    );
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      resizeObserver?.disconnect();
+      window.removeEventListener(
+        'resize',
+        updateDesktopScrollHint
+      );
+    };
+  }, [
+    currentFolder,
+    packageItem,
+    previewWidth,
+    updateDesktopScrollHint,
+  ]);
 
   useEffect(() => {
     if (!initialWorkspaceSlug) {
@@ -1874,6 +1940,11 @@ return (
         {/* DESKTOP */}
 
 <div className={styles.desktopArea}>
+  <div
+    ref={desktopAreaRef}
+    className={styles.desktopScrollViewport}
+    onScroll={updateDesktopScrollHint}
+  >
 
 {
   runtimeCmdItem && (
@@ -2132,6 +2203,20 @@ return (
 
   )
 }
+
+  </div>
+
+  {
+    showDesktopScrollHint && (
+      <div
+        className={styles.desktopScrollHint}
+        aria-hidden="true"
+      >
+        <i className="fa-solid fa-chevron-down" />
+        <span />
+      </div>
+    )
+  }
 
 </div>
 {/* PREVIEW */}

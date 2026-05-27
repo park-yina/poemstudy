@@ -161,18 +161,58 @@
       font-family: Inter, Pretendard, system-ui, sans-serif;
     }
 
-    .resumeDocument {
-      width: 95%;
-      height: 100vh;
-      margin: 0 auto;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 2rem 3.2rem 5.5rem;
-      background: var(--resume-document-bg);
-      scrollbar-width: thin;
-      scrollbar-color: var(--resume-scroll-thumb) var(--resume-scroll-track);
-    }
+.resumeDocument {
 
+  width:
+    95%;
+
+  height:
+    100vh;
+
+  margin:
+    0 auto;
+
+  overflow-y:
+    auto;
+
+  overflow-x:
+    hidden;
+
+  padding:
+    2rem 3.2rem 5.5rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.16),
+      rgba(248,250,252,0.10)
+    );
+
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    var(--resume-scroll-thumb)
+    var(--resume-scroll-track);
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme='dark'] .resumeDocument {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,8,22,0.96),
+      rgba(6,8,22,0.88)
+    );
+
+
+}
     .resumeDocument::-webkit-scrollbar {
       width: 10px;
     }

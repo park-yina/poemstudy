@@ -11,8 +11,8 @@
 ======================================== */
 
 .docs-archive-manuscript {
-  --luda-doc-max-width: 1120px;
-  --luda-doc-readable-width: 960px;
+  --luda-doc-max-width: 1160px;
+  --luda-doc-readable-width: 980px;
   --luda-doc-padding-x: clamp(1.25rem, 3vw, 2.6rem);
   --luda-doc-padding-y: clamp(2.2rem, 5vw, 4.2rem);
 
@@ -25,6 +25,9 @@
   --manuscript-panel: rgba(34, 28, 38, 0.92);
   --manuscript-border: rgba(214, 182, 146, 0.12);
   --manuscript-accent-border: color-mix(in srgb, var(--manuscript-accent) 38%, var(--manuscript-border));
+  --manuscript-chip-bg: color-mix(in srgb, var(--manuscript-accent) 10%, transparent);
+  --manuscript-chip-border: color-mix(in srgb, var(--manuscript-accent) 36%, var(--manuscript-border));
+  --manuscript-chip-text: color-mix(in srgb, var(--manuscript-accent-soft) 72%, var(--manuscript-text));
   --manuscript-glow: 0 12px 34px rgba(0, 0, 0, 0.34);
   --manuscript-text: rgba(240, 232, 220, 0.94);
   --manuscript-text-soft: rgba(206, 188, 170, 0.72);
@@ -438,6 +441,63 @@
   --manuscript-infobox-title:
     linear-gradient(90deg, #873149, #9c5638);
 }
+/* =========================================================
+   JUMPINGBATTLE MANUSCRIPT THEME
+   Orange / Runtime / Arcade Operation Tone
+========================================================= */
+
+[data-theme="light"][data-manuscript-theme="jumpingbattle"].docs-archive-manuscript,
+[data-theme="light"][data-manuscript-theme="jumpingbattle"] .docs-archive-manuscript,
+[data-theme="light"] .docs-archive-manuscript [data-manuscript-theme="jumpingbattle"] {
+
+  --manuscript-accent:
+    #d86a24;
+
+  --manuscript-accent-soft:
+    #f29a38;
+
+  --manuscript-accent-muted:
+    rgba(216, 106, 36, 0.12);
+
+  --manuscript-accent-border:
+    rgba(216, 106, 36, 0.28);
+
+  --manuscript-infobox-title:
+    linear-gradient(
+      90deg,
+      #c55b1a,
+      #f29a38
+    );
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"][data-manuscript-theme="jumpingbattle"].docs-archive-manuscript,
+[data-theme="dark"][data-manuscript-theme="jumpingbattle"] .docs-archive-manuscript,
+[data-theme="dark"] .docs-archive-manuscript [data-manuscript-theme="jumpingbattle"] {
+
+  --manuscript-accent:
+    #ff8c3a;
+
+  --manuscript-accent-soft:
+    #ffb257;
+
+  --manuscript-accent-muted:
+    rgba(255, 140, 58, 0.13);
+
+  --manuscript-accent-border:
+    rgba(255, 178, 87, 0.30);
+
+  --manuscript-infobox-title:
+    linear-gradient(
+      90deg,
+      #d86a24,
+      #ffb257
+    );
+}
 
 /* ========================================
    Remove Docusaurus Right TOC
@@ -453,6 +513,58 @@
 .docs-archive-manuscript [class*="docItemCol"] {
   max-width: 100% !important;
   flex: 0 0 100% !important;
+}
+
+.docs-archive-manuscript .theme-doc-version-badge,
+.docs-archive-manuscript .theme-doc-version-banner,
+.docs-archive-manuscript .alert,
+.docs-archive-manuscript .badge {
+  color: var(--manuscript-chip-text);
+  border-color: var(--manuscript-chip-border);
+  background:
+    linear-gradient(
+      180deg,
+      var(--manuscript-chip-bg),
+      color-mix(in srgb, var(--manuscript-surface) 68%, transparent)
+    );
+}
+
+.docs-archive-manuscript .theme-doc-breadcrumbs .breadcrumbs__link:hover,
+.docs-archive-manuscript .theme-doc-breadcrumbs .breadcrumbs__item--active .breadcrumbs__link,
+.docs-archive-manuscript .theme-doc-breadcrumbs .breadcrumbs__item--active .breadcrumbs__link:hover {
+  color: var(--manuscript-chip-text);
+  background: var(--manuscript-chip-bg);
+}
+
+.docs-archive-manuscript .theme-doc-breadcrumbs {
+  width: min(var(--luda-doc-max-width), 100%);
+  max-width: var(--luda-doc-max-width);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.docs-archive-manuscript .theme-doc-breadcrumbs .breadcrumbs {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.docs-archive-manuscript .theme-doc-breadcrumbs .breadcrumbs__item:first-child {
+  margin-left: 0;
+}
+
+.docs-archive-manuscript .theme-doc-breadcrumbs .breadcrumbs__item:first-child .breadcrumbs__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 1.1rem;
+  min-width: 1.1rem;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.docs-archive-manuscript .theme-doc-breadcrumbs .breadcrumbs__item:first-child .breadcrumbs__link svg {
+  flex: 0 0 1.1rem;
+  transform: translateX(-0.02rem);
 }
 
 /* ========================================
@@ -1873,33 +1985,74 @@
 
 .docs-archive-manuscript .pagination-nav__link {
   min-height:
-    74px;
+    96px;
 
   padding:
-    0.72rem
-    0.95rem;
+    1rem
+    clamp(1.35rem, 3vw, 2rem);
 
   border:
     1px solid var(--manuscript-border);
 
+  border-radius:
+    0;
+
   background:
-    color-mix(in srgb, var(--manuscript-surface) 86%, transparent);
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--manuscript-surface) 86%, transparent),
+      color-mix(in srgb, var(--manuscript-panel) 72%, transparent)
+    );
 
   box-shadow:
     var(--manuscript-glow);
 
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
   transition:
     border-color 160ms ease,
-    transform 160ms ease,
     background 160ms ease;
 }
 
 .docs-archive-manuscript .pagination-nav__link:hover {
-  transform:
-    translateY(-2px);
-
   border-color:
-    color-mix(in srgb, var(--manuscript-accent) 48%, var(--manuscript-border));
+    color-mix(in srgb, var(--manuscript-accent) 38%, var(--manuscript-border));
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--manuscript-surface) 92%, transparent),
+      color-mix(in srgb, var(--manuscript-panel) 78%, transparent)
+    );
+}
+
+.docs-archive-manuscript .pagination-nav__link--next {
+  align-items:
+    flex-end;
+
+  text-align:
+    right;
+}
+
+.docs-archive-manuscript .pagination-nav__link--prev {
+  align-items:
+    flex-start;
+
+  text-align:
+    left;
+}
+
+.docs-archive-manuscript .pagination-nav__link--prev .pagination-nav__label::before,
+.docs-archive-manuscript .pagination-nav__link--next .pagination-nav__label::after {
+  content:
+    none;
 }
 
 .docs-archive-manuscript .pagination-nav__sublabel {
@@ -1910,7 +2063,16 @@
     0.72rem;
 
   letter-spacing:
-    0.06em;
+    0.12em;
+
+  line-height:
+    1;
+
+  margin:
+    0 0 0.48rem;
+
+  opacity:
+    0.72;
 
   text-transform:
     uppercase;
@@ -1927,7 +2089,13 @@
     700;
 
   line-height:
-    1.35;
+    1.38;
+
+  max-width:
+    28ch;
+
+  margin:
+    0;
 }
 
 /* ========================================
@@ -2402,8 +2570,8 @@
 ======================================== */
 @media (max-width: 1180px) {
   .docs-archive-manuscript {
-    --luda-doc-max-width: 1040px;
-    --luda-doc-readable-width: 900px;
+    --luda-doc-max-width: 1060px;
+    --luda-doc-readable-width: 920px;
   }
 
   .docs-manuscript-top-layout {

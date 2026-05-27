@@ -1,0 +1,8 @@
+{
+  "label": "TroubleShooting",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Streaming Platform 운영 중 발생한 이슈, 원인 분석, 대응 기록을 정리합니다."
+  }
+}

@@ -20,18 +20,74 @@ import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
-function useArchiveCategoryTheme() {
+function useCategoryManuscriptTheme(theme) {
   useEffect(() => {
     if (typeof document === 'undefined') {
       return undefined;
     }
 
-    document.documentElement.dataset.manuscriptTheme = 'archive';
+    document.documentElement.dataset.manuscriptTheme = theme;
 
     return () => {
       delete document.documentElement.dataset.manuscriptTheme;
     };
-  }, []);
+  }, [theme]);
+}
+
+function normalizeThemeText(value) {
+  return String(value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9가-힣/_ -]/g, '');
+}
+
+function inferArchiveThemeFromText(value) {
+  const text = normalizeThemeText(value);
+
+  if (/jumpingbattle|jumping-battle|jumping battle/.test(text)) {
+    return 'jumpingbattle';
+  }
+
+  if (/ludarota|luda rota/.test(text)) {
+    return 'ludarota';
+  }
+
+  if (/workspace|ide|blueprint/.test(text)) {
+    return 'workspace';
+  }
+
+  if (/devwiki|dev wiki|wiki|technical|기술/.test(text)) {
+    return 'devwiki';
+  }
+
+  if (/archive|planning|기획/.test(text)) {
+    return 'archive';
+  }
+
+  return 'archive';
+}
+
+function getCategoryTheme(categoryGeneratedIndex, category) {
+  const searchableText = [
+    categoryGeneratedIndex.title,
+    categoryGeneratedIndex.description,
+    categoryGeneratedIndex.slug,
+    categoryGeneratedIndex.permalink,
+    category?.label,
+  ].join(' ');
+
+  return inferArchiveThemeFromText(searchableText);
+}
+
+function getItemTheme(item) {
+  return inferArchiveThemeFromText(
+    [
+      item.label,
+      item.docId,
+      item.href,
+      item.description,
+    ].join(' '),
+  );
 }
 
 function getItemHref(item) {
@@ -100,13 +156,14 @@ function IndexEntry({item}) {
   const isCategory = item.type === 'category';
   const childItems = getChildItems(item);
   const description = getDescription(item, doc, isCategory);
+  const itemTheme = getItemTheme(item);
 
   if (!href) {
     return null;
   }
 
   return (
-    <li className={styles.indexItem}>
+    <li className={styles.indexItem} data-index-item-theme={itemTheme}>
       <Link className={styles.indexLink} href={href}>
         <Heading as="h2" className={styles.indexTitle}>
           {item.label}
@@ -152,6 +209,7 @@ function DocCategoryGeneratedIndexPageMetadata({categoryGeneratedIndex}) {
 
 function DocCategoryGeneratedIndexPageContent({categoryGeneratedIndex}) {
   const category = useCurrentSidebarCategory();
+  const categoryTheme = getCategoryTheme(categoryGeneratedIndex, category);
   const pageDescription = textLooksBroken(categoryGeneratedIndex.description)
     ? getFallbackDescription(
         {label: categoryGeneratedIndex.title},
@@ -159,13 +217,13 @@ function DocCategoryGeneratedIndexPageContent({categoryGeneratedIndex}) {
       )
     : categoryGeneratedIndex.description;
 
-  useArchiveCategoryTheme();
+  useCategoryManuscriptTheme(categoryTheme);
 
   return (
     <HtmlClassNameProvider className="docs-archive-manuscript docs-category-manuscript-html">
       <div
         className={styles.generatedIndexPage}
-        data-manuscript-theme="archive">
+        data-manuscript-theme={categoryTheme}>
         <DocVersionBanner />
         <DocBreadcrumbs />
         <DocVersionBadge />
