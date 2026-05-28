@@ -1,0 +1,51 @@
+{
+  "fake": {
+    "key": "fake",
+    "project": "Fake",
+    "root": "docs",
+    "sourcePath": "static/code/Fake/docs",
+    "basePath": "/code/Fake/docs",
+    "files": [
+      {
+        "id": "AdminLifecyclePolicy",
+        "title": "AdminLifecyclePolicy.md",
+        "description": "매장 폐점 기능 추가 과정에서, 해당 매장의 관리자 계정을 어떻게 처리할 것인지 고민이 발생하였다. 초기에는: 관리자 계정 삭제 temp 계정 상태 전환 방식을 고려하였다. --- 관리자 이력 및 로그 데이터 손실 재오픈 시 계정 복구 불가능 운영 데이터 단절 --- 기존 temp 상태는: 초기 비밀번호 변경 유도 를 의미하고 있었다. 하지만 폐점 상태까지 함께 표현하기 시작하면: TEMP ≠ INACTIVE 상태 의미가 혼재되기 시작하였다. --- 관리자 계정을 삭제하지 않고: ACTIVE / INACTIVE 상태를 분리하여 운영하기로 결정하였다. 폐점은 “데이터 삭제”가 아니라: 운영 중단 상태 로 정의하였다. --- AdminStatus enum 추가 폐점 시 관리자 자동 비활성화 인증 단계에서 상태 검증 추가 재오픈 시 관리자 상태 복구 가능하도록 설계 --- 관리자 이력 보존 가능 운영 정책 의미 분리 상태 기반 인증 구조 완성 재오픈 대응 가능 운영 Lifecycle 확장 가능 --- 이번 작업은 단순 기능 구현보다: 운영 상태를 데이터 모델로 어떻게 표현할 것인가 에 가까운 문제였다. 특히: 상태 의미 분리 데이터 보존 인증 정책 연동 운영 Lifecycle 을 함께 고려하면서, 운영 중심 관리자 구조를 설계할 수 있었다.",
+        "tags": [],
+        "type": "markdown",
+        "extension": "md",
+        "html": "<h1>AdminLifecyclePolicy.md</h1>\n<h2>📌 문제</h2>\n<p>매장 폐점 기능 추가 과정에서,\r\n해당 매장의 관리자 계정을 어떻게 처리할 것인지 고민이 발생하였다.</p>\n<p>초기에는:</p>\n<ul>\n<li>관리자 계정 삭제</li>\n<li>temp 계정 상태 전환</li>\n</ul>\n<p>방식을 고려하였다.</p>\n<hr>\n<h2>⚠ 문제점</h2>\n<h3>계정 삭제</h3>\n<ul>\n<li>관리자 이력 및 로그 데이터 손실</li>\n<li>재오픈 시 계정 복구 불가능</li>\n<li>운영 데이터 단절</li>\n</ul>\n<hr>\n<h3>temp 상태 재활용</h3>\n<p>기존 temp 상태는:</p>\n<p>초기 비밀번호 변경 유도</p>\n<p>를 의미하고 있었다.</p>\n<p>하지만 폐점 상태까지 함께 표현하기 시작하면:</p>\n<p>TEMP ≠ INACTIVE</p>\n<p>상태 의미가 혼재되기 시작하였다.</p>\n<hr>\n<h1>🎯 결정</h1>\n<p>관리자 계정을 삭제하지 않고:</p>\n<p>ACTIVE / INACTIVE</p>\n<p>상태를 분리하여 운영하기로 결정하였다.</p>\n<p>폐점은 “데이터 삭제”가 아니라:</p>\n<p>운영 중단 상태</p>\n<p>로 정의하였다.</p>\n<hr>\n<h1>🛠 적용</h1>\n<ul>\n<li><code>AdminStatus</code> enum 추가</li>\n<li>폐점 시 관리자 자동 비활성화</li>\n<li>인증 단계에서 상태 검증 추가</li>\n<li>재오픈 시 관리자 상태 복구 가능하도록 설계</li>\n</ul>\n<hr>\n<h1>📦 결과</h1>\n<ul>\n<li>관리자 이력 보존 가능</li>\n<li>운영 정책 의미 분리</li>\n<li>상태 기반 인증 구조 완성</li>\n<li>재오픈 대응 가능</li>\n<li>운영 Lifecycle 확장 가능</li>\n</ul>\n<hr>\n<h1>💡 회고</h1>\n<p>이번 작업은 단순 기능 구현보다:</p>\n<p>운영 상태를 데이터 모델로 어떻게 표현할 것인가</p>\n<p>에 가까운 문제였다.</p>\n<p>특히:</p>\n<ul>\n<li>상태 의미 분리</li>\n<li>데이터 보존</li>\n<li>인증 정책 연동</li>\n<li>운영 Lifecycle</li>\n</ul>\n<p>을 함께 고려하면서,\r\n운영 중심 관리자 구조를 설계할 수 있었다.</p>",
+        "path": "AdminLifecyclePolicy.md",
+        "publicPath": "/code/Fake/docs/AdminLifecyclePolicy.md",
+        "directory": []
+      },
+      {
+        "id": "Tile",
+        "title": "Tile.md",
+        "description": "초기 구조에서는 센서 입력, RGB 출력, 점수 상태 등을 각각 개별 장비 기준으로 관리하려 했다. 하지만 점핑배틀의 실제 게임 흐름은 단순 장비 제어보다, \"특정 위치의 상태가 어떻게 변하는가\"에 더 가까웠다. 즉 게임의 핵심은: 어떤 블록이 SAFE 상태인지 어떤 블록이 SCORE 상태인지 어떤 블록이 눌렸는지 현재 어떤 상태를 화면과 LED에 반영해야 하는지 를 지속적으로 관리하는 것이었다. 이 과정에서 장비 중심 구조보다, 게임 상태 자체를 하나의 단위로 관리하는 방식이 더 적합하다고 판단했다. --- 초기에는: SENSOR RGB SCORE PRESS 등을 각각 별개의 상태로 관리하려 했다. 하지만 실제 구현에서는 다음과 같은 문제가 발생했다. LED 출력과 게임 판정 로직이 분리됨 상태 변경 시 여러 장비 로직을 동시에 수정해야 함 SAFE / UNSAFE 상태와 점수 상태가 서로 다른 위치에서 관리됨 장비 수가 늘어날수록 상태 동기화 복잡도가 증가 게임 룰 변경 시 전체 구조 영향 범위가 커짐 특히 점핑배틀은 \"안전 영역이 계속 바뀌는 구조\"이기 때문에, 개별 장비 기준 접근은 상태 흐름을 관리하기 어려웠다. --- 이후 게임의 최소 단위를 장비(Device)가 아닌 Tile로 재정의했다. 각 Tile은: SAFE UNSAFE SCORE PRESSED(구현미완) BLINK 등의 상태를 포함하는 구조로 변경했다. 예시: ```text bit 0 = SAFE bit 1 = UNSAFE bit 2 = SCORE bit 3 = PRESSED bit 4 = BLINK",
+        "tags": [],
+        "type": "markdown",
+        "extension": "md",
+        "html": "<h1>Tile.md</h1>\n<h2>도입 배경</h2>\n<p>초기 구조에서는 센서 입력, RGB 출력, 점수 상태 등을 각각 개별 장비 기준으로 관리하려 했다.</p>\n<p>하지만 점핑배틀의 실제 게임 흐름은 단순 장비 제어보다,\r\n\"특정 위치의 상태가 어떻게 변하는가\"에 더 가까웠다.</p>\n<p>즉 게임의 핵심은:</p>\n<ul>\n<li>어떤 블록이 SAFE 상태인지</li>\n<li>어떤 블록이 SCORE 상태인지</li>\n<li>어떤 블록이 눌렸는지</li>\n<li>현재 어떤 상태를 화면과 LED에 반영해야 하는지</li>\n</ul>\n<p>를 지속적으로 관리하는 것이었다.</p>\n<p>이 과정에서 장비 중심 구조보다,\r\n게임 상태 자체를 하나의 단위로 관리하는 방식이 더 적합하다고 판단했다.</p>\n<hr>\n<h2>기존 구조의 문제점</h2>\n<h3>장비 단위 상태 관리의 한계</h3>\n<p>초기에는:</p>\n<ul>\n<li>SENSOR</li>\n<li>RGB</li>\n<li>SCORE</li>\n<li>PRESS</li>\n</ul>\n<p>등을 각각 별개의 상태로 관리하려 했다.</p>\n<p>하지만 실제 구현에서는 다음과 같은 문제가 발생했다.</p>\n<ul>\n<li>LED 출력과 게임 판정 로직이 분리됨</li>\n<li>상태 변경 시 여러 장비 로직을 동시에 수정해야 함</li>\n<li>SAFE / UNSAFE 상태와 점수 상태가 서로 다른 위치에서 관리됨</li>\n<li>장비 수가 늘어날수록 상태 동기화 복잡도가 증가</li>\n<li>게임 룰 변경 시 전체 구조 영향 범위가 커짐</li>\n</ul>\n<p>특히 점핑배틀은\r\n\"안전 영역이 계속 바뀌는 구조\"이기 때문에,\r\n개별 장비 기준 접근은 상태 흐름을 관리하기 어려웠다.</p>\n<hr>\n<h2>Tile 기반 구조로의 전환</h2>\n<h3>상태 중심 블록 관리</h3>\n<p>이후 게임의 최소 단위를 장비(Device)가 아닌 Tile로 재정의했다.</p>\n<p>각 Tile은:</p>\n<ul>\n<li>SAFE</li>\n<li>UNSAFE</li>\n<li>SCORE</li>\n<li>PRESSED(구현미완)</li>\n<li>BLINK</li>\n</ul>\n<p>등의 상태를 포함하는 구조로 변경했다.</p>\n<p>예시:</p>\n<pre><code class=\"language-text\">bit 0 = SAFE\r\nbit 1 = UNSAFE\r\nbit 2 = SCORE\r\nbit 3 = PRESSED\r\nbit 4 = BLINK\n</code></pre>",
+        "path": "Tile.md",
+        "publicPath": "/code/Fake/docs/Tile.md",
+        "directory": []
+      }
+    ],
+    "tree": [
+      {
+        "id": "AdminLifecyclePolicy",
+        "type": "file",
+        "title": "AdminLifecyclePolicy.md",
+        "path": "AdminLifecyclePolicy.md",
+        "extension": "md"
+      },
+      {
+        "id": "Tile",
+        "type": "file",
+        "title": "Tile.md",
+        "path": "Tile.md",
+        "extension": "md"
+      }
+    ]
+  }
+}

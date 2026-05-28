@@ -1,8 +1,30 @@
 import MiniSearch from 'minisearch';
 import records from '../generated/search-docs.json';
 
-const searchableRecords =
-  uniqueRecordsById(records);
+const searchableRecords = uniqueRecordsById(records);
+
+const CONTENT_INDEX_LIMIT = 900;
+
+const TAG_ALIASES = {
+  realtime: ['real-time', 'real time', '실시간'],
+  ranking: ['rank', 'leaderboard', '랭킹', '순위'],
+  sse: ['server sent events', 'server-sent-events', 'eventsource'],
+  jwt: ['json web token', 'access token', 'refresh token'],
+  webrtc: ['web rtc', 'rtc'],
+  aws: ['amazon web services'],
+  'signed-url': ['signed url', 'presigned url', 'pre-signed-url'],
+};
+
+const SYNONYM_MAP = {
+  실시간랭킹: ['실시간 랭킹', 'realtime ranking', 'real-time ranking', 'leaderboard'],
+  실시간: ['realtime', 'real-time'],
+  랭킹: ['ranking', 'leaderboard', 'rank'],
+  스트리밍: ['streaming'],
+  관리자: ['admin'],
+  인증: ['auth', 'authentication', 'jwt'],
+  캐시: ['cache', 'caching'],
+  배포: ['deploy', 'deployment', 'ci cd', 'ci/cd'],
+};
 
 export const SEARCH_CATEGORIES = [
   'DEV WIKI',
@@ -10,230 +32,143 @@ export const SEARCH_CATEGORIES = [
 ];
 
 export const SEARCH_FILTERS = [
-  {
-    id: 'all',
-    label: 'ALL',
-    mode: 'all',
-  },
-
-  {
-    id: 'titles',
-    label: 'TITLES',
-    mode: 'title',
-  },
-
-  {
-    id: 'content',
-    label: 'CONTENT',
-    mode: 'content',
-  },
-
-  {
-    id: 'dev-wiki',
-    label: 'DEV WIKI',
-    mode: 'category',
-    category: 'DEV WIKI',
-  },
-
-  {
-    id: 'archive',
-    label: 'ARCHIVE',
-    mode: 'category',
-    category: 'ARCHIVE',
-  },
+  { id: 'all', label: 'ALL', mode: 'all' },
+  { id: 'titles', label: 'TITLES', mode: 'title' },
+  { id: 'content', label: 'CONTENT', mode: 'content' },
+  { id: 'dev-wiki', label: 'DEV WIKI', mode: 'category', category: 'DEV WIKI' },
+  { id: 'archive', label: 'ARCHIVE', mode: 'category', category: 'ARCHIVE' },
 ];
 
 const index = new MiniSearch({
-  fields: [
-    'title',
-    'content',
-    'description',
-    'tagsText',
-    'compactText',
-  ],
+fields: [
+  'title',
+  'titleCompact',
+  'tagsText',
+  'categoryText',
+  'description',
+],
 
   storeFields: [
     'id',
     'title',
     'description',
-    'content',
     'category',
+    'categoryPath',
     'path',
     'tags',
   ],
 
-  searchOptions: {
-    boost: {
-      title: 4,
-      description: 2,
-      content: 1,
-      compactText: 3,
-    },
-
-    combineWith: 'OR',
-
-    fuzzy: 0.15,
-
-    prefix: true,
+searchOptions: {
+  boost: {
+    title: 30,
+    titleCompact: 24,
+    tagsText: 22,
+    categoryText: 14,
+    description: 5,
   },
+  combineWith: 'AND',
+  fuzzy: false,
+  prefix: termPrefix,
+},
 
   tokenize,
 });
 
 index.addAll(
   searchableRecords.map((record) => {
+    const tags =
+      expandTags(record.tags || []);
 
-    const searchableText = `
-      ${record.title || ''}
-      ${record.description || ''}
-      ${record.content || ''}
-      ${(record.tags || []).join(' ')}
-    `;
+    const categoryText = [
+      record.category,
+      record.categoryPath,
+      record.source,
+      record.slug,
+      record.id,
+    ].filter(Boolean).join(' ');
 
     return {
       ...record,
-
-      tagsText:
-        (record.tags || []).join(' '),
-
-      compactText:
-        normalizeCompact(searchableText),
+      titleCompact: normalizeCompact(record.title),
+      tagsText: tags.join(' '),
+      categoryText,
+      contentPreview: String(record.content || '').slice(0, CONTENT_INDEX_LIMIT),
     };
   })
 );
 
-export function runArchiveSearch(
-  query,
-  filterId = 'all'
-) {
+export function runArchiveSearch(query, filterId = 'all') {
+  const preparedQuery =
+    prepareQuery(query);
 
-  const normalizedQuery =
-    normalize(query);
-
-  const compactQuery =
-    normalizeCompact(query);
-
-  if (!normalizedQuery) {
-
+  if (!preparedQuery.normalized) {
     return {
       results: [],
       relatedQueries: [],
+      correctedQuery: '',
     };
   }
 
   const filter =
     getFilter(filterId);
 
-  const miniResults =
-    index.search(normalizedQuery);
-
-  const compactMiniResults =
-    compactQuery !== normalizedQuery
-      ? index.search(compactQuery)
-      : [];
+const miniResults = index.search(preparedQuery.normalized, {
+  combineWith: preparedQuery.tokens.length > 1 ? 'AND' : 'OR',
+});
 
   const fallbackResults =
     searchableRecords
       .map((record) => ({
         ...record,
-
-        score: scoreRecord(
-          record,
-          normalizedQuery,
-          compactQuery
-        ),
+        score: scoreRecord(record, preparedQuery),
       }))
-      .filter(
-        (record) =>
-          record.score > 0
-      );
+      .filter((record) => record.score > 0);
 
   const results =
-    mergeResults(
-      [
-        ...miniResults,
-        ...compactMiniResults,
-      ],
-      fallbackResults
-    )
+    mergeResults(miniResults, fallbackResults)
       .filter((record) =>
-        matchesFilter(
-          record,
-          normalizedQuery,
-          compactQuery,
-          filter
-        )
+        matchesFilter(record, preparedQuery, filter)
       )
-      .map((record) => ({
-        ...record,
-
-        snippet:
-          createSnippet(
-            record,
-            normalizedQuery,
-            compactQuery,
-            filter
-          ),
-      }))
-      .sort(
-        (a, b) =>
-          b.score - a.score ||
-          a.title.localeCompare(
-            b.title
-          )
+      .map((record) =>
+        decorateResult(record, preparedQuery, filter)
       )
+      .sort(sortResults)
       .slice(0, 60);
 
   const relatedQueries =
-    extractRelatedQueries(
-      results,
-      normalizedQuery,
-      compactQuery
-    );
+    extractRelatedQueries(results, preparedQuery);
 
   return {
     results,
     relatedQueries,
+    correctedQuery: preparedQuery.corrected,
   };
 }
 
-export function groupResultsByCategory(
-  results
-) {
-
+export function groupResultsByCategory(results) {
   return SEARCH_CATEGORIES
     .map((category) => ({
       category,
-
       results:
-        results.filter(
-          (result) =>
-            result.category === category
+        results.filter((result) =>
+          result.category === category
         ),
     }))
-    .filter(
-      (group) =>
-        group.results.length > 0
-    );
+    .filter((group) => group.results.length > 0);
 }
 
 export function getFilter(filterId) {
-
   return (
-    SEARCH_FILTERS.find(
-      (filter) =>
-        filter.id === filterId
+    SEARCH_FILTERS.find((filter) =>
+      filter.id === filterId
     ) || SEARCH_FILTERS[0]
   );
 }
 
-function uniqueRecordsById(records) {
+function uniqueRecordsById(sourceRecords) {
+  const uniqueRecords = new Map();
 
-  const uniqueRecords =
-    new Map();
-
-  records.forEach((record) => {
-
+  sourceRecords.forEach((record) => {
     if (!record?.id) {
       return;
     }
@@ -244,57 +179,65 @@ function uniqueRecordsById(records) {
   return [...uniqueRecords.values()];
 }
 
-function tokenize(text) {
+function prepareQuery(query) {
+  const normalized =
+    normalize(query);
 
+  const corrected =
+    normalizeKnownCompound(normalized);
+
+  const expandedQueries =
+    expandQuery(corrected);
+
+  const tokens =
+    unique(expandedQueries.flatMap(tokenize))
+      .filter((token) => token.length > 1);
+
+  const compact =
+    normalizeCompact(corrected);
+
+  const variants =
+    unique([
+      corrected,
+      compact,
+      ...expandedQueries,
+      ...tokens,
+    ].filter(Boolean));
+
+  return {
+    raw: query,
+    normalized: corrected,
+    corrected,
+    compact,
+    variants,
+    tokens,
+  };
+}
+
+function tokenize(text) {
   const source =
-    normalize(text);
+    splitStructuredText(text);
 
   const compactSource =
-    normalizeCompact(text);
+    normalizeCompact(source);
 
   const rawTokens =
-    source.match(
-      /[a-z0-9+#.]+|[가-힣]+/g
-    ) || [];
+    source.match(/[a-z0-9+#.]+|[가-힣]+/g) || [];
 
   const tokens =
     new Set(rawTokens);
 
-  if (compactSource) {
+  if (compactSource && compactSource.length <= 48) {
     tokens.add(compactSource);
   }
 
   rawTokens.forEach((token) => {
-
-    if (token.length >= 2) {
-
-      tokens.add(
-        token.replace(/\s+/g, '')
-      );
-    }
+    splitKnownCompound(token)
+      .forEach((part) => tokens.add(part));
 
     if (/^[가-힣]+$/.test(token)) {
-
-      for (
-        let size = 1;
-        size <= Math.min(3, token.length);
-        size += 1
-      ) {
-
-        for (
-          let index = 0;
-          index <= token.length - size;
-          index += 1
-        ) {
-
-          tokens.add(
-            token.slice(
-              index,
-              index + size
-            )
-          );
-        }
-      }
+      koreanNgrams(token)
+        .forEach((part) => tokens.add(part));
     }
   });
 
@@ -302,7 +245,6 @@ function tokenize(text) {
 }
 
 function normalize(value) {
-
   return String(value || '')
     .toLowerCase()
     .normalize('NFKC')
@@ -310,47 +252,192 @@ function normalize(value) {
 }
 
 function normalizeCompact(value) {
-
   return normalize(value)
-    .replace(/\s+/g, '');
+    .replace(/[\s/_-]+/g, '');
 }
 
-function mergeResults(
-  primary,
-  fallback
-) {
+function splitStructuredText(value) {
+  return String(value || '')
+    .normalize('NFKC')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/([a-z])([0-9])/gi, '$1 $2')
+    .replace(/([0-9])([a-z])/gi, '$1 $2')
+    .replace(/[-_/]+/g, ' ')
+    .replace(/([가-힣])([a-z0-9])/gi, '$1 $2')
+    .replace(/([a-z0-9])([가-힣])/gi, '$1 $2')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
-  const merged =
-    new Map();
+function normalizeKnownCompound(value) {
+  let output =
+    splitStructuredText(value);
 
-  [...primary, ...fallback]
-    .forEach((record) => {
+  Object.keys(SYNONYM_MAP)
+    .sort((first, second) => second.length - first.length)
+    .forEach((compound) => {
+      const spaced =
+        splitKnownCompound(compound).join(' ');
 
-      const previous =
-        merged.get(record.id);
-
-      const score =
-        (previous?.score || 0) +
-        (record.score || 1);
-
-      merged.set(record.id, {
-        ...previous,
-        ...record,
-        score,
-      });
+      output =
+        output.replaceAll(compound, spaced);
     });
 
-  return [...merged.values()];
+  return output.replace(/\s+/g, ' ').trim();
 }
 
-function scoreRecord(
-  record,
-  query,
-  compactQuery
-) {
+function splitKnownCompound(token) {
+  const compact =
+    normalizeCompact(token);
 
+  if (compact === '실시간랭킹') {
+    return ['실시간', '랭킹'];
+  }
+
+  return [token];
+}
+
+function koreanNgrams(token) {
+  if (token.length <= 2) {
+    return [token];
+  }
+
+  const grams = [];
+  const maxSize = Math.min(4, token.length);
+
+  for (let size = 2; size <= maxSize; size += 1) {
+    for (let index = 0; index <= token.length - size; index += 1) {
+      grams.push(token.slice(index, index + size));
+    }
+  }
+
+  return grams;
+}
+
+function expandQuery(query) {
+  const base =
+    normalizeKnownCompound(query);
+
+  const tokens =
+    splitStructuredText(base).split(/\s+/).filter(Boolean);
+
+  const expanded =
+    new Set([base, normalizeCompact(base), ...tokens]);
+
+  [base, normalizeCompact(base), ...tokens]
+    .forEach((term) => {
+      (SYNONYM_MAP[term] || [])
+        .forEach((synonym) => expanded.add(synonym));
+    });
+
+  return [...expanded];
+}
+
+function expandTags(tags) {
+  const expanded =
+    new Set();
+
+  tags.forEach((tag) => {
+    const normalized =
+      splitStructuredText(normalize(tag));
+
+    expanded.add(normalized);
+    expanded.add(normalizeCompact(normalized));
+
+    (TAG_ALIASES[normalized] || [])
+      .forEach((alias) => expanded.add(alias));
+  });
+
+  return [...expanded];
+}
+
+function termFuzzy(term) {
+  if (/^[가-힣]+$/.test(term)) {
+    return false;
+  }
+
+  return term.length >= 5 ? 0.12 : false;
+}
+
+function scoreRecord(record, query) {
+  const haystack =
+    buildRecordHaystack(record);
+
+  const titleScore =
+    scoreField(haystack.title, haystack.compactTitle, query, {
+      exact: 130,
+      includes: 72,
+      prefix: 46,
+      token: 15,
+    });
+
+  const tagScore =
+    scoreField(haystack.tags, haystack.compactTags, query, {
+      exact: 84,
+      includes: 42,
+      prefix: 32,
+      token: 12,
+    });
+
+  const categoryScore =
+    scoreField(haystack.category, haystack.compactCategory, query, {
+      exact: 52,
+      includes: 28,
+      prefix: 20,
+      token: 8,
+    });
+
+  const descriptionScore =
+    scoreField(haystack.description, haystack.compactDescription, query, {
+      exact: 34,
+      includes: 18,
+      prefix: 11,
+      token: 5,
+    });
+
+  const contentScore =
+    Math.min(
+      10,
+      scoreField(haystack.content, haystack.compactContent, query, {
+        exact: 8,
+        includes: 5,
+        prefix: 2,
+        token: 0.7,
+      })
+    );
+
+  const intentBonus =
+    computeIntentBonus(haystack, query);
+
+  const lengthPenalty =
+    computeLengthPenalty(record);
+
+  return (
+    titleScore +
+    tagScore +
+    categoryScore +
+    descriptionScore +
+    contentScore +
+    intentBonus
+  ) * lengthPenalty;
+}
+
+function buildRecordHaystack(record) {
   const title =
     normalize(record.title);
+
+  const tags =
+    expandTags(record.tags || []).join(' ');
+
+  const category =
+    normalize([
+      record.category,
+      record.categoryPath,
+      record.source,
+      record.slug,
+      record.id,
+    ].filter(Boolean).join(' '));
 
   const description =
     normalize(record.description);
@@ -358,322 +445,266 @@ function scoreRecord(
   const content =
     normalize(record.content);
 
-  const compactTitle =
-    normalizeCompact(record.title);
+  return {
+    title,
+    tags,
+    category,
+    description,
+    content,
+    compactTitle: normalizeCompact(title),
+    compactTags: normalizeCompact(tags),
+    compactCategory: normalizeCompact(category),
+    compactDescription: normalizeCompact(description),
+    compactContent: normalizeCompact(content),
+  };
+}
 
-  const compactDescription =
-    normalizeCompact(
-      record.description
-    );
-
-  const compactContent =
-    normalizeCompact(
-      record.content
-    );
+function scoreField(field, compactField, query, weights) {
+  if (!field && !compactField) {
+    return 0;
+  }
 
   let score = 0;
+  const compactQuery =
+    query.compact;
 
-  if (title.includes(query)) {
-    score += 20;
-  }
-
-  if (description.includes(query)) {
-    score += 8;
-  }
-
-  if (content.includes(query)) {
-    score += 4;
-  }
-
-  if (compactQuery) {
-
-    if (
-      compactTitle.includes(
-        compactQuery
-      )
-    ) {
-      score += 18;
+  if (field === query.normalized || compactField === compactQuery) {
+    score += weights.exact;
+  } else {
+    if (field.includes(query.normalized) || compactField.includes(compactQuery)) {
+      score += weights.includes;
     }
 
-    if (
-      compactDescription.includes(
-        compactQuery
-      )
-    ) {
-      score += 7;
-    }
-
-    if (
-      compactContent.includes(
-        compactQuery
-      )
-    ) {
-      score += 3;
+    if (field.startsWith(query.normalized) || compactField.startsWith(compactQuery)) {
+      score += weights.prefix;
     }
   }
 
-  tokenize(query)
-    .forEach((token) => {
-
-      if (token.length < 2) {
-        return;
-      }
-
-      if (
-        title.includes(token) ||
-        compactTitle.includes(token)
-      ) {
-        score += 4;
-      }
-
-      if (
-        description.includes(token) ||
-        compactDescription.includes(token)
-      ) {
-        score += 2;
-      }
-
-      if (
-        content.includes(token) ||
-        compactContent.includes(token)
-      ) {
-        score += 1;
-      }
-    });
+  query.tokens.forEach((token) => {
+    if (field.includes(token) || compactField.includes(token)) {
+      score += weights.token;
+    }
+  });
 
   return score;
 }
 
-function matchesFilter(
-  record,
-  query,
-  compactQuery,
-  filter
-) {
+function computeIntentBonus(haystack, query) {
+  const strongText = [
+    haystack.title,
+    haystack.tags,
+    haystack.category,
+    haystack.description,
+  ].join(' ');
 
-  if (filter.mode === 'category') {
+  const strongCompact =
+    normalizeCompact(strongText);
 
-    return (
-      record.category ===
-      filter.category
-    );
+  const matchedTokenCount =
+    query.tokens.filter((token) =>
+      strongText.includes(token) || strongCompact.includes(token)
+    ).length;
+
+  if (query.tokens.length <= 1) {
+    return matchedTokenCount > 0 ? 8 : 0;
   }
 
-  if (filter.mode === 'title') {
+  return matchedTokenCount === query.tokens.length
+    ? 34
+    : matchedTokenCount * 6;
+}
 
+function computeLengthPenalty(record) {
+  const length =
+    String(record.content || '').length;
+
+  if (length <= 1200) {
+    return 1;
+  }
+
+  return Math.max(0.78, 1 - Math.log10(length / 1200) * 0.12);
+}
+
+function mergeResults(primary, fallback) {
+  const merged =
+    new Map();
+
+  [...primary, ...fallback].forEach((record) => {
+    const previous =
+      merged.get(record.id);
+
+    const miniScore =
+      primary.includes(record)
+        ? (record.score || 1) * 0.18
+        : 0;
+
+    const score =
+      Math.max(previous?.score || 0, record.score || 0) + miniScore;
+
+    merged.set(record.id, {
+      ...previous,
+      ...record,
+      score,
+    });
+  });
+
+  return [...merged.values()];
+}
+
+function matchesFilter(record, query, filter) {
+  if (filter.mode === 'category') {
+    return record.category === filter.category;
+  }
+
+  const haystack =
+    buildRecordHaystack(record);
+
+  if (filter.mode === 'title') {
     return (
-      normalize(record.title)
-        .includes(query)
-      ||
-      normalizeCompact(record.title)
-        .includes(compactQuery)
+      haystack.title.includes(query.normalized) ||
+      haystack.compactTitle.includes(query.compact) ||
+      query.tokens.some((token) => haystack.title.includes(token))
     );
   }
 
   if (filter.mode === 'content') {
-
-    const content = `
-      ${record.description}
-      ${record.content}
-    `;
-
     return (
-      normalize(content)
-        .includes(query)
-      ||
-      normalizeCompact(content)
-        .includes(compactQuery)
+      haystack.description.includes(query.normalized) ||
+      haystack.content.includes(query.normalized) ||
+      haystack.compactDescription.includes(query.compact) ||
+      haystack.compactContent.includes(query.compact)
     );
   }
 
   return true;
 }
 
-function createSnippet(
-  record,
-  query,
-  compactQuery,
-  filter
-) {
+function decorateResult(record, query, filter) {
+  const tags =
+    record.tags || [];
 
-  const target =
-    filter.mode === 'title'
-      ? (
-        record.description ||
-        record.content ||
-        record.title
-      )
-      : `
-          ${record.description || ''}
-          ${record.content || ''}
-        `;
+  const summary =
+    createSummary(record, query, filter);
 
+  return {
+    ...record,
+    tags,
+    summary,
+    snippet: summary,
+    matchLabel: createMatchLabel(record, query),
+  };
+}
+
+function createSummary(record, query, filter) {
+  if (record.description) {
+    return record.description;
+  }
+
+  if (filter.mode !== 'content') {
+    return record.categoryPath || record.path;
+  }
+
+  return createContentSnippet(record, query);
+}
+
+function createContentSnippet(record, query) {
   const text =
-    String(
-      target || record.title
-    )
+    String(record.content || record.description || record.title || '')
       .replace(/\s+/g, ' ')
       .trim();
 
   const lowerText =
     normalize(text);
 
-  const terms = [
-    query,
-    compactQuery,
-
-    ...tokenize(query)
-      .filter(
-        (token) =>
-          token.length > 1
-      ),
-  ];
-
   const hitIndex =
-    terms.reduce(
-      (found, term) => {
-
+    [query.normalized, query.compact, ...query.tokens]
+      .reduce((found, term) => {
         if (found >= 0) {
           return found;
         }
 
         return lowerText.indexOf(term);
-
-      },
-      -1
-    );
-
-  const compactHitIndex =
-    hitIndex >= 0
-      ? hitIndex
-      : findCompactHitIndex(
-          lowerText,
-          compactQuery
-        );
+      }, -1);
 
   const start =
-    Math.max(
-      0,
-      compactHitIndex - 52
-    );
+    Math.max(0, hitIndex - 42);
 
   const end =
-    Math.min(
-      text.length,
-      start + 170
-    );
+    Math.min(text.length, start + 150);
 
-  const prefix =
-    start > 0
-      ? '...'
-      : '';
-
-  const suffix =
-    end < text.length
-      ? '...'
-      : '';
-
-  return `
-    ${prefix}
-    ${text.slice(start, end)}
-    ${suffix}
-  `.trim();
+  return `${start > 0 ? '...' : ''}${text.slice(start, end)}${end < text.length ? '...' : ''}`;
 }
 
-function extractRelatedQueries(
-  results,
-  query,
-  compactQuery
-) {
+function createMatchLabel(record, query) {
+  const haystack =
+    buildRecordHaystack(record);
 
+  if (haystack.title === query.normalized || haystack.compactTitle === query.compact) {
+    return 'TITLE EXACT';
+  }
+
+  if (haystack.title.includes(query.normalized) || haystack.compactTitle.includes(query.compact)) {
+    return 'TITLE';
+  }
+
+  if (haystack.tags.includes(query.normalized) || haystack.compactTags.includes(query.compact)) {
+    return 'TAG';
+  }
+
+  if (haystack.category.includes(query.normalized) || haystack.compactCategory.includes(query.compact)) {
+    return 'CATEGORY';
+  }
+
+  if (haystack.description.includes(query.normalized) || haystack.compactDescription.includes(query.compact)) {
+    return 'DESCRIPTION';
+  }
+
+  return 'CONTENT';
+}
+
+function sortResults(first, second) {
+  return (
+    second.score - first.score ||
+    scoreCategoryOrder(first) - scoreCategoryOrder(second) ||
+    first.title.localeCompare(second.title)
+  );
+}
+
+function scoreCategoryOrder(record) {
+  return SEARCH_CATEGORIES.indexOf(record.category);
+}
+
+function extractRelatedQueries(results, query) {
   const tokenScores =
     new Map();
 
   results.forEach((record) => {
+    const text = [
+      record.title,
+      record.categoryPath,
+      ...(record.tags || []),
+      record.description,
+    ].filter(Boolean).join(' ');
 
-    const text = `
-      ${record.title || ''}
-      ${record.description || ''}
-      ${record.content || ''}
-      ${(record.tags || []).join(' ')}
-    `;
+    tokenize(text).forEach((token) => {
+      if (token.length < 2 || query.tokens.includes(token)) {
+        return;
+      }
 
-    tokenize(text)
-      .forEach((token) => {
+      if (token.includes(query.normalized) || token.includes(query.compact)) {
+        return;
+      }
 
-        if (
-          token.length < 2
-        ) {
-          return;
-        }
-
-        if (
-          token === query ||
-          token === compactQuery
-        ) {
-          return;
-        }
-
-        if (
-          token.includes(query) ||
-          token.includes(compactQuery)
-        ) {
-          return;
-        }
-
-        const prev =
-          tokenScores.get(token) || 0;
-
-        tokenScores.set(
-          token,
-          prev + 1
-        );
-      });
+      tokenScores.set(token, (tokenScores.get(token) || 0) + 1);
+    });
   });
 
   return [...tokenScores.entries()]
-    .sort(
-      (a, b) =>
-        b[1] - a[1]
-    )
+    .sort((a, b) => b[1] - a[1])
     .slice(0, 12)
     .map(([token]) => token);
 }
 
-function findCompactHitIndex(
-  text,
-  compactQuery
-) {
-
-  if (!compactQuery) {
-    return -1;
-  }
-
-  const compactChars = [];
-
-  const compactIndexToTextIndex = [];
-
-  [...text].forEach(
-    (char, index) => {
-
-      if (/\s/.test(char)) {
-        return;
-      }
-
-      compactIndexToTextIndex.push(index);
-
-      compactChars.push(char);
-    }
-  );
-
-  const compactIndex =
-    compactChars
-      .join('')
-      .indexOf(compactQuery);
-
-  return compactIndex >= 0
-    ? compactIndexToTextIndex[
-        compactIndex
-      ]
-    : -1;
+function unique(values) {
+  return [...new Set(values)];
 }

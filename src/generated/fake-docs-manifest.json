@@ -1,5 +1,8 @@
 {
+  "key": "fake",
+  "project": "Fake",
   "root": "docs",
+  "sourcePath": "static/code/Fake/docs",
   "basePath": "/code/Fake/docs",
   "files": [
     {

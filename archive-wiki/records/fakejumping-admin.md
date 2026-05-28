@@ -4,6 +4,7 @@ description: 관리자 인증, 디바이스 관리, 운영 흐름을 중심으�
 status: developing
 stack: Spring Boot / JWT / MyBatis / Docker / AWS
 workspaceHref: /workspace/fakejumping-admin
+devwikiHref: /docs/luda-log/Planning/DevWIKI
 tags:
   - spring-boot
   - jwt

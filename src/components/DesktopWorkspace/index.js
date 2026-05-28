@@ -1852,10 +1852,6 @@ if (workspaceItem) {
           setPackageItem(workspaceItem);
           setWorkspaceItem(null);
           setMinimizedWorkspaceItem(null);
-
-          if (initialWorkspaceSlug) {
-            history.push('/workspace');
-          }
         }}
         onMinimize={() => {
 

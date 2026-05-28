@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react';
 
-import docsManifest from '../../generated/fake-docs-manifest.json';
+import docsManifests from '../../generated/runtime-docs-manifests.json';
 import baseStyles from './styles.module.css';
 import docsRuntimeStyles from './docsRuntime.module.css';
 import workspaceOverlayStyles from './workspaceOverlay.module.css';
@@ -16,6 +16,34 @@ const styles = {
   ...docsRuntimeStyles,
   ...workspaceOverlayStyles,
 };
+
+const EMPTY_DOCS_MANIFEST = {
+  root: 'docs',
+  sourcePath: '',
+  basePath: '',
+  files: [],
+  tree: [],
+};
+
+function normalizeDocsManifestKey(key) {
+  return String(key || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function getWorkspaceDocsManifest(item) {
+  const key =
+    normalizeDocsManifestKey(
+      item.workspace?.docsManifestKey ||
+      item.docsManifestKey ||
+      item.workspaceSlug ||
+      item.id ||
+      item.title
+    );
+
+  return docsManifests[key] || EMPTY_DOCS_MANIFEST;
+}
 
 function getWorkspaceRuntimeRecords(item) {
 
@@ -202,6 +230,11 @@ export function ArchiveRuntimeApplication({
   onClose,
   onMinimize,
 }) {
+  const docsManifest =
+    useMemo(() =>
+      getWorkspaceDocsManifest(item),
+      [item]
+    );
 
   const bootLines = [
     'Archive record opened',
@@ -241,6 +274,12 @@ export function ArchiveRuntimeApplication({
     };
 
   }, [item.id]);
+
+  useEffect(() => {
+    setSelectedDocPath(
+      getInitialRuntimeDoc(docsManifest)?.path || ''
+    );
+  }, [docsManifest]);
 
   const selectedDoc =
     useMemo(() => {
@@ -385,7 +424,7 @@ export function ArchiveRuntimeApplication({
                   <h2>No documents indexed</h2>
 
                   <p>
-                    Add md or html files under static/code/Fake/docs and refresh the archive.
+                    Add md or html files under {docsManifest.sourcePath || 'static/code/{Project}/docs'} and refresh the archive.
                   </p>
                 </div>
               )

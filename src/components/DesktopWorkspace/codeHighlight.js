@@ -228,6 +228,7 @@ export const runtimeShikiLightTheme = {
   ],
 };
 const supportedLanguages = [
+  'python',
   'css',
   'html',
   'java',
@@ -248,6 +249,7 @@ const languageAliasMap = {
   md: 'markdown',
   ts: 'typescript',
   yml: 'yaml',
+  py: 'python',
 };
 
 let highlighterPromise;

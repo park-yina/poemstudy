@@ -4,6 +4,7 @@ description: 크래프톤 정글 과정에서 진행했던 학습 기록과 프�
 status: Archived
 stack: Spring Boot / Flask / HTML / OS / CS
 order: 99
+devwikiHref: /docs/luda-log/Planning/DevWIKI
 tags:
   - backend
   - 백엔드

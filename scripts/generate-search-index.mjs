@@ -15,7 +15,7 @@ const CATEGORY = {
   ARCHIVE: 'ARCHIVE',
 };
 
-function readMarkdownCollection(directory, category, pathPrefix) {
+function readMarkdownCollection(directory, category, pathPrefix, options = {}) {
   const basePath = path.join(root, directory);
 
   if (!fs.existsSync(basePath)) {
@@ -33,15 +33,23 @@ function readMarkdownCollection(directory, category, pathPrefix) {
     const routeSlug = slug.replace(/\/index$/, '');
     const title = data.title || findFirstHeading(content) || titleFromSlug(slug);
     const description = data.description || firstParagraph(content);
+    const categoryPath = getCategoryPath(basePath, slug);
+    const tags = normalizeTags([
+      ...(data.tags || []),
+      ...categoryPath,
+      ...deriveTagsFromSlug(slug),
+    ]);
 
     return {
-      id: `${category}:${slug}`,
+      id: `${options.idPrefix || category}:${slug}`,
       title,
       description,
       content: cleanContent(content),
-      tags: data.tags || [],
+      tags,
+      categoryPath: categoryPath.join(' / '),
       category,
       source: directory,
+      version: options.version || '',
       path: `${pathPrefix}/${routeSlug}`,
     };
   });
@@ -84,14 +92,18 @@ function cleanContent(content) {
     .trim();
 }
 
-function readRuntimeDocsManifest() {
-  const directory = 'static/code/Fake/docs';
+function readRuntimeDocsManifest(projectDirectory) {
+  const directory = `static/code/${projectDirectory}/docs`;
   const basePath = path.join(root, directory);
+  const key = normalizeManifestKey(projectDirectory);
 
   if (!fs.existsSync(basePath)) {
     return {
+      key,
+      project: projectDirectory,
       root: 'docs',
-      basePath: '/code/Fake/docs',
+      sourcePath: directory,
+      basePath: `/code/${projectDirectory}/docs`,
       files: [],
       tree: [],
     };
@@ -128,7 +140,7 @@ function readRuntimeDocsManifest() {
           extension,
           html: renderMarkdownToHtml(content),
           path: normalizedPath,
-          publicPath: `/code/Fake/docs/${normalizedPath}`,
+          publicPath: `/code/${projectDirectory}/docs/${normalizedPath}`,
           directory: directoryParts,
         };
       }
@@ -141,17 +153,41 @@ function readRuntimeDocsManifest() {
         type: 'html',
         extension,
         path: normalizedPath,
-        publicPath: `/code/Fake/docs/${normalizedPath}`,
+        publicPath: `/code/${projectDirectory}/docs/${normalizedPath}`,
         directory: directoryParts,
       };
     });
 
   return {
+    key,
+    project: projectDirectory,
     root: 'docs',
-    basePath: '/code/Fake/docs',
+    sourcePath: directory,
+    basePath: `/code/${projectDirectory}/docs`,
     files,
     tree: buildRuntimeDocsTree(files),
   };
+}
+
+function readRuntimeDocsManifests() {
+  const basePath = path.join(root, 'static/code');
+
+  if (!fs.existsSync(basePath)) {
+    return {};
+  }
+
+  return fs.readdirSync(basePath, {
+    withFileTypes: true,
+  })
+    .filter((entry) =>
+      entry.isDirectory() &&
+      fs.existsSync(path.join(basePath, entry.name, 'docs'))
+    )
+    .reduce((manifests, entry) => {
+      const manifest = readRuntimeDocsManifest(entry.name);
+      manifests[manifest.key] = manifest;
+      return manifests;
+    }, {});
 }
 
 function renderMarkdownToHtml(content) {
@@ -248,10 +284,16 @@ function readArchiveWikiRecords() {
       const parentSlug = findParentSlug(slug);
       const title = data.title || findFirstHeading(content) || titleFromSlug(slug);
       const description = data.description || firstParagraph(content);
-      const tags = data.tags || [];
+      const categoryPath = getCategoryPath(basePath, fileSlug);
+      const tags = normalizeTags([
+        ...(data.tags || []),
+        ...categoryPath,
+        ...deriveTagsFromSlug(slug),
+      ]);
       const anchor = slug.replace(/[^a-z0-9_-]+/gi, '-');
       const wikiPath = `/archive-wiki?record=${encodeURIComponent(slug)}`;
       const workspacePath = data.workspaceHref || data.href || '';
+      const devwikiPath = data.devwikiHref || '';
 
       return {
         id: `${CATEGORY.ARCHIVE}:${slug}`,
@@ -264,6 +306,7 @@ function readArchiveWikiRecords() {
         stack: data.stack || '',
         order: Number.isFinite(data.order) ? data.order : 0,
         tags,
+        categoryPath: categoryPath.join(' / '),
         category: CATEGORY.ARCHIVE,
         source: directory,
         sourcePath: `${directory}/${fileSlug}.md`,
@@ -271,6 +314,7 @@ function readArchiveWikiRecords() {
         depth: slug.split('/').length,
         anchor,
         wikiPath,
+        devwikiPath,
         workspacePath,
         path: wikiPath,
       };
@@ -280,12 +324,32 @@ function readArchiveWikiRecords() {
 
 const archiveRecords = readArchiveWikiRecords();
 
+const latestVersion = readLatestDocsVersion();
+const latestVersionedDocs = latestVersion
+  ? readMarkdownCollection(
+      `versioned_docs/version-${latestVersion}`,
+      CATEGORY.DEV_WIKI,
+      '/docs',
+      {
+        idPrefix: `${CATEGORY.DEV_WIKI}:${latestVersion}`,
+        version: latestVersion,
+      },
+    )
+  : [];
+
 const docs = [
-  ...readMarkdownCollection('docs', CATEGORY.DEV_WIKI, '/docs'),
+  ...latestVersionedDocs,
+  ...readMarkdownCollection('docs', CATEGORY.DEV_WIKI, '/docs/next', {
+    idPrefix: `${CATEGORY.DEV_WIKI}:next`,
+    version: 'next',
+  }),
   ...archiveRecords,
 ];
 
-const runtimeDocsManifest = readRuntimeDocsManifest();
+const runtimeDocsManifests = readRuntimeDocsManifests();
+const runtimeDocsManifest =
+  runtimeDocsManifests.fake ||
+  readRuntimeDocsManifest('Fake');
 
 writeJsonFile(
   path.join(root, 'src/generated/search-docs.json'),
@@ -302,9 +366,15 @@ writeJsonFile(
   runtimeDocsManifest
 );
 
+writeJsonFile(
+  path.join(root, 'src/generated/runtime-docs-manifests.json'),
+  runtimeDocsManifests
+);
+
 console.log(`archive search index generated: ${docs.length} records`);
 console.log(`archive wiki generated: ${archiveRecords.length} records`);
 console.log(`runtime docs manifest generated: ${runtimeDocsManifest.files.length} records`);
+console.log(`runtime docs projects generated: ${Object.keys(runtimeDocsManifests).length} projects`);
 
 function writeJsonFile(outputPath, data) {
   const temporaryOutputPath = `${outputPath}.tmp`;
@@ -336,4 +406,69 @@ function sortArchiveRecords(first, second) {
     first.order - second.order ||
     first.slug.localeCompare(second.slug)
   );
+}
+
+function readLatestDocsVersion() {
+  const versionsPath = path.join(root, 'versions.json');
+
+  if (!fs.existsSync(versionsPath)) {
+    return '';
+  }
+
+  const versions = JSON.parse(fs.readFileSync(versionsPath, 'utf-8'));
+
+  return Array.isArray(versions) ? versions[0] : '';
+}
+
+function getCategoryPath(basePath, slug) {
+  const parts = slug.split('/').slice(0, -1);
+  const labels = [];
+
+  parts.forEach((_, index) => {
+    const directory = path.join(basePath, ...parts.slice(0, index + 1));
+    const categoryPath = path.join(directory, '_category_.json');
+
+    if (!fs.existsSync(categoryPath)) {
+      labels.push(parts[index]);
+      return;
+    }
+
+    try {
+      const category = JSON.parse(fs.readFileSync(categoryPath, 'utf-8'));
+      labels.push(category.label || parts[index]);
+
+      if (category.link?.description) {
+        labels.push(category.link.description);
+      }
+    } catch {
+      labels.push(parts[index]);
+    }
+  });
+
+  return labels.filter(Boolean);
+}
+
+function deriveTagsFromSlug(slug) {
+  return slug
+    .split(/[\\/]+/)
+    .flatMap((part) => part.split(/[-_\s]+/))
+    .filter(Boolean);
+}
+
+function normalizeTags(tags) {
+  return [...new Set(
+    tags
+      .map((tag) =>
+        String(tag || '')
+          .trim()
+      )
+      .filter(Boolean)
+  )];
+}
+
+function normalizeManifestKey(key) {
+  return String(key || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }

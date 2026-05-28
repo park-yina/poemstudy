@@ -3,6 +3,7 @@ title: shinchun-archive
 description: 현재 상용중인 서비스인 신춘회관을 사용하며 느낀 불편을 토대로 제작한 신춘문예 당선작 아카이빙 사이트입니다.
 status: Deployed
 stack: Flask / AWS Lambda / HTML
+devwikiHref: /docs/luda-log/Planning/DevWIKI
 tags:
   - flask
   - aws-lambda

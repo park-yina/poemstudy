@@ -62,6 +62,9 @@ export default function ArchivePage() {
 
                   <div className={styles.archiveActions}>
                     <Link to={archive.wikiPath}>Archive Wiki</Link>
+                    {archive.devwikiPath && (
+                      <Link to={archive.devwikiPath}>DevWIKI</Link>
+                    )}
                     {archive.workspacePath && (
                       <Link to={archive.workspacePath}>Workspace</Link>
                     )}
