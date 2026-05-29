@@ -10,6 +10,49 @@
 
   <title>developer-profile.html</title>
 
+  <script>
+    (() => {
+      const applyTheme = () => {
+        let theme = null;
+
+        try {
+          theme =
+            window.parent?.document?.documentElement?.dataset?.theme ||
+            null;
+        } catch (error) {
+          theme = null;
+        }
+
+        if (!theme) {
+          theme = window.matchMedia?.('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'dark';
+        }
+
+        document.documentElement.dataset.theme = theme;
+      };
+
+      applyTheme();
+
+      try {
+        const parentRoot =
+          window.parent?.document?.documentElement;
+
+        if (parentRoot) {
+          new MutationObserver(applyTheme)
+            .observe(parentRoot, {
+              attributes: true,
+              attributeFilter: ['data-theme'],
+            });
+        }
+      } catch (error) {
+      }
+
+      window.matchMedia?.('(prefers-color-scheme: light)')
+        .addEventListener?.('change', applyTheme);
+    })();
+  </script>
+
   <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
@@ -38,6 +81,87 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    :root {
+      color-scheme: dark;
+      --runtime-page-bg:
+        radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 28%),
+        #060816;
+      --runtime-document-bg:
+        linear-gradient(180deg, rgba(18,22,36,0.96), rgba(10,12,22,0.98));
+      --runtime-surface: rgba(255,255,255,0.03);
+      --runtime-surface-soft: rgba(255,255,255,0.02);
+      --runtime-border: rgba(255,255,255,0.06);
+      --runtime-text: #f3f4f6;
+      --runtime-heading: #ffffff;
+      --runtime-muted: rgba(255,255,255,0.68);
+      --runtime-soft: rgba(255,255,255,0.48);
+      --runtime-faint: rgba(255,255,255,0.40);
+      --runtime-accent: #60a5fa;
+      --runtime-accent-text: #dbeafe;
+      --runtime-pill-bg: rgba(147,197,253,0.10);
+      --runtime-pill-border: rgba(147,197,253,0.26);
+      --runtime-pill-hover: rgba(147,197,253,0.16);
+      --runtime-scroll-track: rgba(255,255,255,0.06);
+      --runtime-scroll-thumb: rgba(147,197,253,0.44);
+      --runtime-scroll-thumb-hover: rgba(147,197,253,0.62);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme='dark']) {
+        color-scheme: light;
+        --runtime-page-bg:
+          radial-gradient(circle at top right, rgba(14,116,144,0.12), transparent 30%),
+          #eef4fb;
+        --runtime-document-bg:
+          linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,244,251,0.98));
+        --runtime-surface: rgba(255,255,255,0.70);
+        --runtime-surface-soft: rgba(255,255,255,0.58);
+        --runtime-border: rgba(15,23,42,0.10);
+        --runtime-text: #111827;
+        --runtime-heading: #0f172a;
+        --runtime-muted: rgba(15,23,42,0.70);
+        --runtime-soft: rgba(15,23,42,0.54);
+        --runtime-faint: rgba(15,23,42,0.44);
+        --runtime-accent: #2563eb;
+        --runtime-accent-text: #1e3a8a;
+        --runtime-pill-bg: rgba(37,99,235,0.09);
+        --runtime-pill-border: rgba(37,99,235,0.18);
+        --runtime-pill-hover: rgba(37,99,235,0.14);
+        --runtime-scroll-track: rgba(15,23,42,0.08);
+        --runtime-scroll-thumb: rgba(37,99,235,0.34);
+        --runtime-scroll-thumb-hover: rgba(37,99,235,0.50);
+      }
+    }
+
+    :root[data-theme='light'] {
+      color-scheme: light;
+      --runtime-page-bg:
+        radial-gradient(circle at top right, rgba(14,116,144,0.12), transparent 30%),
+        #eef4fb;
+      --runtime-document-bg:
+        linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,244,251,0.98));
+      --runtime-surface: rgba(255,255,255,0.70);
+      --runtime-surface-soft: rgba(255,255,255,0.58);
+      --runtime-border: rgba(15,23,42,0.10);
+      --runtime-text: #111827;
+      --runtime-heading: #0f172a;
+      --runtime-muted: rgba(15,23,42,0.70);
+      --runtime-soft: rgba(15,23,42,0.54);
+      --runtime-faint: rgba(15,23,42,0.44);
+      --runtime-accent: #2563eb;
+      --runtime-accent-text: #1e3a8a;
+      --runtime-pill-bg: rgba(37,99,235,0.09);
+      --runtime-pill-border: rgba(37,99,235,0.18);
+      --runtime-pill-hover: rgba(37,99,235,0.14);
+      --runtime-scroll-track: rgba(15,23,42,0.08);
+      --runtime-scroll-thumb: rgba(37,99,235,0.34);
+      --runtime-scroll-thumb-hover: rgba(37,99,235,0.50);
+    }
+
+    html {
+      overflow-wrap: anywhere;
     }
     html,
 body {
@@ -87,7 +211,7 @@ body {
 
   min-height: 100vh;
 
-  overflow-x: hidden;
+  overflow: hidden;
 }
 .runtimeDocument::-webkit-scrollbar {
 
@@ -133,7 +257,9 @@ body {
     rgba(255,255,255,0.06);
   width: 100%;
 
-  height: 100vh;
+  height: 100dvh;
+
+  max-height: 100vh;
 
   overflow-y: auto;
 
@@ -429,6 +555,12 @@ body {
 
 .skill {
 
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.55rem;
+
   width: auto;
 
   min-width: unset;
@@ -602,6 +734,108 @@ body {
        RESPONSIVE
     ======================================== */
 
+    body {
+      background: var(--runtime-page-bg);
+      color: var(--runtime-text);
+    }
+
+    .runtimeDocument {
+      height: 100dvh;
+      max-height: 100vh;
+      background: var(--runtime-document-bg);
+      color: var(--runtime-text);
+      scrollbar-color:
+        var(--runtime-scroll-thumb)
+        var(--runtime-scroll-track);
+    }
+
+    .runtimeDocument::-webkit-scrollbar-track {
+      background: var(--runtime-scroll-track);
+    }
+
+    .runtimeDocument::-webkit-scrollbar-thumb {
+      background: var(--runtime-scroll-thumb);
+      background-clip: padding-box;
+    }
+
+    .runtimeDocument::-webkit-scrollbar-thumb:hover {
+      background: var(--runtime-scroll-thumb-hover);
+      background-clip: padding-box;
+    }
+
+    .topbar,
+    .metricCard,
+    .panel {
+      border-color: var(--runtime-border);
+      background: var(--runtime-surface);
+    }
+
+    .runtimeBadge,
+    .metricCard h2,
+    .panelTitle {
+      color: var(--runtime-accent);
+    }
+
+    .path,
+    .metricCard span,
+    .experienceDate,
+    .node span,
+    .footer {
+      color: var(--runtime-faint);
+    }
+
+    .heroLeft h1,
+    .experienceHeader h3,
+    .node h4 {
+      color: var(--runtime-heading);
+    }
+
+    .heroLeft p,
+    .experienceItem ul {
+      color: var(--runtime-muted);
+    }
+
+    .experienceItem,
+    .footer {
+      border-color: var(--runtime-border);
+    }
+
+    .skill i {
+      background: var(--runtime-surface-soft);
+      color: var(--runtime-heading);
+    }
+
+    .moreSkillsButton {
+      border-color: var(--runtime-pill-border);
+      background: var(--runtime-pill-bg);
+      color: var(--runtime-accent-text);
+    }
+
+    .moreSkillsButton:hover {
+      background: var(--runtime-pill-hover);
+      border-color: var(--runtime-scroll-thumb-hover);
+    }
+
+    .content,
+    .hero,
+    .grid,
+    .panel,
+    .metricCard,
+    .experienceItem,
+    .skill,
+    .node {
+      min-width: 0;
+    }
+
+    .heroLeft h1 {
+      font-size: clamp(2rem, 7vw, 3.4rem);
+      line-height: 1.12;
+    }
+
+    .metricCard h2 {
+      font-size: clamp(2rem, 5vw, 2.6rem);
+    }
+
     @media (max-width: 1100px) {
 
       .hero {
@@ -622,6 +856,118 @@ body {
       .arrow {
 
         transform: rotate(90deg);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .runtimeDocument {
+        width: 100%;
+      }
+
+      .topbar {
+        height: auto;
+        min-height: 58px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.45rem;
+        padding: 0.9rem 1rem;
+      }
+
+      .runtimeBadge {
+        letter-spacing: 0.1em;
+      }
+
+      .path {
+        font-size: 0.78rem;
+      }
+
+      .content {
+        padding: 1.15rem 0.9rem 3.5rem;
+      }
+
+      .hero {
+        gap: 1.1rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .heroLeft p {
+        font-size: 0.98rem;
+        line-height: 1.62;
+      }
+
+      .heroRight {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+      }
+
+      .metricCard {
+        height: auto;
+        min-height: 104px;
+        border-radius: 16px;
+        padding: 1rem;
+      }
+
+      .panel {
+        border-radius: 16px;
+        padding: 1rem;
+      }
+
+      .experienceHeader {
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .experienceDate {
+        white-space: normal;
+      }
+
+      .skillWrap {
+        gap: 0.55rem;
+      }
+
+      .skill {
+        width: 100%;
+        align-items: center;
+      }
+
+      .architecture {
+        align-items: stretch;
+      }
+
+      .node {
+        max-width: none;
+        width: 100%;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .content {
+        padding: 0.9rem 0.7rem 3rem;
+      }
+
+      .panelTitle,
+      .runtimeBadge {
+        letter-spacing: 0.1em;
+      }
+
+      .panel {
+        padding: 0.86rem;
+      }
+
+      .experienceItem ul {
+        padding-left: 0.92rem;
+        line-height: 1.72;
+        font-size: 0.92rem;
+      }
+
+      .moreSkillsButton {
+        padding: 0.72rem 0.8rem;
       }
     }
 

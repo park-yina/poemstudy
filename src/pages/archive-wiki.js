@@ -57,6 +57,9 @@ export default function ArchiveWikiPage() {
 
             <div className={styles.actions}>
               <Link to="/archive">Archive Index</Link>
+              {selectedRecord.devwikiPath && (
+                <Link to={selectedRecord.devwikiPath}>DevWIKI</Link>
+              )}
               {selectedRecord.workspacePath && (
                 <Link to={selectedRecord.workspacePath}>Workspace</Link>
               )}

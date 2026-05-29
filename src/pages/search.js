@@ -62,12 +62,13 @@ export default function SearchPage() {
     >
       <main className={styles.page}>
         <section className={styles.shell}>
-          <span className={styles.kicker}>아카이브 검색 시스템</span>
-            <h1>블로그화 된 콘텐츠만 검색됩니다.</h1>
-          <p>
-  DEV WIKI ·  ARCHIVE 기록이 색인되었습니다.
-  LudaRota는 봉인 상태를 유지합니다.
-          </p>
+          <header className={styles.header}>
+            <span className={styles.kicker}>ARCHIVE SEARCH</span>
+            <h1>기술 기록을 키워드와 의도로 탐색합니다.</h1>
+            <p>
+              DEV WIKI와 ARCHIVE 기록을 title, tag, category 중심으로 검색합니다.
+            </p>
+          </header>
 
           <div className={styles.console}>
             <div className={styles.consoleBar}>
@@ -87,7 +88,7 @@ export default function SearchPage() {
                 autoFocus
                 autoComplete="off"
                 spellCheck="false"
-                placeholder="sse, polling, jwt, cache..."
+                placeholder="실시간랭킹, sse, jwt, signed-url..."
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter') {
@@ -110,6 +111,14 @@ export default function SearchPage() {
                 </button>
               ))}
             </div>
+
+            {initialQuery.trim() &&
+              searchState.correctedQuery &&
+              searchState.correctedQuery !== initialQuery.trim().toLowerCase() && (
+                <div className={styles.normalizedQuery}>
+                  normalized: <span>{searchState.correctedQuery}</span>
+                </div>
+              )}
           </div>
 
           <section className={styles.results} aria-live="polite">
@@ -139,10 +148,29 @@ export default function SearchPage() {
                       to={result.path}
                       className={styles.result}
                     >
-                      <span className={styles.category}>{result.category}</span>
-                      <h2>{result.title}</h2>
-                      <p>"{result.snippet}"</p>
-                      <span className={styles.path}>{result.path}</span>
+                      <div className={styles.resultAside}>
+                        <span className={styles.category}>{result.category}</span>
+                        <span className={styles.matchType}>{result.matchLabel}</span>
+                      </div>
+
+                      <div className={styles.resultBody}>
+                        <h2>{result.title}</h2>
+
+                        <div className={styles.metaLine}>
+                          {result.categoryPath || result.path}
+                        </div>
+
+                        {result.tags?.length > 0 && (
+                          <div className={styles.tags}>
+                            {result.tags.slice(0, 8).map((tag) => (
+                              <span key={tag}>{tag}</span>
+                            ))}
+                          </div>
+                        )}
+
+                        <p>{result.summary}</p>
+                        <span className={styles.path}>{result.path}</span>
+                      </div>
                     </Link>
                   ))}
                 </div>

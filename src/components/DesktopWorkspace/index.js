@@ -56,6 +56,24 @@ const AWS_STATUS_REGION =
 const AWS_STATUS_RSS_URL =
   'https://status.aws.amazon.com/rss/ec2-us-east-1.rss';
 
+function getWorkspaceSlug(item) {
+
+  if (!item?.workspace) {
+    return null;
+  }
+
+  const slugSource =
+    item.workspaceSlug ||
+    item.title ||
+    item.id;
+
+  return slugSource
+    ?.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '') ||
+    null;
+}
+
 function parseAwsStatusRss(xmlText) {
 
   const document =
@@ -386,6 +404,12 @@ const [taskbarMenuState, setTaskbarMenuState] =
   const workspaceBodyRef =
     useRef(null);
 
+  const desktopAreaRef =
+    useRef(null);
+
+  const [showDesktopScrollHint, setShowDesktopScrollHint] =
+    useState(false);
+
   const [weather, setWeather] =
     useState('⚙ weather runtime loading...');
     const [currentFolder, setCurrentFolder] =
@@ -426,6 +450,66 @@ const [awsStatus, setAwsStatus] =
       'pending',
   });
 
+  const updateDesktopScrollHint =
+    useCallback(() => {
+      const desktopArea =
+        desktopAreaRef.current;
+
+      if (!desktopArea || packageItem) {
+        setShowDesktopScrollHint(false);
+        return;
+      }
+
+      const maxScrollTop =
+        desktopArea.scrollHeight -
+        desktopArea.clientHeight;
+
+      setShowDesktopScrollHint(
+        maxScrollTop > 8 &&
+        desktopArea.scrollTop < maxScrollTop - 8
+      );
+    }, [packageItem]);
+
+  useEffect(() => {
+    const desktopArea =
+      desktopAreaRef.current;
+
+    if (!desktopArea) {
+      return undefined;
+    }
+
+    const animationFrame =
+      window.requestAnimationFrame(
+        updateDesktopScrollHint
+      );
+
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(updateDesktopScrollHint);
+
+    resizeObserver?.observe(desktopArea);
+
+    window.addEventListener(
+      'resize',
+      updateDesktopScrollHint
+    );
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      resizeObserver?.disconnect();
+      window.removeEventListener(
+        'resize',
+        updateDesktopScrollHint
+      );
+    };
+  }, [
+    currentFolder,
+    packageItem,
+    previewWidth,
+    updateDesktopScrollHint,
+  ]);
+
   useEffect(() => {
     if (!initialWorkspaceSlug) {
       return;
@@ -440,15 +524,12 @@ const [awsStatus, setAwsStatus] =
           return false;
         }
 
-        const titleSlug =
-          item.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-|-$/g, '');
+        const workspaceSlug =
+          getWorkspaceSlug(item);
 
         return (
           item.id === normalizedSlug ||
-          titleSlug === normalizedSlug
+          workspaceSlug === normalizedSlug
         );
       });
 
@@ -887,10 +968,22 @@ useEffect(() => {
 }, [activeItem]);
 const openItem = (item) => {
 
-  if (
-    item.workspace ||
-    item.type === 'FOLDER'
-  ) {
+  if (item.workspace) {
+    const workspaceSlug =
+      getWorkspaceSlug(item);
+
+    if (workspaceSlug) {
+      history.push(`/workspace/${workspaceSlug}`);
+    }
+
+    setPackageItem(item);
+    setArchiveItem(null);
+    setRuntimeCmdItem(null);
+
+    return;
+  }
+
+  if (item.type === 'FOLDER') {
     setPackageItem(item);
     setArchiveItem(null);
     setRuntimeCmdItem(null);
@@ -943,9 +1036,15 @@ const handleLaunch =
       return;
     }
 
-   if (
+    if (
   item.workspace
 ) {
+      const workspaceSlug =
+        getWorkspaceSlug(item);
+
+      if (workspaceSlug) {
+        history.push(`/workspace/${workspaceSlug}`);
+      }
 
       setPackageItem(item);
       setArchiveItem(null);
@@ -1753,10 +1852,6 @@ if (workspaceItem) {
           setPackageItem(workspaceItem);
           setWorkspaceItem(null);
           setMinimizedWorkspaceItem(null);
-
-          if (initialWorkspaceSlug) {
-            history.push('/workspace');
-          }
         }}
         onMinimize={() => {
 
@@ -1841,6 +1936,11 @@ return (
         {/* DESKTOP */}
 
 <div className={styles.desktopArea}>
+  <div
+    ref={desktopAreaRef}
+    className={styles.desktopScrollViewport}
+    onScroll={updateDesktopScrollHint}
+  >
 
 {
   runtimeCmdItem && (
@@ -2099,6 +2199,20 @@ return (
 
   )
 }
+
+  </div>
+
+  {
+    showDesktopScrollHint && (
+      <div
+        className={styles.desktopScrollHint}
+        aria-hidden="true"
+      >
+        <i className="fa-solid fa-chevron-down" />
+        <span />
+      </div>
+    )
+  }
 
 </div>
 {/* PREVIEW */}

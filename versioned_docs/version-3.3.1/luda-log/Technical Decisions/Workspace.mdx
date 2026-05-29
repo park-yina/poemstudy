@@ -1,0 +1,385 @@
+---
+sidebar_position: 4
+archiveManuscript: true
+manuscriptTheme: workspace
+---
+
+import {
+  DocsRef,
+  DocsFootnotes,
+  DocsDocumentProvider,
+  DocsNavigationRail,
+} from '@site/src/components/DocsManuscript';
+
+<DocsDocumentProvider>
+
+<div className="docs-manuscript">
+
+# Workspace 기술 의사 결정
+
+> Workspace는 프로젝트 결과물이 아니라,
+> 구조와 구현 과정 자체를 탐색 대상으로 만들기 위해 설계되었다.
+
+---
+
+<div className="docs-manuscript-top-layout">
+
+  <div className="docs-summary">
+
+  ## 목차
+
+1. [Explorer 형태를 선택한 이유](#explorer-structure)
+2. [미리보기 시스템 설계](#preview-system)
+3. [작업표시줄 및 창 상호작용](#taskbar-interaction)
+4. [코드 미리보기 구조](#code-preview-runtime)
+5. [문서와 코드를 분리하지 않은 이유](#runtime-docs)
+6. [탐색 피로도를 줄이기 위한 구조](#navigation-fatigue)
+
+  </div>
+
+  <aside
+    className="docs-infobox"
+    aria-label="Archive document metadata"
+  >
+
+  <div className="docs-infobox__title">
+    Workspace 기술 의사 결정
+  </div>
+
+| 항목 | 내용 |
+| --- | --- |
+| 분류 | Interactive Archiving System |
+| 주요 기술 | React / UI 설계 / CSS |
+| 목적 | 프로젝트 기록을 단순 문서가 아닌 탐색 경험으로 전환 |
+| 특징 | Workspace 구조 / 탐색기 기반 UI / 아카이브 탐색 |
+
+  </aside>
+
+</div>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="explorer-structure">
+
+  <span className="wiki-fold-title">
+    Explorer 형태를 선택한 이유
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+탐색기 구조를 채택한 가장 큰 이유는,
+사용자가 이미 익숙하게 학습한 인터페이스를 활용하기 위함이었다.
+
+일반적인 아카이브 및 위키 구조에서는
+문서 깊이가 깊어질수록
+탐색 자체에 대한 피로도가 증가하기 쉽다.
+
+반면 파일 탐색기 형태의 구조는:
+
+- 폴더 이동
+- 파일 선택
+- 미리보기 열람
+
+등의 흐름이 이미 익숙한 방식으로 받아들여지기 때문에,
+상대적으로 구조 깊이에 대한 거부감이 낮다고 판단하였다.
+
+또한 Workspace는
+홈의 CMD 화면과 하나의 흐름처럼 이어지도록 설계되었기 때문에,
+단순 문서 목록보다
+`실제 작업 공간을 탐색하는 감각`
+에 가까운 방향을 목표로 하였다.
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="preview-system">
+
+  <span className="wiki-fold-title">
+    미리보기 시스템 설계
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+미리보기 시스템은 크게:
+
+- HTML/PDF 기반 문서 열람
+- 프로젝트 내부 파일 탐색
+
+구조로 나누어 설계되었다.
+
+특히 프로젝트 내부 미리보기에서는
+문서 뷰어와 코드 뷰어의 흐름이 자연스럽게 이어지도록 구성하는 데에 집중하였다.
+
+해당 시스템에서 가장 중요하게 고려한 부분은,
+실제 PDF를 그대로 출력하는 것이 아니라
+HTML 기반 구조를 적극 활용하는 것이었다.
+
+<DocsRef>
+
+대표적인 예시로는:
+
+- 미리보기 패널 크기 조절
+- hover 기반 민감 정보 처리
+- 문서별 맞춤 상호작용
+
+등이 존재한다.
+
+</DocsRef>
+
+또한 단순 파일 열람보다,
+사용자가 실제 작업 공간 내부에서 기록을 확인하는 감각을 유지하는 데에 초점을 두었다.
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="taskbar-interaction">
+
+  <span className="wiki-fold-title">
+    작업표시줄 및 창 상호작용
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+작업표시줄 구조는
+Workspace 시스템 중 가장 마지막에 추가된 기능 중 하나였다.
+
+초기 구조에서는
+창 닫기만 지원하였으나,
+실제 운영체제와 유사한 흐름을 만들기 위하여
+최소화 및 작업표시줄 복원 구조를 추가하였다.
+
+특히:
+
+- 최소화된 창
+- 현재 활성 창
+- 작업표시줄 복원
+
+등을 통해
+실제 작업 공간처럼 느껴지는 탐색 흐름을 구성하고자 하였다.
+
+<DocsRef>
+
+초기에는 글래스모피즘 기반 UI 역시 적극 반영하려 하였다.
+
+하지만:
+
+- 공채 일정 이전 우선 완성 필요
+- 기능적 완성도 우선
+- 심미적 요소의 우선순위 하락
+
+등의 이유로,
+현재 구조에서는 일부만 제한적으로 적용하였다.
+
+</DocsRef>
+
+또한 작업표시줄 제거 및 창 흐름 일부는
+Windows11의 구조에서 영향을 받았다.
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="code-preview-runtime">
+
+  <span className="wiki-fold-title">
+    코드 미리보기 구조
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+코드 미리보기 영역은,
+개발자에게 가장 익숙한 코드 열람 방식인 IDE 구조에서 영향을 받았다.
+
+초기 테스트 단계에서는
+문법 강조 및 코드 테마 역시 직접 구현하였다.
+
+하지만 이후:
+
+- 언어별 토큰 처리
+- 문법 강조 최적화
+- 코드 테마 유지
+
+등의 이유로,
+최종적으로는 `shiki` 기반 구조를 채택하였다.
+
+<DocsRef>
+
+만약 실제 IDE 복원이 목적이었다면,
+Monaco 기반 구조를 사용하는 방향 역시 가능하였다.
+
+하지만 Workspace의 핵심 목표는
+코드를 직접 수정하는 편집기가 아니라,
+IDE처럼 보이는 코드 열람 구조를 만드는 것이었다.
+
+따라서:
+
+- 상대적으로 가벼운 구조
+- 테마 수정 용이
+- 정적 코드 출력에 적합
+
+하다는 이유로 shiki를 선택하였다.
+
+</DocsRef>
+
+또한 줄 번호 및 하단 상태 영역 역시 함께 구성하여,
+단순 코드 블록보다 실제 작업 환경처럼 느껴지도록 설계하였다.
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="runtime-docs">
+
+  <span className="wiki-fold-title">
+    문서와 코드를 분리하지 않은 이유
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+하나의 프로젝트 내부에서
+문서와 코드를 함께 탐색할 수 있도록 만든 이유에는 여러 배경이 존재하였다.
+
+첫 번째 이유는,
+하나의 프로젝트를 하나의 폴더처럼 인식시키기 위함이었다.
+
+이를 통해 사용자가:
+
+- 구조 문서
+- 운영 기록
+- 코드 미리보기
+- 구현 관련 기록
+
+등을 하나의 흐름 안에서 자연스럽게 탐색할 수 있도록 구성하였다.
+
+<DocsRef>
+
+초기에는 브랜치 중심 탐색 역시 고려하였다.
+
+실제로 개발 과정에서는
+완성 이전까지 main 병합을 지양하고,
+stage 및 dev 브랜치를 중심으로 관리하였다.
+
+하지만 실제 트래픽 분석 결과,
+대부분의 사용자가 main 브랜치 위주로 탐색하고 있었다.
+
+따라서 브랜치 단위 분리보다,
+문서의 성격과 탐색 흐름 중심으로 구조를 재구성하였다.
+
+</DocsRef>
+
+초기 구조에서는
+IDE 내부에서 문서까지 함께 출력하는 방식 역시 실험하였다.
+
+하지만 해당 방식은 결과적으로:
+
+- `/docs` 구조와 차별성이 약했고
+- 코드 뷰와 문서 뷰의 목적이 달랐으며
+- 각 화면별 최적화 방향 역시 달랐다.
+
+결과적으로 현재 구조에서는
+문서 뷰어와 코드 뷰어를 분리하여,
+각 목적에 맞는 탐색 흐름을 유지하도록 설계하였다.
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="navigation-fatigue">
+
+  <span className="wiki-fold-title">
+    탐색 피로도를 줄이기 위한 구조
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+Workspace에서는
+탐색 깊이 자체를 제거하기보다,
+사용자가 자연스럽게 받아들일 수 있는 구조로 변환하는 방향에 집중하였다.
+
+특히:
+
+- 탐색기 기반 구조
+- 작업 공간 형태의 사이드바
+- 문서 성격에 따른 화면 분리
+- 코드 및 문서 미리보기 분리
+
+등을 통해
+깊은 탐색 구조 자체가 피로보다 흥미로 이어질 수 있도록 설계하였다.
+
+또한 문서의 성격에 따라:
+
+- 코드 열람
+- 문서 뷰어
+- 아카이브 미리보기
+
+등의 흐름을 분리하여,
+사용자가 현재 어떤 종류의 기록을 탐색 중인지
+직관적으로 인식할 수 있도록 구성하였다.
+
+</div>
+
+</details>
+
+---
+
+<DocsFootnotes />
+
+</div>
+
+<DocsNavigationRail marker="sharp" />
+
+</DocsDocumentProvider>

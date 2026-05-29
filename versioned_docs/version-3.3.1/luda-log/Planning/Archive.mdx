@@ -1,0 +1,124 @@
+﻿---
+sidebar_position: 5
+archiveManuscript: true
+manuscriptTheme: archive
+---
+
+import {
+  DocsRef,
+  DocsFootnotes,
+  DocsDocumentProvider,
+  DocsNavigationRail,
+} from '@site/src/components/DocsManuscript';
+
+<DocsDocumentProvider>
+
+<div className="docs-manuscript">
+
+# Archive
+
+> 프로젝트 구조와 운영 기록을 한눈에 탐색할 수 있도록 구성한 아카이브이다.
+
+---
+
+<div className="docs-manuscript-top-layout">
+
+  <div className="docs-summary">
+
+  ## 목차
+
+  1. [개요](#개요)
+  2. [제작 배경](#제작-배경)
+
+  </div>
+
+  <aside className="docs-infobox" aria-label="Archive document metadata">
+
+  <div className="docs-infobox__title">
+    System Planning
+  </div>
+
+| 항목 | 내용 |
+| --- | --- |
+| 분류 | Portfolio |
+| 주요 기술 | CSS / React |
+| 목적 | 프로젝트 결과물 및 운영 기록 아카이빙 |
+
+  </aside>
+
+</div>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="개요">
+
+  <span className="wiki-fold-title">
+    개요
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+Archive는 다른 시스템과 달리,
+사용자가 한눈에 루다가 진행한 프로젝트들을 정리하여 알아볼 수 있는 데에 의미를 두었다.
+<DocsRef>
+
+따라서 workspace로의 바로 이동 뿐만 아니라, 아카이브 위키를 별도 관리중이다.
+
+</DocsRef>
+
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="제작-배경">
+
+  <span className="wiki-fold-title">
+    제작 배경
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+아카이브는 워크스페이스로의 프로젝트별 이동 뿐만 아니라,
+아카이브 위키를 통하여 최대한 간소화된 프로젝트에 대한 요약본
+
+등을 함께 기록하기 위한 목적도 포함되어 있다.
+
+동시에:
+
+`다른 시스템에서 발생하는 피로도를 줄이고, 최대한 현실적인 이력서나 포트폴리오스럽도록`
+보이게 설계한 유일한 시스템이기도 하다.
+
+</div>
+
+</details>
+---
+<div className="docs-closing-line">
+
+즉 아카이브는 해당 시스템에서 유일하게
+`피로도 감소`와 `전형성`을 테마로 가지고있다.
+</div>
+
+<DocsFootnotes />
+
+<DocsNavigationRail marker="circle" />
+
+</div>
+
+</DocsDocumentProvider>
+

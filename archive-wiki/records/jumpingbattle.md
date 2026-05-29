@@ -3,7 +3,9 @@ title: JumpingBattle
 description: 현재 30개가 넘는 매장에서 상용서비스중인 프로젝트로, 다운로드(jpg/mp3)및 스트리밍 사이트 제작하였습니다.
 status: Deployed
 stack: Python / Firebase / HTML / zappa
+devwikiHref: /docs/category/jumpingbattle
 workspaceHref: /workspace/jumpingbattle
+
 tags:
   - python
   - firebase

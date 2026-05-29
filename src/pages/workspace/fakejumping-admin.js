@@ -1,0 +1,29 @@
+import Layout from '@theme/Layout';
+import {useHistory} from '@docusaurus/router';
+
+import DesktopWorkspace from '../../components/DesktopWorkspace';
+import styles from '../workspace.module.css';
+
+export default function FakejumpingAdminWorkspace() {
+  const history = useHistory();
+
+  return (
+    <Layout
+      title="fakejumping-admin Workspace"
+      description="fakejumping-admin archive folder workspace"
+      noFooter
+      noNavbar
+    >
+      <main className={styles.workspacePage}>
+        <div className={styles.workspaceShell}>
+          <DesktopWorkspace
+            initialWorkspaceSlug="fakejumping-admin"
+            onBoot={() => {
+              history.push('/');
+            }}
+          />
+        </div>
+      </main>
+    </Layout>
+  );
+}

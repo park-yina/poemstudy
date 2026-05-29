@@ -3,6 +3,7 @@ title: ISC컨트롤러 및 AWS-WEBRTC를 통한 카메라 제어
 description: 서울예대 재학시절 알게된 임베디드 개발자와 협업을 통해 진행한 프로젝트입니다.
 status: Deployed
 stack: Flutter / Flask / JS / Node.js
+devwikiHref: /docs/luda-log/Planning/DevWIKI
 tags:
   - flutter
   - flask

@@ -3,6 +3,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import {useColorMode} from '@docusaurus/theme-common';
 
 import {
   getActiveCodeLineIndex,
@@ -120,6 +121,8 @@ export function WorkspaceOverlayView({
   onClose,
   onMinimize,
 }) {
+  const {colorMode} =
+    useColorMode();
 
   const [isMaximized, setIsMaximized] =
     useState(false);
@@ -545,6 +548,7 @@ export function WorkspaceOverlayView({
     useRuntimeCodeTokens(
       activeContent,
       getLanguageFromFile(activeFile),
+      colorMode,
     );
 
   const activeLineIndex =

@@ -14,8 +14,12 @@
       "jwt",
       "mybatis",
       "docker",
-      "aws"
+      "aws",
+      "records",
+      "fakejumping",
+      "admin"
     ],
+    "categoryPath": "records",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/fakejumping-admin.md",
@@ -23,7 +27,8 @@
     "depth": 2,
     "anchor": "records-fakejumping-admin",
     "wikiPath": "/archive-wiki?record=records%2Ffakejumping-admin",
-    "workspacePath": "/workspace/fakejumping",
+    "devwikiPath": "/docs/luda-log/Planning/DevWIKI",
+    "workspacePath": "/workspace/fakejumping-admin",
     "path": "/archive-wiki?record=records%2Ffakejumping-admin"
   },
   {
@@ -49,8 +54,11 @@
       "runtime",
       "mvp",
       "vibe-coding",
-      "collaboration"
+      "collaboration",
+      "records",
+      "Iot"
     ],
+    "categoryPath": "records",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/Iot.md",
@@ -58,6 +66,7 @@
     "depth": 2,
     "anchor": "records-Iot",
     "wikiPath": "/archive-wiki?record=records%2FIot",
+    "devwikiPath": "/docs/luda-log/Planning/DevWIKI",
     "workspacePath": "",
     "path": "/archive-wiki?record=records%2FIot"
   },
@@ -75,8 +84,11 @@
       "python",
       "firebase",
       "realtime",
-      "zappa"
+      "zappa",
+      "records",
+      "jumpingbattle"
     ],
+    "categoryPath": "records",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/jumpingbattle.md",
@@ -84,7 +96,8 @@
     "depth": 2,
     "anchor": "records-jumpingbattle",
     "wikiPath": "/archive-wiki?record=records%2Fjumpingbattle",
-    "workspacePath": "/workspace/jumpingbattle",
+    "devwikiPath": "/docs/category/jumpingbattle",
+    "workspacePath": "",
     "path": "/archive-wiki?record=records%2Fjumpingbattle"
   },
   {
@@ -115,8 +128,11 @@
       "krafton-jungle",
       "크래프톤정글",
       "추상화",
-      "abstraction"
+      "abstraction",
+      "records",
+      "krafton"
     ],
+    "categoryPath": "records / krafton-jungle",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/krafton-jungle/abstraction.md",
@@ -124,6 +140,7 @@
     "depth": 3,
     "anchor": "records-krafton-jungle-abstraction",
     "wikiPath": "/archive-wiki?record=records%2Fkrafton-jungle%2Fabstraction",
+    "devwikiPath": "",
     "workspacePath": "",
     "path": "/archive-wiki?record=records%2Fkrafton-jungle%2Fabstraction"
   },
@@ -153,8 +170,11 @@
       "jungle",
       "정글",
       "krafton-jungle",
-      "크래프톤정글"
+      "크래프톤정글",
+      "records",
+      "krafton"
     ],
+    "categoryPath": "records / krafton-jungle",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/krafton-jungle/memory.md",
@@ -162,6 +182,7 @@
     "depth": 3,
     "anchor": "records-krafton-jungle-memory",
     "wikiPath": "/archive-wiki?record=records%2Fkrafton-jungle%2Fmemory",
+    "devwikiPath": "",
     "workspacePath": "",
     "path": "/archive-wiki?record=records%2Fkrafton-jungle%2Fmemory"
   },
@@ -191,8 +212,12 @@
       "jungle",
       "정글",
       "krafton-jungle",
-      "크래프톤정글"
+      "크래프톤정글",
+      "records",
+      "krafton",
+      "pre"
     ],
+    "categoryPath": "records / krafton-jungle",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/krafton-jungle/pre-jungle.md",
@@ -200,6 +225,7 @@
     "depth": 3,
     "anchor": "records-krafton-jungle-pre-jungle",
     "wikiPath": "/archive-wiki?record=records%2Fkrafton-jungle%2Fpre-jungle",
+    "devwikiPath": "",
     "workspacePath": "",
     "path": "/archive-wiki?record=records%2Fkrafton-jungle%2Fpre-jungle"
   },
@@ -217,8 +243,12 @@
       "flask",
       "aws-lambda",
       "tailwind",
-      "zappa"
+      "zappa",
+      "records",
+      "shinchun",
+      "archive"
     ],
+    "categoryPath": "records",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/shinchun-archive.md",
@@ -226,6 +256,7 @@
     "depth": 2,
     "anchor": "records-shinchun-archive",
     "wikiPath": "/archive-wiki?record=records%2Fshinchun-archive",
+    "devwikiPath": "/docs/luda-log/Planning/DevWIKI",
     "workspacePath": "",
     "path": "/archive-wiki?record=records%2Fshinchun-archive"
   },
@@ -256,8 +287,11 @@
       "jungle",
       "정글",
       "krafton-jungle",
-      "크래프톤정글"
+      "크래프톤정글",
+      "records",
+      "krafton"
     ],
+    "categoryPath": "records / krafton-jungle",
     "category": "ARCHIVE",
     "source": "archive-wiki",
     "sourcePath": "archive-wiki/records/krafton-jungle/index.md",
@@ -265,6 +299,7 @@
     "depth": 2,
     "anchor": "records-krafton-jungle",
     "wikiPath": "/archive-wiki?record=records%2Fkrafton-jungle",
+    "devwikiPath": "/docs/luda-log/Planning/DevWIKI",
     "workspacePath": "",
     "path": "/archive-wiki?record=records%2Fkrafton-jungle"
   }

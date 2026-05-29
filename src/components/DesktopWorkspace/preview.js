@@ -2,6 +2,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import {useColorMode} from '@docusaurus/theme-common';
 
 import styles from './styles.module.css';
 import {
@@ -120,6 +121,8 @@ export function PreviewPanel({
 
   setIsResizing,
 }) {
+  const {colorMode} =
+    useColorMode();
 
   /* =========================================
      EMPTY
@@ -156,6 +159,7 @@ export function PreviewPanel({
     useRuntimeCodeTokens(
       codeContent,
       getLanguageFromFile(activeItem),
+      colorMode,
     );
 
   const activeLineIndex =
@@ -341,7 +345,14 @@ useEffect(() => {
            CONTENT
         ========================================= */}
 
-        <div className={styles.previewContent}>
+        <div
+          className={`${styles.previewContent} ${
+            isPdf ||
+            activeItem.type === 'html'
+              ? styles.previewContentHtml
+              : ''
+          }`}
+        >
 
           {/* =========================================
              INTERNAL DOCUMENT

@@ -1,0 +1,8 @@
+{
+  "label": "Technical Decisions",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Streaming Platform 내부에서 내려진 기술 결정과 구조 선택을 정리합니다."
+  }
+}

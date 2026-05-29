@@ -1,0 +1,108 @@
+---
+sidebar_position: 4
+archiveManuscript: true
+manuscriptTheme: devwiki
+---
+
+import {
+  DocsRef,
+  DocsFootnotes,
+  DocsDocumentProvider,
+  DocsNavigationRail,
+} from '@site/src/components/DocsManuscript';
+
+<DocsDocumentProvider>
+
+<div className="docs-manuscript">
+
+# DevWIKI
+
+> DevWIKI는 프로젝트의 구조 문서, 운영 기록, 의사결정 과정을 하나의 archive manuscript로 정리하기 위한 문서 시스템이다.
+
+---
+
+<div className="docs-manuscript-top-layout">
+
+  <div className="docs-summary">
+
+  ## 목차
+
+  1. [개요](#개요)
+  2. [제작 배경](#제작-배경)
+
+  </div>
+
+  <aside className="docs-infobox" aria-label="DevWIKI document metadata">
+
+  <div className="docs-infobox__title">ARCHIVE FILE</div>
+
+| 항목 | 내용 |
+| --- | --- |
+| 분류 | Docs Manuscript |
+| 대상 | DevWIKI / 구조 문서 / 운영 기록 |
+| 목적 | 문제 해결 과정과 판단 근거 보존 |
+| 특징 | Footnote 기반 보조 설명 / archive viewer |
+
+  </aside>
+
+</div>
+
+---
+
+<details className="wiki-fold" open>
+<summary id="개요"><span className="wiki-fold-title">개요</span></summary>
+
+<div markdown="1">
+
+DevWIKI는 결과 중심 소개보다 운영 과정과 구조적 판단을 기록하는 데 초점을 둔다.
+<DocsRef>따라서 구현과정에서 발생한 트러블 슛팅이나, 인프라적인 사항 외에도 기획문서 정리되어있다.</DocsRef>
+
+</div>
+</details>
+
+---
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="제작-배경">
+
+  <span className="wiki-fold-title">
+    제작 배경
+  </span>
+
+</summary>
+
+<div markdown="1">
+
+DevWIKI는 깃허브 포트폴리오로는 보여주기 어려운, 프로젝트별 문서 정리의 역할을 담당한다.
+
+동시에 깃허브 블로그와의 차별성을 위해:
+
+`사용자가 정말 이 기록을 클릭하게 만들 수 있는가`
+
+라는 고민에서 출발한 구조이기도 하다.
+
+특히 운영 과정에서 발생했던:
+
+- 구조 변경
+- 판단 과정
+- 포기한 기능
+- 예상하지 못했던 문제
+
+등을 단순 기능 소개가 아니라,
+테마를 가진 백과사전을 탐색하듯 읽게 만드는 것을 목표로 하였다.
+
+</div>
+
+</details>
+
+
+<DocsFootnotes />
+<DocsNavigationRail marker="circle" />
+
+</div>
+
+</DocsDocumentProvider>
+

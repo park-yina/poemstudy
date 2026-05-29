@@ -1,5 +1,7 @@
 import { fakeJumpingWorkspace }
 from './fakejumping';
+import { jumpingBattleWorkspace }
+from './jumpingBattle';
 export const extensionMap = {
 
   pdf: {
@@ -93,6 +95,16 @@ location: 'Projects',
 
   workspace:
     fakeJumpingWorkspace,
+},
+{
+  id: 'JumpingBattle',
+location: 'Projects',
+  title: 'JumpingBattle',
+
+  type: 'FOLDER',
+
+  workspace:
+    jumpingBattleWorkspace,
 },
   {
     id: 'philosophy',
