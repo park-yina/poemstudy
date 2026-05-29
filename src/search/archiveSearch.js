@@ -352,6 +352,10 @@ function expandTags(tags) {
   return [...expanded];
 }
 
+function termPrefix(term) {
+  return term.length >= 2;
+}
+
 function termFuzzy(term) {
   if (/^[가-힣]+$/.test(term)) {
     return false;
