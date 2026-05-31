@@ -1,6 +1,7 @@
 import { sseFolder } from './sse';
 import {searchFolder} from './search';
 import {cacheFolder} from './cache';
+import {listenerFolder} from './listener';
 export const jumpingBattleWorkspace = {
   docsManifestKey: 'jumpingbattle',
 
@@ -8,7 +9,7 @@ export const jumpingBattleWorkspace = {
 
     sseFolder,
     cacheFolder,
-    // listenerFolder,
+   listenerFolder,
     // signedUrlFolder,
     searchFolder,
     // bootstrapFolder,

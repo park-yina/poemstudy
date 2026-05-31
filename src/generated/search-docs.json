@@ -206,10 +206,10 @@
     "path": "/docs/JumpingBattle/Streaming Platform/Home"
   },
   {
-    "id": "DEV WIKI:3.3.1:JumpingBattle/Streaming Platform/TroubleShooting/Home",
-    "title": "Streaming Platform TroubleShooting",
-    "description": "Streaming Platform 운영 중 발생한 문제를 기록하기 위한 archive입니다.",
-    "content": "Streaming Platform TroubleShooting Streaming Platform 운영 중 발생한 문제를 기록하기 위한 archive입니다. 아직 세부 이슈 문서로 분리되지 않은 운영 기록은 이곳에서 시작해, 이후 장애 유형이나 원인별 문서로 확장합니다.",
+    "id": "DEV WIKI:3.3.1:JumpingBattle/Streaming Platform/TroubleShooting/Main",
+    "title": "JumpingBattle 스트리밍 플랫폼 트러블 슈팅",
+    "description": "import { DocsRef, DocsFootnotes, DocsDocumentProvider, DocsNavigationRail, } from '@site/src/components/DocsManuscript';",
+    "content": "import { DocsRef, DocsFootnotes, DocsDocumentProvider, DocsNavigationRail, } from '@site/src/components/DocsManuscript'; JumpingBattle 스트리밍 플랫폼 트러블 슈팅 > 실제 서비스는 설계만으로 완성되지 않습니다. > JumpingBattle은 전국 약 30개 매장에서 운영되었던 서비스였으며, 운영 과정에서 발생한 다양한 문제와 그에 대한 대응 과정을 기록하였습니다. --- 목차 1. 개요 --- 개요 트러블 슈팅에서는 기술 의사결정 문서와는 별개로, 실제 운영 과정에서 발생한 문제와 그에 대한 대응 과정을 기록한다. 기술 의사결정이 특정 기술이나 구조를 선택한 이유를 설명하는 문서라면, 트러블 슈팅은 운영 중 발생한 문제를 어떻게 관찰하고 해결하였는지를 정리하기 위한 기록에 가깝다. 여기에는 장애 대응, 성능 개선, 운영 정책 변경, 예상하지 못한 사용자 시나리오 대응 등이 포함된다. 예를 들어 Signed URL 도입 이후 발생할 수 있었던 단시간 내 반복 다운로드 요청, 다운로드 횟수 제한, 대용량 파일 전달 과정에서 발생할 수 있었던 Lambda 환경의 제약, 그리고 보안성과 운영 비용 사이의 균형을 맞추기 위해 검토하였던 다양한 대응 과정 등이 이에 해당한다. 본 문서는 단순히 해결 결과만을 기록하는 것이 아니라, 문제의 원인을 어떻게 추적하였고, 어떤 기준으로 해결 방안을 선택하였는지를 함께 정리하기 위한 위키 카테고리이다.",
     "tags": [
       "JumpingBattle",
       "JumpingBattle 운영 환경을 다운로드/스트리밍 플랫폼과 실시간 랭킹 런타임을 각각 독립된 기록 흐름으로 정리하는 카테고리입니다.",
@@ -219,13 +219,13 @@
       "Streaming Platform 운영 중 발생한 이슈, 원인 분석, 대응 기록을 정리합니다.",
       "Streaming",
       "Platform",
-      "Home"
+      "Main"
     ],
     "categoryPath": "JumpingBattle / JumpingBattle 운영 환경을 다운로드/스트리밍 플랫폼과 실시간 랭킹 런타임을 각각 독립된 기록 흐름으로 정리하는 카테고리입니다. / Making Download/Streaming / jpg/mp3 다운로드 및 스트리밍 제작에 대한 카테고리입니다. / TroubleShooting / Streaming Platform 운영 중 발생한 이슈, 원인 분석, 대응 기록을 정리합니다.",
     "category": "DEV WIKI",
     "source": "versioned_docs/version-3.3.1",
     "version": "3.3.1",
-    "path": "/docs/JumpingBattle/Streaming Platform/TroubleShooting/Home"
+    "path": "/docs/JumpingBattle/Streaming Platform/TroubleShooting/Main"
   },
   {
     "id": "DEV WIKI:3.3.1:JumpingBattle/Streaming Platform/Technical Decisions/Signed-url-access-control",

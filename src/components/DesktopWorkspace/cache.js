@@ -27,24 +27,24 @@ export const cacheFolder = {
         'runtime/cache/WorldrankCacheRouting.py',
     },
 
-    {
-      id: 'lazy-cache-bootstrap.fragment.py',
+  {
+  id: 'on-demand-store-cache.fragment.py',
 
-      title: 'LazyCacheBootstrap.py',
+  title: 'OnDemandStoreCache.py',
 
-      type: 'CODE',
+  type: 'CODE',
 
-      language: 'python',
+  language: 'python',
 
-      previewUrl:
-        '/code/JumpingBattle/cache/lazy-cache-bootstrap.fragment.py',
+  previewUrl:
+    '/code/JumpingBattle/cache/OnDemandStoreCache.py',
 
-      description:
-        '초기 전체 preload 대신 요청 시점에 필요한 rank 데이터를 지연 생성하여 startup 부하를 줄이도록 구성한 lazy cache bootstrap 구조.',
+  description:
+    '전국 랭킹은 초기 캐시와 snapshot listener로 유지하고, 지점별 랭킹은 요청 시점에 cache key 단위로 생성하여 불필요한 Firestore read를 줄이도록 구성한 on-demand store cache 구조.',
 
-      path:
-        'runtime/cache/LazyCacheBootstrap.py',
-    },
+  path:
+    'runtime/cache/OnDemandStoreCache.py',
+},
 
     {
       id: 'versioned-cache-invalidation.fragment.py',
