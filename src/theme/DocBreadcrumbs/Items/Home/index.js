@@ -3,7 +3,7 @@ import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import {translate} from '@docusaurus/Translate';
 import IconHome from '@theme/Icon/Home';
-import styles from '@theme-original/DocBreadcrumbs/Items/Home/styles.module.css';
+import styles from '@docusaurus/theme-classic/lib/theme/DocBreadcrumbs/Items/Home/styles.module.css';
 
 export default function HomeBreadcrumbItem() {
   const homeHref = useBaseUrl('/docs/intro');
