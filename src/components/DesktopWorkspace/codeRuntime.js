@@ -695,7 +695,9 @@ export function WorkspaceOverlayView({
                               : 'fa-folder-open'
                           }`}
                         />
-                        {folder.title}
+                        <span className={styles.treeItemText}>
+                          {folder.title}
+                        </span>
                       </span>
 
                       <i
@@ -741,7 +743,9 @@ export function WorkspaceOverlayView({
                           <i
                             className={getWorkspaceFileIconClass(file)}
                           />
-                          {file.title}
+                          <span className={styles.treeItemText}>
+                            {file.title}
+                          </span>
                         </button>
 
                         );

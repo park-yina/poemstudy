@@ -30,16 +30,6 @@ export default function Sidebar({
     },
 
     {
-      key: 'Archive',
-
-      icon:
-        'fa-box-archive',
-
-      label:
-        'archive',
-    },
-
-    {
       key: 'Runtime',
 
       icon:

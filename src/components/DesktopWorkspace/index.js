@@ -470,6 +470,35 @@ const [awsStatus, setAwsStatus] =
       );
     }, [packageItem]);
 
+  const resetDesktopScroll =
+    useCallback(() => {
+      const desktopArea =
+        desktopAreaRef.current;
+
+      if (!desktopArea) {
+        return;
+      }
+
+      desktopArea.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'auto',
+      });
+    }, []);
+
+  const scheduleDesktopScrollReset =
+    useCallback(() => {
+      resetDesktopScroll();
+
+      window.requestAnimationFrame(() => {
+        resetDesktopScroll();
+        updateDesktopScrollHint();
+      });
+    }, [
+      resetDesktopScroll,
+      updateDesktopScrollHint,
+    ]);
+
   useEffect(() => {
     const desktopArea =
       desktopAreaRef.current;
@@ -508,6 +537,14 @@ const [awsStatus, setAwsStatus] =
     packageItem,
     previewWidth,
     updateDesktopScrollHint,
+  ]);
+
+  useEffect(() => {
+    scheduleDesktopScrollReset();
+  }, [
+    currentFolder,
+    packageItem?.id,
+    scheduleDesktopScrollReset,
   ]);
 
   useEffect(() => {
@@ -1293,6 +1330,7 @@ const minimizeTaskbarItem = () => {
 
 const handleFolderChange = (folder) => {
 
+  resetDesktopScroll();
   setCurrentFolder(folder);
   setPackageItem(null);
   setMenuState(null);
@@ -1992,8 +2030,6 @@ return (
         case 'Runtime':
           return item.location === 'Runtime';
 
-        case 'Archive':
-          return item.location === 'Archive';
 
         case 'Documents':
           return item.location === 'Documents';
@@ -2489,7 +2525,7 @@ return (
         <div className={styles.taskbarRight}>
 
           <span>
-            MEM 68%
+            BUILD 48%
           </span>
 
           <span

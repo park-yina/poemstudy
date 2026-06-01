@@ -521,6 +521,14 @@
 
 .treeFolderName {
 
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    15px;
+
+  column-gap: 0.25rem;
+
   min-height: 20px;
   width: 100%;
 
@@ -540,8 +548,6 @@
 
   font-weight: 650;
 
-  justify-content: space-between;
-
   text-align: left;
 }
 
@@ -560,6 +566,8 @@
   gap: 0;
 
   min-width: 0;
+
+  overflow: hidden;
 }
 
 .treeFolderToggle {
@@ -567,6 +575,19 @@
   flex: 0 0 auto;
 
   opacity: 0.66;
+
+  justify-self: end;
+}
+
+.treeItemText {
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .treeFolderName i,
@@ -588,6 +609,10 @@
 .treeFolderToggle {
 
   margin-right: 0;
+
+  width: 12px;
+
+  font-size: 0.72rem;
 }
 .treeFolderNameVisited,
 .treeFolderNameVisited i:not(.treeFolderToggle) {
@@ -637,6 +662,8 @@
   font-size: 0.68rem;
 
   text-align: left;
+
+  min-width: 0;
 }
 
 .treeFile:hover,

@@ -174,13 +174,17 @@
 
   width: min(1680px, 96vw);
 
+  height:
+    clamp(560px, 74vh, 820px);
+
   display: flex;
 
   flex-direction: column;
 
   min-height: 74vh;
 
-  max-height: 88vh;
+  max-height:
+    calc(100vh - 4.4rem);
 
   margin-top: 2.2rem;
 
@@ -329,6 +333,9 @@
   flex: 1;
 
   min-height: 0;
+
+  overflow:
+    hidden;
 }
 
 /* =========================
@@ -439,6 +446,9 @@
   min-width:
     360px;
 
+  min-height:
+    0;
+
   position:
     relative;
 
@@ -469,6 +479,9 @@
   height:
     100%;
 
+  min-height:
+    0;
+
   box-sizing:
     border-box;
 
@@ -483,6 +496,9 @@
 
   overflow-y:
     auto;
+
+  overflow-anchor:
+    none;
 
   scrollbar-width:
     thin;

@@ -64,6 +64,22 @@ function getInitialRuntimeDoc(manifest) {
   return manifest.files?.[0] || null;
 }
 
+function isSameDirectory(firstDoc, secondDoc) {
+  return (
+    (firstDoc?.directory || []).join('/') ===
+    (secondDoc?.directory || []).join('/')
+  );
+}
+
+function isExternalHref(href) {
+  return /^https?:\/\//i.test(href || '');
+}
+
+function stripMarkdownFrontMatter(content) {
+  return String(content || '')
+    .replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*(?:\r?\n|$)/, '');
+}
+
 function RuntimeDocsTree({
   nodes,
   selectedDoc,
@@ -215,11 +231,6 @@ export function WorkspacePackageView({
             <small>아카이빙.app</small>
           </button>
         </div>
-
-        <footer className={styles.workspacePackageFooter}>
-          <span>filesystem objects</span>
-          <span>double-click executable shortcuts</span>
-        </footer>
       </section>
 
   );
@@ -292,7 +303,7 @@ export function ArchiveRuntimeApplication({
         ) ||
         initialDoc
       );
-    }, [selectedDocPath]);
+    }, [docsManifest, selectedDocPath]);
 
   useEffect(() => {
 
@@ -322,7 +333,11 @@ export function ArchiveRuntimeApplication({
           return;
         }
 
-        setDocumentContent(text);
+        setDocumentContent(
+          selectedDoc.type === 'markdown'
+            ? stripMarkdownFrontMatter(text)
+            : text
+        );
         setDocumentStatus('ready');
       })
       .catch(() => {
@@ -341,11 +356,16 @@ export function ArchiveRuntimeApplication({
   }, [selectedDoc]);
 
   const relatedDocs =
-    (docsManifest.files || [])
-      .filter((doc) =>
-        doc.path !== selectedDoc?.path
-      )
-      .slice(0, 6);
+    useMemo(() =>
+      (docsManifest.files || [])
+        .filter((doc) =>
+          selectedDoc &&
+          doc.path !== selectedDoc.path &&
+          isSameDirectory(doc, selectedDoc)
+        )
+        .slice(0, 6),
+      [docsManifest, selectedDoc]
+    );
 
   return (
 
@@ -529,26 +549,73 @@ export function ArchiveRuntimeApplication({
               )
             }
 
+            {
+              relatedDocs.length > 0 && (
+                <>
+                  <div className={styles.archiveLedgerTitle}>
+                    related documents
+                  </div>
+
+                  {
+                    relatedDocs.map((doc) => (
+                      <button
+                        key={doc.path}
+                        type="button"
+                        className={styles.archiveLinkedRecord}
+                        onClick={() =>
+                          setSelectedDocPath(doc.path)
+                        }
+                      >
+                        <strong>
+                          {doc.title}
+                        </strong>
+
+                        <span>
+                          {doc.path}
+                        </span>
+                      </button>
+                    ))
+                  }
+                </>
+              )
+            }
 
             {
-              relatedDocs.map((doc) => (
-                <button
-                  key={doc.path}
-                  type="button"
-                  className={styles.archiveLinkedRecord}
-                  onClick={() =>
-                    setSelectedDocPath(doc.path)
-                  }
-                >
-                  <strong>
-                    {doc.title}
-                  </strong>
+              selectedDoc?.links?.length > 0 && (
+                <>
+                  <div className={styles.archiveLedgerTitle}>
+                    links
+                  </div>
 
-                  <span>
-                    {doc.path}
-                  </span>
-                </button>
-              ))
+                  {
+                    selectedDoc.links.map((link) => (
+                      <a
+                        key={`${link.href}-${link.label}`}
+                        className={styles.archiveLinkedRecord}
+                        href={link.href}
+                        target={
+                          isExternalHref(link.href)
+                            ? '_blank'
+                            : undefined
+                        }
+                        rel={
+                          isExternalHref(link.href)
+                            ? 'noreferrer'
+                            : undefined
+                        }
+                      >
+                        <strong>
+                          {link.label}
+                        </strong>
+
+                        <span>
+                          {link.href}
+                        </span>
+                      </a>
+                    ))
+                  }
+                </>
+              )
             }
 
           </aside>

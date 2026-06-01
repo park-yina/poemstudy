@@ -136,6 +136,7 @@ function readRuntimeDocsManifest(projectDirectory) {
           title: data.title || findFirstHeading(content) || titleFromSlug(slug),
           description: data.description || firstParagraph(content),
           tags: data.tags || [],
+          links: normalizeRuntimeDocLinks(data),
           type: 'markdown',
           extension,
           html: renderMarkdownToHtml(content),
@@ -167,6 +168,41 @@ function readRuntimeDocsManifest(projectDirectory) {
     files,
     tree: buildRuntimeDocsTree(files),
   };
+}
+
+function normalizeRuntimeDocLinks(data) {
+  const candidates = [
+    data.links,
+    data.relatedLinks,
+  ];
+
+  if (data.url || data.href) {
+    candidates.push({
+      label: data.linkLabel || data.url || data.href,
+      href: data.url || data.href,
+    });
+  }
+
+  return candidates
+    .flat()
+    .filter(Boolean)
+    .map((link) => {
+      if (typeof link === 'string') {
+        return {
+          label: link,
+          href: link,
+        };
+      }
+
+      return {
+        label: link.label || link.title || link.href || link.url || '',
+        href: link.href || link.url || '',
+      };
+    })
+    .filter((link) =>
+      link.label &&
+      link.href
+    );
 }
 
 function readRuntimeDocsManifests() {
