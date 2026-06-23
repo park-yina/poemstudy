@@ -2,7 +2,9 @@ import React from 'react';
 
 import styles from './archive-room.module.css';
 
-export default function ArchiveSidebar() {
+export default function ArchiveSidebar({
+  activeSection = 'fullstack',
+}) {
 
   return (
     <aside className={styles.sidebar}>
@@ -14,13 +16,24 @@ export default function ArchiveSidebar() {
       <nav className={styles.sidebarNav}>
 
         <a
-          href="#fullstack"
-          className={styles.activeItem}
+          href="/archive-room"
+          className={
+            activeSection === 'fullstack'
+              ? styles.activeItem
+              : undefined
+          }
         >
           001 Fullstack
         </a>
 
-        <a href="#app">
+        <a
+          href="/archive-room/app"
+          className={
+            activeSection === 'app'
+              ? styles.activeItem
+              : undefined
+          }
+        >
           002 App
         </a>
 

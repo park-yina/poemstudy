@@ -110,7 +110,7 @@ function BootSequence() {
             ${styles.bootLine}
             ${styles[line.type]}
           `}
-        >
+    >
           {line.text}
         </div>
       ))}
@@ -443,7 +443,7 @@ const projects = [
                     <span className={styles.green} />
 
                     <div className={styles.windowTitle}>
-                      Luda-Bootig.log
+                      Luda-Booting.log
                     </div>
 
                   </div>

@@ -888,6 +888,819 @@ background:
   border-radius: 0.75rem;
 }
 
+.fortuneArchive {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 180;
+
+  width: min(920px, 92vw);
+  min-height: min(680px, 78vh);
+
+  display: grid;
+  place-items: center;
+
+  transform:
+    translate(-50%, -50%);
+
+  pointer-events: none;
+  opacity: 0;
+
+  animation:
+    fortuneArchiveReveal 0.86s ease 1.32s forwards;
+}
+
+.crystalVault {
+  appearance: none;
+  position: relative;
+  z-index: 2;
+
+  width:
+    clamp(190px, 28vw, 292px);
+  aspect-ratio: 1;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  filter:
+    drop-shadow(0 42px 42px rgba(0, 0, 0, 0.58));
+
+  transition:
+    transform 0.32s ease,
+    filter 0.32s ease;
+}
+
+.crystalVault:hover,
+.crystalVault:focus-visible,
+.crystalVault[aria-expanded='true'] {
+  transform:
+    translateY(-8px)
+    scale(1.025);
+
+  filter:
+    drop-shadow(0 46px 48px rgba(0, 0, 0, 0.62))
+    drop-shadow(0 0 42px rgba(154, 214, 255, 0.18));
+}
+
+.crystalVault:focus-visible {
+  outline:
+    1px solid rgba(255, 230, 170, 0.42);
+  outline-offset: 16px;
+}
+
+.crystalVault::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 16%;
+  z-index: 4;
+
+  width: 48px;
+  height: 42px;
+
+  border-radius:
+    55% 45% 48% 52% / 48% 54% 46% 52%;
+
+  background:
+    radial-gradient(
+      circle at 34% 26%,
+      rgba(255, 215, 166, 0.42),
+      transparent 18%
+    ),
+    radial-gradient(
+      circle at 64% 68%,
+      rgba(80, 10, 14, 0.42),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(159, 36, 32, 0.98),
+      rgba(94, 16, 22, 0.98)
+    );
+
+  box-shadow:
+    inset 2px 3px 5px rgba(255, 226, 180, 0.22),
+    inset -5px -7px 10px rgba(42, 8, 12, 0.34),
+    0 8px 16px rgba(38, 8, 10, 0.34);
+
+  transform:
+    translateX(-50%)
+    rotate(-6deg);
+
+  opacity: 0.92;
+
+  transition:
+    opacity 0.24s ease,
+    transform 0.28s ease;
+}
+
+.crystalVault::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - 2px);
+  bottom: calc(16% + 14px);
+  z-index: 5;
+
+  width: 22px;
+  height: 16px;
+
+  border:
+    1px solid rgba(255, 224, 174, 0.24);
+
+  border-radius:
+    50%;
+
+  transform:
+    translateX(-50%)
+    rotate(-6deg);
+
+  opacity: 0.58;
+
+  pointer-events: none;
+}
+
+.crystalVault[aria-expanded='true']::after,
+.crystalVault[aria-expanded='true']::before {
+  opacity: 0;
+  transform:
+    translateX(-50%)
+    translateY(8px)
+    rotate(-12deg)
+    scale(0.74);
+}
+
+.crystalAura {
+  position: absolute;
+  inset: -22%;
+  z-index: 0;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(168, 218, 255, 0.24),
+      rgba(255, 221, 156, 0.09) 38%,
+      transparent 70%
+    );
+
+  filter:
+    blur(12px);
+
+  animation:
+    crystalAuraPulse 4.8s ease-in-out infinite;
+}
+
+.crystalOrb {
+  position: absolute;
+  inset: 6%;
+  z-index: 2;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 24%,
+      rgba(255, 255, 255, 0.92),
+      rgba(204, 235, 255, 0.5) 13%,
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 62% 66%,
+      rgba(255, 205, 126, 0.28),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 48% 46%,
+      rgba(131, 198, 255, 0.45),
+      rgba(74, 96, 145, 0.36) 44%,
+      rgba(18, 22, 38, 0.86) 76%
+    );
+
+  border:
+    1px solid rgba(225, 244, 255, 0.48);
+
+  box-shadow:
+    inset 16px 18px 28px rgba(255, 255, 255, 0.12),
+    inset -28px -34px 48px rgba(0, 0, 0, 0.36),
+    0 0 46px rgba(132, 201, 255, 0.2),
+    0 0 100px rgba(255, 210, 126, 0.08);
+
+  overflow: hidden;
+}
+
+.crystalOrb::before,
+.crystalOrb::after {
+  content: '';
+  position: absolute;
+  inset: 16%;
+
+  border-radius: 46% 54% 48% 52%;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 244, 210, 0.16),
+      transparent
+    );
+
+  transform:
+    rotate(-18deg);
+
+  animation:
+    crystalMistDrift 7s ease-in-out infinite alternate;
+}
+
+.crystalOrb::after {
+  inset: 32% 18% 18% 28%;
+  opacity: 0.62;
+  animation-delay: -2.4s;
+}
+
+.crystalReflection {
+  position: absolute;
+  left: 22%;
+  top: 18%;
+
+  width: 22%;
+  height: 16%;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  filter:
+    blur(4px);
+
+  transform:
+    rotate(-22deg);
+}
+
+.crystalRecordSeal {
+  position: absolute;
+  left:
+    var(--seal-x);
+  top:
+    var(--seal-y);
+  z-index: 3;
+
+  width:
+    var(--seal-size);
+  height:
+    var(--seal-size);
+
+  border-radius:
+    999px;
+
+  background:
+    radial-gradient(
+      circle at 34% 26%,
+      rgba(255, 255, 255, 0.82),
+      transparent 26%
+    ),
+    hsl(var(--seal-hue) 84% 62%);
+
+  box-shadow:
+    inset -3px -4px 7px rgba(0, 0, 0, 0.24),
+    0 0 14px hsl(var(--seal-hue) 84% 62% / 0.46),
+    0 0 28px hsl(var(--seal-hue) 84% 62% / 0.18);
+
+  opacity: 0.82;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.92);
+
+  animation:
+    crystalRecordFloat 4.8s ease-in-out var(--seal-delay) infinite;
+
+  pointer-events: none;
+}
+
+.crystalRecordSealOpen {
+  opacity: 1;
+
+  filter:
+    brightness(1.24)
+    saturate(1.16);
+
+  transform:
+    translate(-50%, -50%)
+    scale(1.12);
+}
+
+.crystalVault::before,
+.crystalVault::after {
+  content: none;
+}
+
+.crystalBase {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  z-index: 1;
+
+  width: 58%;
+  height: 20%;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    50% 50% 10px 10px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(218, 176, 98, 0.72),
+      rgba(70, 38, 22, 0.92)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 190, 0.36),
+    0 18px 34px rgba(0, 0, 0, 0.5);
+}
+
+.fortunePanel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+
+  width:
+    min(620px, 86vw);
+  max-height:
+    min(420px, 46vh);
+
+  padding:
+    2.2rem
+    2rem
+    1.8rem;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  border:
+    1px solid rgba(116, 78, 38, 0.36);
+
+  border-radius:
+    8px;
+
+  background:
+    linear-gradient(
+      152deg,
+      transparent 0 49%,
+      rgba(118, 74, 34, 0.14) 49.2% 50%,
+      transparent 50.2%
+    ),
+    linear-gradient(
+      208deg,
+      transparent 0 49%,
+      rgba(118, 74, 34, 0.12) 49.2% 50%,
+      transparent 50.2%
+    ),
+    linear-gradient(
+      28deg,
+      transparent 0 49%,
+      rgba(118, 74, 34, 0.1) 49.2% 50%,
+      transparent 50.2%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(252, 239, 204, 0.96),
+      rgba(224, 196, 145, 0.96)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(112, 74, 34, 0.1) 0,
+      rgba(112, 74, 34, 0.1) 1px,
+      transparent 1px,
+      transparent 18px
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 252, 232, 0.42),
+    inset 0 0 36px rgba(96, 55, 22, 0.12),
+    0 34px 70px rgba(0, 0, 0, 0.48);
+
+  color:
+    rgba(52, 34, 20, 0.92);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform:
+    translate(-50%, calc(-50% + 24px))
+    scale(0.88);
+
+  transition:
+    opacity 0.36s ease,
+    transform 0.42s cubic-bezier(0.18, 0.8, 0.22, 1);
+
+  scrollbar-gutter:
+    stable;
+  scrollbar-width:
+    thin;
+  scrollbar-color:
+    rgba(82, 48, 22, 0.44)
+    rgba(255, 248, 226, 0.36);
+}
+
+.fortunePanel::-webkit-scrollbar {
+  width: 10px;
+}
+
+.fortunePanel::-webkit-scrollbar-track {
+  background:
+    rgba(255, 248, 226, 0.42);
+}
+
+.fortunePanel::-webkit-scrollbar-thumb {
+  border:
+    2px solid rgba(255, 248, 226, 0.42);
+
+  border-radius:
+    999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(118, 74, 34, 0.62),
+      rgba(72, 42, 22, 0.58)
+    );
+}
+
+.fortunePanel::before {
+  content: none;
+}
+
+.fortunePanel::after {
+  content: '';
+  position: absolute;
+  inset:
+    clamp(13px, 2.2vw, 22px);
+  background:
+    linear-gradient(
+      145deg,
+      transparent 0 49.4%,
+      rgba(72, 44, 24, 0.12) 49.6% 50%,
+      transparent 50.2%
+    ),
+    linear-gradient(
+      215deg,
+      transparent 0 49.4%,
+      rgba(72, 44, 24, 0.12) 49.6% 50%,
+      transparent 50.2%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0 50%,
+      rgba(255, 255, 246, 0.12) 50.2%,
+      transparent 68%
+    );
+
+  background-size:
+    100% 100%;
+
+  pointer-events: none;
+}
+
+.fortunePanelOpen {
+  opacity: 1;
+  pointer-events: auto;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+}
+
+.fortuneHeader {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.fortuneHeader span {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+
+  color:
+    rgba(82, 51, 27, 0.58);
+}
+
+.fortuneHeader strong {
+  padding:
+    0.36rem 0.6rem;
+
+  border:
+    1px solid rgba(112, 74, 34, 0.18);
+
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+
+  color:
+    rgba(76, 40, 24, 0.86);
+
+  background:
+    rgba(255, 248, 226, 0.34);
+}
+
+.fortunePanel h3 {
+  position: relative;
+  z-index: 1;
+
+  margin:
+    0 0 0.75rem;
+
+  font-size:
+    clamp(1.52rem, 4vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fortunePanel > p {
+  position: relative;
+  z-index: 1;
+
+  max-width: 34rem;
+  margin:
+    0 0 1.3rem;
+
+  font-size: 0.92rem;
+  line-height: 1.75;
+
+  color:
+    rgba(64, 42, 24, 0.74);
+}
+
+.fortuneActions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+
+  margin-bottom: 1.2rem;
+}
+
+.fortuneActions button {
+  border:
+    1px solid rgba(92, 52, 28, 0.28);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(92, 42, 28, 0.88),
+      rgba(48, 27, 20, 0.94)
+    );
+
+  color:
+    rgba(255, 239, 204, 0.92);
+
+  padding:
+    0.72rem 0.9rem;
+
+  cursor: pointer;
+
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+.fortuneActions button:hover:not(:disabled),
+.fortuneActions button:focus-visible:not(:disabled) {
+  border-color:
+    rgba(126, 72, 36, 0.48);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(120, 54, 32, 0.94),
+      rgba(58, 30, 20, 0.98)
+    );
+}
+
+.fortuneActions button:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.fortuneRecordStack {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  gap: 0.86rem;
+}
+
+.fortuneNote {
+  position: relative;
+
+  margin: 0;
+  padding:
+    1rem 1.1rem 1rem 1.25rem;
+
+  border:
+    1px solid rgba(122, 76, 34, 0.18);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 249, 224, 0.7),
+      rgba(241, 220, 174, 0.7)
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 246, 0.3),
+    0 12px 20px rgba(82, 48, 22, 0.12);
+
+  transform:
+    rotate(-0.35deg);
+
+  animation:
+    fortuneNoteReveal 0.38s ease both;
+}
+
+.fortuneNote:nth-child(2n) {
+  transform:
+    rotate(0.45deg);
+}
+
+.fortuneNote::before {
+  content: '';
+  position: absolute;
+  right:
+    clamp(0.8rem, 4%, 1.25rem);
+  top:
+    clamp(0.72rem, 8%, 1rem);
+
+  width:
+    clamp(28px, 8%, 48px);
+  height:
+    clamp(20px, 6%, 34px);
+
+  border:
+    1px solid rgba(118, 74, 34, 0.2);
+
+  border-radius:
+    2px 2px 10px 2px;
+
+  background:
+    var(--fortune-note-seal-color, rgba(132, 42, 30, 0.16));
+}
+
+.fortuneNote span {
+  display: block;
+
+  margin-bottom: 0.42rem;
+
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color:
+    rgba(102, 64, 32, 0.58);
+}
+
+.fortuneNote strong {
+  display: block;
+
+  margin:
+    0 2.4rem 0.38rem 0;
+
+  font-size: 1rem;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+
+  color:
+    rgba(52, 32, 20, 0.94);
+}
+
+.fortuneNote p {
+  margin: 0;
+
+  font-size: 0.8rem;
+  line-height: 1.7;
+
+  color:
+    rgba(62, 42, 26, 0.74);
+}
+
+.fortuneComplete {
+  position: relative;
+  z-index: 1;
+
+  margin-top: 1rem;
+  padding:
+    0.86rem 1rem;
+
+  border:
+    1px solid rgba(95, 132, 86, 0.28);
+
+  background:
+    rgba(238, 249, 218, 0.42);
+
+  color:
+    rgba(42, 78, 42, 0.9);
+
+  font-size: 0.84rem;
+  letter-spacing: 0.06em;
+}
+
+@keyframes fortuneArchiveReveal {
+  from {
+    opacity: 0;
+    filter:
+      blur(8px)
+      brightness(0.5);
+    transform:
+      translate(-50%, calc(-50% + 24px))
+      scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    filter:
+      blur(0)
+      brightness(1);
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+}
+
+@keyframes crystalAuraPulse {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform:
+      scale(0.94);
+  }
+
+  50% {
+    opacity: 0.88;
+    transform:
+      scale(1.08);
+  }
+}
+
+@keyframes crystalMistDrift {
+  from {
+    transform:
+      rotate(-18deg)
+      translate3d(-5%, 3%, 0);
+  }
+
+  to {
+    transform:
+      rotate(16deg)
+      translate3d(6%, -4%, 0);
+  }
+}
+
+@keyframes crystalRecordFloat {
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      translate3d(-3px, 2px, 0)
+      scale(0.92);
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      translate3d(4px, -5px, 0)
+      scale(1.08);
+  }
+}
+
+@keyframes fortuneNoteReveal {
+  from {
+    opacity: 0;
+    transform:
+      translateY(10px)
+      rotate(-1deg);
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 /* =========================
    CANDLE SHRINE
 ========================= */
