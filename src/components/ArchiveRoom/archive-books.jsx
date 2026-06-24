@@ -1041,4 +1041,134 @@ sealColor:
 }
 
 ];
-export const yinaBooks=[];
+export const yinaBooks=[
+  {
+   id: 'not-trouble',
+   title: (
+    <>
+      불편을 못참아요
+      <br />
+    </>
+  ),
+    subtitle:
+    '이나는 현장의 문제에서 프로젝트를 시작합니다.',
+
+  type: 'Development',
+
+  arcana: 'Development',
+
+  sticky: 'DEV',
+
+  stickyColor: 'green',
+
+  useGates: false,
+
+  useCrystalArchive: true,
+  description:
+'저는 새로운 기술 자체보다 반복되는 불편함을 발견하고 개선하는 과정에 더 큰 흥미를 느낍니다. 문학 창작부터 매장 운영, 서비스 개발까지 다양한 경험 속에서 사람의 시간과 노력을 줄일 수 있는 방법을 고민해왔습니다.',
+
+records: [
+{
+text:
+'문예창작을 전공하며 작품보다 서식 관리에 더 많은 시간을 사용하는 현실에 아쉬움을 느꼈고, 문탐 프로젝트를 구상하게 되었습니다.',
+sealColor:
+'#9f2430',
+},
+{
+text:
+'매장 근무 당시 반복되는 장부 작성과 정산 업무를 보며 자동화 시스템을 제작하여 운영 과정을 단순화하였습니다.',
+sealColor:
+'midnightblue',
+},
+{
+text:
+'서비스 개발 과정에서도 단순 구현보다 반복적으로 발생하는 운영 비용과 관리 부담을 줄이는 방법에 관심을 가져왔습니다.',
+sealColor:
+'seagreen',
+},
+{
+text:
+'Jumping Battle에서는 전체 데이터를 반복 전송하던 구조를 개선하여 네트워크 비용과 렌더링 부담을 줄였습니다.',
+sealColor:
+'#d2691e',
+},
+{
+text:
+'AWS WebRTC 프로젝트에서는 반복적인 장비 테스트의 비효율을 줄이기 위해 Mock Client 기반의 테스트 환경을 구축하였습니다.',
+sealColor:
+'#7c5cff',
+},
+{
+text:
+'기술은 목적이 아니라 수단이라고 생각하며, 사람이 더 중요한 일에 집중할 수 있도록 돕는 개발을 지향합니다.',
+sealColor:
+'goldenrod',
+},
+]
+
+},
+ {
+   id: 'writer',
+   title: (
+    <>
+    신이재
+      <br />
+    </>
+  ),
+    subtitle:
+    '여전히 시를 쓰고있습니다.',
+
+  type: 'poem',
+
+  arcana: 'Writer',
+
+  sticky: 'Write',
+
+  stickyColor: 'yellow',
+
+  useGates: false,
+
+  useCrystalArchive: true,
+  description:
+'저는 새로운 기술 자체보다 반복되는 불편함을 발견하고 개선하는 과정에 더 큰 흥미를 느낍니다. 문학 창작부터 매장 운영, 서비스 개발까지 다양한 경험 속에서 사람의 시간과 노력을 줄일 수 있는 방법을 고민해왔습니다.',
+records: [
+{
+text:
+'문예창작을 전공하였으며, 웹진 「파도」와 동인 「시요일」 활동에 참여하며 작품을 발표하였습니다.',
+sealColor:
+'#9f2430',
+},
+{
+text:
+'죽음과 애도, 기억과 상실을 주요 주제로 삼아 현실과 환상이 교차하는 장면들을 시로 기록하고 있습니다.',
+sealColor:
+'midnightblue',
+},
+{
+text:
+'종교적 상징과 의례를 개인의 경험과 결합하여 새로운 의미로 재해석하는 작업에 관심을 가지고 있습니다.',
+sealColor:
+'seagreen',
+},
+{
+text:
+'숲, 물, 뼈, 머리카락과 같은 유기적 이미지를 통해 인간의 내면과 감정을 탐구하는 작품을 자주 작성합니다.',
+sealColor:
+'#d2691e',
+},
+{
+text:
+'이야기와 구조에 대한 관심은 이후 소프트웨어 개발과 사용자 경험 설계에도 큰 영향을 주었습니다.',
+sealColor:
+'#7c5cff',
+},
+{
+text:
+'현재는 창작과 개발을 별개의 영역으로 보지 않고, 사람의 경험을 설계하는 두 가지 방식으로 바라보고 있습니다.',
+sealColor:
+'goldenrod',
+},
+]
+
+},
+];

@@ -70,9 +70,6 @@ export default function ArchiveSidebar({
           005 Yina
         </a>
 
-        <a href="#literature">
-          006 Literature
-        </a>
 
       </nav>
 
