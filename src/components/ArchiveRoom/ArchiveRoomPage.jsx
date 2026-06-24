@@ -4,7 +4,10 @@ import ArchiveSidebar from './ArchiveSidebar';
 import ArchiveTopbar from './ArchiveTopbar';
 import {
   appPrimaryBooks,
+  backendPrimaryBooks,
   fullstackPrimaryBooks,
+  futureBooks,
+  yinaBooks,
 } from './archive-books';
 import styles from './archive-room.module.css';
 import TempleBackground from './TempleBackground';
@@ -18,10 +21,17 @@ export default function ArchiveRoomPage({
   const [ritualIntensity, setRitualIntensity] =
     useState(0);
 
+  const backgroundBooksBySection = {
+    app: appPrimaryBooks,
+    backend: backendPrimaryBooks,
+    fullstack: fullstackPrimaryBooks,
+    future: futureBooks,
+    yina: yinaBooks,
+  };
+
   const backgroundBook =
-    activeSection === 'app'
-      ? appPrimaryBooks[0] ?? fullstackPrimaryBooks[0]
-      : fullstackPrimaryBooks[0];
+    backgroundBooksBySection[activeSection]?.[0] ??
+    fullstackPrimaryBooks[0];
 
   return (
     <main

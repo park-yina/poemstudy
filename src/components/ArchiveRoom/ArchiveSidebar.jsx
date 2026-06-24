@@ -37,15 +37,36 @@ export default function ArchiveSidebar({
           002 App
         </a>
 
-        <a href="#backend">
+        <a
+          href="/archive-room/backend"
+          className={
+            activeSection === 'backend'
+              ? styles.activeItem
+              : undefined
+          }
+        >
           003 Backend
         </a>
 
-        <a href="#essay">
-          004 Essay
+        <a
+          href="/archive-room/future"
+          className={
+            activeSection === 'future'
+              ? styles.activeItem
+              : undefined
+          }
+        >
+          004 Future
         </a>
 
-        <a href="#yina">
+        <a
+          href="/archive-room/yina"
+          className={
+            activeSection === 'yina'
+              ? styles.activeItem
+              : undefined
+          }
+        >
           005 Yina
         </a>
 

@@ -7,8 +7,10 @@ import PageFlurry from './PageFlurry';
 import {
   appPrimaryBooks,
   appSecondaryBooks,
+  backendPrimaryBooks,
   fullstackPrimaryBooks,
   fullstackSecondaryBooks,
+  futureBooks,
 } from './archive-books';
 
 import styles from './archive-room.module.css';
@@ -18,9 +20,11 @@ import tarotStyles from './tarot-cards.module.css';
 export {
   appPrimaryBooks,
   appSecondaryBooks,
+  backendPrimaryBooks,
   cameraControlBook,
   fullstackPrimaryBooks,
   fullstackSecondaryBooks,
+  futureBooks,
   jumpingBattleBook,
   jumpingBattledownloadBook,
 } from './archive-books';
@@ -1080,6 +1084,9 @@ function ArchiveBookSection({
     useState({});
   const [isClosing, setIsClosing] = useState(false);
   const closeTimerRef = useRef(null);
+  const hasSecondaryBooks =
+    Array.isArray(secondaryBooks) &&
+    secondaryBooks.length > 0;
 
   useEffect(() => {
     if (!selectedBook) {
@@ -1213,16 +1220,18 @@ setSelectedGate(null);
           setSelectedBook={openBook}
         />
 
-        <BookShelf
-          title={secondaryTitle}
-          description={secondaryDescription}
-          books={secondaryBooks}
-          small
-          selectedBook={selectedBook}
-            overlayActive={overlayActive}
+        {hasSecondaryBooks && (
+          <BookShelf
+            title={secondaryTitle}
+            description={secondaryDescription}
+            books={secondaryBooks}
+            small
+            selectedBook={selectedBook}
+              overlayActive={overlayActive}
 
-          setSelectedBook={openBook}
-        />
+            setSelectedBook={openBook}
+          />
+        )}
       </div>
 
 <OpenedBook
@@ -1269,18 +1278,31 @@ export function BackendSection(props) {
     <ArchiveBookSection
       id="backend"
       eyebrow="003 Backend"
-      title="Backends Records"
-      description="백엔드 개발자로서 설계하고 구현한 기록들을 주요 기록과 보조 기록으로 보관합니다."
-      primaryTitle="Backend Archive"
+      title="Backend Records"
+      description="백엔드 개발자로서 설계하고 구현한 기록들을 보관합니다."
+      primaryTitle="BACKEND ARCHIVE"
       primaryDescription="백엔드 프로젝트"
-      primaryBooks={appPrimaryBooks}
-      secondaryTitle="APP SIDE RECORDS"
-      secondaryDescription="앱 토이프로젝트"
-      secondaryBooks={appSecondaryBooks}
+      primaryBooks={backendPrimaryBooks}
       {...props}
     />
   );
 }
+
+export function FutureSection(props) {
+  return (
+    <ArchiveBookSection
+      id="future"
+      eyebrow="004 Future"
+      title="Future Records"
+      description="앞으로 진행해갈 프로젝트에 대한 기록입니다."
+      primaryTitle="FUTURE ARCHIVE"
+      primaryDescription="미래 기록"
+      primaryBooks={futureBooks}
+      {...props}
+    />
+  );
+}
+
 export default function FullstackSection(props) {
   return (
     <ArchiveBookSection

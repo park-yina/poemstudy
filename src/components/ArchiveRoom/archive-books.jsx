@@ -780,7 +780,265 @@ records: [
       '#9f2430',
   },
 ],
+},
+{
+      id: 'isc-controller',
+
+  title: (
+    <>
+      isc<br></br>컨트롤러
+      <br>
+      </br>
+      중도중단
+    </>
+  ),
+subtitle:
+  '하드웨어 제어의 진입 장벽 완화',
+
+type: 'ARCHIVE',
+
+arcana: 'syslog',
+
+sticky: 'PROTOTYPE',
+stickyColor: 'green',
+
+useGates: false,
+
+useCrystalArchive: true,
+
+description:
+  '작품보다 장비를 먼저 이해해야 하는 상황을 줄이기 위해, 다양한 하드웨어 제어 과정을 하나의 인터페이스로 통합하는 컨트롤러를 설계했습니다.',  
+records: [
+  {
+    text:
+      'Google Docs와 Firebase를 연동하여 스터디 자료 변경 사항을 자동으로 동기화했습니다.',
+    sealColor:
+      'cornflowerblue',
+  },
+  {
+    text:
+      '수동 공지와 자료 전달 과정을 줄이기 위해 Drive Webhook 기반 변경 감지 구조를 적용했습니다.',
+    sealColor:
+      '#7c5cff',
+  },
+  {
+    text:
+      '스터디 참여자가 항상 최신 자료를 확인할 수 있도록 문서 상태를 통합 관리했습니다.',
+    sealColor:
+      'seagreen',
+  },
+  {
+    text:
+      '실제 사용자 피드백을 반영하며 기능을 개선하고 운영 도구 형태로 발전시켰습니다.',
+    sealColor:
+      'goldenrod',
+  },
+  {
+    text:
+      '시는 줄바꿈과 행간 자체가 의미가 되기 때문에 산문시와 자유시 모두를 안정적으로 표현할 수 있도록 렌더링 구조를 별도로 설계했습니다.',
+    sealColor:
+      '#9f2430',
+  },
+],
 }
   
 ];
 
+export const backendPrimaryBooks = [{
+  id: 'fakejumping-admin-backend',
+
+  title: (
+    <>
+      FAKE
+      <br />
+      JUMPING
+      <br />
+      ADMIN
+    </>
+  ),
+
+  subtitle:
+    'Spring Boot / Admin Runtime',
+
+  type: 'ARCHIVE',
+
+  arcana: 'syslog',
+
+  sticky: 'BACKEND',
+
+  stickyColor: 'yellow',
+
+  useGates: false,
+
+  useCrystalArchive: true,
+
+  description:
+    '관리자 인증, 디바이스 관리, 운영 상태 제어를 중심으로 구축한 Spring Boot 기반 운영 백엔드 기록입니다.',
+
+records: [
+  {
+    text:
+      '운영자는 게임보다 먼저 로그인해야 했기 때문에 관리자 세션과 인증 흐름을 가장 먼저 분리했습니다.',
+    sealColor:
+      '#9f2430',
+  },
+  {
+    text:
+      '관리 기능은 모두에게 열려 있으면 안 되었기 때문에 권한 검증을 API보다 앞단에서 처리하도록 구성했습니다.',
+    sealColor:
+      'midnightblue',
+  },
+  {
+    text:
+      '가맹점마다 서로 다른 장비가 존재했기 때문에 Device를 별도의 운영 대상으로 관리할 수 있도록 설계했습니다.',
+    sealColor:
+      'seagreen',
+  },
+  {
+  text:
+    '장비 종류는 계속 늘어날 수 있었기 때문에 Device의 종류보다 현재 상태를 기준으로 관리할 수 있도록 구조를 변경했습니다.',
+  sealColor:
+    '#d2691e',
+},
+  {
+    text:
+      '운영 화면은 데이터를 생성하는 곳보다 상태를 확인하는 곳에 가까웠기 때문에 조회 흐름을 중심으로 구성했습니다.',
+    sealColor:
+      '#7c5cff',
+  },
+  {
+    text:
+      '개발 환경과 운영 환경이 다를수록 문제를 재현하기 어려워지기 때문에 Docker 기반 실행 환경을 함께 정리했습니다.',
+    sealColor:
+      'goldenrod',
+  },
+],
+}];
+
+export const futureBooks=[{
+  id: 'literature-hangeul',
+   title: (
+    <>
+      문탐
+      <br />
+    </>
+  ),
+    subtitle:
+    'rhwp와 hwp-hop에서 영감을 얻은 프로젝트입니다.',
+
+  type: 'Future',
+
+  arcana: 'Future',
+
+  sticky: 'DESKTOP-APP',
+
+  stickyColor: 'yellow',
+
+  useGates: false,
+
+  useCrystalArchive: true,
+  description:
+  '시와 시나리오가 가진 고유한 문서 구조를 일반 문서 편집기 위에 억지로 맞추지 않고, 문학 창작에 필요한 편집 경험 자체를 다시 설계하는 것을 목표로 하는 프로젝트입니다.',
+
+records: [
+  {
+    text:
+      '시는 줄바꿈과 행간 자체가 의미가 되기 때문에 일반 문서가 아닌 작품 단위의 편집 화면을 목표로 하고 있습니다.',
+    sealColor:
+      '#9f2430',
+  },
+  {
+    text:
+      '시집 원고를 검토하는 과정에서 작품의 길이와 밀도를 빠르게 파악할 수 있도록 편집자 관점의 문서 보기를 구상하고 있습니다.',
+    sealColor:
+      'midnightblue',
+  },
+  {
+    text:
+      '시나리오 작성 시 반복되는 넘버링 작업을 줄이기 위해 자동 신 번호 관리 기능을 포함할 계획입니다.',
+    sealColor:
+      'seagreen',
+  },
+  {
+    text:
+      '장면별 분량과 비중을 시각적으로 확인할 수 있도록 구조 분석 도구를 함께 제공하는 방향을 검토하고 있습니다.',
+    sealColor:
+      '#d2691e',
+  },
+  {
+    text:
+      '기존 HWP 기반 문예 창작 환경에서 자주 사용되던 기능들을 현대적인 편집 경험으로 재구성하는 것을 목표로 하고 있습니다.',
+    sealColor:
+      '#7c5cff',
+  },
+  {
+    text:
+      '문학 창작자가 문서 서식보다 작품 자체에 집중할 수 있는 편집 환경을 만드는 것을 최종 목표로 하고 있습니다.',
+    sealColor:
+      'goldenrod',
+  },
+],
+},
+{
+id: 'suncatcher-frame',
+
+title: (
+<>
+썬캐처
+</>
+),
+
+subtitle:
+'작은 일상을 수집하는 스마트 액자',
+
+type: 'Future',
+
+arcana: 'Future',
+
+sticky: 'Media-Object',
+
+stickyColor: 'blue',
+
+useGates: false,
+
+useCrystalArchive: true,
+
+description:
+'시간과 날씨를 보여주는 단순 디스플레이를 넘어, 사용자의 작은 행동과 일상을 수집 가능한 오브제로 전환하는 스마트 액자를 목표로 하는 프로젝트입니다.',
+
+records: [
+{
+text:
+'사용자의 체크리스트 완료 여부에 따라 새로운 스테인드글라스 조각을 수집하는 구조를 구상하고 있습니다.',
+sealColor:
+'#9f2430',
+},
+{
+text:
+'수집된 스테인드글라스는 월별·연도별로 보관하여 하나의 디지털 썬캐처 컬렉션으로 남길 계획입니다.',
+sealColor:
+'goldenrod',
+},
+{
+text:
+'현재 위치를 기준으로 날씨 정보를 제공하여 액자가 단순 장식품이 아닌 생활 정보 기기로 동작하도록 설계하고 있습니다.',
+sealColor:
+'cornflowerblue',
+},
+{
+text:
+'하드웨어 조작보다 콘텐츠 경험에 집중할 수 있도록 터치 중심 인터페이스를 검토하고 있습니다.',
+sealColor:
+'#7c5cff',
+},
+{
+text:
+'실용적인 시계보다 오랫동안 곁에 두고 싶은 작은 미디어아트 오브제를 만드는 것을 최종 목표로 하고 있습니다.',
+sealColor:
+'#d2691e',
+},
+],
+}
+
+];
+export const yinaBooks=[];
