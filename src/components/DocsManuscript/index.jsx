@@ -60,10 +60,7 @@ export function DocsNavigationRail({
       return;
     }
 
-    document.querySelector(summaryTargetSelector)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
+    scrollToDocsElement(document.querySelector(summaryTargetSelector));
   };
 
   const scrollToBottom = () => {
@@ -82,10 +79,7 @@ export function DocsNavigationRail({
       return;
     }
 
-    document.getElementById(item.id)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
+    scrollToDocsElement(document.getElementById(item.id));
 
     setActiveId(item.id);
   };
@@ -190,6 +184,48 @@ function areNavigationItemsEqual(firstItems, nextItems) {
   });
 }
 
+function getCurrentHashId() {
+  if (typeof window === 'undefined' || !window.location.hash) {
+    return null;
+  }
+
+  try {
+    return decodeURIComponent(window.location.hash.slice(1));
+  } catch {
+    return window.location.hash.slice(1);
+  }
+}
+
+function getDocsScrollOffset() {
+  if (typeof document === 'undefined') {
+    return 96;
+  }
+
+  const navbar = document.querySelector('.navbar');
+  const navbarHeight = navbar?.getBoundingClientRect().height ?? 0;
+
+  return navbarHeight + 28;
+}
+
+function getElementPageTop(element) {
+  if (typeof window === 'undefined') {
+    return 0;
+  }
+
+  return element.getBoundingClientRect().top + window.scrollY;
+}
+
+function scrollToDocsElement(element) {
+  if (typeof window === 'undefined' || !element) {
+    return;
+  }
+
+  window.scrollTo({
+    top: Math.max(0, getElementPageTop(element) - getDocsScrollOffset()),
+    behavior: 'smooth',
+  });
+}
+
 function renderDefaultMarker(marker) {
   if (React.isValidElement(marker)) {
     return marker;
@@ -205,6 +241,25 @@ export function useDocsSummaryNavigation({
 } = {}) {
   const [items, setItems] = useState([]);
   const [activeId, setActiveId] = useState(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || items.length === 0) {
+      return undefined;
+    }
+
+    const syncActiveFromHash = () => {
+      const hashId = getCurrentHashId();
+
+      if (hashId && items.some((item) => item.id === hashId)) {
+        setActiveId(hashId);
+      }
+    };
+
+    syncActiveFromHash();
+    window.addEventListener('hashchange', syncActiveFromHash);
+
+    return () => window.removeEventListener('hashchange', syncActiveFromHash);
+  }, [items]);
 
   useEffect(() => {
     if (typeof document === 'undefined') {
@@ -226,6 +281,12 @@ export function useDocsSummaryNavigation({
       );
 
       setActiveId((currentActiveId) => {
+        const hashId = getCurrentHashId();
+
+        if (hashId && nextItems.some((item) => item.id === hashId)) {
+          return hashId;
+        }
+
         if (currentActiveId && nextItems.some((item) => item.id === currentActiveId)) {
           return currentActiveId;
         }
@@ -257,45 +318,75 @@ export function useDocsSummaryNavigation({
     if (
       !observeActive ||
       typeof document === 'undefined' ||
-      typeof IntersectionObserver === 'undefined' ||
+      typeof window === 'undefined' ||
       items.length === 0
     ) {
       return undefined;
     }
 
-    const visibleItems = new Map();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            visibleItems.set(entry.target.id, entry.boundingClientRect.top);
-          } else {
-            visibleItems.delete(entry.target.id);
-          }
-        });
+    let frameId = null;
 
-        const nextActiveId = Array.from(visibleItems.entries())
-          .sort((first, second) => Math.abs(first[1]) - Math.abs(second[1]))[0]?.[0];
+    const updateActiveFromScroll = () => {
+      frameId = null;
 
-        if (nextActiveId) {
-          setActiveId(nextActiveId);
-        }
-      },
-      {
-        rootMargin: '-18% 0px -62% 0px',
-        threshold: [0, 0.15, 0.4, 0.75],
-      },
-    );
+      const targets = items
+        .map((item) => {
+          const element = document.getElementById(item.id);
 
-    items.forEach((item) => {
-      const target = document.getElementById(item.id);
+          return element
+            ? {
+                id: item.id,
+                top: getElementPageTop(element),
+              }
+            : null;
+        })
+        .filter(Boolean);
 
-      if (target) {
-        observer.observe(target);
+      if (targets.length === 0) {
+        return;
       }
-    });
 
-    return () => observer.disconnect();
+      const activationTop = window.scrollY + getDocsScrollOffset() + 8;
+      let nextActiveId = targets[0].id;
+
+      for (const target of targets) {
+        if (target.top <= activationTop) {
+          nextActiveId = target.id;
+        } else {
+          break;
+        }
+      }
+
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      if (documentHeight - scrollBottom < 24) {
+        nextActiveId = targets[targets.length - 1].id;
+      }
+
+      setActiveId(nextActiveId);
+    };
+
+    const scheduleActiveUpdate = () => {
+      if (frameId !== null) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(updateActiveFromScroll);
+    };
+
+    updateActiveFromScroll();
+    window.addEventListener('scroll', scheduleActiveUpdate, {passive: true});
+    window.addEventListener('resize', scheduleActiveUpdate);
+
+    return () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId);
+      }
+
+      window.removeEventListener('scroll', scheduleActiveUpdate);
+      window.removeEventListener('resize', scheduleActiveUpdate);
+    };
   }, [items, observeActive]);
 
   return {

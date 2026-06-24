@@ -148,12 +148,14 @@ location: 'Projects',
     logMeta: 'operational record',
 
     logEntries: [
-      'firebase ranking structure stabilized',
-      'aws lambda cold start mitigated',
-      'sse runtime stabilization completed',
-      'cache structure reorganized',
-      'runtime deployment synced',
-      'admin route boundary archived',
+      '[2025.08]크래프톤 정글 프로젝트 완료',
+      '[2025]점핑배틀 외주 프로젝트 완료',
+      '[2025]협업 프로젝트 aws-webrtc활용 카메라 제어 시스템 외주 완료',
+      '[2025]개인 프로젝트 모텔 장부 시스템 개발 완료',
+      '[2025]개인 프로젝트 모텔 룸 상태 모니터링 시스템 개발 완료',
+
+      '[2026]짝퉁 배틀 프로젝트 가상 기기 등록까지 완료',
+      '[FUTURE]리마스터 시네한글 및 웹소설 시 에디터 개발'
     ],
   },
 
@@ -171,12 +173,9 @@ location: 'Projects',
     logMeta: 'learning archive',
 
     logEntries: [
-      'revisited process scheduling structure',
-      'jwt refresh lifecycle reconstructed',
-      'cache invalidation notes archived',
-      'pintos memory flow reviewed',
-      'spring security filter chain traced',
-      'operating system notes indexed',
+      '[2023]서울예술대학교 UI/UX수업 수강',
+      '[2023]서울예술대학교 피지컬 컴퓨팅(아두이노)수강',
+      '[2023]크래프톤 정글 수료',
     ],
   },
 

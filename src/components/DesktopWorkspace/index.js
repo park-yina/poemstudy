@@ -150,6 +150,8 @@ function parseAwsStatusRss(xmlText) {
 function RuntimeCmdWindow({
   item,
   onClose,
+  onMinimize,
+  stackIndex = 0,
 }) {
 
   const entries =
@@ -164,19 +166,84 @@ function RuntimeCmdWindow({
       y: 116,
     });
 
+  const [isMaximized, setIsMaximized] =
+    useState(false);
+
   const streamRef =
+    useRef(null);
+
+  const windowRef =
     useRef(null);
 
   const dragRef =
     useRef(null);
 
+  const clampPosition = (nextX, nextY) => {
+
+    const runtimeWindow =
+      windowRef.current;
+
+    if (!runtimeWindow || typeof window === 'undefined') {
+      return {
+        x: Math.max(16, nextX),
+        y: Math.max(16, nextY),
+      };
+    }
+
+    const runtimeRect =
+      runtimeWindow.getBoundingClientRect();
+
+    const titlebarSafeWidth =
+      Math.min(
+        180,
+        runtimeRect.width,
+      );
+
+    const titlebarSafeHeight =
+      42;
+
+    const minX =
+      Math.min(
+        16,
+        window.innerWidth - titlebarSafeWidth,
+      );
+
+    const minY =
+      16;
+
+    const maxX =
+      Math.max(
+        minX,
+        window.innerWidth - titlebarSafeWidth,
+      );
+
+    const maxY =
+      Math.max(
+        minY,
+        window.innerHeight - titlebarSafeHeight - 16,
+      );
+
+    return {
+      x: Math.min(
+        Math.max(minX, nextX),
+        maxX,
+      ),
+      y: Math.min(
+        Math.max(minY, nextY),
+        maxY,
+      ),
+    };
+  };
+
   useEffect(() => {
 
     setVisibleCount(0);
     setPosition({
-      x: 210,
-      y: 116,
+      x: 210 + stackIndex * 28,
+      y: 116 + stackIndex * 28,
     });
+
+    setIsMaximized(false);
 
     const timers =
       entries.map((entry, index) =>
@@ -196,7 +263,7 @@ function RuntimeCmdWindow({
       );
     };
 
-  }, [item.id, entries]);
+  }, [item.id, entries, stackIndex]);
 
   useEffect(() => {
 
@@ -228,10 +295,9 @@ function RuntimeCmdWindow({
       const nextY =
         event.clientY - dragRef.current.offsetY;
 
-      setPosition({
-        x: Math.max(24, nextX),
-        y: Math.max(78, nextY),
-      });
+      setPosition(
+        clampPosition(nextX, nextY),
+      );
     };
 
     const handleUp = () => {
@@ -239,23 +305,33 @@ function RuntimeCmdWindow({
     };
 
     window.addEventListener(
-      'mousemove',
+      'pointermove',
       handleMove,
     );
 
     window.addEventListener(
-      'mouseup',
+      'pointerup',
+      handleUp,
+    );
+
+    window.addEventListener(
+      'pointercancel',
       handleUp,
     );
 
     return () => {
       window.removeEventListener(
-        'mousemove',
+        'pointermove',
         handleMove,
       );
 
       window.removeEventListener(
-        'mouseup',
+        'pointerup',
+        handleUp,
+      );
+
+      window.removeEventListener(
+        'pointercancel',
         handleUp,
       );
     };
@@ -268,16 +344,31 @@ function RuntimeCmdWindow({
   return (
 
     <section
-      className={styles.runtimeCmdWindow}
+      ref={windowRef}
+      className={`${styles.runtimeCmdWindow} ${
+        isMaximized
+          ? styles.runtimeCmdWindowMaximized
+          : ''
+      }`}
       style={{
-        transform: `translate(${position.x}px, ${position.y}px)`,
+        transform: isMaximized
+          ? 'translate(0, 0)'
+          : `translate(${position.x}px, ${position.y}px)`,
       }}
       aria-label={`${item.logLabel} runtime session`}
     >
 
       <div
         className={styles.runtimeCmdTitlebar}
-        onMouseDown={(event) => {
+        onPointerDown={(event) => {
+          if (isMaximized) {
+            return;
+          }
+
+          event.currentTarget.setPointerCapture?.(
+            event.pointerId,
+          );
+
           dragRef.current = {
             offsetX: event.clientX - position.x,
             offsetY: event.clientY - position.y,
@@ -286,33 +377,85 @@ function RuntimeCmdWindow({
       >
 
         <div className={styles.runtimeCmdControls}>
-          <button
-            type="button"
-            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdClose}`}
-            onMouseDown={(event) => {
-              event.stopPropagation();
-              onClose();
-            }}
-            aria-label="Terminate runtime session"
-          />
+          {
+            isMaximized ? (
+              <>
+                <button
+                  type="button"
+                  className={`${styles.runtimeCmdControl} ${styles.runtimeCmdMinimizeIcon}`}
+                  onPointerDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    onMinimize();
+                  }}
+                  aria-label="Minimize runtime session"
+                />
 
-          <button
-            type="button"
-            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdMinimize}`}
-            onMouseDown={(event) => {
-              event.stopPropagation();
-            }}
-            aria-label="Minimize runtime session"
-          />
+                <button
+                  type="button"
+                  className={`${styles.runtimeCmdControl} ${styles.runtimeCmdRestore}`}
+                  onPointerDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    setIsMaximized(false);
+                  }}
+                  aria-label="Restore runtime session"
+                />
 
-          <button
-            type="button"
-            className={`${styles.runtimeCmdControl} ${styles.runtimeCmdExpand}`}
-            onMouseDown={(event) => {
-              event.stopPropagation();
-            }}
-            aria-label="Expand runtime session"
-          />
+                <button
+                  type="button"
+                  className={`${styles.runtimeCmdControl} ${styles.runtimeCmdCloseIcon}`}
+                  onPointerDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    onClose();
+                  }}
+                  aria-label="Terminate runtime session"
+                />
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className={`${styles.runtimeCmdControl} ${styles.runtimeCmdClose}`}
+                  onPointerDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    onClose();
+                  }}
+                  aria-label="Terminate runtime session"
+                />
+
+                <button
+                  type="button"
+                  className={`${styles.runtimeCmdControl} ${styles.runtimeCmdMinimize}`}
+                  onPointerDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    onMinimize();
+                  }}
+                  aria-label="Minimize runtime session"
+                />
+
+                <button
+                  type="button"
+                  className={`${styles.runtimeCmdControl} ${styles.runtimeCmdExpand}`}
+                  onPointerDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    setIsMaximized(true);
+                  }}
+                  aria-label="Expand runtime session"
+                />
+              </>
+            )
+          }
         </div>
 
         <span className={styles.runtimeCmdTitle}>
@@ -436,8 +579,14 @@ const [minimizedArchiveItem, setMinimizedArchiveItem] =
 const [minimizedPreviewTabs, setMinimizedPreviewTabs] =
   useState([]);
 
-const [runtimeCmdItem, setRuntimeCmdItem] =
-  useState(null);
+const [runtimeCmdItems, setRuntimeCmdItems] =
+  useState([]);
+
+const [minimizedRuntimeCmdItems, setMinimizedRuntimeCmdItems] =
+  useState([]);
+
+const [runtimeSwitcherOpen, setRuntimeSwitcherOpen] =
+  useState(false);
 
 const [awsStatus, setAwsStatus] =
   useState({
@@ -1015,7 +1164,9 @@ const openItem = (item) => {
 
     setPackageItem(item);
     setArchiveItem(null);
-    setRuntimeCmdItem(null);
+    setRuntimeCmdItems([]);
+    setMinimizedRuntimeCmdItems([]);
+    setRuntimeSwitcherOpen(false);
 
     return;
   }
@@ -1023,7 +1174,9 @@ const openItem = (item) => {
   if (item.type === 'FOLDER') {
     setPackageItem(item);
     setArchiveItem(null);
-    setRuntimeCmdItem(null);
+    setRuntimeCmdItems([]);
+    setMinimizedRuntimeCmdItems([]);
+    setRuntimeSwitcherOpen(false);
 
     return;
   }
@@ -1066,9 +1219,30 @@ const handleLaunch =
 
    if (
      item.type === 'LOG'
-   ) {
+    ) {
 
-      setRuntimeCmdItem(item);
+      setRuntimeCmdItems((prev) => {
+        if (
+          prev.some((session) =>
+            session.id === item.id
+          )
+        ) {
+          return prev;
+        }
+
+        return [
+          ...prev,
+          item,
+        ];
+      });
+
+      setMinimizedRuntimeCmdItems((prev) =>
+        prev.filter((session) =>
+          session.id !== item.id
+        )
+      );
+
+      setRuntimeSwitcherOpen(false);
 
       return;
     }
@@ -1286,6 +1460,33 @@ const restoreTaskbarItem = (task) => {
 
   if (task.type === 'runtime') {
 
+    if (task.item?.type === 'LOG') {
+      setRuntimeCmdItems((prev) => {
+        if (
+          prev.some((session) =>
+            session.id === task.item.id
+          )
+        ) {
+          return prev;
+        }
+
+        return [
+          ...prev,
+          task.item,
+        ];
+      });
+
+      setMinimizedRuntimeCmdItems((prev) =>
+        prev.filter((session) =>
+          session.id !== task.item.id
+        )
+      );
+
+      setRuntimeSwitcherOpen(false);
+
+      return;
+    }
+
     closeWorkspaceApp();
   }
 };
@@ -1318,6 +1519,24 @@ const removeTaskbarItem = (task) => {
   }
 
   if (task.type === 'runtime') {
+
+    if (task.item?.type === 'LOG') {
+      setRuntimeCmdItems((prev) =>
+        prev.filter((session) =>
+          session.id !== task.item.id
+        )
+      );
+
+      setMinimizedRuntimeCmdItems((prev) =>
+        prev.filter((session) =>
+          session.id !== task.item.id
+        )
+      );
+
+      setRuntimeSwitcherOpen(false);
+
+      return;
+    }
 
     closeWorkspaceApp();
   }
@@ -1908,6 +2127,16 @@ if (workspaceItem) {
      RENDER
   ========================= */
 
+const runtimeTaskbarItems = [
+  ...runtimeCmdItems,
+  ...minimizedRuntimeCmdItems.filter(
+    (minimizedSession) =>
+      !runtimeCmdItems.some((session) =>
+        session.id === minimizedSession.id
+      ),
+  ),
+];
+
 return (
 
   <div
@@ -1917,6 +2146,7 @@ return (
 
       setMenuState(null);
       setTaskbarMenuState(null);
+      setRuntimeSwitcherOpen(false);
     }}
 
     onContextMenu={(e) => {
@@ -1924,6 +2154,7 @@ return (
       e.preventDefault();
       setMenuState(null);
       setTaskbarMenuState(null);
+      setRuntimeSwitcherOpen(false);
     }}
   >
   
@@ -1981,7 +2212,7 @@ return (
   >
 
 {
-  runtimeCmdItem && (
+  runtimeCmdItems.length > 0 && (
     <div
       className={styles.runtimeCmdBackdrop}
       aria-hidden="true"
@@ -2058,8 +2289,12 @@ return (
       activeItem &&
       activeItem.id === item.id
         ? styles.active
-        : runtimeCmdItem &&
-          runtimeCmdItem.id === item.id
+        : runtimeCmdItems.some((session) =>
+            session.id === item.id
+          ) ||
+          minimizedRuntimeCmdItems.some((session) =>
+            session.id === item.id
+          )
         ? styles.active
         : ''
     }
@@ -2268,15 +2503,60 @@ return (
 }
 
 {
-  runtimeCmdItem && (
+  runtimeCmdItems.length > 0 &&
+  typeof document !== 'undefined' &&
+  createPortal(
 
-    <RuntimeCmdWindow
-      item={runtimeCmdItem}
-      onClose={() =>
-        setRuntimeCmdItem(null)
+    <>
+      {
+        runtimeCmdItems.map((runtimeItem, index) => (
+
+          <RuntimeCmdWindow
+            key={runtimeItem.id}
+            item={runtimeItem}
+            stackIndex={index}
+            onClose={() => {
+              setRuntimeCmdItems((prev) =>
+                prev.filter((session) =>
+                  session.id !== runtimeItem.id
+                )
+              );
+
+              setMinimizedRuntimeCmdItems((prev) =>
+                prev.filter((session) =>
+                  session.id !== runtimeItem.id
+                )
+              );
+            }}
+            onMinimize={() => {
+              setMinimizedRuntimeCmdItems((prev) => {
+                if (
+                  prev.some((session) =>
+                    session.id === runtimeItem.id
+                  )
+                ) {
+                  return prev;
+                }
+
+                return [
+                  ...prev,
+                  runtimeItem,
+                ];
+              });
+
+              setRuntimeCmdItems((prev) =>
+                prev.filter((session) =>
+                  session.id !== runtimeItem.id
+                )
+              );
+            }}
+          />
+
+        ))
       }
-    />
+    </>,
 
+    document.body,
   )
 }
 
@@ -2339,6 +2619,111 @@ return (
           {/* <button className={styles.taskbarIcon}>
             <i className="fa-solid fa-folder"></i>
           </button> */}
+
+{
+  runtimeTaskbarItems.length > 0 && (
+
+    <div
+      className={styles.taskbarRuntimeGroup}
+      onMouseEnter={() => {
+        setRuntimeSwitcherOpen(true);
+      }}
+      onMouseLeave={() => {
+        setRuntimeSwitcherOpen(false);
+      }}
+    >
+      <button
+        type="button"
+        className={`${styles.taskbarIcon} ${styles.taskbarIconActive}`}
+        onClick={(event) => {
+          event.stopPropagation();
+          setRuntimeSwitcherOpen((value) =>
+            !value
+          );
+        }}
+        onContextMenu={(e) =>
+          handleTaskbarAppMenu(
+            e,
+            {
+              type: 'runtime',
+              item:
+                runtimeTaskbarItems[0],
+            },
+          )
+        }
+        title="runtime sessions"
+        aria-label="Show runtime sessions"
+      >
+        <i className="fa-solid fa-terminal"></i>
+      </button>
+
+      {
+        runtimeSwitcherOpen && (
+          <div className={styles.runtimeSwitcher}>
+            {
+              runtimeTaskbarItems.map((runtimeItem) => {
+
+                const isMinimized =
+                  minimizedRuntimeCmdItems.some((session) =>
+                    session.id === runtimeItem.id
+                  );
+
+                const previewEntries =
+                  (runtimeItem.logEntries || [])
+                    .slice(0, 3);
+
+                return (
+
+                  <button
+                    key={runtimeItem.id}
+                    type="button"
+                    className={styles.runtimeSwitcherCard}
+                    onClick={(event) => {
+                      event.stopPropagation();
+
+                      if (isMinimized) {
+                        restoreTaskbarItem({
+                          type: 'runtime',
+                          item: runtimeItem,
+                        });
+                      } else {
+                        setRuntimeCmdItems((prev) => [
+                          ...prev.filter((session) =>
+                            session.id !== runtimeItem.id
+                          ),
+                          runtimeItem,
+                        ]);
+                      }
+
+                      setRuntimeSwitcherOpen(false);
+                    }}
+                  >
+                    <span className={styles.runtimeSwitcherTitle}>
+                      <i className="fa-solid fa-terminal"></i>
+                      {runtimeItem.title}
+                    </span>
+
+                    <span className={styles.runtimeSwitcherPreview}>
+                      {
+                        previewEntries.map((entry) => (
+                          <span key={entry}>
+                            {entry}
+                          </span>
+                        ))
+                      }
+                    </span>
+                  </button>
+
+                );
+              })
+            }
+          </div>
+        )
+      }
+    </div>
+
+  )
+}
 
 {
   minimizedWorkspaceItem && (

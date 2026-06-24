@@ -88,79 +88,138 @@ export default function DecodingPanel({
 
     return (
       <div className={`${tarotStyles.decodingPanel} ${tarotStyles.recordDecodingPanel}`}>
-        <div className={tarotStyles.recordAccessHeader}>
-          <button
-            type="button"
-            className={tarotStyles.recordBackButton}
-            onClick={onBackToArchiveCard}
-          >
-            BACK TO ARCHIVE CARD
-          </button>
+        <div className={tarotStyles.decodingPanelFrame}>
+          <div className={tarotStyles.recordAccessHeader}>
+            <button
+              type="button"
+              className={tarotStyles.recordBackButton}
+              onClick={onBackToArchiveCard}
+            >
+              BACK TO ARCHIVE CARD
+            </button>
 
-          <span className={tarotStyles.recordAccessState}>
-            RECORD ACCESS GRANTED
-          </span>
+            <span className={tarotStyles.recordAccessState}>
+              RECORD ACCESS GRANTED
+            </span>
+          </div>
+
+
+          <div className={tarotStyles.recordDecodeGrid}>
+            <div className={tarotStyles.recordArtifact}>
+              <img
+                src={activeRecord.artwork ?? card.artwork}
+                alt={activeRecord.title}
+              />
+
+              <div className={tarotStyles.recordArtifactSeal}>
+                {activeRecord.keyword ?? 'LOG'}
+              </div>
+            </div>
+
+            <div className={tarotStyles.recordTerminal}>
+              <h2>
+                {activeRecord.title}
+              </h2>
+
+              <div className={tarotStyles.decodingKeywords}>
+                <span>RELATED RECORD</span>
+
+                {activeRecord.keyword && (
+                  <span>{activeRecord.keyword}</span>
+                )}
+
+                <span>{card.label}</span>
+              </div>
+
+              <p className={tarotStyles.recordProgressLabel}>
+                reconstructing sealed technical manuscript
+              </p>
+
+              <div className={tarotStyles.decodingProgress}>
+                <span />
+              </div>
+
+              <div className={tarotStyles.reconstructionConsole}>
+                {reconstructionLines.map((line) => (
+                  <p key={line} data-text={line}>
+                    {line}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className={tarotStyles.recordDecodedBody}>
+            <div className={tarotStyles.recordDecodedHeader}>
+              <span>DECODED RECORD BODY</span>
+              <span>{activeRecord.keyword ?? 'RELATED'}</span>
+            </div>
+
+            {activeRecordSummary && (
+              <p className={tarotStyles.corruptedReveal}>
+                {activeRecordSummary}
+              </p>
+            )}
+
+            {activeRecordSections.map((section) => (
+              <section
+                key={section.id}
+                className={tarotStyles.decodingSection}
+              >
+                <h3>{section.title}</h3>
+
+                <ul>
+                  {section.items.map((item) => (
+                    <li key={item} className={tarotStyles.corruptedReveal}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={tarotStyles.decodingPanel}>
+      <div className={tarotStyles.decodingPanelFrame}>
+        <span className={tarotStyles.decodingEyebrow}>
+          RECORD DECODING
+        </span>
+
+        <h2>
+          {card.title}
+        </h2>
+
+        <p className={tarotStyles.decodingSubtitle}>
+          {card.subtitle}
+        </p>
+
+        <div className={tarotStyles.decodingKeywords}>
+          <span>{card.label}</span>
+
+          {card.keyword && (
+            <span>{card.keyword}</span>
+          )}
+
+          {relatedRecords.length > 0 && (
+            <span>
+              {relatedRecords.length} RELATED RECORDS
+            </span>
+          )}
         </div>
 
-
-        <div className={tarotStyles.recordDecodeGrid}>
-          <div className={tarotStyles.recordArtifact}>
-            <img
-              src={activeRecord.artwork ?? card.artwork}
-              alt={activeRecord.title}
-            />
-
-            <div className={tarotStyles.recordArtifactSeal}>
-              {activeRecord.keyword ?? 'LOG'}
-            </div>
-          </div>
-
-          <div className={tarotStyles.recordTerminal}>
-            <h2>
-              {activeRecord.title}
-            </h2>
-
-            <div className={tarotStyles.decodingKeywords}>
-              <span>RELATED RECORD</span>
-
-              {activeRecord.keyword && (
-                <span>{activeRecord.keyword}</span>
-              )}
-
-              <span>{card.label}</span>
-            </div>
-
-            <p className={tarotStyles.recordProgressLabel}>
-              reconstructing sealed technical manuscript
-            </p>
-
-            <div className={tarotStyles.decodingProgress}>
-              <span />
-            </div>
-
-            <div className={tarotStyles.reconstructionConsole}>
-              {reconstructionLines.map((line) => (
-                <p key={line} data-text={line}>
-                  {line}
-                </p>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className={tarotStyles.recordDecodedBody}>
-          <div className={tarotStyles.recordDecodedHeader}>
-            <span>DECODED RECORD BODY</span>
-            <span>{activeRecord.keyword ?? 'RELATED'}</span>
-          </div>
-
-          {activeRecordSummary && (
-            <p className={tarotStyles.corruptedReveal}>
-              {activeRecordSummary}
+        <div className={tarotStyles.decodingBody}>
+          {decoding.summary && (
+            <p className={tarotStyles.decodingSummary}>
+              {decoding.summary}
             </p>
           )}
 
-          {activeRecordSections.map((section) => (
+          {sections.map((section) => (
             <section
               key={section.id}
               className={tarotStyles.decodingSection}
@@ -169,7 +228,7 @@ export default function DecodingPanel({
 
               <ul>
                 {section.items.map((item) => (
-                  <li key={item} className={tarotStyles.corruptedReveal}>
+                  <li key={item}>
                     {item}
                   </li>
                 ))}
@@ -177,124 +236,69 @@ export default function DecodingPanel({
             </section>
           ))}
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={tarotStyles.decodingPanel}>
-      <span className={tarotStyles.decodingEyebrow}>
-        RECORD DECODING
-      </span>
-
-      <h2>
-        {card.title}
-      </h2>
-
-      <p className={tarotStyles.decodingSubtitle}>
-        {card.subtitle}
-      </p>
-
-      <div className={tarotStyles.decodingKeywords}>
-        <span>{card.label}</span>
-
-        {card.keyword && (
-          <span>{card.keyword}</span>
-        )}
 
         {relatedRecords.length > 0 && (
-          <span>
-            {relatedRecords.length} RELATED RECORDS
-          </span>
-        )}
-      </div>
+          <section className={tarotStyles.relatedRecords}>
+            <div className={tarotStyles.relatedRecordsHeader}>
+              <div className={tarotStyles.relatedRecordsSignal}>
+                <span>RELATED RECORDS DETECTED</span>
+              </div>
 
-      <div className={tarotStyles.decodingBody}>
-        {decoding.summary && (
-          <p className={tarotStyles.decodingSummary}>
-            {decoding.summary}
-          </p>
-        )}
+              <h3>
+                Classified Record Index
+              </h3>
 
-        {sections.map((section) => (
-          <section
-            key={section.id}
-            className={tarotStyles.decodingSection}
-          >
-            <h3>{section.title}</h3>
-
-            <ul>
-              {section.items.map((item) => (
-                <li key={item}>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
-
-      {relatedRecords.length > 0 && (
-        <section className={tarotStyles.relatedRecords}>
-          <div className={tarotStyles.relatedRecordsHeader}>
-            <div className={tarotStyles.relatedRecordsSignal}>
-              <span>RELATED RECORDS DETECTED</span>
+              <p>
+                Select a sealed record to open its independent decoding interface.
+              </p>
             </div>
 
-            <h3>
-              Classified Record Index
-            </h3>
-
-            <p>
-              Select a sealed record to open its independent decoding interface.
-            </p>
-          </div>
-
-          <div className={tarotStyles.relatedRecordsGrid}>
-            {relatedRecords.map((record, index) => (
-              <button
-                type="button"
-                key={`${record.keyword ?? record.label}-${record.title}`}
-                className={tarotStyles.relatedRecordCard}
-                onClick={() =>
-                  onSelectRecord?.(record)
-                }
-              >
-                <span className={tarotStyles.relatedRecordAccess}>
-                  ACCESS RECORD
-                </span>
-
-                <div className={tarotStyles.relatedRecordArtwork}>
-                  <img
-                    src={record.artwork ?? card.artwork}
-                    alt=""
-                  />
-                </div>
-
-                <div className={tarotStyles.relatedRecordBack}>
-                  <span className={tarotStyles.relatedRecordIndex}>
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div>
-
-                <div className={tarotStyles.relatedRecordFace}>
-                  <span className={tarotStyles.relatedRecordKeyword}>
-                    {record.keyword ?? record.label}
+            <div className={tarotStyles.relatedRecordsGrid}>
+              {relatedRecords.map((record, index) => (
+                <button
+                  type="button"
+                  key={`${record.keyword ?? record.label}-${record.title}`}
+                  className={tarotStyles.relatedRecordCard}
+                  onClick={() =>
+                    onSelectRecord?.(record)
+                  }
+                >
+                  <span className={tarotStyles.relatedRecordAccess}>
+                    ACCESS RECORD
                   </span>
 
-                  <h3>
-                    {record.title}
-                  </h3>
+                  <div className={tarotStyles.relatedRecordArtwork}>
+                    <img
+                      src={record.artwork ?? card.artwork}
+                      alt=""
+                    />
+                  </div>
 
-                  <p>
-                    {record.description ?? record.subtitle ?? record.decoding?.summary}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
+                  <div className={tarotStyles.relatedRecordBack}>
+                    <span className={tarotStyles.relatedRecordIndex}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  <div className={tarotStyles.relatedRecordFace}>
+                    <span className={tarotStyles.relatedRecordKeyword}>
+                      {record.keyword ?? record.label}
+                    </span>
+
+                    <h3>
+                      {record.title}
+                    </h3>
+
+                    <p>
+                      {record.description ?? record.subtitle ?? record.decoding?.summary}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
     </div>
   );
 }

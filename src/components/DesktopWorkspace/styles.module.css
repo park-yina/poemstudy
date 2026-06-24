@@ -846,13 +846,13 @@
 
 .runtimeCmdWindow {
   position:
-    absolute;
+    fixed;
   left:
     0;
   top:
     0;
   z-index:
-    80;
+    12000;
   width:
     min(940px, calc(100% - 3rem));
   height:
@@ -874,6 +874,19 @@
   box-shadow:
     0 34px 90px rgba(0,0,0,0.56),
     0 0 0 1px rgba(0,0,0,0.4);
+  will-change:
+    transform;
+}
+
+.runtimeCmdWindowMaximized {
+  width:
+    100vw;
+  height:
+    100vh;
+  min-height:
+    0;
+  border-radius:
+    0;
 }
 
 .runtimeCmdTitlebar {
@@ -889,8 +902,12 @@
     center;
   position:
     relative;
+  z-index:
+    1;
   cursor:
     grab;
+  touch-action:
+    none;
   user-select:
     none;
   border-bottom:
@@ -979,6 +996,144 @@
 .runtimeCmdExpand::before {
   background:
     #28c840;
+}
+
+.runtimeCmdRestore,
+.runtimeCmdCloseIcon {
+  border-radius:
+    5px;
+  color:
+    rgba(255,255,255,0.96);
+}
+
+.runtimeCmdMinimizeIcon {
+  border-radius:
+    5px;
+  color:
+    rgba(255,255,255,0.96);
+}
+
+.runtimeCmdRestore:hover,
+.runtimeCmdCloseIcon:hover {
+  filter:
+    none;
+}
+
+.runtimeCmdRestore:hover,
+.runtimeCmdMinimizeIcon:hover {
+  filter:
+    none;
+  background:
+    rgba(255,255,255,0.1);
+}
+
+.runtimeCmdCloseIcon:hover {
+  background:
+    rgba(255,95,87,0.16);
+}
+
+.runtimeCmdMinimizeIcon:hover {
+  filter:
+    none;
+  background:
+    rgba(255,255,255,0.08);
+}
+
+.runtimeCmdMinimizeIcon::before {
+  content:
+    '';
+  position:
+    absolute;
+  left:
+    50%;
+  top:
+    50%;
+  width:
+    12px;
+  height:
+    2px;
+  border-radius:
+    999px;
+  background:
+    currentColor;
+  box-shadow:
+    none;
+  transform:
+    translate(-50%, -50%);
+}
+
+.runtimeCmdCloseIcon::before,
+.runtimeCmdCloseIcon::after {
+  content:
+    '';
+  position:
+    absolute;
+  left:
+    50%;
+  top:
+    50%;
+  width:
+    12px;
+  height:
+    2px;
+  border-radius:
+    999px;
+  background:
+    currentColor;
+  box-shadow:
+    none;
+  transform-origin:
+    center;
+}
+
+.runtimeCmdCloseIcon::before {
+  transform:
+    translate(-50%, -50%) rotate(45deg);
+}
+
+.runtimeCmdCloseIcon::after {
+  transform:
+    translate(-50%, -50%) rotate(-45deg);
+}
+
+.runtimeCmdRestore::before,
+.runtimeCmdRestore::after {
+  content:
+    '';
+  position:
+    absolute;
+  width:
+    9px;
+  height:
+    9px;
+  border:
+    2px solid currentColor;
+  border-radius:
+    2px;
+  background:
+    transparent;
+  box-shadow:
+    none;
+  transform:
+    none;
+  box-sizing:
+    border-box;
+}
+
+.runtimeCmdRestore::before {
+  left:
+    10px;
+  top:
+    7px;
+  opacity:
+    0.72;
+}
+
+.runtimeCmdRestore::after {
+  left:
+    6px;
+  top:
+    10px;
 }
 
 .runtimeCmdTitle {
@@ -2531,6 +2686,137 @@
 
   background:
     rgba(124,156,255,0.78);
+}
+
+.taskbarRuntimeGroup {
+  position:
+    relative;
+}
+
+.runtimeSwitcher {
+  position:
+    absolute;
+  left:
+    50%;
+  bottom:
+    calc(100% + 14px);
+  z-index:
+    13000;
+  display:
+    flex;
+  gap:
+    0.75rem;
+  max-width:
+    min(620px, calc(100vw - 2rem));
+  padding:
+    0.75rem;
+  border:
+    1px solid rgba(255,255,255,0.12);
+  border-radius:
+    10px;
+  background:
+    rgba(18,20,26,0.94);
+  box-shadow:
+    0 24px 70px rgba(0,0,0,0.42);
+  backdrop-filter:
+    blur(18px);
+  transform:
+    translateX(-50%);
+}
+
+.runtimeSwitcherCard {
+  width:
+    150px;
+  min-height:
+    118px;
+  padding:
+    0.65rem;
+  border:
+    1px solid rgba(255,255,255,0.1);
+  border-radius:
+    8px;
+  background:
+    #050505;
+  color:
+    rgba(255,255,255,0.88);
+  cursor:
+    pointer;
+  text-align:
+    left;
+  display:
+    flex;
+  flex-direction:
+    column;
+  gap:
+    0.55rem;
+  transition:
+    border-color 0.16s ease,
+    background 0.16s ease,
+    transform 0.16s ease;
+}
+
+.runtimeSwitcherCard:hover {
+  border-color:
+    rgba(124,156,255,0.45);
+  background:
+    #080b12;
+  transform:
+    translateY(-2px);
+}
+
+.runtimeSwitcherTitle {
+  display:
+    flex;
+  align-items:
+    center;
+  gap:
+    0.45rem;
+  font-family:
+    'IBM Plex Mono',
+    'Fira Code',
+    Consolas,
+    monospace;
+  font-size:
+    0.74rem;
+  color:
+    rgba(255,255,255,0.9);
+  white-space:
+    nowrap;
+  overflow:
+    hidden;
+  text-overflow:
+    ellipsis;
+}
+
+.runtimeSwitcherPreview {
+  display:
+    flex;
+  flex-direction:
+    column;
+  gap:
+    0.3rem;
+  font-family:
+    'IBM Plex Mono',
+    'Fira Code',
+    Consolas,
+    monospace;
+  font-size:
+    0.62rem;
+  line-height:
+    1.35;
+  color:
+    rgba(126,231,135,0.8);
+  overflow:
+    hidden;
+}
+
+.runtimeSwitcherPreview span {
+  white-space:
+    nowrap;
+  overflow:
+    hidden;
+  text-overflow:
+    ellipsis;
 }
 
 .taskbarIcon i {

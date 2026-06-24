@@ -1,0 +1,232 @@
+---
+sidebar_position: 3
+archiveManuscript: true
+manuscriptTheme: jumpingbattle
+---
+
+import {
+  DocsRef,
+  DocsFootnotes,
+  DocsDocumentProvider,
+  DocsNavigationRail,
+} from '@site/src/components/DocsManuscript';
+
+<DocsDocumentProvider>
+
+<div className="docs-manuscript">
+
+# 안전한 다운로드 구조 설계
+
+> 전국 단위 매장에서 사용되는 서비스 특성상,
+> 다운로드 링크의 무분별한 공유 및 반복 요청은
+> 운영 비용 증가와 데이터 노출 문제로 이어질 수 있었습니다.
+>
+> 따라서 단순 파일 제공을 넘어,
+> 접근 제어와 다운로드 정책을 함께 고려한 구조를 설계하게 되었습니다.
+---
+
+<div className="docs-manuscript-top-layout">
+
+  <div className="docs-summary">
+
+## 목차
+
+1. [개요](#overview)
+2. [초기 구조 (Proxy 방식 검토)](#proxy-approach)
+3. [Lambda 환경에서 발생한 문제](#lambda-limitations)
+4. [최종 해결 방식](#final-solution)
+  </div>
+
+</div>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="overview">
+
+  <span className="wiki-fold-title">
+    개요
+  </span>
+
+</summary>
+
+<div markdown="1">
+기존 점핑배틀 서비스는 Firebase Storage를 활용하여
+플레이 영상을 스트리밍하는 구조로 운영되고 있었습니다.
+
+초기에는 사용 규모가 크지 않았기 때문에 큰 문제가 되지 않았으나,
+전국 단위로 매장이 증가하면서 파일 접근 구조에 대한 재검토가 필요해졌습니다.
+
+특히 스토리지 경로의 노출은 운영 비용 증가뿐만 아니라
+고객 데이터 접근 제어 측면에서도 개선이 필요한 부분이라 판단하였습니다.
+
+실제로 서비스 규모가 증가하는 과정에서는
+자동화된 접근 시도와 같이 정상적인 사용 패턴으로 보기 어려운 요청이 증가하는 사례가 존재합니다.
+
+이에 따라 보다 안전한 스트리밍 및 다운로드 구조를 검토하게 되었습니다.
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+  
+>
+
+<summary id="proxy-approach"
+>
+
+  <span className="wiki-fold-title">
+    초기 구조
+  </span>
+
+</summary>
+
+<div markdown="1">
+초기에는 프록시 방식을 우선 검토하였습니다.
+
+가장 큰 이유는 Firebase Storage의 실제 경로나 파일 식별자를
+외부에 직접 노출하지 않을 수 있기 때문입니다.
+
+모든 요청을 서버가 먼저 검증한 뒤 파일을 전달하도록 구성할 경우,
+스토리지에 대한 직접 접근을 차단할 수 있으며
+다운로드 정책 역시 서버에서 일관되게 관리할 수 있습니다.
+
+또한 URL 공유나 자동화된 반복 요청과 같은 상황에서도
+상대적으로 강한 접근 제어가 가능하다고 판단하였습니다.
+
+초기 구조는 다음과 같습니다.
+
+클라이언트가 프록시 서버로 요청을 전송하면,
+서버는 날짜 및 파일 존재 여부와 같은 내부 검증을 수행한 뒤
+Firebase Storage의 리소스를 조회합니다.
+
+이후 서버가 해당 데이터를 직접 전달하는 방식으로
+스트리밍 및 다운로드를 처리하도록 설계하였습니다.
+
+당시에는 접근 제어에 집중하여 구조를 설계하였으나,
+현재 시점에서 보면 Signed URL과 Proxy를 동시에 사용하는 것은
+다소 불필요한 복잡성을 만들 수 있다고 판단합니다.
+
+<DocsRef>
+
+현재 동일한 구조를 다시 설계한다면,
+Signed URL을 중간 단계로 활용하기보다는
+서비스 계정을 이용하여 Storage를 직접 조회한 뒤
+스트리밍하는 방식을 우선 검토할 것 같습니다.
+
+</DocsRef>
+</div>
+
+</details>
+
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="lambda-limitations">
+
+  <span className="wiki-fold-title">
+    Lambda 환경에서 발생한 문제
+  </span>
+
+</summary>
+
+
+<div markdown="1">
+
+해당 구조는 로컬 환경에서 `flask run`을 통해 테스트하였을 때에는 정상적으로 동작하였습니다.
+
+그러나 AWS Lambda 환경으로 배포한 이후,
+영상 데이터를 처리하는 과정에서 함수가 비정상적으로 종료되는 문제가 발생하였습니다.
+
+프록시 구조의 특성상 모든 영상 데이터는 서버를 한 차례 경유하게 되며,
+이 과정에서 Lambda의 메모리와 임시 저장소를 지속적으로 사용하게 됩니다.
+
+당시 플레이 영상은 일반적으로 약 45MB 수준이었으며,
+추가적으로 제공되는 이미지 데이터를 포함할 경우
+요청당 약 50MB 내외의 데이터를 처리하게 되었습니다.
+
+개별 요청만 놓고 보면 매우 큰 크기는 아니었으나,
+프록시 구조의 특성상 모든 데이터가 Lambda를 한 차례 경유하게 되므로
+동시 요청 수가 증가할수록 메모리와 임시 저장소 사용량 역시 함께 증가하게 됩니다.
+
+당시 사용하던 Lambda 환경은 기본 설정 기준으로
+512MB의 임시 저장소를 사용하고 있었습니다.
+
+따라서 여러 사용자가 동시에 영상을 조회하는 상황에서는
+Lambda의 기본 자원 설정만으로 안정적인 운영을 보장하기 어렵다고 판단하였습니다.
+
+해당 문제를 해결하기 위한 방안으로 다음 세 가지를 검토하였습니다.
+
+* EC2 기반 서버로 이전
+* Lambda 메모리 및 임시 저장소 증설
+* 프록시 구조를 포기하고 다른 접근 방식 채택
+
+</div>
+
+
+
+</details>
+---
+
+<details
+  className="wiki-fold"
+  open
+>
+
+<summary id="final-solution">
+
+  <span className="wiki-fold-title">
+    최종 해결 방식
+  </span>
+
+</summary>
+
+
+<div markdown="1">
+
+최종적으로는 프록시 구조를 폐기하고,
+Signed URL 기반 접근 방식을 도입하는 방향으로 결정하였습니다.
+
+당시 고객사가 Lambda 환경을 선택한 가장 큰 이유는 경제성이었습니다.
+
+따라서 단순히 Lambda의 메모리나 임시 저장소를 증설하는 방식은
+문제를 해결할 수는 있지만,
+고객사가 기대했던 비용 효율성을 충분히 반영하지 못하는 선택이라고 판단하였습니다.
+
+또한 초기 프록시 구조를 검토한 이유 역시
+스토리지 경로와 파일 식별자의 직접적인 노출을 최소화하고,
+무분별한 접근을 방지하기 위함이었습니다.
+
+Signed URL 역시 만료 시간을 활용하여 접근 범위를 제한할 수 있으며,
+서버에서 다운로드 가능 여부를 사전에 검증하는 구조를 함께 적용할 경우
+초기 요구사항을 충분히 만족할 수 있다고 판단하였습니다.
+
+결과적으로 서버는 파일 접근 권한만 검증하고,
+실제 파일 전송은 Firebase Storage가 담당하도록 구조를 변경하였습니다.
+
+이를 통해 Lambda의 자원 사용량을 크게 줄이는 동시에,
+접근 제어와 운영 비용 사이에서 적절한 균형을 유지할 수 있었습니다.
+</div>
+
+
+
+</details>
+<DocsFootnotes />
+
+<DocsNavigationRail marker="circle" />
+
+</div>
+
+</DocsDocumentProvider>

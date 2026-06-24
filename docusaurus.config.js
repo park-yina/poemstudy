@@ -81,7 +81,7 @@ const config = {
   ],
 
   themeConfig: ({
-    image: 'img/social-card.jpg',
+    image: 'img/preview.png',
     colorMode: {
       respectPrefersColorScheme: true,
       defaultMode: 'dark',
@@ -90,7 +90,7 @@ const config = {
     navbar: {
      
   title: 'Luda Log',
-
+  
   hideOnScroll: true,
 
       items: [
@@ -141,6 +141,7 @@ const config = {
       darkTheme: prismThemes.nightOwl,
     },
   }),
+  onBrokenAnchors: 'warn',
 };
 
 export default config;
