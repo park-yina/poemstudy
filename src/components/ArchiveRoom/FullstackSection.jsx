@@ -11,6 +11,7 @@ import {
   fullstackPrimaryBooks,
   fullstackSecondaryBooks,
   futureBooks,
+  yinaBooks,
 } from './archive-books';
 
 import styles from './archive-room.module.css';
@@ -1269,6 +1270,20 @@ export function AppSection(props) {
       secondaryTitle="APP SIDE RECORDS"
       secondaryDescription="앱 토이프로젝트"
       secondaryBooks={appSecondaryBooks}
+      {...props}
+    />
+  );
+}
+export function YinaSection(props) {
+  return (
+    <ArchiveBookSection
+      id="yina"
+      eyebrow="005 Yina"
+      title="Yina Records"
+      description="인간 박이나에 대한 주요 기록과 보조 기록으로 보관합니다."
+      primaryTitle="Yina ARCHIVE"
+      primaryDescription="이나 바라보기"
+      primaryBooks={yinaBooks}
       {...props}
     />
   );
